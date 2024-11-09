@@ -79,12 +79,11 @@ MVPリリース時：①トップページ　②会員登録・ログイン　�
 一般的なCRUD以外の実装予定の機能についてそれぞれどのようなイメージ(使用するAPIや)で実装する予定なのか現状考えているもので良いので教えて下さい。
 
 シミュレーション機能：
-シミュレーションに必要なデータはfinancialsテーブルで管理し、ユーザーが任意に追加するデータや数値はjason形式で保存します。
-シミュレーション結果はsimulationsテーブルで管理します。
+シミュレーションに必要なデータは複数のテーブルで管理し、シミュレーション結果は2つのテーブルで管理します。
 
 グラフ表示：
 シュミレーションした数値をchart.jsを用いてグラフ表示をします。
 
 
-■ 画面遷移図
-figma URL: https://www.figma.com/design/cwfsDVoVFlE9I2w3Jax7YG/%E7%94%BB%E9%9D%A2%E9%81%B7%E7%A7%BB%E5%9B%B3%EF%BC%88portfolio%EF%BC%89?node-id=0-1&t=ahdPRxGwEfuZDwUp-1
+■ ER図
+draw.io link: https://drive.google.com/file/d/1O1fcESG_JPr64JKYW25QIb3qQnuQADzQ/view?usp=sharing

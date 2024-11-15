@@ -12,6 +12,11 @@ Rails.application.routes.draw do
   # ダッシュボード
   get "dashboard" => "dashboard#index", as: :dashboard
 
+  # レターオープナー用
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  end
+
   # ヘルスチェック
   get "up" => "rails/health#show", as: :rails_health_check
 

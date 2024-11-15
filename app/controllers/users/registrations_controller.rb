@@ -5,6 +5,16 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_account_update_params, only: [:update]
   before_action :configure_permitted_parameters
 
+  # 既存メソッドをオーバーライド
+  def create
+    super do |resource|
+      # 登録後、メール確認が完了するまでログインさせない
+      if resource.persisted? && !resource.confirmed?
+        sign_out resource
+      end
+    end
+  end
+
   protected
 
   def configure_permitted_parameters

@@ -60,3 +60,4 @@ group :test do
 end
 
 gem "devise", "~> 4.9"
+ruby '3.2.3'

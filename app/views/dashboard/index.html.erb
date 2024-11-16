@@ -1,4 +1,1 @@
 <h1>ホームページ</h1>
-<p>ようこそ、<%= current_user.name %>さん！</p>
-<%= link_to 'ログアウト', destroy_user_session_path, data: { turbo_method: :delete } %>
-<%= link_to 'アカウント削除', user_registration_path, data: { confirm: '削除しても良いですか？', turbo_method: :delete } %>

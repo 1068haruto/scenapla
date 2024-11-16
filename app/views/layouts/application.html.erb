@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Myapp" %></title>
+    <title><%= content_for(:title) || "Portfolio" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
@@ -18,8 +18,46 @@
   </head>
 
   <body>
+    <header>
+      <div class="logo">Portfolio</div>
+      <div class="user-info">
+        <% if current_user %>
+          <span class="username"><%= "#{current_user.name}さん" %></span>
+          <!-- ハンバーガーメニューの追加 -->
+          <div class="hamburger-menu">
+            <div class="hamburger-icon">&#9776;</div> <!-- ハンバーガーアイコン -->
+            <div class="dropdown-menu">
+              <a href="/account" class="menu-item">アカウント情報</a>
+              <%= link_to 'ログアウト', destroy_user_session_path, class: 'menu-item', data: { turbo_method: :delete } %>
+              <%= link_to 'アカウント削除', user_registration_path, class: 'menu-item', data: { confirm: '削除しても良いですか？', turbo_method: :delete } %>
+            </div>
+          </div>
+        <% else %>
+          <%= link_to 'ログイン', new_user_session_path %>
+        <% end %>
+      </div>
+    </header>
+    <% if user_signed_in? %>
+      <div class="button-container">
+        <%= link_to 'ホーム', dashboard_path, class: 'nav-button', data: { turbo_method: :get } %>
+        <%= link_to 'シミュレーション', '#', class: 'nav-button', data: { turbo_method: :get } %>
+        <%= link_to 'シナリオ', '#', class: 'nav-button', data: { turbo_method: :get } %>
+        <%= link_to 'ライフプラン', '#', class: 'nav-button', data: { turbo_method: :get } %>
+      </div>
+    <% end %>
+
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
-    <%= yield %>
+
+    <main>
+      <%= yield %> <!-- 各ページの内容がここに挿入される -->
+    </main>
+
+    <footer>
+      <button class="footer-button">お問い合わせ</button>
+      <button class="footer-button">プライバシーポリシー</button>
+      <button class="footer-button">利用規約</button>
+      <p>&copy; <%= Time.now.year %> My Website. All rights reserved.</p>
+    </footer>
   </body>
 </html>

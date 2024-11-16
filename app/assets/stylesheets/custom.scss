@@ -1,0 +1,112 @@
+/* header */
+header {
+  height: 80px;  /* ヘッダーの高さ */
+  display: flex;  /* フレックスボックスを使う */
+  justify-content: space-between;
+  align-items: center;  /* 垂直方向の中央揃え */
+  padding: 10px 20px;
+  background-color: #333; // ダークグレー
+  color: white;
+
+  .logo {
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  /* ユーザー名 */
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  /* humburger */
+  .hamburger-menu {
+    position: relative;
+    cursor: pointer;
+
+    .hamburger-icon {
+      font-size: 40px;
+      padding: 5px;
+      color: white;
+    }
+
+    .dropdown-menu {
+      display: none; /* 初期状態では非表示 */
+      position: absolute;
+      right: 0;
+      top: 100%;
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 150px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      z-index: 1;
+
+      .menu-item {
+        display: block;
+        padding: 10px 15px;
+        text-decoration: none;
+        color: black;
+      }
+
+      .menu-item:hover {
+        background-color: #f0f0f0;
+      }
+    }
+
+    &:hover .dropdown-menu {
+      display: block; /* ホバー時に表示 */
+    }
+  }
+}
+
+.button-container {
+  display: flex; /* 横並びにする */
+  justify-content: space-between; /* 各ボタンを均等に配置 */
+  width: 100%; /* ヘッダーと同じ幅に設定する */
+  padding: 10px 0; /* 上下の余白 */
+}
+
+.nav-button {
+  flex-grow: 1; /* 各ボタンの幅を均等にする */
+  flex-basis: 0; /* 初期幅を0に設定 */
+  min-width: 0; /* 最小幅を0に設定 */
+  flex-grow: 1; /* 各ボタンの幅を均等にする */
+  margin: 0 5px; /* ボタン同士の間隔 */
+  padding: 10px 20px; /* ボタンの内側の余白 */
+  text-align: center;
+  background-color: #808080; /* グレー */
+  color: black;
+  text-decoration: none; /* 下線を消す */
+  border-radius: 5px; /* 角を少し丸める */
+  transition: background-color 0.3s, color 0.3s; /* ホバー時のアニメーション */
+}
+
+.nav-button:hover {
+  background-color: white;
+  color: black;
+}
+
+/* footer */
+footer {
+  display: flex;
+  justify-content: flex-start;
+  padding: 10px 20px;
+  background-color: #ccc; // 薄いグレー
+  color: white;
+
+  .footer-button {
+    margin-right: 15px;
+    text-decoration: none;
+    color: white;
+    padding: 5px 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

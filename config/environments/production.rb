@@ -76,18 +76,31 @@ Rails.application.configure do
 
   # Disable caching for Action Mailer templates even if Action Controller
   # caching is enabled.
-  config.action_mailer.perform_caching = false
+  #config.action_mailer.perform_caching = false
+  #config.action_mailer.delivery_method = :smtp
+  #config.action_mailer.smtp_settings = {
+    #address: "smtp.mailgun.org",
+    #port: 587,
+    #domain: ENV['MAILGUN_DOMAIN'],
+    #user_name: "postmaster@#{ENV['MAILGUN_DOMAIN']}",
+    #password: ENV['MAILGUN_API_KEY'],
+    #authentication: "plain",
+   # enable_starttls_auto: true
+  #}
+  #config.action_mailer.default_url_options = { host: 'quiet-retreat-43609-63e9cfd4f8f2.herokuapp.com' }
+
+  config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-    address: "smtp.mailgun.org",
-    port: 587,
-    domain: ENV['MAILGUN_DOMAIN'],
-    user_name: "postmaster@#{ENV['MAILGUN_DOMAIN']}",
-    password: ENV['MAILGUN_API_KEY'],
-    authentication: "plain",
-    enable_starttls_auto: true
+  host = 'https://quiet-retreat-43609-63e9cfd4f8f2.herokuapp.com/'
+  config.action_mailer.default_url_options = { host: host }
+  ActionMailer::Base.smtp_settings = {
+    :port           => ENV['MAILGUN_SMTP_PORT'],
+    :address        => ENV['MAILGUN_SMTP_SERVER'],
+    :user_name      => ENV['MAILGUN_SMTP_LOGIN'],
+    :password       => ENV['MAILGUN_SMTP_PASSWORD'],
+    :domain         => ENV['MAILGUN_DOMAIN'],
+    :authentication => :plain,
   }
-  config.action_mailer.default_url_options = { host: 'quiet-retreat-43609-63e9cfd4f8f2.herokuapp.com', protocol: 'https' }
 
   # Set this to false and ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.

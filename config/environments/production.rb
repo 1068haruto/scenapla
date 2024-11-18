@@ -78,18 +78,8 @@ Rails.application.configure do
   # caching is enabled.
   #config.action_mailer.perform_caching = false
 
-  #config.action_mailer.smtp_settings = {
-    #:port           => ENV['MAILGUN_SMTP_PORT'],
-    #:address        => ENV['MAILGUN_SMTP_SERVER'],
-    #:user_name      => ENV['MAILGUN_SMTP_LOGIN'],
-    #:password       => ENV['MAILGUN_SMTP_PASSWORD'],
-    #:domain         => ENV['MAILGUN_DOMAIN'],
-    #:authentication => :plain,
-  #}
-
   config.action_mailer.delivery_method = :smtp
-  host = 'https://furima-34501.herokuapp.com/'
-  config.action_mailer.default_url_options = { host: host }
+  config.action_mailer.default_url_options = { host: 'quiet-retreat-43609-63e9cfd4f8f2.herokuapp.com', protocol: 'https' }
   ActionMailer::Base.smtp_settings = {
     :port           => ENV['MAILGUN_SMTP_PORT'],
     :address        => ENV['MAILGUN_SMTP_SERVER'],

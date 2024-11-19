@@ -27,9 +27,8 @@
           <div class="hamburger-menu">
             <div class="hamburger-icon">&#9776;</div> <!-- ハンバーガーアイコン -->
             <div class="dropdown-menu">
-              <a href="/account" class="menu-item">アカウント情報</a>
+              <%= link_to 'アカウント情報', user_path(current_user), class: 'menu-item', data: { turbo_method: :get } %>
               <%= link_to 'ログアウト', destroy_user_session_path, class: 'menu-item', data: { turbo_method: :delete } %>
-              <%= link_to 'アカウント削除', user_registration_path, class: 'menu-item', data: { confirm: '削除しても良いですか？', turbo_method: :delete } %>
             </div>
           </div>
         <% else %>

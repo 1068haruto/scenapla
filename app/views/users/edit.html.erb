@@ -1,0 +1,38 @@
+<h2>アカウント情報変更</h2>
+
+<%= form_for @user, data: { turbo: true } do |f| %>
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name, autofocus: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :date_of_birth %><br />
+    <%= f.date_select :date_of_birth, start_year: Date.today.year - 100, end_year: Date.today.year, use_month_numbers: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password %>
+    <% if @minimum_password_length %>
+    <em><%= @minimum_password_length %> characters minimum)</em>
+    <% end %><br />
+    <em>(変更する場合のみ入力)</em><br />
+    <%= f.password_field :password, autocomplete: "new-password" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password_confirmation %><br />
+    <em>(変更する場合のみ入力)</em><br />
+    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "保存" %>
+    <%= link_to "キャンセル", user_path(@user), class: "button", data: { turbo: true } %>
+  </div>
+<% end %>

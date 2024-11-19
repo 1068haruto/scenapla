@@ -1,3 +1,10 @@
+body {
+  display: flex; /* フレックスボックスを使って全体を配置 */
+  flex-direction: column; /* 縦方向に配置 */
+  min-height: 100vh; /* ビューポートの高さを最低限確保 */
+  margin: 0; /* デフォルトのマージンをリセット */
+}
+
 /* header */
 header {
   height: 80px;  /* ヘッダーの高さ */
@@ -66,26 +73,32 @@ header {
   justify-content: space-between; /* 各ボタンを均等に配置 */
   width: 100%; /* ヘッダーと同じ幅に設定する */
   padding: 10px 0; /* 上下の余白 */
+
+  .nav-button {
+    flex-grow: 1; /* 各ボタンの幅を均等にする */
+    flex-basis: 0; /* 初期幅を0に設定 */
+    min-width: 0; /* 最小幅を0に設定 */
+    flex-grow: 1; /* 各ボタンの幅を均等にする */
+    margin: 0 5px; /* ボタン同士の間隔 */
+    padding: 10px 20px; /* ボタンの内側の余白 */
+    text-align: center;
+    background-color: #808080; /* グレー */
+    color: black;
+    text-decoration: none; /* 下線を消す */
+    border-radius: 5px; /* 角を少し丸める */
+    transition: background-color 0.3s, color 0.3s; /* ホバー時のアニメーション */
+  }
+
+  .nav-button:hover {
+    background-color: white;
+    color: black;
+  }
 }
 
-.nav-button {
-  flex-grow: 1; /* 各ボタンの幅を均等にする */
-  flex-basis: 0; /* 初期幅を0に設定 */
-  min-width: 0; /* 最小幅を0に設定 */
-  flex-grow: 1; /* 各ボタンの幅を均等にする */
-  margin: 0 5px; /* ボタン同士の間隔 */
-  padding: 10px 20px; /* ボタンの内側の余白 */
-  text-align: center;
-  background-color: #808080; /* グレー */
-  color: black;
-  text-decoration: none; /* 下線を消す */
-  border-radius: 5px; /* 角を少し丸める */
-  transition: background-color 0.3s, color 0.3s; /* ホバー時のアニメーション */
-}
-
-.nav-button:hover {
-  background-color: white;
-  color: black;
+/* main */
+main {
+  flex: 1; /* 残りのスペースを占有 */
+  padding: 20px; /* メインコンテンツのパディング */
 }
 
 /* footer */
@@ -95,6 +108,7 @@ footer {
   padding: 10px 20px;
   background-color: #ccc; // 薄いグレー
   color: white;
+  margin-top: auto; /* フッターを下に固定 */
 
   .footer-button {
     margin-right: 15px;

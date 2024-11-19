@@ -1,8 +1,9 @@
-<h1>アカウント情報</h1>
+<h2>アカウント情報</h2>
 
 <p>ユーザー名: <%= @user.name %></p>
 <p>メールアドレス: <%= @user.email %></p>
 <p>生年月日: <%= @user.date_of_birth %></p>
 <p>作成日: <%= @user.created_at %></p>
 
+<%= link_to 'アカウント情報変更', edit_user_path, class: 'nav-button', data: { turbo_method: :get } %>
 <%= link_to 'アカウント削除', user_registration_path, class: 'menu-item', data: { confirm: '削除しても良いですか？', turbo_method: :delete } %>

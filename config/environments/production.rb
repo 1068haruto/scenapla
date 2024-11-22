@@ -63,8 +63,8 @@ Rails.application.configure do
   config.log_tags = [ :request_id ]
 
   # "info" includes generic and useful information about system operation, but avoids logging too much
-  # information to avoid inadvertent exposure of personally identifiable information (PII). If you
-  # want to log everything, set the level to "debug".
+  # information to avoid inadvertent exposure of personally identifiable information (PII). 
+  # If you want to log everything, set the level to "debug".
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
 
   # Use a different cache store in production.
@@ -76,20 +76,11 @@ Rails.application.configure do
 
   # Disable caching for Action Mailer templates even if Action Controller
   # caching is enabled.
-  #config.action_mailer.perform_caching = false
-
-  #config.action_mailer.smtp_settings = {
-    #:port           => ENV['MAILGUN_SMTP_PORT'],
-    #:address        => ENV['MAILGUN_SMTP_SERVER'],
-    #:user_name      => ENV['MAILGUN_SMTP_LOGIN'],
-    #:password       => ENV['MAILGUN_SMTP_PASSWORD'],
-    #:domain         => ENV['MAILGUN_DOMAIN'],
-    #:authentication => :plain,
-  #}
+  # config.action_mailer.perform_caching = false
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.default_url_options = { host: 'www.scenapla.com' }
-  ActionMailer::Base.smtp_settings = {
+  config.action_mailer.smtp_settings = {
     :port           => ENV['MAILGUN_SMTP_PORT'],
     :address        => ENV['MAILGUN_SMTP_SERVER'],
     :user_name      => ENV['MAILGUN_SMTP_LOGIN'],

@@ -61,3 +61,6 @@ end
 
 gem "devise", "~> 4.9"
 ruby '3.2.3'
+
+gem "chartkick"
+gem "groupdate"

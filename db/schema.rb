@@ -10,9 +10,50 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_15_022155) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_23_101449) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "incomes", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "simulation_id", null: false
+    t.string "person_type", null: false
+    t.decimal "income", default: "0.0", null: false
+    t.date "retirement_date", null: false
+    t.decimal "retirement_pay", default: "0.0"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["simulation_id"], name: "index_incomes_on_simulation_id"
+    t.index ["user_id"], name: "index_incomes_on_user_id"
+    t.check_constraint "income >= 0::numeric", name: "income_positive_check"
+    t.check_constraint "retirement_pay >= 0::numeric", name: "retirement_pay_positive_check"
+  end
+
+  create_table "scenarios", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "simulation_id", null: false
+    t.string "scenario_type", null: false
+    t.jsonb "asset_scenario", default: {}, null: false
+    t.jsonb "balance_scenario", default: {}, null: false
+    t.decimal "total_income", null: false
+    t.decimal "total_expense", null: false
+    t.decimal "total_balance", null: false
+    t.decimal "withdrawal", null: false
+    t.decimal "shortage", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["simulation_id"], name: "index_scenarios_on_simulation_id"
+    t.index ["user_id"], name: "index_scenarios_on_user_id"
+  end
+
+  create_table "simulations", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.decimal "inflation_rate", null: false
+    t.jsonb "income_data", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_simulations_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -32,4 +73,10 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_15_022155) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
+
+  add_foreign_key "incomes", "simulations"
+  add_foreign_key "incomes", "users"
+  add_foreign_key "scenarios", "simulations"
+  add_foreign_key "scenarios", "users"
+  add_foreign_key "simulations", "users"
 end

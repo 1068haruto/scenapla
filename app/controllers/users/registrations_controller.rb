@@ -15,6 +15,22 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  def destroy
+    current_user.scenarios.each do |scenario| scenario.destroy end
+
+    # その他の関連データを削除
+    current_user.incomes.each do |income|
+      income.destroy
+    end
+      
+    if current_user.simulation
+      current_user.simulation.destroy
+    end
+      
+    # 最後にユーザーを削除
+    current_user.destroy
+  end
+
   protected
 
   def configure_permitted_parameters

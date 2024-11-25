@@ -1,0 +1,2 @@
+module SinariosHelper
+end

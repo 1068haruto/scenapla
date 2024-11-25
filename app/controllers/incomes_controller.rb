@@ -7,7 +7,7 @@ class IncomesController < ApplicationController
   end
 
   def create
-    @income = current_user.incomes.build(income_params)
+    @income = current_user.incomes.build(convert_retirement_date(income_params))
     @income.simulation = current_user.simulation
 
     if @income.save
@@ -19,6 +19,15 @@ class IncomesController < ApplicationController
   end
 
   private
+
+  # パラメータ変換
+  def convert_retirement_date(params)
+    if params[:retirement_date].present?
+      # retirement_dateを年からDate型に変換
+      params[:retirement_date] = Date.new(params[:retirement_date].to_i, 1, 1)
+    end
+    params
+  end
 
   def income_params
     params.require(:income).permit(:person_type, :income, :retirement_date, :retirement_pay)

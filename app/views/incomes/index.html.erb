@@ -1,65 +1,28 @@
 <h1>Incomes</h1>
 
-<%= form_with model: @income, url: incomes_path, local: false, id: "income-form" do |f| %>
+<%= form_with model: @income, url: incomes_path, local: true, id: "income-form" do |f| %>
   <%= f.hidden_field :person_type, value: '本人' %>
   <div class="mb-3">
     <p>あなた</p>
   </div>
   <div class="mb-3">
     <%= f.label :income, '月収（手取り）', class: 'form-label' %>
-    <%= f.number_field :income, readonly: true, class: 'form-control' %>
+    <%= f.number_field :income, class: 'form-control' %>
   </div>
   <div class="mb-3">
     <%= f.label :retirement_date, '退職時期', class: 'form-label' %>
-    <%= f.select :retirement_date, (Date.today.year..(Date.today.year + 50)).map { |year| [year, Date.new(year, 1, 1)] }, prompt: '選択してください', class: 'form-select', readonly: true %>
+    <%= f.select :retirement_date, (Date.today.year..(Date.today.year + 50)).map { |year| [year, Date.new(year, 1, 1)] }, class: 'form-select' %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :retirement_date, '退職時期', class: 'form-label' %>
+    <%= f.select :retirement_date, options_for_select((Date.today.year..(Date.today.year + 50)).map { |year| [year, year] }), {}, class: 'form-select' %>
   </div>
   <div class="mb-3">
     <%= f.label :retirement_pay, '退職金', class: 'form-label' %>
-    <%= f.number_field :retirement_pay, readonly: true, class: 'form-control' %>
+    <%= f.number_field :retirement_pay, class: 'form-control' %>
   </div>
-  <button type="button" id="action-button" class="btn btn-secondary">編集</button>
+  <button type="submit" class="btn btn-primary">送信</button> <!-- サブミットボタンに変更 -->
 <% end %>
-
 <div id="incomes">
   <%= render @incomes %>
 </div>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const form = document.getElementById("income-form");
-    const actionButton = document.getElementById("action-button");
-    const formInputs = form.querySelectorAll("input, select, textarea");
-    let isEditing = false;
-
-    actionButton.addEventListener("click", function() {
-      if (isEditing) {
-        form.submit();
-      } else {
-        formInputs.forEach(input => {
-          if (input.hasAttribute("readonly")) {
-            input.removeAttribute("readonly");
-            input.classList.remove('readonly'); // readonlyクラスを削除
-          } else {
-            input.disabled = false;
-          }
-        });
-        actionButton.textContent = "保存";
-        actionButton.classList.remove("btn-secondary");
-        actionButton.classList.add("btn-primary");
-        isEditing = true;
-      }
-    });
-
-    form.addEventListener("submit", function(event) {
-      event.preventDefault();
-      formInputs.forEach(input => {
-        input.setAttribute("readonly", true);
-        input.classList.add('readonly'); // readonlyクラスを追加
-      });
-      actionButton.textContent = "編集";
-      actionButton.classList.remove("btn-primary");
-      actionButton.classList.add("btn-secondary");
-      isEditing = false;
-    });
-  });
-</script>

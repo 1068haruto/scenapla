@@ -4,8 +4,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable
 
-  has_many :incomes
-  has_one :simulation, dependent: :destroy 
+  has_many :incomes, dependent: :destroy
+  has_one :simulation, dependent: :destroy
+  has_many :scenarios, dependent: :destroy
   
   validates :email, presence: true, uniqueness: true, 
             format: { with: /\A[^@\s]+@[^@\s]+\z/, message: "は有効なメールアドレスである必要があります" }

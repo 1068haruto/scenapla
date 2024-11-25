@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     sessions: 'users/sessions',
   }
   resources :users, only: [:show, :edit, :update]
-  resources :scenarios, only: [:index]
+  resources :incomes, only: [:index, :create]
 
   # トップページ
   root to: 'home#index'

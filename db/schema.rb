@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_23_101449) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_24_081824) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -32,14 +32,14 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_23_101449) do
   create_table "scenarios", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "simulation_id", null: false
-    t.string "scenario_type", null: false
-    t.jsonb "asset_scenario", default: {}, null: false
-    t.jsonb "balance_scenario", default: {}, null: false
-    t.decimal "total_income", null: false
-    t.decimal "total_expense", null: false
-    t.decimal "total_balance", null: false
-    t.decimal "withdrawal", null: false
-    t.decimal "shortage", null: false
+    t.string "scenario_type"
+    t.jsonb "asset_scenario", default: {}
+    t.jsonb "balance_scenario", default: {}
+    t.decimal "total_income"
+    t.decimal "total_expense"
+    t.decimal "total_balance"
+    t.decimal "withdrawal"
+    t.decimal "shortage"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["simulation_id"], name: "index_scenarios_on_simulation_id"
@@ -48,10 +48,13 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_23_101449) do
 
   create_table "simulations", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.decimal "inflation_rate", null: false
-    t.jsonb "income_data", null: false
+    t.decimal "inflation_rate"
+    t.jsonb "income_data"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "expense_data"
+    t.jsonb "asset_data"
+    t.jsonb "lifeevent_data"
     t.index ["user_id"], name: "index_simulations_on_user_id"
   end
 

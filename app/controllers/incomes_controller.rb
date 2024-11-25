@@ -40,15 +40,16 @@ class IncomesController < ApplicationController
 
   def calculate_income_data
     income_data = Hash.new(0)  # 年ごとの金額を集計するハッシュを初期化
-    current_user.incomes.each do |income|
-      (Date.current.year..income.retirement_date.year).each do |year|
-        amount = income.income.to_i * 12
-        # 退職年には退職金を加える
-        total_amount = year == income.retirement_date.year ? amount + income.retirement_pay.to_i : amount
-        # 年ごとの金額を加算
-        income_data[year] += total_amount
-      end
+    latest_income = current_user.incomes.order(created_at: :desc).first  # 最新の収入データを取得
+  
+    (Date.current.year..latest_income.retirement_date.year).each do |year|
+      amount = latest_income.income.to_i * 12
+      # 退職年には退職金を加える
+      total_amount = year == latest_income.retirement_date.year ? amount + latest_income.retirement_pay.to_i : amount
+      # 年ごとの金額を加算
+      income_data[year] += total_amount
     end
+  
     # ハッシュを配列に変換
     income_data.map do |year, total_amount|
       { date: year, amount: total_amount }

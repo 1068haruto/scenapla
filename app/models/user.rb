@@ -5,6 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :confirmable
 
   has_many :incomes, dependent: :destroy
+  has_many :expenses, dependent: :destroy
   has_one :simulation, dependent: :destroy
   has_many :scenarios, dependent: :destroy
   

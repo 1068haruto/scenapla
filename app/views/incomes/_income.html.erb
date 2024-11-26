@@ -1,6 +1,7 @@
-<div id="<%= dom_id(income) %>">
-  <p><%= income.person_type %></p>
-  <p><%= income.income %>万円</p>
-  <p><%= income.retirement_date %></p>
-  <p><%= income.retirement_pay %>万円</p>
+<p>前回保存されたデータ</p>
+<div id="<%= dom_id(income) %>" class="row">
+  <p class="col">対象者：<%= income.person_type %></p>
+  <p class="col">月収（手取り）：<%= income.income %>万円</p>
+  <p class="col">退職年齢：<%= income.retirement_date %></p>
+  <p class="col">退職金：<%= income.retirement_pay %>万円</p>
 </div>

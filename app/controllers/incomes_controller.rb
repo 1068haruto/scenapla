@@ -2,7 +2,7 @@ class IncomesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @incomes = Income.all
+    @last_income = Income.last
     @income = Income.new
   end
 
@@ -66,7 +66,7 @@ class IncomesController < ApplicationController
 
   def render_create_error
     flash.now[:error] = @income.errors.full_messages.join(", ")
-    @incomes = Income.all
+    @last_income = Income.last
     render :index
   end
 end

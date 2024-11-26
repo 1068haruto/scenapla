@@ -2,23 +2,23 @@
 
 <%= form_with model: @income, url: incomes_path, local: true, id: "income-form" do |f| %>
   <%= f.hidden_field :person_type, value: '本人' %>
-  <div class="mb-3">
+  <div class="form-group">
     <p>あなた</p>
   </div>
-  <div class="mb-3">
+  <div class="form-group">
     <%= f.label :income, '月収（手取り）', class: 'form-label' %>
     <%= f.number_field :income, class: 'form-control' %>
   </div>
-  <div class="mb-3">
+  <div class="form-group">
     <%= f.label :retirement_date, '退職時期', class: 'form-label' %>
     <%= f.select :retirement_date, options_for_select((Date.today.year..(Date.today.year + 50)).map { |year| [year, year] }), {}, class: 'form-select' %>
   </div>
-  <div class="mb-3">
+  <div class="form-group">
     <%= f.label :retirement_pay, '退職金', class: 'form-label' %>
     <%= f.number_field :retirement_pay, class: 'form-control' %>
   </div>
-  <button type="submit" class="btn btn-primary">送信</button> <!-- サブミットボタンに変更 -->
+  <button type="submit" class="btn btn-primary">保存して次へ</button> <!-- サブミットボタンに変更 -->
 <% end %>
 <div id="incomes">
-  <%= render @incomes %>
+  <%= render @last_income %>
 </div>

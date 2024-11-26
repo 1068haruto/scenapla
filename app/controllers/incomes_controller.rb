@@ -13,6 +13,7 @@ class IncomesController < ApplicationController
     if @income.save
       update_simulation_data
       respond_to_format
+      redirect_to expenses_path
     else
       render_create_error
     end

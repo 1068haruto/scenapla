@@ -10,9 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_24_081824) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_26_093350) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "expenses", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "simulation_id", null: false
+    t.decimal "housing_expense", default: "0.0", null: false
+    t.date "repayment_date", default: -> { "CURRENT_DATE" }, null: false
+    t.decimal "living_expenses", default: "0.0", null: false
+    t.decimal "monthly_premiums", default: "0.0", null: false
+    t.decimal "other_expenses", default: "0.0", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.check_constraint "housing_expense >= 0::numeric", name: "check_housing_expense_positive"
+    t.check_constraint "living_expenses >= 0::numeric", name: "check_living_expenses_positive"
+    t.check_constraint "monthly_premiums >= 0::numeric", name: "check_monthly_premiums_positive"
+    t.check_constraint "other_expenses >= 0::numeric", name: "check_other_expenses_positive"
+  end
 
   create_table "incomes", force: :cascade do |t|
     t.bigint "user_id", null: false

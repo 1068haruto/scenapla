@@ -1,5 +1,34 @@
-<h1>Expenses#index</h1>
-<p>Find me in app/views/expenses/index.html.erb</p>
+<h1>Expenses</h1>
 
+<%= form_with model: @expense, url: expenses_path, local: true, id: "income-form" do |f| %>
+  <div class="form-group">
+    <%= f.label :housing_cost, '住居費（月額）※家賃またはローン', class: 'form-label' %>
+    <%= f.number_field :housing_cost, class: 'form-control', required: true %>
+  </div>
 
-<%= link_to '戻る', incomes_path, class: 'btn btn-secondary', data: { turbo: true } %>
+  <div class="form-group">
+    <%= f.label :loan_completion_date, '完済時期（ローンの場合）', class: 'form-label' %>
+    <%= f.select :loan_completion_date, options_for_select((Date.today.year..(Date.today.year + 50)).map { |year| [year, year] }), {}, class: 'form-select' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :living_cost, '生活費（月額）', class: 'form-label' %>
+    <%= f.number_field :living_cost, class: 'form-control', required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :insurance_cost, '保険費（月額）', class: 'form-label' %>
+    <%= f.number_field :insurance_cost, class: 'form-control', required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :other_costs, 'その他費用（月額）', class: 'form-label' %>
+    <%= f.number_field :other_costs, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.submit '保存して次へ', class: 'btn btn-primary' %>
+  </div>
+<% end %>
+
+<%= link_to '収入入力に戻る', incomes_path, class: 'btn btn-secondary', data: { turbo: true } %>

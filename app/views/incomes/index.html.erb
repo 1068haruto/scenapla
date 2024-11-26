@@ -20,5 +20,5 @@
   <button type="submit" class="btn btn-primary">保存して次へ</button> <!-- サブミットボタンに変更 -->
 <% end %>
 <div id="incomes">
-  <%= render @last_income %>
+  <%= render @last_income if @last_income.present? %>
 </div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_26_093350) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_27_063443) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -18,7 +18,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_26_093350) do
     t.bigint "user_id", null: false
     t.bigint "simulation_id", null: false
     t.decimal "housing_expense", default: "0.0", null: false
-    t.date "repayment_date", default: -> { "CURRENT_DATE" }, null: false
+    t.date "repayment_date"
     t.decimal "living_expenses", default: "0.0", null: false
     t.decimal "monthly_premiums", default: "0.0", null: false
     t.decimal "other_expenses", default: "0.0", null: false

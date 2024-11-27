@@ -7,7 +7,7 @@
   </div>
   <div class="form-group">
     <%= f.label :repayment_date, '住宅ローン完済時期', class: 'form-label' %>
-    <%= f.select :repayment_date, options_for_select([['支払いなし', 0]] + (Date.today.year..(Date.today.year + 50)).map { |year| [year, year] }), {}, class: 'form-select' %>
+    <%= f.select :repayment_date, options_for_select([['支払いなし', nil]] + (Date.today.year..(Date.today.year + 50)).map { |year| [year, year] }), {}, class: 'form-select' %>
   </div>
   <div class="form-group">
     <%= f.label :living_expenses, '生活費（月額）', class: 'form-label' %>
@@ -27,6 +27,10 @@
 <% end %>
 <%= link_to '収入入力に戻る', incomes_path, class: 'btn btn-secondary', data: { turbo: true } %>
 
-<div id="incomes">
-  <%= render @last_expense if @last_expense.present? %>
+<div id="expenses">
+  <% if @last_expense %>
+    <%= render @last_expense %>
+  <% else %>
+    <p>No expense data available.</p>
+  <% end %>
 </div>

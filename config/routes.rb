@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   resources :users, only: [:show, :edit, :update]
   resources :incomes, only: [:index, :create]
   resources :expenses, only: [:index, :create]
-  resources :user_assets, only: [:index, :create]
+  resources :user_assets, only: [:index, :create, :destroy]
   resources :scenarios, only: [:index]
 
   # トップページ

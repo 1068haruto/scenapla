@@ -14,7 +14,7 @@ class ExpensesController < ApplicationController
       @expense.update_simulation_expense_data(current_user)
       @last_expense = current_user.expenses.last
       respond_to_format
-      redirect_to assets_path
+      # redirect_to assets_path
     else
       @last_expense = @expense
       render_create_error

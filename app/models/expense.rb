@@ -6,7 +6,7 @@ class Expense < ApplicationRecord
   validates :simulation_id, presence: true
   
   validates :housing_expense, presence: true, numericality: { greater_than_or_equal_to: 0 }
-  validates :repayment_date, presence: true
+  validates :repayment_date, presence: true, allow_nil: true
   validates :living_expenses, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :monthly_premiums, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :other_expenses, presence: true, numericality: { greater_than_or_equal_to: 0 }

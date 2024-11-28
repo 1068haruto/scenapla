@@ -1,0 +1,16 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th>年</th>
+      <th>資産合計</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% data.each do |entry| %>
+      <tr>
+        <td><%= entry[:date] %></td>
+        <td><%= number_to_currency(entry[:amount], unit: "¥", format: "%u%n") %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

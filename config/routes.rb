@@ -8,7 +8,12 @@ Rails.application.routes.draw do
   resources :users, only: [:show, :edit, :update]
   resources :incomes, only: [:index, :create]
   resources :expenses, only: [:index, :create]
-  resources :user_assets, only: [:index, :create, :destroy]
+  resources :user_assets do
+    collection do
+      post :simulate   # simulateアクションを追加
+    end
+    # index, create, destroyを削除せずに残す
+  end
   resources :scenarios, only: [:index]
 
   # トップページ

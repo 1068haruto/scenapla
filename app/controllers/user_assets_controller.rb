@@ -25,6 +25,27 @@ class UserAssetsController < ApplicationController
     end
   end
 
+  # シミュレーション用の資産データ計算
+  def simulate
+    user_assets_data = UserAsset.calculate_user_assets(current_user)
+
+    # Simulationモデルの該当データを更新
+    simulation = Simulation.find_by(user: current_user)
+    simulation.user_asset_data = user_assets_data
+
+    if simulation.save
+      # redirect_to user_assets_path, notice: 'シミュレーションデータを更新しました。'
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("simulation_result", partial: "simulation_result", locals: { data: user_assets_data }) }
+      end
+    else
+      # redirect_to user_assets_path, alert: 'データ更新に失敗しました。'
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("simulation_result", partial: "simulation_error") }
+      end
+    end
+  end
+
   private
 
   def user_asset_params

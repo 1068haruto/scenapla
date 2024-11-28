@@ -21,12 +21,17 @@
     <%= f.submit '追加', class: "btn btn-primary" %>
   </div>
 <% end %>
-
 <div id="user_assets">
   <% @user_assets.each do |user_asset| %>
     <%= render user_asset %>
   <% end %>
 </div>
 
+<%= button_to 'シミュレーションを実行', simulate_user_assets_path, method: :post, class: 'btn btn-success', data: { turbo_stream: true } %>
 <%= link_to '支出入力に戻る', expenses_path, class: 'btn btn-secondary', data: { turbo: true } %>
 <%= link_to '保存して次へ', expenses_path, class: 'btn btn-secondary', data: { turbo: true } %>
+
+<div id="simulation_result">
+  <!-- 初期状態では空 -->
+</div>
+

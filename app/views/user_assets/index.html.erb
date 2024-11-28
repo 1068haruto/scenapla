@@ -1,2 +1,32 @@
-<h1>UserAssets#index</h1>
-<p>Find me in app/views/user_assets/index.html.erb</p>
+<h1>UserAssets</h1>
+
+<%= form_with model: @user_asset, local: true do |f| %>
+  <div>
+    <%= f.label :person_type, '対象者' %>
+    <%= f.select :person_type, @user_asset.class.person_types.keys.map { |key| [key.humanize, key] }, {}, class: "form-select" %>
+  </div>
+  <div>
+    <%= f.label :asset_type, '資産種類' %>
+    <%= f.select :asset_type, @user_asset.class.asset_types.keys.map { |key| [key.humanize, key] }, {}, class: "form-select" %>
+  </div>
+  <div>
+    <%= f.label :amount, '総額' %>
+    <%= f.number_field :amount, class: "form-control" %>
+  </div>
+  <div>
+    <%= f.label :return_rate, '利回り（なしの場合は、0入力or未入力）' %>
+    <%= f.number_field :return_rate, step: 0.1, class: "form-control" %>
+  </div>
+  <div>
+    <%= f.submit '追加', class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+<div id="user_assets">
+  <% @user_assets.each do |user_asset| %>
+    <%= render user_asset %>
+  <% end %>
+</div>
+
+<%= link_to '支出入力に戻る', expenses_path, class: 'btn btn-secondary', data: { turbo: true } %>
+<%= link_to '保存して次へ', expenses_path, class: 'btn btn-secondary', data: { turbo: true } %>

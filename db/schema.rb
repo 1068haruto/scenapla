@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_28_041048) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_28_094933) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -83,6 +83,17 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_28_041048) do
     t.jsonb "asset_data"
     t.jsonb "lifeevent_data"
     t.index ["user_id"], name: "index_simulations_on_user_id"
+  end
+
+  create_table "user_assets", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "simulation_id", null: false
+    t.integer "person_type", default: 0, null: false
+    t.integer "asset_type", default: 0, null: false
+    t.decimal "amount", default: "0.0", null: false
+    t.decimal "return_rate"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|

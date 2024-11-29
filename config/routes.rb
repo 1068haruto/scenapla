@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  #get "life_events/index"
   devise_for :users, controllers: {
     confirmations: 'users/confirmations',
     passwords: 'users/passwords',
@@ -10,10 +11,10 @@ Rails.application.routes.draw do
   resources :expenses, only: [:index, :create]
   resources :user_assets do
     collection do
-      post :simulate   # simulateアクションを追加
+      post :simulate
     end
-    # index, create, destroyを削除せずに残す
   end
+  resources :life_events, only: [:index, :create]
   resources :scenarios, only: [:index]
 
   # トップページ

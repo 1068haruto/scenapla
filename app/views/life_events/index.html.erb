@@ -33,3 +33,11 @@
     <%= f.submit '保存', class: 'btn btn-primary' %>
   </div>
 <% end %>
+
+<%= link_to '資産入力に戻る', user_assets_path, class: 'btn btn-secondary', data: { turbo: true } %>
+
+<div id="life_events">
+  <% @life_events.each do |life_event| %>
+    <%= render life_event %>
+  <% end %>
+</div>

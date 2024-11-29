@@ -14,7 +14,7 @@ Rails.application.routes.draw do
       post :simulate
     end
   end
-  resources :life_events, only: [:index, :create]
+  resources :life_events, only: [:index, :create, :destroy]
   resources :scenarios, only: [:index]
 
   # トップページ

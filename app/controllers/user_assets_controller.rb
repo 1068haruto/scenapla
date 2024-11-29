@@ -11,6 +11,7 @@ class UserAssetsController < ApplicationController
     if @user_asset.save
       respond_to_format
     else
+      @user_assets = UserAsset.all
       render :index # エラーがあった場合は新規作成フォームを再表示
     end
   end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_28_155757) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_29_094043) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -54,6 +54,19 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_28_155757) do
     t.index ["user_id"], name: "index_incomes_on_user_id"
     t.check_constraint "income >= 0::numeric", name: "income_positive_check"
     t.check_constraint "retirement_pay >= 0::numeric", name: "retirement_pay_positive_check"
+  end
+
+  create_table "life_events", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "simulation_id", null: false
+    t.integer "event_type", default: 0, null: false
+    t.date "event_date", null: false
+    t.integer "age_group"
+    t.string "title", null: false
+    t.decimal "amount", default: "0.0", null: false
+    t.integer "payment_span", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "scenarios", force: :cascade do |t|

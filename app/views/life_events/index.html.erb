@@ -34,6 +34,9 @@
   </div>
 <% end %>
 
+<%= button_to 'simu更新（button）', update_life_event_data_life_events_path(simulation_id: current_user.simulation.id), method: :post, class: 'btn btn-primary' %>
+<%= link_to 'エラーsimu(linl_to)', update_life_event_data_life_events_path(simulation_id: current_user.simulation.id), method: :post, class: 'btn btn-success', data: { turbo_stream: true } %>
+<%= link_to 'エラーが起きるボタン', update_life_event_data_life_events_path(simulation_id: current_user.simulation.id), method: :post, class: 'btn btn-primary' %>
 <%= link_to '資産入力に戻る', user_assets_path, class: 'btn btn-secondary', data: { turbo: true } %>
 
 <div id="life_events">

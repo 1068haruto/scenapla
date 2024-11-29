@@ -24,6 +24,16 @@ class LifeEventsController < ApplicationController
     end
   end
 
+  def update_life_event_data
+    simulation_id = params[:simulation_id]
+  
+    if LifeEvent.update_simulation_data(simulation_id)
+      redirect_to life_events_path, notice: 'LifeEventDataが更新されました。'
+    else
+      redirect_to life_events_path, alert: 'LifeEventDataの更新に失敗しました。'
+    end
+  end
+
   private
 
   def life_event_params

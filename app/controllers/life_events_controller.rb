@@ -1,5 +1,5 @@
 class LifeEventsController < ApplicationController
-  def index
+  def new
     @life_event = LifeEvent.new
     @life_events = LifeEvent.where(user_id: current_user.id).order(event_date: :asc)
   end
@@ -10,7 +10,7 @@ class LifeEventsController < ApplicationController
       respond_to_format
     else
       @life_events = LifeEvent.where(user_id: current_user.id).order(event_date: :asc)
-      render :index
+      render :new
     end
   end
 
@@ -20,7 +20,7 @@ class LifeEventsController < ApplicationController
     if @life_event.destroy
       respond_to_format_destroy
     else
-      redirect_to life_events_path, alert: '資産の削除に失敗しました。'
+      redirect_to new_life_event_path, alert: 'ライフイベントの削除に失敗しました。'
     end
   end
 
@@ -28,9 +28,9 @@ class LifeEventsController < ApplicationController
     simulation_id = params[:simulation_id]
   
     if LifeEvent.update_simulation_data(simulation_id)
-      redirect_to life_events_path, notice: 'LifeEventDataが更新されました。'
+      redirect_to new_life_event_path, notice: 'LifeEventDataが更新されました。'
     else
-      redirect_to life_events_path, alert: 'LifeEventDataの更新に失敗しました。'
+      redirect_to new_life_event_path, alert: 'LifeEventDataの更新に失敗しました。'
     end
   end
 

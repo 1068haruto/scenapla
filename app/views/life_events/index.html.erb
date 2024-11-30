@@ -1,0 +1,30 @@
+<h1>Life Plan</h1>
+<h1>ライフイベント一覧</h1>
+
+<% @grouped_life_events.each do |age_group, events| %>
+  <h2><%= age_group %>代</h2>
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>イベントタイプ</th>
+        <th>発生時期</th>
+        <th>タイトル</th>
+        <th>年額</th>
+        <th>支払期間</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% events.each do |life_event| %>
+        <tr>
+          <td><%= life_event.event_type == 0 ? '現実' : '理想' %></td>
+          <td><%= life_event.event_date.strftime('%Y年') %></td>
+          <td><%= life_event.title %></td>
+          <td><%= number_to_currency(life_event.amount, unit: '¥') %></td>
+          <td><%= life_event.payment_span == 0 ? '一括' : '毎年支払い' %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
+<%= link_to 'ライフイベント入力へ', new_life_event_path, class: 'btn btn-secondary', data: { turbo: true } %>

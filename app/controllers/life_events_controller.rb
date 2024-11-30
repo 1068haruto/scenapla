@@ -1,4 +1,10 @@
 class LifeEventsController < ApplicationController
+  def index
+    # ユーザーのライフイベントを取得して年代ごとにグループ化
+    life_events = LifeEvent.where(user_id: current_user.id).order(event_date: :asc)
+    @grouped_life_events = life_events.group_by { |event| calculate_age_group(event.event_date.year, current_user.date_of_birth.year) }
+  end
+  
   def new
     @life_event = LifeEvent.new
     @life_events = LifeEvent.where(user_id: current_user.id).order(event_date: :asc)
@@ -63,5 +69,11 @@ class LifeEventsController < ApplicationController
       format.turbo_stream { render turbo_stream: turbo_stream.remove(@life_event) }
       #format.turbo_stream { render turbo_stream: turbo_stream.remove(dom_id(@user_asset)) }
     end
+  end
+
+  # 年代を計算するメソッド
+  def calculate_age_group(event_year, birth_year)
+    age = event_year - birth_year
+    (age / 10) * 10 # 30代, 40代などに変換
   end
 end

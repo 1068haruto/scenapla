@@ -3,6 +3,7 @@ class LifeEventsController < ApplicationController
     # ユーザーのライフイベントを取得して年代ごとにグループ化
     life_events = LifeEvent.where(user_id: current_user.id).order(event_date: :asc)
     @grouped_life_events = life_events.group_by { |event| calculate_age_group(event.event_date.year, current_user.date_of_birth.year) }
+    @memos = Memo.where(user_id: current_user.id).group_by(&:age_group)
   end
   
   def new

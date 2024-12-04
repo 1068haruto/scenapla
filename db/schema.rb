@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_29_094043) do
+ActiveRecord::Schema[7.2].define(version: 2024_12_03_060632) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -67,6 +67,15 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_29_094043) do
     t.integer "payment_span", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "memos", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.text "content"
+    t.integer "age_group", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_memos_on_user_id"
   end
 
   create_table "scenarios", force: :cascade do |t|
@@ -130,6 +139,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_29_094043) do
 
   add_foreign_key "incomes", "simulations"
   add_foreign_key "incomes", "users"
+  add_foreign_key "memos", "users"
   add_foreign_key "scenarios", "simulations"
   add_foreign_key "scenarios", "users"
   add_foreign_key "simulations", "users"

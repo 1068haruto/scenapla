@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  #get "life_events/index"
   devise_for :users, controllers: {
     confirmations: 'users/confirmations',
     passwords: 'users/passwords',
@@ -19,6 +18,7 @@ Rails.application.routes.draw do
       post :update_life_event_data
     end
   end
+  resources :memos, only: %i[create update]
   resources :scenarios, only: [:index]
 
   # トップページ

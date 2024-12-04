@@ -1,11 +1,3 @@
 <h1>Scenarios</h1>
-
-<div>
-  <h3>現実的シナリオ</h3>
-  <%= line_chart @data, height: "450px", width: "1100px", min: -300, thousands: ",", colors: ["#b00", "#666"] %>
-</div>
-
-<div>
-  <h3>理想的シナリオ</h3>
-  <%= line_chart @data, height: "450px", width: "1100px", min: -300, thousands: ",", colors: ["#b00", "#666"] %>
-</div>
+<%= button_to 'シナリオを作成する', update_scenario_simulation_path(@simulation), method: :post, class: 'btn btn-primary' %>
+<%= line_chart @chart_data, xtitle: "年", ytitle: "金額", height: "500px", width: "800px" %>

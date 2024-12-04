@@ -19,6 +19,11 @@ Rails.application.routes.draw do
     end
   end
   resources :memos, only: %i[create update]
+  resources :simulations do
+    member do
+      post :update_scenario
+    end
+  end
   resources :scenarios, only: [:index]
 
   # トップページ

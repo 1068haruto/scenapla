@@ -1,7 +1,11 @@
-<p>前回保存されたデータ</p>
-<div id="<%= dom_id(income) %>" class="row">
-  <p class="col">対象者：<%= income.person_type %></p>
-  <p class="col">月収（手取り）：<%= income.income %>万円</p>
-  <p class="col">退職年齢：<%= income.retirement_date %></p>
-  <p class="col">退職金：<%= income.retirement_pay %>万円</p>
-</div>
+<% if income.persisted? %>
+  <div id="<%= dom_id(income) %>" class="row mb-2 border rounded p-2">
+    <p class="col-md-2"><strong>対象者：</strong> <%= income.person_type %></p>
+    <p class="col-md-2"><strong>月収（手取り）：</strong> <%= income.income %>万円</p>
+    <p class="col-md-2"><strong>退職時期：</strong> <%= income.retirement_date.year %></p>
+    <p class="col-md-2"><strong>退職金：</strong> <%= income.retirement_pay %>万円</p>
+    <p class="col-md-2">
+      <%= link_to '削除', income_path(income), data: { turbo_method: :delete }, class: 'btn btn-danger' %>
+    </p>
+  </div>
+<% end %>

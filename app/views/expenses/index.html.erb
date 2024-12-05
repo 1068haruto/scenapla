@@ -1,6 +1,6 @@
 <h1>Expenses</h1>
 
-<%= form_with model: @expense, url: expenses_path, local: true, id: "income-form" do |f| %>
+<%= form_with model: @expense, url: create_or_update_expenses_path, method: :post, local: true, id: "expense-form" do |f| %>
   <div class="form-group">
     <%= f.label :housing_expense, '住居費（月額）※家賃またはローン', class: 'form-label' %>
     <%= f.number_field :housing_expense, class: 'form-control', required: true %>
@@ -22,7 +22,7 @@
     <%= f.number_field :other_expenses, class: 'form-control' %>
   </div>
   <div class="form-group">
-    <%= f.submit '保存して次へ', class: 'btn btn-primary' %>
+    <%= f.submit '追加', class: 'btn btn-primary' %>
   </div>
 <% end %>
 <%= link_to '収入入力に戻る', incomes_path, class: 'btn btn-secondary', data: { turbo: true } %>
@@ -34,3 +34,7 @@
     <p>No expense data available.</p>
   <% end %>
 </div>
+
+<% if @last_expense %>
+  <%= button_to '保存して次へ', update_simulation_data_expense_path(@last_expense), method: :post, class: 'btn btn-primary' %>
+<% end %>

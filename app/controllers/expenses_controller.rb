@@ -2,7 +2,7 @@ class ExpensesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @last_expense = current_user.expenses.last
+    @latest_expense = current_user.expenses.last
     @expense = Expense.new
   end
 
@@ -15,19 +15,18 @@ class ExpensesController < ApplicationController
     @expense.simulation = current_user.simulation
 
     if @expense.save
-      respond_to_format
-      @last_expense = current_user.expenses.last
-
+      @latest_expense = current_user.expenses.last
+      redirect_to expenses_path, notice: '支出情報が更新されました！'
     else
-      @last_expense = @expense
+      @latest_expense = @expense
       render_create_error
     end
   end
 
   def update_simulation_data
-    expense = current_user.expenses.find(params[:id])
+    expense = current_user.expenses.last
     if expense.update_simulation_data(current_user)
-      redirect_to expenses_path, notice: 'シミュレーションデータが更新されました。'
+      redirect_to user_assets_path
     else
       redirect_to expenses_path, alert: 'シミュレーションデータの更新に失敗しました。'
     end
@@ -44,13 +43,6 @@ class ExpensesController < ApplicationController
       params[:repayment_date] = Date.new(params[:repayment_date].to_i, 1, 1)
     end
     params
-  end
-
-  def respond_to_format
-    respond_to do |format|
-      format.html { redirect_to expenses_path, notice: '費用が保存されました。' }
-      format.turbo_stream
-    end
   end
 
   def render_create_error

@@ -3,6 +3,7 @@
 <div class="mb-5">
   <h1>Incomes</h1>
   <h4>現在の月収入と退職ついて教えて下さい。</h4>
+  <p>※金額は全てプラス値で入力</p>
 </div>
 
 <%= form_with model: @income, url: incomes_path, local: true, id: "income-form" do |f| %>
@@ -13,7 +14,7 @@
     </div>
     
     <div class="col-md-3">
-      <%= f.label :income, '月収（手取り）※プラス値入力', class: 'form-label' %>
+      <%= f.label :income, '月収（手取り）', class: 'form-label' %>
       <div class="input-group">
         <%= f.number_field :income, class: 'form-control' %>
         <span class="input-group-text">万円</span>
@@ -28,8 +29,8 @@
       </div>
     </div>
     
-    <div class="col-md-2">
-      <%= f.label :retirement_pay, '退職金 ※プラス値入力', class: 'form-label' %>
+    <div class="col-md-3">
+      <%= f.label :retirement_pay, '退職金（手取り）', class: 'form-label' %>
       <div class="input-group">
         <%= f.number_field :retirement_pay, class: 'form-control' %>
         <span class="input-group-text">万円</span>
@@ -50,6 +51,10 @@
   <p>データはありません</p>
 <% end %>
 
-<% if @incomes.any? %>
-  <%= button_to '保存して次へ', update_simulation_data_incomes_path(simulation_id: current_user.simulation.id), method: :post, class: 'btn btn-primary mb-4' %>
+
+<div class="d-flex justify-content-center">
+  <%= link_to 'ホームに戻る', dashboard_path, class: 'btn btn-secondary me-2', data: { turbo: true } %>
+  <% if @incomes.any? %>
+  <%= button_to '保存して次へ', update_simulation_data_incomes_path(simulation_id: current_user.simulation.id), method: :post, class: 'btn btn-primary' %>
 <% end %>
+</div>

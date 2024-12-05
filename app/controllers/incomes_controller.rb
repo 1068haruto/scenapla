@@ -39,8 +39,11 @@ class IncomesController < ApplicationController
     end
 
     # シミュレーションデータを更新
-    current_user.simulation.update!(income_data: grouped_income_data)
-    redirect_to expenses_path
+    if current_user.simulation.update!(income_data: grouped_income_data)
+      redirect_to expenses_path
+    else
+      redirect_to incomes_path, alert: 'シミュレーションデータの更新に失敗しました。'
+    end
   end
 
   private

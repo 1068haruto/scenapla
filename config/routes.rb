@@ -6,7 +6,11 @@ Rails.application.routes.draw do
     sessions: 'users/sessions',
   }
   resources :users, only: [:show, :edit, :update]
-  resources :incomes, only: [:index, :create]
+  resources :incomes do
+    collection do
+      post :update_simulation_data
+    end
+  end
   resources :expenses, only: [:index, :create]
   resources :user_assets do
     collection do

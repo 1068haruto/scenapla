@@ -2,7 +2,7 @@ class IncomesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @last_income = Income.last
+    @incomes = current_user.incomes
     @income = Income.new
   end
 
@@ -11,62 +11,54 @@ class IncomesController < ApplicationController
     @income.simulation = current_user.simulation
 
     if @income.save
-      update_simulation_data
-      respond_to_format
-      redirect_to expenses_path
+      redirect_to incomes_path, notice: '収入情報が追加されました！'
     else
-      render_create_error
+      @incomes = current_user.incomes # 保存済みの収入情報を再取得
+      flash.now[:error] = @income.errors.full_messages.join(", ")
+      render :index
     end
+  end
+
+  def destroy
+    @income = Income.find(params[:id])
+
+    if @income.destroy
+      redirect_to incomes_path, notice: '収入情報が削除されました！'
+    else
+      redirect_to incomes_path, alert: '収入情報の削除に失敗しました。'
+    end
+  end
+
+  def update_simulation_data
+    # 各Incomeから収入データを集計
+    all_income_data = current_user.incomes.flat_map(&:calculate_yearly_income_data)
+
+    # 年ごとに収入を集計
+    grouped_income_data = all_income_data.group_by { |data| data[:date] }.map do |year, records|
+      { date: year, amount: records.sum { |record| record[:amount] } }
+    end
+
+    # シミュレーションデータを更新
+    current_user.simulation.update!(income_data: grouped_income_data)
+    redirect_to expenses_path
   end
 
   private
-
-  # パラメータ変換
-  def convert_retirement_date(params)
-    if params[:retirement_date].present?
-      # retirement_dateを年からDate型に変換
-      params[:retirement_date] = Date.new(params[:retirement_date].to_i, 1, 1)
-    end
-    params
-  end
 
   def income_params
     params.require(:income).permit(:person_type, :income, :retirement_date, :retirement_pay)
   end
 
-  def update_simulation_data
-    updated_data = calculate_income_data
-    @income.simulation.update!(income_data: updated_data)
-  end
-
-  def calculate_income_data
-    income_data = Hash.new(0)  # 年ごとの金額を集計するハッシュを初期化
-    latest_income = current_user.incomes.order(created_at: :desc).first  # 最新の収入データを取得
-
-    (Date.current.year..latest_income.retirement_date.year).each do |year|
-      amount = latest_income.income.to_i * 12
-      # 退職年には退職金を加える
-      total_amount = year == latest_income.retirement_date.year ? amount + latest_income.retirement_pay.to_i : amount
-      # 年ごとの金額を加算
-      income_data[year] += total_amount
+  def convert_retirement_date(params)
+    if params[:retirement_date].present?
+      params[:retirement_date] = Date.new(params[:retirement_date].to_i, 1, 1)
     end
-
-    # ハッシュを配列に変換
-    income_data.map do |year, total_amount|
-      { date: year, amount: total_amount }
-    end
-  end
-
-  def respond_to_format
-    respond_to do |format|
-      format.html { redirect_to incomes_path, notice: 'Income was successfully created.' }
-      format.turbo_stream
-    end
+    params
   end
 
   def render_create_error
     flash.now[:error] = @income.errors.full_messages.join(", ")
-    @last_income = Income.last
+    @incomes = current_user.incomes
     render :index
   end
 end

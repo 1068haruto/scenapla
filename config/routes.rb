@@ -21,7 +21,7 @@ Rails.application.routes.draw do
   end
   resources :user_assets do
     collection do
-      post :simulate
+      post :update_simulation_data
     end
   end
   resources :life_events do

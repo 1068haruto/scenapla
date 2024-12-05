@@ -1,5 +1,5 @@
 <% if income.persisted? %>
-  <div id="<%= dom_id(income) %>" class="row mb-2 border rounded p-2">
+  <div class="row mb-2 border rounded p-2">
     <p class="col-md-2"><strong>対象者：</strong> <%= income.person_type %></p>
     <p class="col-md-2"><strong>月収（手取り）：</strong> <%= income.income %>万円</p>
     <p class="col-md-2"><strong>退職時期：</strong> <%= income.retirement_date.year %></p>

@@ -16,9 +16,16 @@ class UserAsset < ApplicationRecord
     # 対象ユーザーの資産データ取得
     assets = where(user: user)
 
-    # 定年退職年の計算
-    retirement_year = user.incomes.where(person_type: "本人").last.retirement_date.year
-    current_year = Time.current.year
+    # ユーザーが70歳になる年を計算
+    current_year = Date.today.year
+    user_age = current_year - user.date_of_birth.year
+  
+    if user_age >= 70
+      errors.add(:base, "既に70歳以上のため計算を実行できません")
+      return
+    end
+  
+    seventy_year_old_year = current_year + (70 - user_age)
 
     # 年ごとの資産合計を保持
     yearly_totals = Hash.new(0)
@@ -35,9 +42,8 @@ class UserAsset < ApplicationRecord
       # 利回り計算に使用する元本
       amount = initial_amount
 
-      # 2年目以降の各年の資産計算
-      (current_year + 1..retirement_year).each do |year|
-        # 利回りが0以上の場合、利益を計算
+      # 2年目以降の各年の試算計算
+      (current_year + 1..seventy_year_old_year).each do |year|
         if rate > 0
           profit = amount * rate # 利益計算
 

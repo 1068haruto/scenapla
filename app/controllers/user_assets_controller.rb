@@ -1,7 +1,7 @@
 class UserAssetsController < ApplicationController
   def index
     @user_asset = UserAsset.new # 新しいインスタンスを作成する
-    @user_assets = UserAsset.all # インスタンスのリストも取得しているか確認
+    @user_assets = current_user.user_assets
   end
 
   def create
@@ -11,7 +11,7 @@ class UserAssetsController < ApplicationController
     if @user_asset.save
       respond_to_format
     else
-      @user_assets = UserAsset.all
+      @user_assets = current_user.user_assets
       render :index # エラーがあった場合は新規作成フォームを再表示
     end
   end
@@ -27,7 +27,7 @@ class UserAssetsController < ApplicationController
   end
 
   # シミュレーション用の資産データ計算
-  def simulate
+  def update_simulation_data
     user_assets_data = UserAsset.calculate_user_assets(current_user)
 
     # Simulationモデルの該当データを更新
@@ -35,12 +35,10 @@ class UserAssetsController < ApplicationController
     simulation.user_asset_data = user_assets_data
 
     if simulation.save
-      # redirect_to user_assets_path, notice: 'シミュレーションデータを更新しました。'
       respond_to do |format|
         format.turbo_stream { render turbo_stream: turbo_stream.replace("simulation_result", partial: "simulation_result", locals: { data: user_assets_data }) }
       end
     else
-      # redirect_to user_assets_path, alert: 'データ更新に失敗しました。'
       respond_to do |format|
         format.turbo_stream { render turbo_stream: turbo_stream.replace("simulation_result", partial: "simulation_error") }
       end
@@ -64,7 +62,6 @@ class UserAssetsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to user_assets_path, notice: '資産が削除されました。' }
       format.turbo_stream { render turbo_stream: turbo_stream.remove(@user_asset) }
-      #format.turbo_stream { render turbo_stream: turbo_stream.remove(dom_id(@user_asset)) }
     end
   end
 end

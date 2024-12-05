@@ -27,7 +27,7 @@
   <% end %>
 </div>
 
-<%= button_to 'シミュレーションを実行', simulate_user_assets_path, method: :post, class: 'btn btn-success', data: { turbo_stream: true } %>
+<%= button_to 'シミュレーション更新', update_simulation_data_user_assets_path, method: :post, class: 'btn btn-success', data: { turbo_stream: true } %>
 <%= link_to '支出入力に戻る', expenses_path, class: 'btn btn-secondary', data: { turbo: true } %>
 <%= link_to '保存して次へ', new_life_event_path, class: 'btn btn-secondary', data: { turbo: true } %>
 

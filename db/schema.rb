@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_12_03_060632) do
+ActiveRecord::Schema[7.2].define(version: 2024_12_06_084139) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -61,7 +61,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_03_060632) do
     t.bigint "simulation_id", null: false
     t.integer "event_type", default: 0, null: false
     t.date "event_date", null: false
-    t.integer "age_group"
     t.string "title", null: false
     t.decimal "amount", default: "0.0", null: false
     t.integer "payment_span", default: 0, null: false

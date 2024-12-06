@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_12_06_084139) do
+ActiveRecord::Schema[7.2].define(version: 2024_12_06_153712) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -102,7 +102,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_06_084139) do
     t.datetime "updated_at", null: false
     t.jsonb "expense_data"
     t.jsonb "user_asset_data"
-    t.jsonb "life_event_data"
+    t.jsonb "real_life_event_data"
+    t.jsonb "ideal_life_event_data"
     t.index ["user_id"], name: "index_simulations_on_user_id"
   end
 

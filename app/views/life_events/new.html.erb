@@ -17,7 +17,10 @@
     </div>
     <div class="col-md-2">
       <%= f.label :event_date, '発生時期', class: 'form-label' %>
-      <%= f.select :event_date, options_for_select((Date.today.year..(Date.today.year + 50)).map { |year| [year, year] }), {}, class: 'form-select' %>
+      <div class="input-group">
+        <%= f.select :event_date, options_for_select((Date.today.year..(Date.today.year + 50)).map { |year| [year, year] }), {}, class: 'form-select' %>
+        <span class="input-group-text">年</span>
+      </div>
     </div>
     <div class="col-md-3">
       <%= f.label :title, 'タイトル', class: 'form-label' %>
@@ -25,7 +28,10 @@
     </div>
     <div class="col-md-2">
       <%= f.label :amount, '年額', class: 'form-label' %>
-      <%= f.number_field :amount, class: 'form-control', required: true %>
+      <div class="input-group">
+        <%= f.number_field :amount, class: 'form-control', required: true %>
+        <span class="input-group-text">万円</span>
+      </div>
     </div>
     <div class="col-md-2">
       <%= f.label :payment_span, '支払期間', class: 'form-label' %>
@@ -37,11 +43,20 @@
   </div>
 <% end %>
 
-<%= button_to '保存して次へ', update_life_event_data_life_events_path(simulation_id: current_user.simulation.id), method: :post, class: 'btn btn-primary' %>
-<%= link_to '資産入力に戻る', user_assets_path, class: 'btn btn-secondary', data: { turbo: true } %>
+<h5>追加されている資産データ</h5>
+<% if @life_events.any? %>
+  <div id="life_events">
+    <% @life_events.each do |life_event| %>
+      <%= render life_event %>
+    <% end %>
+  </div>
+<% else %>
+  <p>データはありません</p>
+<% end %>
 
-<div id="life_events">
-  <% @life_events.each do |life_event| %>
-    <%= render life_event %>
+<div class="d-flex justify-content-center">
+  <%= link_to '資産に戻る', user_assets_path, class: 'btn btn-secondary me-2', data: { turbo: true } %>
+  <% if @life_events.any? %>
+    <%= button_to '保存して次へ', update_life_event_data_life_events_path(simulation_id: current_user.simulation.id), method: :post, class: 'btn btn-primary' %>
   <% end %>
 </div>

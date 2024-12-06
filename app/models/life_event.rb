@@ -13,7 +13,7 @@ class LifeEvent < ApplicationRecord
   validates :amount, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :payment_span, presence: true
 
-  # ビジネスロジック：life_event_dataを更新
+  # ビジネスロジック：real_life_event_dataを更新
   def self.update_simulation_data(simulation_id)
     # 指定されたsimulation_idに関連するlife_eventsを取得
     life_events = LifeEvent.where(simulation_id: simulation_id)
@@ -24,11 +24,11 @@ class LifeEvent < ApplicationRecord
     end
 
     # ハッシュ配列に変換
-    life_event_data = year_amounts.map do |year, amount|
+    real_life_event_data = year_amounts.map do |year, amount|
       { date: year, amount: amount } # dateを年のみの形式にする
     end
 
     # simulationテーブルを直接更新
-    Simulation.find(simulation_id).update(life_event_data: life_event_data)
+    Simulation.find(simulation_id).update(real_life_event_data: real_life_event_data)
   end
 end

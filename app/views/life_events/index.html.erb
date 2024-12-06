@@ -25,7 +25,7 @@
           <td><%= life_event.event_date.strftime('%Y年') %></td>
           <td><%= life_event.title %></td>
           <td><%= number_to_currency(life_event.amount, unit: '¥') %></td>
-          <td><%= life_event.payment_span == 0 ? '一括' : '毎年支払い' %></td>
+          <td><%= life_event.payment_span %>年間</td>
         </tr>
       <% end %>
       <tr>

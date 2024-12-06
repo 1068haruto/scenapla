@@ -12,7 +12,7 @@
       <%= f.label :person_type, '対象者', class: 'form-label' %>
       <%= f.select :person_type, Income.person_types.keys.map { |type| [type, type] }, {}, class: 'form-select' %>
     </div>
-    
+
     <div class="col-md-3">
       <%= f.label :income, '月収（手取り）', class: 'form-label' %>
       <div class="input-group">
@@ -28,7 +28,7 @@
         <span class="input-group-text">年</span>
       </div>
     </div>
-    
+
     <div class="col-md-3">
       <%= f.label :retirement_pay, '退職金（手取り）', class: 'form-label' %>
       <div class="input-group">

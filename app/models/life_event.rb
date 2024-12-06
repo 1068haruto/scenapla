@@ -3,7 +3,6 @@ class LifeEvent < ApplicationRecord
   belongs_to :simulation
 
   enum event_type: { 現実: 0, 理想: 1 }
-  enum payment_span: { 一括払い: 0, 毎年支払い: 1 }
 
   validates :user_id, presence: true
   validates :simulation_id, presence: true

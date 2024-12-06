@@ -13,7 +13,7 @@
   <div class="row">
     <div class="col-md-2">
       <%= f.label :event_type, 'イベントタイプ', class: 'form-label' %>
-      <%= f.select :event_type, [['現実', 0], ['理想', 1]], { include_blank: true }, class: 'form-select' %>
+      <%= f.select :event_type, [['現実', 0], ['理想', 1]], { include_blank: true }, class: 'form-select', required: true %>
     </div>
     <div class="col-md-2">
       <%= f.label :event_date, '発生時期', class: 'form-label' %>
@@ -35,7 +35,10 @@
     </div>
     <div class="col-md-2">
       <%= f.label :payment_span, '支払期間', class: 'form-label' %>
-      <%= f.select :payment_span, [['一括', '0'], ['毎年支払い', '1']], { include_blank: true }, class: 'form-select' %>
+      <div class="input-group">
+        <%= f.select :payment_span, (1..10).map { |i| [i.to_s, i] }, { include_blank: true }, class: 'form-select', required: true %>
+        <span class="input-group-text">年間</span>
+      </div>
     </div>
   </div>
   <div class="mb-5">

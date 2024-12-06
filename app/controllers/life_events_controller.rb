@@ -46,7 +46,6 @@ class LifeEventsController < ApplicationController
   def life_event_params
     params.require(:life_event).permit(:user_id, :simulation_id, :event_type, :event_date, :title, :amount, :payment_span).tap do |whitelisted|
       whitelisted[:event_type] = whitelisted[:event_type].to_i
-      whitelisted[:payment_span] = whitelisted[:payment_span].to_i
     end
   end
 

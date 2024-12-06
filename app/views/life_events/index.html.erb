@@ -21,7 +21,7 @@
     <tbody>
       <% events.each do |life_event| %>
         <tr>
-          <td><%= life_event.event_type == 0 ? '現実' : '理想' %></td>
+          <td><%= life_event.event_type.humanize %></td>
           <td><%= life_event.event_date.strftime('%Y年') %></td>
           <td><%= life_event.title %></td>
           <td><%= number_to_currency(life_event.amount, unit: '¥') %></td>

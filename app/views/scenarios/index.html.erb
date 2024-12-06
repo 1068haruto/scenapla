@@ -1,3 +1,15 @@
-<h1>Scenarios</h1>
+<% content_for :title do %>Scenario<% end %>
+
+<div class="mb-5">
+  <h1>Scenarios</h1>
+  <h4>シミュレーション結果</h4>
+  <p></p>
+</div>
+
 <%= button_to 'シナリオを作成する', update_scenario_simulation_path(@simulation), method: :post, class: 'btn btn-primary' %>
 <%= line_chart @chart_data, xtitle: "年", ytitle: "金額", height: "500px", width: "800px" %>
+
+<div class="d-flex justify-content-center">
+  <%= link_to '条件を変えて再入力', incomes_path, class: 'btn btn-secondary me-2', data: { turbo: true } %>
+  <%= link_to 'ライフプランへ', life_events_path, class: 'btn btn-primary me-2', data: { turbo: true } %>
+</div>

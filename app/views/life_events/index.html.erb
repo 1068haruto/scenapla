@@ -1,4 +1,11 @@
-<h1>Life Plan</h1>
+<% content_for :title do %>LifePlan<% end %>
+
+<div class="mb-5">
+  <h1>LifePlan</h1>
+  <h4>ライフイベントを時系列に確認し、今後を具体化。</h4>
+  <p>計画や目標など、年代別にメモを追加できます。</p>
+</div>
+
 <% @grouped_life_events.each do |age_group, events| %>
   <h2><%= age_group %>代</h2>
   <table class="table table-bordered">
@@ -37,7 +44,10 @@
   </table>
 <% end %>
 
-<%= link_to 'ライフイベント入力へ', new_life_event_path, class: 'btn btn-secondary', data: { turbo: true } %>
+<div class="d-flex justify-content-center">
+  <%= link_to 'ライフイベント編集', new_life_event_path, class: 'btn btn-secondary me-2', data: { turbo: true } %>
+  <%= link_to 'ホームに戻る', dashboard_path, class: 'btn btn-primary me-2', data: { turbo: true } %>
+</div>
 
 <script>
   document.addEventListener("turbo:load", () => {

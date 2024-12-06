@@ -5,7 +5,7 @@ class LifeEventsController < ApplicationController
     @grouped_life_events = life_events.group_by { |event| calculate_age_group(event.event_date.year, current_user.date_of_birth.year) }
     @memos = Memo.where(user_id: current_user.id).group_by(&:age_group)
   end
-  
+
   def new
     @life_event = LifeEvent.new
     @life_events = LifeEvent.where(user_id: current_user.id).order(event_date: :asc)
@@ -33,9 +33,9 @@ class LifeEventsController < ApplicationController
 
   def update_life_event_data
     simulation_id = params[:simulation_id]
-  
+
     if LifeEvent.update_simulation_data(simulation_id)
-      redirect_to new_life_event_path, notice: 'シミュレーション情報が更新されました。'
+      redirect_to scenarios_path
     else
       redirect_to new_life_event_path, alert: 'シミュレーション情報の更新に失敗しました。'
     end
@@ -57,7 +57,6 @@ class LifeEventsController < ApplicationController
     params
   end
 
-  # 年代を計算するメソッド
   def calculate_age_group(event_year, birth_year)
     age = event_year - birth_year
     (age / 10) * 10 # 30代, 40代などに変換

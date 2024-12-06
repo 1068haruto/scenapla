@@ -8,32 +8,38 @@ class Simulation < ApplicationRecord
 
   validates :user_id, presence: true
 
-  def merged_data
-    # income_dataとexpense_dataを統合
-    income_expense = merge_data(income_data, expense_data)
+  # データを統合し、次年に収支を反映
+  def merged_income_expense_event
+    merged = merge_data(income_data, expense_data, real_life_event_data)
 
-    # income_expenseとuser_asset_dataを統合
-    final_data = merge_data(income_expense, user_asset_data)
+    # 前年の収支を次の年に反映
+    merged.each_cons(2) do |previous, current|
+      current["amount"] += previous["amount"]
+    end
 
-    # Chartkick用の形式に変換
-    format_for_chartkick(final_data)
+    merged
+  end
+
+  # income_dataの合計を計算
+  def total_income
+    income_data.sum { |entry| entry["amount"].to_f }
+  end
+
+  # expense_dataとreal_life_event_dataを統合して合計を計算
+  def total_expense
+    merge_data(expense_data, real_life_event_data).sum { |entry| entry["amount"].to_f }
   end
 
   private
 
-  # データを統合し、同じdateでamountを合計する
-  def merge_data(data1, data2)
-    merged = (data1 + data2).group_by { |entry| entry["date"] }
+  # データを統合し、同じdateでamountを合計
+  def merge_data(*datasets)
+    merged = datasets.flatten.group_by { |entry| entry["date"] }
     merged.map do |date, entries|
       {
         "date" => date,
         "amount" => entries.sum { |entry| entry["amount"].to_f }
       }
-    end
-  end
-
-  # Chartkickが期待する形式に変換
-  def format_for_chartkick(data)
-    data.map { |entry| [entry["date"], entry["amount"]] }.to_h
+    end.sort_by { |entry| entry["date"] }
   end
 end

@@ -6,8 +6,8 @@ class Scenario < ApplicationRecord
 
   validates :user_id, :simulation_id, presence: true
 
-  # Chartkick用データを取得
-  def chart_data
-    asset_scenario.map { |date, amount| [date.to_s, amount.to_f] }.to_h
+  # Chartkick用データ形式を返す
+  def balance_chart_data
+    balance_scenario.map { |entry| [entry["date"], entry["amount"]] }.to_h
   end
 end

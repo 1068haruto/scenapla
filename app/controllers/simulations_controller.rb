@@ -7,16 +7,19 @@ class SimulationsController < ApplicationController
     total_income = simulation.total_income
     total_expense = simulation.total_expense
 
-    # シナリオテーブルの更新
-    scenario = simulation.scenarios.update!(
-      user_id: simulation.user_id,
-      scenario_type: '現実', # 注意点2
-      balance_scenario: merged_data, # 注意点1・3
-      total_income: total_income, # ②
-      total_expense: total_expense # ③
+    # `scenario_type: '現実'` のデータを取得
+    scenario = simulation.scenarios.find_by!(scenario_type: '現実')
+
+    # 該当するシナリオを更新
+    scenario.update!(
+      balance_scenario: merged_data,
+      total_income: total_income,
+      total_expense: total_expense
     )
 
     redirect_to scenarios_path, notice: 'シナリオを更新しました。'
+  rescue ActiveRecord::RecordNotFound
+    redirect_to scenarios_path, alert: "現実のシナリオが見つかりませんでした。"
   rescue => e
     redirect_to scenarios_path, alert: "シナリオ更新中にエラーが発生しました: #{e.message}"
   end

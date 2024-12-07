@@ -26,8 +26,13 @@ class User < ApplicationRecord
   def create_simulation_and_scenario_models
     # 計算モデルを作成
     Simulation.create(user: self)
-    # 結果モデルを作成
-    Scenario.create(user: self, simulation: simulation)
+
+    # シナリオのタイプを配列に定義
+    scenario_types = ['現実', '理想']
+    # 各シナリオタイプに対してシナリオを作成
+    scenario_types.each do |type|
+      Scenario.create(user: self, simulation: simulation, scenario_type: type)
+    end
   end
 
   def password_present?

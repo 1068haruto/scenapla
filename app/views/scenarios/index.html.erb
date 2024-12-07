@@ -7,9 +7,11 @@
 </div>
 
 <%= button_to 'シナリオを作成する', update_scenario_simulation_path(@simulation), method: :post, class: 'btn btn-primary' %>
-<%= line_chart @chart_data, xtitle: "年", ytitle: "金額", height: "500px", width: "800px" %>
 
-<h1>収支バランスシナリオ</h1>
+<h4>現実的収支シナリオ</h4>
+<p>トータル収入：<%= @real_total_income %>万円</p>
+<p>トータル支出：<%= @real_total_expense %>万円</p>
+<p>トータル収支：<%= @real_total_balance %>万円</p>
 <%= line_chart @chart_data, height: "400px", library: { title: { text: "収支バランス", fontSize: 20 } } %>
 
 <div class="d-flex justify-content-center">

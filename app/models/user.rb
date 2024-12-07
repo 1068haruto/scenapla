@@ -21,6 +21,15 @@ class User < ApplicationRecord
   # ユーザー作成後に計算モデルと結果モデルを作成
   after_create :create_simulation_and_scenario_models
 
+  # 生年月日から年齢を計算するメソッド
+  def age
+    today = Date.today
+    age = today.year - date_of_birth.year
+    # 誕生日がまだ来ていない場合は1歳引く
+    age -= 1 if today < date_of_birth + age.years
+    age
+  end
+
   private
 
   def create_simulation_and_scenario_models

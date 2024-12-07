@@ -30,6 +30,20 @@ class Simulation < ApplicationRecord
     merge_data(expense_data, real_life_event_data).sum { |entry| entry["amount"].to_f }
   end
 
+  # expensesテーブルの指定列を合計
+  def total_expenses_sum
+    expenses.sum(:housing_expense) + 
+    expenses.sum(:living_expenses) + 
+    expenses.sum(:monthly_premiums) + 
+    expenses.sum(:other_expenses)
+  end
+
+  # total_balanceから不足年数を計算
+  def calculate_shortage(total_balance)
+    remaining_years = [70 - user.age, 0].max # 70歳までの残り年数
+    (total_balance.abs / remaining_years).round(2)
+  end
+
   private
 
   # データを統合し、同じdateでamountを合計

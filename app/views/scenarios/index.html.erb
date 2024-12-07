@@ -1,20 +1,55 @@
-<% content_for :title do %>Scenario<% end %>
+<div class="container">
+  <% content_for :title do %>Scenario<% end %>
+  <div class="mb-5">
+    <h1 class="display-4">Scenarios</h1>
+    <h4 class="mb-3">シミュレーション結果</h4>
+    <%= button_to '表示 / 更新', update_scenario_simulation_path(@simulation), method: :post, class: 'btn btn-primary mb-3' %>
+  </div>
 
-<div class="mb-5">
-  <h1>Scenarios</h1>
-  <h4>シミュレーション結果</h4>
-  <p></p>
-</div>
+  <div class="card mb-4">
+    <div class="card-body">
+      <h4>現実的シナリオ</h4>
+      <div class="row mb-3">
+        <div class="col text-center">
+          <div class="card border-success mb-2">
+            <div class="card-body">
+              <p class="card-text">トータル収入：<%= @real_total_income %>万円</p>
+            </div>
+          </div>
+        </div>
+        <div class="col text-center">
+          <div class="card border-danger mb-2">
+            <div class="card-body">
+              <p class="card-text">トータル支出：<%= @real_total_expense %>万円</p>
+            </div>
+          </div>
+        </div>
+        <div class="col text-center">
+          <div class="card border-info mb-2">
+            <div class="card-body">
+              <p class="card-text">トータル収支：<%= @real_total_balance %>万円</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% if @real_withdrawal == 0 %>
+        <p>70歳以降：マイナス収支の為、現状の月々の収支（運用資産は除く）から得られるプラス資産はありません。</p>
+        <p>現状の収入や支出、今後のライフイベントやキャリアパスを改善する必要があります。</p>
+      <% else %>
+        <p>70歳以降：<%= @real_withdrawal %>ヶ月目まで運用資産を取り崩さず、月々の収支で得られる資産（運用資産を除く）で生活できます。</p>
+      <% end %>
+      <% if @real_shortage == 0 %>
+        <p>現実的なシナリオは、現状の維持で実現可能です。</p>
+        <p>しかし、70歳までにマイナス収支の年がある場合は、資産取り崩しや収支の改善等でマイナスを補填する必要があります。</p>
+      <% else %>
+        <p>現在から年額<%= @real_shortage %>万円が不足しています。</p>
+      <% end %>
+    </div>
+    <%= line_chart @chart_data, height: "400px", library: { title: { text: "収支バランス", fontSize: 20 } } %>
+  </div>
 
-<%= button_to 'シナリオを作成する', update_scenario_simulation_path(@simulation), method: :post, class: 'btn btn-primary' %>
-
-<h4>現実的収支シナリオ</h4>
-<p>トータル収入：<%= @real_total_income %>万円</p>
-<p>トータル支出：<%= @real_total_expense %>万円</p>
-<p>トータル収支：<%= @real_total_balance %>万円</p>
-<%= line_chart @chart_data, height: "400px", library: { title: { text: "収支バランス", fontSize: 20 } } %>
-
-<div class="d-flex justify-content-center">
-  <%= link_to '条件を変えて再入力', incomes_path, class: 'btn btn-secondary me-2', data: { turbo: true } %>
-  <%= link_to 'ライフプランへ', life_events_path, class: 'btn btn-primary me-2', data: { turbo: true } %>
+  <div class="d-flex justify-content-center">
+    <%= link_to '条件を変えて再入力', incomes_path, class: 'btn btn-secondary me-2', data: { turbo: true } %>
+    <%= link_to 'ライフプランへ', life_events_path, class: 'btn btn-primary me-2', data: { turbo: true } %>
+  </div>
 </div>

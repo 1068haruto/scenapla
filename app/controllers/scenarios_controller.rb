@@ -10,6 +10,8 @@ class ScenariosController < ApplicationController
 
     @real_total_income = @scenario.total_income || 0
     @real_total_expense = @scenario.total_expense || 0
-    @real_total_balance = @real_total_income + @real_total_expense
+    @real_total_balance = @scenario.total_balance || 0
+    @real_withdrawal = @scenario.withdrawal || 0
+    @real_shortage = @scenario.shortage || 0
   end
 end

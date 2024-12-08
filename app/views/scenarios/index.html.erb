@@ -11,21 +11,21 @@
       <h4>現実的シナリオ</h4>
       <div class="row mb-3">
         <div class="col text-center">
-          <div class="card border-success mb-2">
+          <div class="card border-danger mb-2">
             <div class="card-body">
               <p class="card-text">トータル収入：<%= @real_total_income %>万円</p>
             </div>
           </div>
         </div>
         <div class="col text-center">
-          <div class="card border-danger mb-2">
+          <div class="card border-info mb-2">
             <div class="card-body">
               <p class="card-text">トータル支出：<%= @real_total_expense %>万円</p>
             </div>
           </div>
         </div>
         <div class="col text-center">
-          <div class="card border-info mb-2">
+          <div class="card border-success mb-2">
             <div class="card-body">
               <p class="card-text">トータル収支：<%= @real_total_balance %>万円</p>
             </div>
@@ -46,32 +46,31 @@
       <% end %>
       <%= area_chart @real_balance_chart_data, height: "300px", download: {filename: "現実的シナリオ"}, dataset: {borderWidth: 1} %> 
     </div>
-    
   </div>
-  
-
 
   <div class="card mb-4">
     <div class="card-body">
       <h4>理想的シナリオ</h4>
-      <% if @ideal_balance_chart_data != @real_balance_chart_data %>
+      <% if @ideal_balance_chart_data.empty? %>
+        <p>理想ライフイベントの登録が無いため、理想的シナリオデータがありません。</p>
+      <% else %>
         <div class="row mb-3">
           <div class="col text-center">
-            <div class="card border-success mb-2">
+            <div class="card border-danger mb-2">
               <div class="card-body">
                 <p class="card-text">トータル収入：<%= @ideal_total_income %>万円</p>
               </div>
             </div>
           </div>
           <div class="col text-center">
-            <div class="card border-danger mb-2">
+            <div class="card border-info mb-2">
               <div class="card-body">
                 <p class="card-text">トータル支出：<%=  @ideal_total_expense %>万円</p>
               </div>
             </div>
           </div>
           <div class="col text-center">
-            <div class="card border-info mb-2">
+            <div class="card border-success mb-2">
               <div class="card-body">
                 <p class="card-text">トータル収支：<%=  @ideal_total_balance %>万円</p>
               </div>
@@ -91,8 +90,6 @@
           <p>現在から年額<%=  @ideal_shortage %>万円が不足しています。</p>
         <% end %>
         <%= area_chart  @ideal_balance_chart_data, height: "300px", download: {filename: "理想的シナリオ"}, dataset: {borderWidth: 1} %> 
-      <% else %>
-        <p>理想ライフイベントの登録が無いため、理想的シナリオデータがありません。</p>
       <% end %>
     </div>
   </div>

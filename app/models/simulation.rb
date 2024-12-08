@@ -25,9 +25,10 @@ class Simulation < ApplicationRecord
     income_data.sum { |entry| entry["amount"].to_f }
   end
 
-  # 合計支出を計算（life_event_data を受け取る）
-  def total_expense(life_event_data)
-    merge_data(expense_data, life_event_data).sum { |entry| entry["amount"].to_f }
+  # 合計支出を計算（複数のデータセットを受け取る）
+  def total_expense(*datasets)
+    # データセットを統合して合計金額を算出
+    merge_data(*datasets).sum { |entry| entry["amount"].to_f }
   end
 
   # expensesテーブルの指定列を合計

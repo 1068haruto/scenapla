@@ -22,7 +22,14 @@ class SimulationsController < ApplicationController
     # 各種データを計算
     merged_data = simulation.merged_income_expense_event(life_event_data)
     total_income = simulation.total_income
-    total_expense = simulation.total_expense(life_event_data)
+
+    # expense_data, real_life_event_data, ideal_life_event_data を統合して合計支出を算出
+    total_expense = simulation.total_expense(
+      simulation.expense_data,
+      simulation.real_life_event_data,
+      life_event_data
+    )
+
     total_balance = total_income + total_expense
 
     # 該当するシナリオを取得

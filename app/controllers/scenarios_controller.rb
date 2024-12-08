@@ -27,7 +27,9 @@ class ScenariosController < ApplicationController
 
     # 理想的シナリオ
     ideal_scenario = @scenarios.find { |scenario| scenario.scenario_type == '理想' }
-    if ideal_scenario
+    events = LifeEvent.where(user_id: current_user.id)
+
+    if ideal_scenario && events.any? { |event| event.event_type == '理想' }
       @ideal_balance_chart_data = ideal_scenario.balance_chart_data
       @ideal_total_income = ideal_scenario.total_income || 0
       @ideal_total_expense = ideal_scenario.total_expense || 0

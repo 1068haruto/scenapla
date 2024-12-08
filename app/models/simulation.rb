@@ -8,9 +8,9 @@ class Simulation < ApplicationRecord
 
   validates :user_id, presence: true
 
-  # データを統合し、次年に収支を反映
-  def merged_income_expense_event
-    merged = merge_data(income_data, expense_data, real_life_event_data)
+  # データを統合し、次年に収支を反映（引数として life_event_data を受け取る）
+  def merged_income_expense_event(life_event_data)
+    merged = merge_data(income_data, expense_data, life_event_data)
 
     # 前年の収支を次の年に反映
     merged.each_cons(2) do |previous, current|
@@ -25,9 +25,9 @@ class Simulation < ApplicationRecord
     income_data.sum { |entry| entry["amount"].to_f }
   end
 
-  # expense_dataとreal_life_event_dataを統合して合計を計算
-  def total_expense
-    merge_data(expense_data, real_life_event_data).sum { |entry| entry["amount"].to_f }
+  # 合計支出を計算（life_event_data を受け取る）
+  def total_expense(life_event_data)
+    merge_data(expense_data, life_event_data).sum { |entry| entry["amount"].to_f }
   end
 
   # expensesテーブルの指定列を合計
@@ -45,9 +45,12 @@ class Simulation < ApplicationRecord
   end
 
   private
-
+  
   # データを統合し、同じdateでamountを合計
   def merge_data(*datasets)
+    # nil のデータセットを空配列に変換
+    datasets = datasets.map { |dataset| dataset || [] }
+
     merged = datasets.flatten.group_by { |entry| entry["date"] }
     merged.map do |date, entries|
       {

@@ -17,6 +17,7 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { in: 8..128 }, 
             format: { with: /(?=.*[a-z])(?=.*\d)/, message: "は小文字と数字を含める必要があります" }, if: :password_present?
   validates :password_confirmation, presence: true, if: :password_present?
+  validates :date_of_birth, format: { with: /\A\d{4}-\d{2}-\d{2}\z/, message: 'はYYYY-MM-DD形式で入力してください' }
 
   # ユーザー作成後に計算モデルと結果モデルを作成
   after_create :create_simulation_and_scenario_models

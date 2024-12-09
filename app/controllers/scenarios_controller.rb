@@ -3,6 +3,20 @@ class ScenariosController < ApplicationController
     @simulation = Simulation.find_by(user_id: current_user.id)
     @scenarios = Scenario.where(user_id: current_user.id) # 複数のシナリオを取得
 
+    # 資産寿命データ　各支出を安全に取得(nilを0に変換)
+    monthly_expenses = @simulation.expenses.sum(:housing_expense).to_f +
+    @simulation.expenses.sum(:living_expenses).to_f +
+    @simulation.expenses.sum(:monthly_premiums).to_f +
+    @simulation.expenses.sum(:other_expenses).to_f
+    # 必要なデータがない場合
+    total_assets = @simulation.user_assets.sum(:amount)
+    if total_assets <= 0 || monthly_expenses <= 0
+      @asset_lifespan = nil
+    else
+      @asset_lifespan = @simulation.asset_lifespans.last # 最新の資産寿命データを取得
+      @asset_lifespan_updated_at = @asset_lifespan.updated_at
+    end
+
     # 資産シナリオ
     @asset_data = @simulation.user_asset_data&.map { |entry| [entry["date"], entry["amount"]] }&.to_h || {}
 

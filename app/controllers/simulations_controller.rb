@@ -8,6 +8,9 @@ class SimulationsController < ApplicationController
     # scenario_type: '理想' の更新処理
     update_scenario_data(simulation, '理想', simulation.ideal_life_event_data)
 
+    # 資産寿命の計算と保存
+    calculate_and_save_asset_lifespan(simulation)
+
     redirect_to scenarios_path, notice: 'シナリオを更新しました。'
   rescue ActiveRecord::RecordNotFound => e
     redirect_to scenarios_path, alert: "シナリオが見つかりませんでした: #{e.message}"
@@ -49,5 +52,42 @@ class SimulationsController < ApplicationController
       withdrawal: withdrawal,
       shortage: shortage
     )
+  end
+
+  # 資産寿命を計算して保存するメソッド
+  def calculate_and_save_asset_lifespan(simulation)
+    total_assets = simulation.user_assets.sum(:amount)
+    monthly_expenses = simulation.expenses.sum(:housing_expense) +
+                       simulation.expenses.sum(:living_expenses) +
+                       simulation.expenses.sum(:monthly_premiums) +
+                       simulation.expenses.sum(:other_expenses)
+
+    return if monthly_expenses <= 0 # 月次支出がない場合、計算をスキップ
+
+    yearly_data = calculate_yearly_lifespan(total_assets, monthly_expenses)
+
+    # `asset_lifespans`テーブルに保存
+    simulation.asset_lifespans.create!(
+      user_id: simulation.user_id,
+      yearly_lifespans: yearly_data
+    )
+  end
+
+  # 年ごとの資産寿命データを計算するヘルパーメソッド
+  def calculate_yearly_lifespan(total_assets, monthly_expenses)
+    yearly_data = {}
+    remaining_assets = total_assets
+    year = Date.today.year
+
+    while remaining_assets > 0
+      yearly_data[year] = remaining_assets
+      remaining_assets -= (monthly_expenses * 12)
+      year += 1
+    end
+
+    # 次の年の資産をそのまま格納する
+    yearly_data[year] = remaining_assets
+
+    yearly_data
   end
 end

@@ -1,52 +1,70 @@
-<% content_for :title do %>LifePlan<% end %>
+<div class="container">
+  <% content_for :title do %>LifePlan<% end %>
+  <div class="mb-5">
+    <h1 class="display-4">LifePlan</h1>
+    <h4 class="mb-3">ライフイベントを時系列に確認し、今後を具体化。</h4>
+    <p>計画や目標など、年代別にメモを追加できます。</p>
+  </div>
+  <% if @grouped_life_events.empty? %>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>ライフイベントの登録が無い為、データがありません。</p>
+      </div>
+    </div>
+  <% else %>
+    <% @grouped_life_events.each do |age_group, events| %>
+      <div class="card mb-4">
+        <div class="card-body">
+          <h2><%= age_group %>代</h2>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>種類</th>
+                <th>時期</th>
+                <th>タイトル</th>
+                <th>年額</th>
+                <th>支払期間</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% events.each do |life_event| %>
+                <tr>
+                  <td><%= life_event.event_type.humanize %></td>
+                  <td><%= life_event.event_date.strftime('%Y年') %></td>
+                  <td><%= life_event.title %></td>
+                  <td><%= number_to_currency(life_event.amount, unit: '¥') %></td>
+                  <td><%= life_event.payment_span %>年間</td>
+                </tr>
+              <% end %>
+              <tr>
+                <td colspan="5">
+                  <div id="memo-container-<%= age_group %>">
+                    <textarea id="memo-content-<%= age_group %>" rows="1" class="form-control" data-age-group="<%= age_group %>" data-id="<%= @memos[age_group]&.first&.id %>" <%= @memos[age_group]&.first&.content.present? ? 'readonly' : '' %>><%= @memos[age_group]&.first&.content.to_s %></textarea>
+                    <button id="memo-button-<%= age_group %>"
+                      class="btn <%= @memos[age_group]&.first&.content.present? ? 'btn-secondary' : 'btn-primary' %> mt-2"
+                      data-action="<%= @memos[age_group]&.first&.content.present? ? 'edit' : 'save' %>">
+                      <%= @memos[age_group]&.first&.content.present? ? '編集' : '保存' %>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
 
-<div class="mb-5">
-  <h1>LifePlan</h1>
-  <h4>ライフイベントを時系列に確認し、今後を具体化。</h4>
-  <p>計画や目標など、年代別にメモを追加できます。</p>
-</div>
-
-<% @grouped_life_events.each do |age_group, events| %>
-  <h2><%= age_group %>代</h2>
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th>イベントタイプ</th>
-        <th>時期</th>
-        <th>タイトル</th>
-        <th>年額</th>
-        <th>支払期間</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% events.each do |life_event| %>
-        <tr>
-          <td><%= life_event.event_type.humanize %></td>
-          <td><%= life_event.event_date.strftime('%Y年') %></td>
-          <td><%= life_event.title %></td>
-          <td><%= number_to_currency(life_event.amount, unit: '¥') %></td>
-          <td><%= life_event.payment_span %>年間</td>
-        </tr>
-      <% end %>
-      <tr>
-        <td colspan="5">
-          <div id="memo-container-<%= age_group %>">
-            <textarea id="memo-content-<%= age_group %>" rows="1" class="form-control", data-age-group="<%= age_group %>", data-id="<%= @memos[age_group]&.first&.id %>", <%= @memos[age_group]&.first&.content.present? ? 'readonly' : '' %>><%= @memos[age_group]&.first&.content.to_s %></textarea>
-            <button id="memo-button-<%= age_group %>"
-              class="btn <%= @memos[age_group]&.first&.content.present? ? 'btn-secondary' : 'btn-primary' %> mt-2"
-              data-action="<%= @memos[age_group]&.first&.content.present? ? 'edit' : 'save' %>">
-              <%= @memos[age_group]&.first&.content.present? ? '編集' : '保存' %>
-            </button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-<% end %>
-
-<div class="d-flex justify-content-center">
-  <%= link_to 'ライフイベント編集', new_life_event_path, class: 'btn btn-secondary me-2', data: { turbo: true } %>
-  <%= link_to 'ホームに戻る', dashboard_path, class: 'btn btn-primary me-2', data: { turbo: true } %>
+  <div class="d-flex justify-content-center">
+    <% if @grouped_life_events.empty? %>
+      <%= link_to '情報入力画面へ', incomes_path, class: 'btn btn-primary me-2', data: { turbo_method: :get } %>
+    <% else %>
+      <div class="d-flex justify-content-center">
+        <%= link_to 'ライフイベント編集', new_life_event_path, class: 'btn btn-secondary me-2', data: { turbo: true } %>
+        <%= link_to 'ホームに戻る', dashboard_path, class: 'btn btn-primary me-2', data: { turbo: true } %>
+      </div>
+    <% end %>
+  </div>
 </div>
 
 <script>

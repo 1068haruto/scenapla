@@ -11,6 +11,7 @@ class User < ApplicationRecord
   has_many :memos, dependent: :destroy
   has_one :simulation, dependent: :destroy
   has_many :scenarios, dependent: :destroy
+  has_many :asset_lifespans, dependent: :destroy
   
   validates :email, presence: true, uniqueness: true, 
             format: { with: /\A[^@\s]+@[^@\s]+\z/, message: "は有効なメールアドレスである必要があります" }

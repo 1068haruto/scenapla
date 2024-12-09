@@ -14,6 +14,11 @@
         <% if @simulation.user_asset_data.nil? || @simulation.user_asset_data.empty? %>
           <p>情報入力が完了していない為、現実的シナリオデータがありません。</p>
         <% else %>
+          <div class="mb-4">
+            <span>
+              <%= @real_updated_at.strftime('%Y年%m月%d日') if @real_updated_at.present? %>時点
+            </span>
+          </div>
           <div class="row mb-3">
             <div class="col text-center">
               <div class="card border-danger mb-2">
@@ -60,6 +65,11 @@
       <% if @ideal_balance_chart_data.empty? %>
         <p>理想ライフイベントの登録が無い為、理想的シナリオデータがありません。</p>
       <% else %>
+        <div class="mb-4">
+          <span>
+            <%= @ideal_updated_at.strftime('%Y年%m月%d日') if @ideal_updated_at.present? %>時点
+          </span>
+        </div>
         <div class="row mb-3">
           <div class="col text-center">
             <div class="card border-danger mb-2">

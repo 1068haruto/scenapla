@@ -9,6 +9,7 @@ class ScenariosController < ApplicationController
     # 現実的シナリオ
     real_scenario = @scenarios.find { |scenario| scenario.scenario_type == '現実' }
     if real_scenario
+      @real_updated_at = real_scenario.updated_at
       @real_balance_chart_data = real_scenario.balance_chart_data
       @real_total_income = real_scenario.total_income || 0
       @real_total_expense = real_scenario.total_expense || 0
@@ -30,6 +31,7 @@ class ScenariosController < ApplicationController
     events = LifeEvent.where(user_id: current_user.id)
 
     if ideal_scenario && events.any? { |event| event.event_type == '理想' }
+      @ideal_updated_at = ideal_scenario.updated_at
       @ideal_balance_chart_data = ideal_scenario.balance_chart_data
       @ideal_total_income = ideal_scenario.total_income || 0
       @ideal_total_expense = ideal_scenario.total_expense || 0

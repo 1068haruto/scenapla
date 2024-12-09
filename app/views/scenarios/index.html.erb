@@ -10,9 +10,25 @@
 
   <div class="card mb-4">
     <div class="card-body">
+      <h4>資産寿命データ</h4>
+      <% if @asset_lifespan && @asset_lifespan.yearly_lifespans.present? %>
+        <div class="mb-4">
+          <span>
+            <%= @asset_lifespan_updated_at.strftime('%Y年%m月%d日') if @asset_lifespan_updated_at.present? %>時点
+          </span>
+        </div>
+        <%= column_chart @asset_lifespan.yearly_lifespans.map { |year, amount| [year, amount.to_f] } %>
+      <% else %>
+        <p>資産情報の登録がないため、グラフを表示できません。</p>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-body">
       <h4>現実的シナリオ</h4>
         <% if @simulation.user_asset_data.nil? || @simulation.user_asset_data.empty? %>
-          <p>情報入力が完了していない為、現実的シナリオデータがありません。</p>
+          <p>情報入力が完了していないため、現実的シナリオを表示できません。</p>
         <% else %>
           <div class="mb-4">
             <span>
@@ -63,7 +79,7 @@
     <div class="card-body">
       <h4>理想的シナリオ</h4>
       <% if @ideal_balance_chart_data.empty? %>
-        <p>理想ライフイベントの登録が無い為、理想的シナリオデータがありません。</p>
+        <p>理想ライフイベントの登録がないため、理想的シナリオを表示できません。</p>
       <% else %>
         <div class="mb-4">
           <span>
@@ -114,7 +130,7 @@
     <div class="card-body">
       <h4>運用資産シナリオ</h4>
       <% if @asset_data.empty? %>
-        <p>資産の登録が無い為、運用資産シナリオデータがありません。</p>
+        <p>資産の登録がないため、運用資産シナリオを表示できません。</p>
       <% else %>  
         <%= area_chart @asset_data, height: "300px", colors: ["#FF5733"], download: {filename: "運用資産シナリオ"} %>
       <% end %>

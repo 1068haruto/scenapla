@@ -4,7 +4,7 @@ class ScenariosController < ApplicationController
     @scenarios = Scenario.where(user_id: current_user.id) # 複数のシナリオを取得
 
     # 資産シナリオ
-    @asset_data = @simulation.user_asset_data.map { |entry| [entry["date"], entry["amount"]] }.to_h
+    @asset_data = @simulation.user_asset_data&.map { |entry| [entry["date"], entry["amount"]] }&.to_h || {}
 
     # 現実的シナリオ
     real_scenario = @scenarios.find { |scenario| scenario.scenario_type == '現実' }

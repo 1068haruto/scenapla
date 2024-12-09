@@ -3,48 +3,54 @@
   <div class="mb-5">
     <h1 class="display-4">Scenarios</h1>
     <h4 class="mb-3">シミュレーション結果</h4>
-    <%= button_to '表示 / 更新', update_scenario_simulation_path(@simulation), method: :post, class: 'btn btn-primary mb-3' %>
+    <% unless @simulation.user_asset_data.nil? || @simulation.user_asset_data.empty? || (@income_data && @income_data.any? { |entry| entry["amount"].to_f == 0 }) %>
+      <%= button_to '表示 / 更新', update_scenario_simulation_path(@simulation), method: :post, class: 'btn btn-primary mb-3' %>
+    <% end %>
   </div>
 
   <div class="card mb-4">
     <div class="card-body">
       <h4>現実的シナリオ</h4>
-      <div class="row mb-3">
-        <div class="col text-center">
-          <div class="card border-danger mb-2">
-            <div class="card-body">
-              <p class="card-text">トータル収入：<%= @real_total_income %>万円</p>
+        <% if @simulation.user_asset_data.nil? || @simulation.user_asset_data.empty? %>
+          <p>情報入力が完了していない為、現実的シナリオデータがありません。</p>
+        <% else %>
+          <div class="row mb-3">
+            <div class="col text-center">
+              <div class="card border-danger mb-2">
+                <div class="card-body">
+                  <p class="card-text">トータル収入：<%= @real_total_income %>万円</p>
+                </div>
+              </div>
+            </div>
+            <div class="col text-center">
+              <div class="card border-info mb-2">
+                <div class="card-body">
+                  <p class="card-text">トータル支出：<%= @real_total_expense %>万円</p>
+                </div>
+              </div>
+            </div>
+            <div class="col text-center">
+              <div class="card border-success mb-2">
+                <div class="card-body">
+                  <p class="card-text">トータル収支：<%= @real_total_balance %>万円</p>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col text-center">
-          <div class="card border-info mb-2">
-            <div class="card-body">
-              <p class="card-text">トータル支出：<%= @real_total_expense %>万円</p>
-            </div>
-          </div>
-        </div>
-        <div class="col text-center">
-          <div class="card border-success mb-2">
-            <div class="card-body">
-              <p class="card-text">トータル収支：<%= @real_total_balance %>万円</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <% if @real_withdrawal == 0 %>
-        <p>70歳以降：マイナス収支の為、現状の月々の収支（運用資産は除く）から得られるプラス資産はありません。</p>
-        <p>現状の収入や支出、今後のライフイベントやキャリアパスを改善する必要があります。</p>
-      <% else %>
-        <p>70歳以降：<%= @real_withdrawal %>ヶ月目まで運用資産を取り崩さず、月々の収支で得られる資産（運用資産を除く）で生活できます。</p>
-      <% end %>
-      <% if @real_shortage == 0 %>
-        <p>現実的なシナリオは、現状の維持で実現可能です。</p>
-        <p>しかし、70歳までにマイナス収支の年がある場合は、資産取り崩しや収支の改善等でマイナスを補填する必要があります。</p>
-      <% else %>
-        <p>現在から年額<%= @real_shortage %>万円が不足しています。</p>
-      <% end %>
-      <%= area_chart @real_balance_chart_data, height: "300px", download: {filename: "現実的シナリオ"}, dataset: {borderWidth: 1} %> 
+          <% if @real_withdrawal == 0 %>
+            <p>70歳以降：マイナス収支の為、現状の月々の収支（運用資産は除く）から得られるプラス資産はありません。</p>
+            <p>現状の収入や支出、今後のライフイベントやキャリアパスを改善する必要があります。</p>
+          <% else %>
+            <p>70歳以降：<%= @real_withdrawal %>ヶ月目まで運用資産を取り崩さず、月々の収支で得られる資産（運用資産を除く）で生活できます。</p>
+          <% end %>
+          <% if @real_shortage == 0 %>
+            <p>現実的なシナリオは、現状の維持で実現可能です。</p>
+            <p>しかし、70歳までにマイナス収支の年がある場合は、資産取り崩しや収支の改善等でマイナスを補填する必要があります。</p>
+          <% else %>
+            <p>現在から年額<%= @real_shortage %>万円が不足しています。</p>
+          <% end %>
+          <%= area_chart @real_balance_chart_data, height: "300px", download: {filename: "現実的シナリオ"}, dataset: {borderWidth: 1} %> 
+        <% end %>
     </div>
   </div>
 
@@ -52,7 +58,7 @@
     <div class="card-body">
       <h4>理想的シナリオ</h4>
       <% if @ideal_balance_chart_data.empty? %>
-        <p>理想ライフイベントの登録が無いため、理想的シナリオデータがありません。</p>
+        <p>理想ライフイベントの登録が無い為、理想的シナリオデータがありません。</p>
       <% else %>
         <div class="row mb-3">
           <div class="col text-center">
@@ -97,12 +103,20 @@
   <div class="card mb-4">
     <div class="card-body">
       <h4>運用資産シナリオ</h4>
-      <%= area_chart @asset_data, height: "300px", colors: ["#FF5733"], download: {filename: "運用資産シナリオ"} %>
+      <% if @asset_data.empty? %>
+        <p>資産の登録が無い為、運用資産シナリオデータがありません。</p>
+      <% else %>  
+        <%= area_chart @asset_data, height: "300px", colors: ["#FF5733"], download: {filename: "運用資産シナリオ"} %>
+      <% end %>
     </div>
   </div>
 
   <div class="d-flex justify-content-center">
-    <%= link_to '条件を変えて再入力', incomes_path, class: 'btn btn-secondary me-2', data: { turbo: true } %>
-    <%= link_to 'ライフプランへ', life_events_path, class: 'btn btn-primary me-2', data: { turbo: true } %>
+    <% if @simulation.user_asset_data.nil? || @simulation.user_asset_data.empty? %>
+      <%= link_to '情報入力画面へ', incomes_path, class: 'btn btn-primary me-2', data: { turbo_method: :get } %>
+    <% else %>
+      <%= link_to '条件を変えて再入力', incomes_path, class: 'btn btn-secondary me-2', data: { turbo: true } %>
+      <%= link_to 'ライフプランへ', life_events_path, class: 'btn btn-primary me-2', data: { turbo: true } %>
+    <% end %>
   </div>
 </div>

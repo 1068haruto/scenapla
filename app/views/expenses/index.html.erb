@@ -1,61 +1,66 @@
-<% content_for :title do %>Incomes<% end %>
-
-<div class="mb-5">
-  <h1>Expenses</h1>
-  <h4>現在の月支出について教えて下さい。</h4>
-  <p>※金額は全てプラス値で入力</p>
-</div>
-
-<%= form_with model: @expense, url: create_or_update_expenses_path, local: true, id: "expense-form" do |f| %>
-  <div class="row">
-    <div class="col-md-2">
-      <%= f.label :housing_expense, '住居費 ※家賃orローン', class: 'form-label' %>
-      <div class="input-group">
-        <%= f.number_field :housing_expense, class: 'form-control', required: true %>
-        <span class="input-group-text">万円</span>
-      </div>
-    </div>
-    <div class="col-md-2">
-      <%= f.label :repayment_date, '住宅ローン完済時期', class: 'form-label' %>
-      <%= f.select :repayment_date, options_for_select([['支払なし', nil]] + (Date.today.year..(Date.today.year + 50)).map { |year| [year, year] }), {}, class: 'form-select' %>
-    </div>
-    <div class="col-md-2">
-      <%= f.label :living_expenses, '生活費', class: 'form-label' %>
-      <div class="input-group">
-        <%= f.number_field :living_expenses, class: 'form-control', required: true %>
-        <span class="input-group-text">万円</span>
-      </div>
-    </div>
-    <div class="col-md-2">  
-      <%= f.label :monthly_premiums, '保険費 ※貯蓄型保険除く', class: 'form-label' %>
-      <div class="input-group">
-        <%= f.number_field :monthly_premiums, class: 'form-control', required: true %>
-        <span class="input-group-text">万円</span>
-      </div>
-    </div>
-    <div class="col-md-2">
-      <%= f.label :other_expenses, 'その他費用', class: 'form-label' %>
-      <div class="input-group">
-        <%= f.number_field :other_expenses, class: 'form-control' %>
-        <span class="input-group-text">万円</span>
-      </div>
-    </div>
-  </div>
+<div class="container">
+  <% content_for :title do %>Expenses<% end %>
   <div class="mb-5">
-    <%= f.submit '追加', class: 'btn btn-primary' %>
+    <h1 class="display-4">Expenses</h1>
+    <h4 class="mb-3">現在の月支出について教えて下さい。</h4>
+    <p>※金額は全てプラス値で入力</p>
   </div>
-<% end %>
 
-<h5>追加されている支出データ</h5>
-<% if @latest_expense.present? %>
-  <%= render @latest_expense %>
-<% else %>
-  <p>データはありません</p>
-<% end %>
-
-<div class="d-flex justify-content-center">
-  <%= link_to '収入に戻る', incomes_path, class: 'btn btn-secondary me-2', data: { turbo: true } %>
-  <% if @latest_expense.present? %>
-    <%= button_to '保存して次へ', update_simulation_data_expense_path(@latest_expense), method: :post, class: 'btn btn-primary' %>
+  <%= form_with model: @expense, url: create_or_update_expenses_path, local: true, id: "expense-form" do |f| %>
+    <div class="row">
+      <div class="col-md-2">
+        <%= f.label :housing_expense, '住居費 ※家賃orローン', class: 'form-label' %>
+        <div class="input-group">
+          <%= f.number_field :housing_expense, class: 'form-control', required: true %>
+          <span class="input-group-text">万円</span>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <%= f.label :repayment_date, '住宅ローン完済時期', class: 'form-label' %>
+        <%= f.select :repayment_date, options_for_select([['支払なし', nil]] + (Date.today.year..(Date.today.year + 50)).map { |year| [year, year] }), {}, class: 'form-select' %>
+      </div>
+      <div class="col-md-2">
+        <%= f.label :living_expenses, '生活費', class: 'form-label' %>
+        <div class="input-group">
+          <%= f.number_field :living_expenses, class: 'form-control', required: true %>
+          <span class="input-group-text">万円</span>
+        </div>
+      </div>
+      <div class="col-md-2">  
+        <%= f.label :monthly_premiums, '保険費 ※貯蓄型保険除く', class: 'form-label' %>
+        <div class="input-group">
+          <%= f.number_field :monthly_premiums, class: 'form-control', required: true %>
+          <span class="input-group-text">万円</span>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <%= f.label :other_expenses, 'その他費用', class: 'form-label' %>
+        <div class="input-group">
+          <%= f.number_field :other_expenses, class: 'form-control' %>
+          <span class="input-group-text">万円</span>
+        </div>
+      </div>
+    </div>
+    <div class="mb-5">
+      <%= f.submit '追加', class: 'btn btn-primary' %>
+    </div>
   <% end %>
+
+  <h5>追加されている支出データ</h5>
+  <% if @latest_expense.present? %>
+    <%= render @latest_expense %>
+  <% else %>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>データがありません。</p>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="d-flex justify-content-center">
+    <%= link_to '収入に戻る', incomes_path, class: 'btn btn-secondary me-2', data: { turbo: true } %>
+    <% if @latest_expense.present? %>
+      <%= button_to '保存して次へ', update_simulation_data_expense_path(@latest_expense), method: :post, class: 'btn btn-primary' %>
+    <% end %>
+  </div>
 </div>

@@ -12,9 +12,10 @@ class ScenariosController < ApplicationController
     total_assets = @simulation.user_assets.sum(:amount)
     if total_assets <= 0 || monthly_expenses <= 0
       @asset_lifespan = nil
+      @asset_lifespan_updated_at = nil # 資産寿命がない場合もnilを設定
     else
       @asset_lifespan = @simulation.asset_lifespans.last # 最新の資産寿命データを取得
-      @asset_lifespan_updated_at = @asset_lifespan.updated_at
+      @asset_lifespan_updated_at = @asset_lifespan&.updated_at # nilの場合はnilが代入される
     end
 
     # 資産シナリオ

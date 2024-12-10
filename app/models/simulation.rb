@@ -5,7 +5,7 @@ class Simulation < ApplicationRecord
   has_many :user_assets
   has_many :life_events
   has_many :scenarios
-  has_many :asset_lifespans
+  has_many :asset_lifespans, dependent: :destroy
 
   validates :user_id, presence: true
 

@@ -3,6 +3,16 @@ class ScenariosController < ApplicationController
     @simulation = Simulation.find_by(user_id: current_user.id)
     @scenarios = Scenario.where(user_id: current_user.id) # 複数のシナリオを取得
 
+    @asset_lifespan = @simulation.asset_lifespans.last # 最新の資産寿命データ
+
+    if @asset_lifespan
+      @lifespan_years = @asset_lifespan.lifespan_years
+      @lifespan_months = @asset_lifespan.lifespan_months
+    else
+      @lifespan_years = nil
+      @lifespan_months = nil
+    end
+
     # 資産寿命データ　各支出を安全に取得(nilを0に変換)
     monthly_expenses = @simulation.expenses.sum(:housing_expense).to_f +
     @simulation.expenses.sum(:living_expenses).to_f +
@@ -19,7 +29,13 @@ class ScenariosController < ApplicationController
     end
 
     # 資産シナリオ
-    @asset_data = @simulation.user_asset_data&.map { |entry| [entry["date"], entry["amount"]] }&.to_h || {}
+    user_assets = @simulation.user_assets.where(user_id: current_user.id)
+    if user_assets.any?
+      @asset_data = @simulation.user_asset_data&.map { |entry| [entry["date"], entry["amount"]] }&.to_h || {}
+      @user_asset_data_updated_at = @simulation.updated_at
+    else
+      @asset_data = []
+    end
 
     # 現実的シナリオ
     real_scenario = @scenarios.find { |scenario| scenario.scenario_type == '現実' }

@@ -61,16 +61,29 @@ class SimulationsController < ApplicationController
                        simulation.expenses.sum(:living_expenses) +
                        simulation.expenses.sum(:monthly_premiums) +
                        simulation.expenses.sum(:other_expenses)
-
+  
     return if monthly_expenses <= 0 # 月次支出がない場合、計算をスキップ
-
+  
     yearly_data = calculate_yearly_lifespan(total_assets, monthly_expenses)
-
+  
+    # 資産寿命を年と月に変換
+    lifespan_years, lifespan_months = calculate_years_and_months(total_assets, monthly_expenses)
+  
     # `asset_lifespans`テーブルに保存
     simulation.asset_lifespans.create!(
       user_id: simulation.user_id,
-      yearly_lifespans: yearly_data
+      yearly_lifespans: yearly_data,
+      lifespan_years: lifespan_years, # 新たなカラム
+      lifespan_months: lifespan_months # 新たなカラム
     )
+  end
+
+  # 資産寿命を年と月に変換するメソッド
+  def calculate_years_and_months(total_assets, monthly_expenses)
+    total_months = (total_assets / monthly_expenses).floor
+    years = total_months / 12
+    months = total_months % 12
+    [years, months]
   end
 
   def calculate_yearly_lifespan(total_assets, monthly_expenses)

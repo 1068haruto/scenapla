@@ -73,21 +73,31 @@ class SimulationsController < ApplicationController
     )
   end
 
-  # 年ごとの資産寿命データを計算するヘルパーメソッド
   def calculate_yearly_lifespan(total_assets, monthly_expenses)
     yearly_data = {}
     remaining_assets = total_assets
-    year = Date.today.year
-
-    while remaining_assets > 0
-      yearly_data[year] = remaining_assets
-      remaining_assets -= (monthly_expenses * 12)
-      year += 1
+    current_date = Date.today
+    current_year = current_date.year
+    current_month = current_date.month
+  
+    # 最初の年の残り月分を計算
+    remaining_months = 12 - current_month + 1 # 現在月を含める
+    if remaining_months > 0
+      yearly_data[current_year] = remaining_assets
+      yearly_expense_for_remaining_months = monthly_expenses * remaining_months
+      remaining_assets -= yearly_expense_for_remaining_months
     end
-
-    # 次の年の資産をそのまま格納する
-    yearly_data[year] = remaining_assets
-
+  
+    yearly_expense_for_full_year = monthly_expenses * 12
+    # 翌年以降、12ヶ月単位で計算
+    next_year = current_year + 1
+    while remaining_assets > -yearly_expense_for_full_year
+      yearly_data[next_year] = remaining_assets
+      
+      remaining_assets -= yearly_expense_for_full_year
+      next_year += 1
+    end
+  
     yearly_data
   end
 end

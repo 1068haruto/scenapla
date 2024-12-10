@@ -1,14 +1,24 @@
-<div>
-  <h1>トップページ</h1>
+<div class="container text-center my-7">
+  <h1 class="display-5 mb-4">シナプラ</h1>
+  <p class="lead mb-4">このアプリは、あなたの将来設計をサポートするツールです</p>
+
+  <div class="mb-5"></div> <!-- ここで感覚を広げるための空のdivを追加 -->
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5 class="card-title">経済シミュレーション</h5>
+      <p class="card-text">「資産寿命」や理想と現実の「将来の経済シナリオ」を把握できます。</p>
+    </div>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5 class="card-title">ライフイベント管理</h5>
+      <p class="card-text">ライフプランを時系列に整理し、メモと一緒に管理できます。</p>
+    </div>
+  </div>
+
+  <div class="mb-5"></div> <!-- ここで感覚を広げるための空のdivを追加 -->
   
-  <p>このアプリで2つのことができます</p>
-  <ul>
-    <li>今後の経済シナリオを3つの角度からシミュレーション</li>
-    <li>ライフプランを時系列にメモと一緒に管理</li>
-  </ul>
-
-  <p>先を見ているのとそうでないのでは、大きな差</p>
-  <p>さあ、未来のために始めよう！</p>
-
-  <%= link_to '経済シミュレーションを始める', '#', class: 'nav-button', data: { turbo_method: :get } %>
+  <%= link_to '今すぐ始める', new_user_registration_path, class: 'btn btn-primary btn-lg', data: { turbo_method: :get } %>
 </div>

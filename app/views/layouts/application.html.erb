@@ -23,16 +23,31 @@
       <div class="user-info">
         <% if current_user %>
           <span class="username"><%= "#{current_user.name}さん" %></span>
-          <!-- ハンバーガーメニューの追加 -->
-          <div class="hamburger-menu">
-            <div class="hamburger-icon">&#9776;</div> <!-- ハンバーガーアイコン -->
-            <div class="dropdown-menu">
-              <%= link_to 'アカウント情報', user_path(current_user), class: 'menu-item', data: { turbo_method: :get } %>
-              <%= link_to 'ログアウト', destroy_user_session_path, class: 'menu-item', data: { turbo_method: :delete } %>
+          <nav class="navbar fixed-right">
+            <div class="container-fluid">
+              <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class ="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                  <h5 class="offcanvas-title" id="offcanvasNavbarLabel">メニュー</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                  <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                    <li class="nav-item">
+                      <%= link_to 'アカウント情報', user_path(current_user), class: 'nav-link' %>
+                    </li>
+                    <li class="nav-item">
+                      <%= link_to 'ログアウト', destroy_user_session_path, class: 'nav-link', data: { turbo_method: :delete } %>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
-          </div>
+          </nav>
         <% else %>
-          <%= link_to 'ログイン', new_user_session_path, class: 'btn btn-primary' %>
+          <%= link_to 'ログイン', new_user_session_path, class: 'btn btn-outline-primary' %>
         <% end %>
       </div>
     </header>

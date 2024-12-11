@@ -11,11 +11,9 @@ class IncomesController < ApplicationController
     @income.simulation = current_user.simulation
 
     if @income.save
-      redirect_to incomes_path, notice: '収入情報が追加されました！'
+      redirect_to incomes_path, notice: '収入データが追加されました'
     else
-      @incomes = current_user.incomes # 保存済みの収入情報を再取得
-      flash.now[:error] = @income.errors.full_messages.join(", ")
-      render :index
+      render_create_error
     end
   end
 
@@ -23,9 +21,9 @@ class IncomesController < ApplicationController
     @income = Income.find(params[:id])
 
     if @income.destroy
-      redirect_to incomes_path, notice: '収入情報が削除されました！'
+      redirect_to incomes_path, notice: '収入データが削除されました'
     else
-      redirect_to incomes_path, alert: '収入情報の削除に失敗しました。'
+      redirect_to incomes_path, alert: '収入データの削除に失敗しました'
     end
   end
 
@@ -42,7 +40,7 @@ class IncomesController < ApplicationController
     if current_user.simulation.update!(income_data: grouped_income_data)
       redirect_to expenses_path
     else
-      redirect_to incomes_path, alert: 'シミュレーションデータの更新に失敗しました。'
+      redirect_to incomes_path, alert: 'シミュレーションデータの更新に失敗しました'
     end
   end
 
@@ -60,8 +58,8 @@ class IncomesController < ApplicationController
   end
 
   def render_create_error
-    flash.now[:error] = @income.errors.full_messages.join(", ")
     @incomes = current_user.incomes
-    render :index
+    flash.now[:error] = @income.errors.full_messages.join(", ")
+    render :index, status: :unprocessable_entity
   end
 end

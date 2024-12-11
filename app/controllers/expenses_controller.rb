@@ -16,7 +16,7 @@ class ExpensesController < ApplicationController
 
     if @expense.save
       @latest_expense = current_user.expenses.last
-      redirect_to expenses_path, notice: '支出情報が更新されました！'
+      redirect_to expenses_path, notice: '支出データが更新されました'
     else
       @latest_expense = @expense
       render_create_error
@@ -28,7 +28,7 @@ class ExpensesController < ApplicationController
     if expense.update_simulation_data(current_user)
       redirect_to user_assets_path
     else
-      redirect_to expenses_path, alert: 'シミュレーションデータの更新に失敗しました。'
+      redirect_to expenses_path, alert: 'シミュレーションデータの更新に失敗しました'
     end
   end
 
@@ -47,6 +47,6 @@ class ExpensesController < ApplicationController
 
   def render_create_error
     flash.now[:error] = @expense.errors.full_messages.join(", ")
-    render :index
+    render :index, status: :unprocessable_entity
   end
 end

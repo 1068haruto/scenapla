@@ -9,11 +9,11 @@ class UserAssetsController < ApplicationController
     @user_asset.simulation = current_user.simulation
 
     if @user_asset.save
-      redirect_to user_assets_path, notice: '資産情報が追加されました！'
+      redirect_to user_assets_path, notice: '資産データが追加されました'
     else
       @user_assets = current_user.user_assets # 保存済みの収入情報を再取得
       flash.now[:error] = @user_asset.errors.full_messages.join(", ")
-      render :index
+      render :index, status: :unprocessable_entity
     end
   end
 
@@ -21,9 +21,9 @@ class UserAssetsController < ApplicationController
     @user_asset = UserAsset.find(params[:id]) # 資産をIDで取得
 
     if @user_asset.destroy
-      redirect_to user_assets_path, notice: '資産情報が削除されました！'
+      redirect_to user_assets_path, notice: '資産データが削除されました'
     else
-      redirect_to user_assets_path, alert: '資産情報の削除に失敗しました。'
+      redirect_to user_assets_path, alert: '資産データの削除に失敗しました'
     end
   end
 
@@ -37,7 +37,7 @@ class UserAssetsController < ApplicationController
     if simulation.save
       redirect_to new_life_event_path
     else
-      redirect_to user_assets_path, alert: 'シミュレーションデータの更新に失敗しました。'
+      redirect_to user_assets_path, alert: 'シミュレーションデータの更新に失敗しました'
     end
   end
 

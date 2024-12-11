@@ -12,10 +12,12 @@
         <%= f.label :person_type, '対象者', class: 'form-label' %>
         <%= f.select :person_type, @user_asset.class.person_types.keys.map { |key| [key.humanize, key] }, {}, class: "form-select" %>
       </div>
+
       <div class="col-md-2">
         <%= f.label :asset_type, '資産種類', class: 'form-label' %>
         <%= f.select :asset_type, @user_asset.class.asset_types.keys.map { |key| [key.humanize, key] }, {}, class: "form-select" %>
       </div>
+
       <div class="col-md-2">
         <%= f.label :amount, '総額', class: 'form-label' %>
         <div class="input-group">
@@ -23,6 +25,7 @@
           <span class="input-group-text">万円</span>
         </div>
       </div>
+
       <div class="col-md-3">
         <%= f.label :return_rate, '利回り（ない場合：未入力 or 0入力）', class: 'form-label' %>
         <div class="input-group">

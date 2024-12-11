@@ -11,14 +11,16 @@
       <div class="col-md-2">
         <%= f.label :housing_expense, '住居費 ※家賃orローン', class: 'form-label' %>
         <div class="input-group">
-          <%= f.number_field :housing_expense, class: 'form-control', required: true %>
+          <%= f.number_field :housing_expense, class: 'form-control' %>
           <span class="input-group-text">万円</span>
         </div>
       </div>
+
       <div class="col-md-2">
         <%= f.label :repayment_date, '住宅ローン完済時期', class: 'form-label' %>
         <%= f.select :repayment_date, options_for_select([['支払なし', nil]] + (Date.today.year..(Date.today.year + 50)).map { |year| [year, year] }), {}, class: 'form-select' %>
       </div>
+
       <div class="col-md-2">
         <%= f.label :living_expenses, '生活費', class: 'form-label' %>
         <div class="input-group">
@@ -26,6 +28,7 @@
           <span class="input-group-text">万円</span>
         </div>
       </div>
+
       <div class="col-md-2">  
         <%= f.label :monthly_premiums, '保険費 ※貯蓄型保険除く', class: 'form-label' %>
         <div class="input-group">
@@ -33,6 +36,7 @@
           <span class="input-group-text">万円</span>
         </div>
       </div>
+
       <div class="col-md-2">
         <%= f.label :other_expenses, 'その他費用', class: 'form-label' %>
         <div class="input-group">
@@ -60,7 +64,7 @@
 
   <div class="d-flex justify-content-center">
     <%= link_to '収入に戻る', incomes_path, class: 'btn btn-secondary me-2', data: { turbo: true } %>
-    <% if @latest_expense.present? %>
+    <% if @latest_expense.present? && @latest_expense.id.present? %>
       <%= button_to '保存して次へ', update_simulation_data_expense_path(@latest_expense), method: :post, class: 'btn btn-primary' %>
     <% end %>
   </div>

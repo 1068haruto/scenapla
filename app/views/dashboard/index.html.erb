@@ -1,16 +1,55 @@
-<h1>ホームページ</h1>
+<div class="container">
+  <% content_for :title do %>Dashboard<% end %>
+  
+</div>
 
-<p>この手順でトライしよう！</p>
-<p>シミュレーション（情報入力）→ シナリオ（結果確認）→ ライフプラン（今後の計画&メモ）</p>
-<%= link_to 'シミュレーションを始める', '#', class: 'nav-button', data: { turbo_method: :get } %>
-<p>
-  項目ごとに入力する
-  <ul>
-    <li>家庭：未入力</li>
-    <li>教育方針：未入力</li>
-    <li>収入：未入力</li>
-    <li>支出：未入力</li>
-    <li>資産：未入力</li>
-    <li>ライフイベント：未入力</li>
-  </ul>
-</p>
+<div class="row align-items-center">
+  <h3>今を知り、あなたのこれからを見つけましょう。</h3>
+  <div class="my-3"></div> 
+  <!-- シミュレーション -->
+  <div class="col">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">シミュレーション（情報入力）</h5>
+        <p class="card-text">現状の収支や資産状況、今後のライフイベントを入力し、シナリオを作成する準備をしましょう。</p>
+        <%= link_to '情報入力を始める', incomes_path, class: 'nav-button', data: { turbo_method: :get } %>
+      </div>
+    </div>
+  </div>
+
+  <!-- 矢印 -->
+  <div class="col-auto">
+    <div class="cycle-arrow">
+      <i class="bi bi-arrow-right-circle"></i>
+    </div>
+  </div>
+
+  <!-- シナリオ -->
+  <div class="col">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">シナリオ（結果の確認）</h5>
+        <p class="card-text">それぞれのシナリオから、現状位置と改善点を　把握し、今後をイメージしましょう。</p>
+        <br>
+      </div>
+    </div>
+  </div>
+
+  <!-- 矢印 -->
+  <div class="col-auto">
+    <div class="cycle-arrow">
+      <i class="bi bi-arrow-right-circle"></i>
+    </div>
+  </div>
+
+  <!-- ライフプラン -->
+  <div class="col">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">ライフプラン（今後の計画）</h5>
+        <p class="card-text">今後のプランを実現させる為に、具体的なプランを時系列に記録しておきましょう。</p>
+        <br>
+      </div>
+    </div>
+  </div>
+</div>

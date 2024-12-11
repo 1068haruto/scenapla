@@ -63,6 +63,12 @@ header {
     background-color: white;
     color: black;
   }
+
+  .nav-button.active {
+    background-color: white; /* 白背景 */
+    color: black; /* 黒文字 */
+    border: 2px solid #808080; /* グレー枠 */
+  }
 }
 
 /* main */

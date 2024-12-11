@@ -53,10 +53,10 @@
     </header>
     <% if user_signed_in? %>
       <div class="button-container">
-        <%= link_to 'ホーム', dashboard_path, class: 'nav-button', data: { turbo_method: :get } %>
-        <%= link_to 'シミュレーション', incomes_path, class: 'nav-button', data: { turbo_method: :get } %>
-        <%= link_to 'シナリオ', scenarios_path, class: 'nav-button', data: { turbo_method: :get } %>
-        <%= link_to 'ライフプラン', life_events_path, class: 'nav-button', data: { turbo_method: :get } %>
+        <%= link_to 'ダッシュボード', dashboard_path, class: "nav-button #{'active' if current_page?(dashboard_path)}", data: { turbo_method: :get } %>
+        <%= link_to 'シミュレーション', incomes_path, class: "nav-button #{'active' if current_page?(incomes_path) || current_page?(expenses_path) || current_page?(user_assets_path) || current_page?(new_life_event_path)}", data: { turbo_method: :get } %>
+        <%= link_to 'シナリオ', scenarios_path, class: "nav-button #{'active' if current_page?(scenarios_path)}", data: { turbo_method: :get } %>
+        <%= link_to 'ライフプラン', life_events_path, class: "nav-button #{'active' if current_page?(life_events_path)}", data: { turbo_method: :get } %>
       </div>
     <% end %>
 

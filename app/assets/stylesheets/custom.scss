@@ -100,3 +100,15 @@ footer {
     }
   }
 }
+
+.cycle-arrow {
+  font-size: 2rem;
+  color: gray;
+  margin: 0 10px;
+}
+
+.card {
+  &:hover {
+    border-color: rgb(55, 105, 223); // ホバー時の枠線の色を青に設定
+  }
+}

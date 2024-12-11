@@ -47,6 +47,7 @@
   <% end %>
 
   <h5>追加されている支出データ</h5>
+  <h6>※再追加でデータが上書きされます</h6>
   <% if @latest_expense.present? %>
     <%= render @latest_expense %>
   <% else %>

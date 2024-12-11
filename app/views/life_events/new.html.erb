@@ -10,11 +10,13 @@
   <%= form_with model: @life_event, local: true, id: "life-event-form" do |f| %>
     <%= f.hidden_field :user_id, value: current_user.id %>
     <%= f.hidden_field :simulation_id, value: current_user.simulation.id %>
+
     <div class="row">
       <div class="col-md-2">
         <%= f.label :event_type, 'イベントタイプ', class: 'form-label' %>
         <%= f.select :event_type, [['現実', 0], ['理想', 1]], { include_blank: true }, class: 'form-select', required: true %>
       </div>
+
       <div class="col-md-2">
         <%= f.label :event_date, '発生時期', class: 'form-label' %>
         <div class="input-group">
@@ -22,10 +24,12 @@
           <span class="input-group-text">年</span>
         </div>
       </div>
+
       <div class="col-md-3">
         <%= f.label :title, 'タイトル', class: 'form-label' %>
         <%= f.text_field :title, class: 'form-control', required: true %>
       </div>
+
       <div class="col-md-2">
         <%= f.label :amount, '年額', class: 'form-label' %>
         <div class="input-group">
@@ -33,6 +37,7 @@
           <span class="input-group-text">万円</span>
         </div>
       </div>
+
       <div class="col-md-2">
         <%= f.label :payment_span, '支払期間', class: 'form-label' %>
         <div class="input-group">

@@ -11,7 +11,7 @@ class SimulationsController < ApplicationController
     # 資産寿命の計算と保存
     calculate_and_save_asset_lifespan(simulation)
 
-    redirect_to scenarios_path, notice: 'シナリオを更新しました。'
+    redirect_to scenarios_path, notice: 'シナリオを更新しました'
   rescue ActiveRecord::RecordNotFound => e
     redirect_to scenarios_path, alert: "シナリオが見つかりませんでした: #{e.message}"
   rescue => e

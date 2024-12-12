@@ -3,7 +3,6 @@
   <div class="mb-5">
     <h1 class="display-4">LifeEvents</h1>
     <h4 class="mb-3">今後のライフイベントについて教えて下さい。</h4>
-    <p>※金額は全てプラス値で入力</p>
     <p>※必ず実現したいイベントは「現実」、できれば実現したいイベントは「理想」を選択</p>
   </div>
 
@@ -14,7 +13,7 @@
     <div class="row">
       <div class="col-md-2">
         <%= f.label :event_type, 'イベントタイプ', class: 'form-label' %>
-        <%= f.select :event_type, [['現実', 0], ['理想', 1]], { include_blank: true }, class: 'form-select', required: true %>
+        <%= f.select :event_type, [['現実', 0], ['理想', 1]], { selected: 0 }, class: 'form-select' %>
       </div>
 
       <div class="col-md-2">
@@ -41,7 +40,7 @@
       <div class="col-md-2">
         <%= f.label :payment_span, '支払期間', class: 'form-label' %>
         <div class="input-group">
-          <%= f.select :payment_span, (1..10).map { |i| [i.to_s, i] }, { include_blank: true }, class: 'form-select', required: true %>
+          <%= f.select :payment_span, (1..10).map { |i| [i.to_s, i] }, {selected: 1 }, class: 'form-select' %>
           <span class="input-group-text">年間</span>
         </div>
       </div>

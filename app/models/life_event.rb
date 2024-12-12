@@ -9,7 +9,7 @@ class LifeEvent < ApplicationRecord
   validates :event_type, presence: true
   validates :event_date, presence: true
   validates :title, presence: true
-  validates :amount, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :amount, presence: true, numericality: { greater_than_or_equal_to: 0, message: 'は0以上のプラス値で入力して下さい' }
   validates :payment_span, presence: true
 
   def self.update_simulation_data(simulation_id)

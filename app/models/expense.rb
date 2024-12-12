@@ -5,11 +5,11 @@ class Expense < ApplicationRecord
   validates :user_id, presence: true
   validates :simulation_id, presence: true
   
-  validates :housing_expense, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :housing_expense, presence: true, numericality: { greater_than_or_equal_to: 0, message: 'は0以上のプラス値で入力して下さい' }
   validates :repayment_date, presence: true, allow_nil: true
-  validates :living_expenses, presence: true, numericality: { greater_than_or_equal_to: 0 }
-  validates :monthly_premiums, presence: true, numericality: { greater_than_or_equal_to: 0 }
-  validates :other_expenses, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :living_expenses, presence: true, numericality: { greater_than_or_equal_to: 0, message: 'は0以上のプラス値で入力して下さい' }
+  validates :monthly_premiums, presence: true, numericality: { greater_than_or_equal_to: 0, message: 'は0以上のプラス値で入力して下さい' }
+  validates :other_expenses, presence: true, numericality: { greater_than_or_equal_to: 0, message: 'は0以上のプラス値で入力して下さい' }
 
   def update_simulation_data(current_user)
     current_year = Date.today.year

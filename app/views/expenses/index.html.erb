@@ -3,7 +3,6 @@
   <div class="mb-5">
     <h1 class="display-4">Expenses</h1>
     <h4 class="mb-3">現在の月支出について教えて下さい。</h4>
-    <p>※金額は全てプラス値で入力</p>
   </div>
 
   <%= form_with model: @expense, url: create_or_update_expenses_path, local: true, id: "expense-form" do |f| %>

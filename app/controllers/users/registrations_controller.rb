@@ -8,27 +8,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # 既存メソッドをオーバーライド
   def create
     super do |resource|
-      # 登録後、メール確認が完了するまでログインさせない
+      # 登録後、メール確認が完了するまでサインインさせない
       if resource.persisted? && !resource.confirmed?
         sign_out resource
       end
     end
-  end
-
-  def destroy
-    current_user.scenarios.each do |scenario| scenario.destroy end
-
-    # その他の関連データを削除
-    current_user.incomes.each do |income|
-      income.destroy
-    end
-      
-    if current_user.simulation
-      current_user.simulation.destroy
-    end
-      
-    # 最後にユーザーを削除
-    current_user.destroy
   end
 
   protected

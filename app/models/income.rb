@@ -5,9 +5,9 @@ class Income < ApplicationRecord
   enum person_type: { 本人: "本人", 配偶者: "配偶者" }
 
   validates :person_type, presence: true
-  validates :income, numericality: { greater_than_or_equal_to: 0 }
+  validates :income, numericality: { greater_than_or_equal_to: 0, message: 'は0以上のプラス値で入力して下さい' }
   validates :retirement_date, presence: true
-  validates :retirement_pay, numericality: { greater_than_or_equal_to: 0 }
+  validates :retirement_pay, numericality: { greater_than_or_equal_to: 0, message: 'は0以上のプラス値で入力して下さい' }
 
   # 各年の収入を計算するメソッド
   def calculate_yearly_income_data

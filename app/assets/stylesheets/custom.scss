@@ -16,8 +16,15 @@ header {
   color: white;
 
   .logo {
-    font-size: 28px;
+    font-size: 30px;
     font-weight: bold;
+    color: white; /* 文字色を白に設定 */
+    text-decoration: none; /* 下線を削除 */
+  
+    &:hover {
+      text-decoration: none; /* ホバー時も下線を表示しない */
+      color: white; /* ホバー時も白色を維持 */
+    }
   }
 
   /* ユーザー名 */

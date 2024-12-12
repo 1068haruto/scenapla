@@ -25,7 +25,7 @@
         <% else %>
           <p>資産情報が登録されていません。</p>
         <% end %>
-        <%= column_chart @asset_lifespan.yearly_lifespans.map { |year, amount| [year, amount.to_f] } %>
+        <%= column_chart @asset_lifespan.yearly_lifespans.map { |year, amount| [year, amount.to_f] }, xtitle: '年', ytitle: '資産額（万円）' %>
       <% else %>
         <p>資産情報の登録がないため、グラフを表示できません。</p>
       <% end %>
@@ -78,7 +78,7 @@
             <p>70歳時点のトータル収支を基準とすると、現時点で最低でも<strong>年額<%= @real_shortage %>万円</strong>が不足しています。</p>
             <p>70歳までにマイナスの年がある場合は、上記不足額以上の金額がその年までに必要となります。</p>
           <% end %>
-          <%= area_chart @real_balance_chart_data, height: "300px", download: {filename: "現実的シナリオ"}, dataset: {borderWidth: 1} %> 
+          <%= area_chart @real_balance_chart_data, height: "300px", download: {filename: "現実的シナリオ"}, dataset: {borderWidth: 1}, xtitle: '年', ytitle: '収支額（万円）' %> 
         <% end %>
     </div>
   </div>
@@ -129,7 +129,7 @@
           <p>70歳時点のトータル収支を基準とすると、現時点で最低でも<strong>年額<%= @ideal_shortage %>万円</strong>が不足しています。</p>
           <p>70歳までにマイナスの年がある場合は、上記不足額以上の金額がその年までに必要となります。</p>
         <% end %>
-        <%= area_chart  @ideal_balance_chart_data, height: "300px", download: {filename: "理想的シナリオ"}, dataset: {borderWidth: 1} %> 
+        <%= area_chart  @ideal_balance_chart_data, height: "300px", download: {filename: "理想的シナリオ"}, dataset: {borderWidth: 1}, xtitle: '年', ytitle: '収支額（万円）' %> 
       <% end %>
     </div>
   </div>
@@ -146,7 +146,7 @@
           </span>
         </div>
         <p>現時点の資産情報を元にした今後の推移です。積立や取り崩しなどを行う場合、資産情報を更新する必要があります。</p>
-        <%= area_chart @asset_data, height: "300px", colors: ["#FF5733"], download: {filename: "運用資産シナリオ"} %>
+        <%= area_chart @asset_data, height: "300px", colors: ["#FF5733"], download: {filename: "運用資産シナリオ"}, xtitle: '年', ytitle: '運用資産額（万円）' %>
       <% end %>
     </div>
   </div>

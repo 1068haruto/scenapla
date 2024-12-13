@@ -9,7 +9,16 @@ class Income < ApplicationRecord
   validates :retirement_date, presence: true
   validates :retirement_pay, numericality: { greater_than_or_equal_to: 0, message: 'は0以上のプラス値で入力して下さい' }
 
-  # 各年の収入を計算するメソッド
+  # 入力された年をdate型に整形するカスタムセッター
+  def retirement_date=(value)
+    if value.present?
+      super(Date.new(value.to_i, 1, 1))
+    else
+      super(value)
+    end
+  end
+
+  # 各年の収入を計算しハッシュ配列にする
   def calculate_yearly_income_data
     income_data = []
 

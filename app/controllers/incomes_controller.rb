@@ -1,5 +1,6 @@
 class IncomesController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_income, only: [:destroy]
 
   def index
     @incomes = current_user.incomes
@@ -7,7 +8,7 @@ class IncomesController < ApplicationController
   end
 
   def create
-    @income = current_user.incomes.build(convert_retirement_date(income_params))
+    @income = current_user.incomes.build(income_params)
     @income.simulation = current_user.simulation
 
     if @income.save
@@ -18,8 +19,6 @@ class IncomesController < ApplicationController
   end
 
   def destroy
-    @income = Income.find(params[:id])
-
     if @income.destroy
       redirect_to incomes_path, notice: '収入データが削除されました'
     else
@@ -28,17 +27,17 @@ class IncomesController < ApplicationController
   end
 
   def update_simulation_data
-    # 各Incomeから収入データを集計
+    # Incomeから全ての収入データを取得し、それぞれを配列にする
     all_income_data = current_user.incomes.flat_map(&:calculate_yearly_income_data)
 
-    # 年ごとに収入を集計
+    # ハッシュ配列に整形された全ての収入データを、年毎に金額を集計して統合する
     grouped_income_data = all_income_data.group_by { |data| data[:date] }.map do |year, records|
       { date: year, amount: records.sum { |record| record[:amount] } }
     end
 
     # シミュレーションデータを更新
     if current_user.simulation.update!(income_data: grouped_income_data)
-      redirect_to expenses_path
+      redirect_to expenses_path, notice: 'シミュレーションデータが正常に更新されました'
     else
       redirect_to incomes_path, alert: 'シミュレーションデータの更新に失敗しました'
     end
@@ -50,11 +49,10 @@ class IncomesController < ApplicationController
     params.require(:income).permit(:person_type, :income, :retirement_date, :retirement_pay)
   end
 
-  def convert_retirement_date(params)
-    if params[:retirement_date].present?
-      params[:retirement_date] = Date.new(params[:retirement_date].to_i, 1, 1)
-    end
-    params
+  def set_income
+    @income = current_user.incomes.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to incomes_path, alert: '収入データが見つかりません'
   end
 
   def render_create_error

@@ -2,7 +2,7 @@ class ExpensesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @latest_expense = current_user.expenses.last
+    @latest_expense = current_user.expenses.includes(:simulation).last
     @expense = Expense.new
   end
 
@@ -11,7 +11,7 @@ class ExpensesController < ApplicationController
     @expense = current_user.expenses.last || current_user.expenses.build
 
     # 新しいパラメータを反映
-    @expense.assign_attributes(convert_repayment_date(expense_params))
+    @expense.assign_attributes(expense_params)
     @expense.simulation = current_user.simulation
 
     if @expense.save
@@ -26,7 +26,7 @@ class ExpensesController < ApplicationController
   def update_simulation_data
     expense = current_user.expenses.last
     if expense.update_simulation_data(current_user)
-      redirect_to user_assets_path
+      redirect_to user_assets_path, notice: 'シミュレーションデータが更新されました'
     else
       redirect_to expenses_path, alert: 'シミュレーションデータの更新に失敗しました'
     end
@@ -36,13 +36,6 @@ class ExpensesController < ApplicationController
 
   def expense_params
     params.require(:expense).permit(:housing_expense, :repayment_date, :living_expenses, :monthly_premiums, :other_expenses)
-  end
-
-  def convert_repayment_date(params)
-    if params[:repayment_date].present?
-      params[:repayment_date] = Date.new(params[:repayment_date].to_i, 1, 1)
-    end
-    params
   end
 
   def render_create_error

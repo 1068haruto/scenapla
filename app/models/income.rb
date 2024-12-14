@@ -11,11 +11,7 @@ class Income < ApplicationRecord
 
   # 入力された年をdate型に整形するカスタムセッター
   def retirement_date=(value)
-    if value.present?
-      super(Date.new(value.to_i, 1, 1))
-    else
-      super(value)
-    end
+    super(value.present? ? Date.new(value.to_i, 1, 1) : value)
   end
 
   # 各年の収入を計算しハッシュ配列にする

@@ -4,23 +4,24 @@ class Expense < ApplicationRecord
 
   validates :user_id, presence: true
   validates :simulation_id, presence: true
-  
-  validates :housing_expense, presence: true, numericality: { greater_than_or_equal_to: 0, message: 'は0以上のプラス値で入力して下さい' }
-  validates :repayment_date, presence: true, allow_nil: true
-  validates :living_expenses, presence: true, numericality: { greater_than_or_equal_to: 0, message: 'は0以上のプラス値で入力して下さい' }
-  validates :monthly_premiums, presence: true, numericality: { greater_than_or_equal_to: 0, message: 'は0以上のプラス値で入力して下さい' }
-  validates :other_expenses, presence: true, numericality: { greater_than_or_equal_to: 0, message: 'は0以上のプラス値で入力して下さい' }
+  validates :housing_expense, :living_expenses, :monthly_premiums, :other_expenses,
+            presence: true, 
+            numericality: { greater_than_or_equal_to: 0, message: 'は0以上のプラス値で入力して下さい' }
+  validates :repayment_date, allow_nil: true, presence: true
+
+  # 入力された年をdate型に整形するカスタムセッター
+  def repayment_date=(value)
+    super(value.present? ? Date.new(value.to_i, 1, 1) : value)
+  end
 
   def update_simulation_data(current_user)
-    current_year = Date.today.year
-    user_age = current_year - current_user.date_of_birth.year
-  
-    if user_age >= 70
+    if current_user.age >= 70
       errors.add(:base, "既に70歳以上のため計算を実行できません")
       return
     end
   
-    seventy_year_old_year = current_year + (70 - user_age)
+    current_year = Date.today.year
+    seventy_year_old_year = current_year + (70 - current_user.age)
     expense_data = calculate_expenses(current_year, seventy_year_old_year)
     simulation_record = current_user.simulation
   

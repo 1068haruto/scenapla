@@ -22,7 +22,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def after_sign_up_path_for(resource)
-    dashboard_path # ホームページに遷移する
+    dashboard_path
   end
 
   # GET /resource/sign_up

@@ -89,7 +89,8 @@
     </main>
 
     <footer>
-      <%= link_to 'お問い合わせ', "#", class: "footer-button", data: { turbo_method: :get } %>
+      <%= link_to 'お問い合わせ', "https://docs.google.com/forms/d/e/1FAIpQLSfs5-SIS7h3jQtT4F3ulKjLrdgpX-EJjNNPqpkwhuBQ6s41dA/viewform?usp=sf_link", 
+                  class: "footer-button", target: "_blank", rel: "noopener" %>
       <%= link_to 'プライバシーポリシー', static_pages_privacy_path, class: "footer-button", data: { turbo_method: :get } %>
       <%= link_to '利用規約', static_pages_terms_path, class: "footer-button", data: { turbo_method: :get } %>
       <p>&copy; <%= Time.now.year %> My Website. All rights reserved.</p>

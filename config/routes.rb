@@ -43,6 +43,10 @@ Rails.application.routes.draw do
   # ダッシュボード
   get "dashboard" => "dashboard#index", as: :dashboard
 
+  # 利用規約 & プライバシーポリシー
+  get "static_pages/terms"
+  get "static_pages/privacy"
+
   # レターオープナー用
   if Rails.env.development?
     mount LetterOpenerWeb::Engine, at: "/letter_opener"

@@ -33,14 +33,14 @@
         </div>
 
         <div class="mb-3">
-          <%= f.label :password_confirmation, 'パスワード（確認用）', class: 'form-label' %>
+          <%= f.label :password_confirmation, 'パスワード(確認用)', class: 'form-label' %>
           <em>※ 変更する場合のみ入力</em><br />
           <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control' %>
         </div>
 
         <div class="actions text-center">
-          <%= f.submit "保存", class: 'btn btn-primary' %>
-          <%= link_to "キャンセル", user_path(@user), class: "btn btn-secondary", data: { turbo: true } %>
+          <%= f.submit "保存", class: 'btn btn-outline-primary' %>
+          <%= link_to "キャンセル", user_path(@user), class: "btn btn-outline-secondary", data: { turbo: true } %>
         </div>
       <% end %>
     </div>

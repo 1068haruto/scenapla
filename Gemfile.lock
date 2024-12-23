@@ -214,6 +214,9 @@ GEM
     omniauth-oauth2 (1.8.0)
       oauth2 (>= 1.4, < 3)
       omniauth (~> 2.0)
+    omniauth-rails_csrf_protection (1.0.2)
+      actionpack (>= 4.2)
+      omniauth (~> 2.0)
     orm_adapter (0.5.0)
     parallel (1.26.3)
     parser (3.3.5.0)
@@ -379,6 +382,7 @@ DEPENDENCIES
   omniauth (~> 2.0)
   omniauth-google-oauth2 (~> 1.0)
   omniauth-line (~> 0.1.0)
+  omniauth-rails_csrf_protection
   pg (~> 1.1)
   puma (>= 5.0)
   rails (~> 7.2.1, >= 7.2.1.1)

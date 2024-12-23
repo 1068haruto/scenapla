@@ -21,6 +21,4 @@
   <div class="mb-5"></div> <!-- ここで感覚を広げるための空のdivを追加 -->
   
   <%= link_to '始める', new_user_registration_path, class: 'btn btn-primary btn-lg', data: { turbo_method: :get } %>
-
-  <%= button_to "Googleでログイン", user_google_oauth2_omniauth_authorize_path, data: { turbo: false } %>
 </div>

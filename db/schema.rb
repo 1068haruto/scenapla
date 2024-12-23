@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_12_17_100009) do
+ActiveRecord::Schema[7.2].define(version: 2024_12_23_104453) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -119,6 +119,15 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_17_100009) do
     t.index ["user_id"], name: "index_simulations_on_user_id"
   end
 
+  create_table "sns_credentials", force: :cascade do |t|
+    t.string "provider"
+    t.string "uid"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_sns_credentials_on_user_id"
+  end
+
   create_table "user_assets", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "simulation_id", null: false
@@ -134,7 +143,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_17_100009) do
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "name", null: false
-    t.date "date_of_birth", null: false
+    t.date "date_of_birth"
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -144,11 +153,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_17_100009) do
     t.string "unconfirmed_email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "provider"
-    t.string "uid"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
@@ -160,4 +166,5 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_17_100009) do
   add_foreign_key "scenarios", "simulations"
   add_foreign_key "scenarios", "users"
   add_foreign_key "simulations", "users"
+  add_foreign_key "sns_credentials", "users"
 end

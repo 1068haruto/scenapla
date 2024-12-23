@@ -5,12 +5,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_account_update_params, only: [:update]
   before_action :configure_permitted_parameters
 
-  # 既存メソッドをオーバーライド
   def create
     super do |resource|
-      # 登録後、メール確認が完了するまでサインインさせない
-      if resource.persisted? && !resource.confirmed?
-        sign_out resource
+      if resource.persisted? && resource.sns_credentials.empty?
+        sign_out resource unless resource.confirmed?
       end
     end
   end

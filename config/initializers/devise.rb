@@ -275,8 +275,12 @@ Devise.setup do |config|
   
   # OmniAuth用設定
   # ===== credentials.yml.encに記載 =====
-  config.omniauth :google_oauth2, Rails.application.credentials.google[:client_id], Rails.application.credentials.google[:client_secret], skip_jwt: true, scope: 'email, profile'
-  config.omniauth :line, Rails.application.credentials.line[:channel_id], Rails.application.credentials.line[:channel_secret]
+  #config.omniauth :google_oauth2, Rails.application.credentials.google[:client_id], Rails.application.credentials.google[:client_secret], skip_jwt: true, scope: 'email, profile'
+  config.omniauth :google_oauth2,
+    ENV.fetch('GOOGLE_CLIENT_ID', Rails.application.credentials.google[:client_id]),
+    ENV.fetch('GOOGLE_CLIENT_SECRET', Rails.application.credentials.google[:client_secret]),
+    skip_jwt: true,
+    scope: 'email, profile'
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

@@ -270,23 +270,8 @@ Devise.setup do |config|
   config.sign_out_via = :delete
 
   # ==> OmniAuth
-  # Add a new OmniAuth provider. Check the wiki for more information on setting up on your models and hooks.
-  # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
-  
-  # OmniAuth用設定
-  # ===== credentials.yml.encに記載 =====
-  #config.omniauth :google_oauth2, Rails.application.credentials.google[:client_id], Rails.application.credentials.google[:client_secret], skip_jwt: true, scope: 'email, profile'
-  #config.omniauth :google_oauth2,
-    #ENV.fetch('GOOGLE_CLIENT_ID', Rails.application.credentials.google[:client_id]),
-    #ENV.fetch('GOOGLE_CLIENT_SECRET', Rails.application.credentials.google[:client_secret]),
-    #skip_jwt: true,
-    #scope: 'email, profile'
-  #config.omniauth :google_oauth2,
-    #ENV['GOOGLE_CLIENT_ID'],
-    #ENV['GOOGLE_CLIENT_SECRET'],
-    #skip_jwt: true,
-    #scope: 'email, profile'
-  
+  # Check the wiki for more information on setting up on your models and hooks.
+  # OmniAuth用設定：環境変数はcredentials.yml.enc(開発), heroku config(本番)で設定
   config.omniauth :google_oauth2,
     ENV.fetch('GOOGLE_CLIENT_ID') { Rails.application.credentials.google[:client_id] },
     ENV.fetch('GOOGLE_CLIENT_SECRET') { Rails.application.credentials.google[:client_secret] },

@@ -281,9 +281,15 @@ Devise.setup do |config|
     #ENV.fetch('GOOGLE_CLIENT_SECRET', Rails.application.credentials.google[:client_secret]),
     #skip_jwt: true,
     #scope: 'email, profile'
+  #config.omniauth :google_oauth2,
+    #ENV['GOOGLE_CLIENT_ID'],
+    #ENV['GOOGLE_CLIENT_SECRET'],
+    #skip_jwt: true,
+    #scope: 'email, profile'
+  
   config.omniauth :google_oauth2,
-    ENV['GOOGLE_CLIENT_ID'],
-    ENV['GOOGLE_CLIENT_SECRET'],
+    ENV.fetch('GOOGLE_CLIENT_ID') { Rails.application.credentials.google[:client_id] },
+    ENV.fetch('GOOGLE_CLIENT_SECRET') { Rails.application.credentials.google[:client_secret] },
     skip_jwt: true,
     scope: 'email, profile'
 

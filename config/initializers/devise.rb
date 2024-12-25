@@ -276,9 +276,14 @@ Devise.setup do |config|
   # OmniAuth用設定
   # ===== credentials.yml.encに記載 =====
   #config.omniauth :google_oauth2, Rails.application.credentials.google[:client_id], Rails.application.credentials.google[:client_secret], skip_jwt: true, scope: 'email, profile'
+  #config.omniauth :google_oauth2,
+    #ENV.fetch('GOOGLE_CLIENT_ID', Rails.application.credentials.google[:client_id]),
+    #ENV.fetch('GOOGLE_CLIENT_SECRET', Rails.application.credentials.google[:client_secret]),
+    #skip_jwt: true,
+    #scope: 'email, profile'
   config.omniauth :google_oauth2,
-    ENV.fetch('GOOGLE_CLIENT_ID', Rails.application.credentials.google[:client_id]),
-    ENV.fetch('GOOGLE_CLIENT_SECRET', Rails.application.credentials.google[:client_secret]),
+    ENV['GOOGLE_CLIENT_ID'],
+    ENV['GOOGLE_CLIENT_SECRET'],
     skip_jwt: true,
     scope: 'email, profile'
 

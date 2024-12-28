@@ -26,17 +26,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_23_104453) do
     t.index ["user_id"], name: "index_asset_lifespans_on_user_id"
   end
 
-  create_table "assets", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "simulation_id", null: false
-    t.integer "person_type", default: 0, null: false
-    t.integer "asset_type", default: 0, null: false
-    t.decimal "amount", default: "0.0", null: false
-    t.decimal "yield"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "expenses", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "simulation_id", null: false

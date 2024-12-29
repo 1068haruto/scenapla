@@ -13,19 +13,16 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
-  protected
-
-  def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :date_of_birth])
+  def update
+    if resource.update(account_update_params)
+      redirect_to user_path(resource), notice: 'アカウント情報が更新されました'
+    else
+      render :edit
+    end
   end
 
   # GET /resource/sign_up
   # def new
-  #   super
-  # end
-
-  # POST /resource
-  # def create
   #   super
   # end
 
@@ -34,15 +31,18 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
-  # PUT /resource
-  # def update
-  #   super
-  # end
-
   # DELETE /resource
   # def destroy
   #   super
   # end
+
+  protected
+
+  # 登録時、更新時の追加のパラメータを許可
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :date_of_birth])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:name, :date_of_birth])
+  end
 
   # GET /resource/cancel
   # Forces the session data which is usually expired after sign
@@ -51,18 +51,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # removing all OAuth session data.
   # def cancel
   #   super
-  # end
-
-  # protected
-
-  # If you have extra params to permit, append them to the sanitizer.
-  # def configure_sign_up_params
-  #   devise_parameter_sanitizer.permit(:sign_up, keys: [:attribute])
-  # end
-
-  # If you have extra params to permit, append them to the sanitizer.
-  # def configure_account_update_params
-  #   devise_parameter_sanitizer.permit(:account_update, keys: [:attribute])
   # end
 
   # The path used after sign up for inactive accounts.

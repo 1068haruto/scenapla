@@ -42,11 +42,14 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     if @user.persisted?
 
-      @user.skip_confirmation! if auth.provider.present?  # SNSログイン時はメールアドレス確認をスキップ
+      @user.skip_confirmation! if auth.provider.present?  # googleログイン時はメール確認をスキップ
 
-      # サインインしてリダイレクト
       sign_in @user, event: :authentication
-      redirect_to dashboard_path, notice: "#{provider.to_s.capitalize}でログインしました。"
+      if @user.date_of_birth.nil?
+        redirect_to edit_user_registration_path, notice: "#{provider.to_s.capitalize}でログインしました。"
+      else
+        redirect_to dashboard_path, notice: "#{provider.to_s.capitalize}でログインしました。"
+      end
     else
       # 失敗時のリダイレクト先を統一
       redirect_to new_user_registration_url, alert: "#{provider.to_s.capitalize}ログインに失敗しました。"

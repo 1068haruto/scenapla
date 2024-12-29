@@ -50,7 +50,8 @@
             </div>
           </nav>
         <% else %>
-          <%= link_to 'サインイン', new_user_session_path, class: 'btn btn-outline-primary' %>
+          <%= link_to '初めての方', new_user_registration_path, class: 'btn btn-outline-light' %>
+          <%= link_to 'サインイン', new_user_session_path, class: 'btn btn-primary' %>
         <% end %>
       </div>
     </header>

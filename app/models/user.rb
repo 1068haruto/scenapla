@@ -59,12 +59,28 @@ class User < ApplicationRecord
 
   private
 
+  # SNS使用ユーザー：登録も更新も無効
+  # 一般ユーザー：登録は常に有効、更新は入力があれば有効、なければ無効
   def password_required?
-    sns_credentials.empty?
+    if sns_credentials.exists?  
+      false
+    elsif new_record?    
+      true
+    else                        
+      password.present? || password_confirmation.present? 
+    end
   end
-  
+
+  # 一般ユーザー：登録も更新も有効
+  # SNS使用ユーザー：登録は無効、更新は有効
   def date_of_birth_required?
-    sns_credentials.empty?
+    return true if sns_credentials.empty?    
+
+    if sns_credentials.exists? && new_record?
+      false
+    else
+      true
+    end
   end
 
   def create_simulation_and_scenario_models

@@ -21,9 +21,6 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:name, :email, :date_of_birth).tap do |whitelisted|
-      whitelisted[:password] = params[:user][:password] if params[:user][:password].present?
-      whitelisted[:password_confirmation] = params[:user][:password_confirmation] if params[:user][:password_confirmation].present?
-    end
+    params.require(:user).permit(:name, :email, :date_of_birth, :password, :password_confirmation)
   end
 end

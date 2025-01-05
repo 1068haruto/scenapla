@@ -25,50 +25,62 @@
 
   <body>
     <header>
-      <div class="logo">
-        <%= link_to 'Scenapla', user_signed_in? ? dashboard_path : root_path, class: 'logo', data: { turbo: false } %>
-      </div>
-      <div class="user-info">
-        <% if current_user %>
-          <span class="username"><%= "#{current_user.name}さん" %></span>
-          <nav class="navbar fixed-right">
-            <div class="container-fluid">
-              <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class ="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                <div class="offcanvas-header">
-                  <h5 class="offcanvas-title" id="offcanvasNavbarLabel">メニュー</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body">
-                  <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                    <li class="nav-item">
-                      <%= link_to 'アカウント情報', user_path(current_user), class: 'nav-link' %>
-                    </li>
-                    <li class="nav-item">
-                      <%= link_to 'サインアウト', destroy_user_session_path, class: 'nav-link', data: { turbo_method: :delete } %>
-                    </li>
-                  </ul>
-                </div>
+      <nav class="navbar navbar-dark">
+        <div class="container-fluid">
+          <!-- ブランドロゴ -->
+          <%= link_to 'Scenapla', user_signed_in? ? dashboard_path : root_path, class: 'navbar-brand', data: { turbo: false } %>
+
+          <% if user_signed_in? %>
+            <!-- ハンバーガーメニュー (offcanvas トリガー) -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Offcanvas メニュー -->
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+              <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">メニュー</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+              </div>
+              <div class="offcanvas-body">
+                <!-- ページボタン -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                    <%= link_to 'ダッシュボード', dashboard_path, class: 'nav-link', data: { turbo: true } %>
+                  </li>
+                  <li class="nav-item">
+                    <%= link_to 'シミュレーション', incomes_path, class: 'nav-link', data: { turbo: true } %>
+                  </li>
+                  <li class="nav-item">
+                    <%= link_to 'シナリオ', scenarios_path, class: 'nav-link', data: { turbo: true } %>
+                  </li>
+                  <li class="nav-item">
+                    <%= link_to 'ライフプラン', life_events_path, class: 'nav-link', data: { turbo: true } %>
+                  </li>
+                </ul>
+
+                <!-- アカウント情報とサインアウト -->
+                <ul class="navbar-nav">
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      アカウント情報
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
+                      <li><%= link_to 'アカウント情報', user_path(current_user), class: 'dropdown-item' %></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><%= link_to 'サインアウト', destroy_user_session_path, data: { turbo_method: :delete }, class: 'dropdown-item' %></li>
+                    </ul>
+                  </li>
+                </ul>
               </div>
             </div>
-          </nav>
-        <% else %>
-          <%= link_to '初めての方', new_user_registration_path, class: 'btn btn-outline-light' %>
-          <%= link_to 'サインイン', new_user_session_path, class: 'btn btn-primary' %>
-        <% end %>
-      </div>
+          <% else %>
+            <%= link_to 'サインイン', new_user_session_path, class: 'btn btn-outline-light', data: { turbo: true } %>
+          <% end %>
+        </div>
+      </nav>
     </header>
-    <% if user_signed_in? %>
-      <div class="button-container">
-        <%= link_to 'ダッシュボード', dashboard_path, class: "nav-button #{'active' if current_page?(dashboard_path)}", data: { turbo_method: :get } %>
-        <%= link_to 'シミュレーション', incomes_path, class: "nav-button #{'active' if current_page?(incomes_path) || current_page?(expenses_path) || current_page?(user_assets_path) || current_page?(new_life_event_path)}", data: { turbo_method: :get } %>
-        <%= link_to 'シナリオ', scenarios_path, class: "nav-button #{'active' if current_page?(scenarios_path)}", data: { turbo_method: :get } %>
-        <%= link_to 'ライフプラン', life_events_path, class: "nav-button #{'active' if current_page?(life_events_path)}", data: { turbo_method: :get } %>
-      </div>
-    <% end %>
-
+  
     <main>
       <% if notice %>
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -94,12 +106,21 @@
       <%= yield %> <!-- 各ページの内容がここに挿入される -->
     </main>
 
-    <footer>
-      <%= link_to 'お問い合わせ', "https://docs.google.com/forms/d/e/1FAIpQLSfs5-SIS7h3jQtT4F3ulKjLrdgpX-EJjNNPqpkwhuBQ6s41dA/viewform?usp=sf_link", 
-                  class: "footer-button", target: "_blank", rel: "noopener" %>
-      <%= link_to 'プライバシーポリシー', static_pages_privacy_path, class: "footer-button", data: { turbo_method: :get } %>
-      <%= link_to '利用規約', static_pages_terms_path, class: "footer-button", data: { turbo_method: :get } %>
-      <p>&copy; <%= Time.now.year %> My Website. All rights reserved.</p>
+    <footer class="bg-light text-dark py-4 mt-auto">
+      <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+        <!-- ページボタン -->
+        <div>
+          <%= link_to 'お問い合わせ', 
+                "https://docs.google.com/forms/d/e/1FAIpQLSfs5-SIS7h3jQtT4F3ulKjLrdgpX-EJjNNPqpkwhuBQ6s41dA/viewform?usp=sf_link", 
+                class: "footer-button btn btn-link text-muted px-2", target: "_blank", rel: "noopener", data: { turbo: true } %>
+          <%= link_to 'プライバシーポリシー', static_pages_privacy_path, class: "footer-button btn btn-link text-muted px-2", data: { turbo: true } %>
+          <%= link_to '利用規約', static_pages_terms_path, class: "footer-button btn btn-link text-muted px-2", data: { turbo: true } %>
+        </div>
+        <!-- コピーライト -->
+        <div class="text-center text-muted mt-3 mt-md-0">
+          &copy; <%= Time.now.year %> My Website. All rights reserved.
+        </div>
+      </div>
     </footer>
   </body>
 </html>

@@ -68,14 +68,14 @@
                     <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
                       <li><%= link_to 'アカウント情報', user_path(current_user), class: 'dropdown-item' %></li>
                       <li><hr class="dropdown-divider"></li>
-                      <li><%= link_to 'サインアウト', destroy_user_session_path, data: { turbo_method: :delete }, class: 'dropdown-item' %></li>
+                      <li><%= link_to 'ログアウト', destroy_user_session_path, data: { turbo_method: :delete }, class: 'dropdown-item' %></li>
                     </ul>
                   </li>
                 </ul>
               </div>
             </div>
           <% else %>
-            <%= link_to 'サインイン', new_user_session_path, class: 'btn btn-outline-light', data: { turbo: true } %>
+            <%= link_to 'ログイン', new_user_session_path, class: 'btn btn-outline-light', data: { turbo: true } %>
           <% end %>
         </div>
       </nav>
@@ -112,9 +112,9 @@
         <div>
           <%= link_to 'お問い合わせ', 
                 "https://docs.google.com/forms/d/e/1FAIpQLSfs5-SIS7h3jQtT4F3ulKjLrdgpX-EJjNNPqpkwhuBQ6s41dA/viewform?usp=sf_link", 
-                class: "footer-button btn btn-link text-muted px-2", target: "_blank", rel: "noopener", data: { turbo: true } %>
-          <%= link_to 'プライバシーポリシー', static_pages_privacy_path, class: "footer-button btn btn-link text-muted px-2", data: { turbo: true } %>
-          <%= link_to '利用規約', static_pages_terms_path, class: "footer-button btn btn-link text-muted px-2", data: { turbo: true } %>
+                class: "btn btn-link text-muted px-2", target: "_blank", rel: "noopener", data: { turbo: true } %>
+          <%= link_to 'プライバシーポリシー', static_pages_privacy_path, class: "btn btn-link text-muted px-2", data: { turbo: true } %>
+          <%= link_to '利用規約', static_pages_terms_path, class: "btn btn-link text-muted px-2", data: { turbo: true } %>
         </div>
         <!-- コピーライト -->
         <div class="text-center text-muted mt-3 mt-md-0">

@@ -1,121 +1,58 @@
 body {
-  display: flex; /* フレックスボックスを使って全体を配置 */
-  flex-direction: column; /* 縦方向に配置 */
-  min-height: 100vh; /* ビューポートの高さを最低限確保 */
-  margin: 0; /* デフォルトのマージンをリセット */
-}
-
-/* header */
-header {
-  height: 80px;  /* ヘッダーの高さ */
-  display: flex;  /* フレックスボックスを使う */
-  justify-content: space-between;
-  align-items: center;  /* 垂直方向の中央揃え */
-  padding: 10px 20px;
-  background-color: #333; // ダークグレー
-  color: white;
-
-  .logo {
-    font-size: 30px;
-    font-weight: bold;
-    color: white; /* 文字色を白に設定 */
-    text-decoration: none; /* 下線を削除 */
-  
-    &:hover {
-      text-decoration: none; /* ホバー時も下線を表示しない */
-      color: white; /* ホバー時も白色を維持 */
-    }
-  }
-
-  /* ユーザー名 */
-  .user-info {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-  }
-
-  /* ハンバーガーメニューのボタン枠線を白色にする */
-  .navbar-toggler {
-    border-color: white;
-  }
-
-  /* ハンバーガーメニューの中の3本線を白色にする */
-  .navbar-toggler-icon {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='white' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
-  }
-}
-
-.button-container {
-  display: flex; /* 横並びにする */
-  justify-content: space-between; /* 各ボタンを均等に配置 */
-  width: 100%; /* ヘッダーと同じ幅に設定する */
-  padding: 10px 0; /* 上下の余白 */
-
-  .nav-button {
-    flex-grow: 1; /* 各ボタンの幅を均等にする */
-    flex-basis: 0; /* 初期幅を0に設定 */
-    min-width: 0; /* 最小幅を0に設定 */
-    flex-grow: 1; /* 各ボタンの幅を均等にする */
-    margin: 0 5px; /* ボタン同士の間隔 */
-    padding: 10px 20px; /* ボタンの内側の余白 */
-    text-align: center;
-    background-color: #808080; /* グレー */
-    color: black;
-    text-decoration: none; /* 下線を消す */
-    border-radius: 5px; /* 角を少し丸める */
-    transition: background-color 0.3s, color 0.3s; /* ホバー時のアニメーション */
-  }
-
-  .nav-button:hover {
-    background-color: white;
-    color: black;
-  }
-
-  .nav-button.active {
-    background-color: white; /* 白背景 */
-    color: black; /* 黒文字 */
-    border: 1px solid #808080; /* グレー枠 */
-  }
-}
-
-/* main */
-main {
-  flex: 1; /* 残りのスペースを占有 */
-  padding: 20px; /* メインコンテンツのパディング */
-}
-
-/* footer */
-footer {
   display: flex;
-  justify-content: flex-start;
-  padding: 10px 20px;
-  background-color: #ccc; // 薄いグレー
-  color: white;
-  margin-top: auto; /* フッターを下に固定 */
+  flex-direction: column;
+  min-height: 100vh;  //ビューポートの高さを確保
 
-  .footer-button {
-    margin-right: 15px;
-    text-decoration: none;
-    color: white;
-    padding: 5px 10px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
+  header {
+    height: 70px;
+    background-color: #333;
 
-    &:hover {
-      text-decoration: underline;
+    .navbar-brand {
+      font-size: 1.8rem;  // フォントサイズを大きくする
+      color: white;
+    }
+
+    .navbar-toggler {
+      border-color: white;  // ハンバーガーメニューのボタン枠線を白色にする
+    }
+
+    .navbar-toggler-icon {  // ハンバーガーメニューの中の3本線を白色にする
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='white' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+    }
+
+    .offcanvas {
+      background-color: #333;
+
+      .offcanvas-title {
+        color: white;
+      }
+    
+      .nav-link {
+        color: white;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
     }
   }
-}
 
-.cycle-arrow {
-  font-size: 2rem;
-  color: gray;
-  margin: 0 10px;
-}
+  main {
+    .card {
+      &:hover {
+        border-color: rgb(55, 105, 223); // ホバー時の枠線の色を青に設定
+      }
+    }
+  }
 
-.card {
-  &:hover {
-    border-color: rgb(55, 105, 223); // ホバー時の枠線の色を青に設定
+  footer {
+    margin-top: auto;  // フレックスボックスで自動的に下に寄せる
+
+    .footer-button {
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 }

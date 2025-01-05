@@ -3,6 +3,15 @@ body {
   flex-direction: column;
   min-height: 100vh;  //ビューポートの高さを確保
 
+  //リンクボタン
+  .btn-link {
+    text-decoration: none;  // 下線を消す
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
   header {
     height: 70px;
     background-color: #333;
@@ -46,13 +55,5 @@ body {
 
   footer {
     margin-top: auto;  // フレックスボックスで自動的に下に寄せる
-
-    .footer-button {
-      text-decoration: none;
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
   }
 }

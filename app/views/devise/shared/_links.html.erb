@@ -1,14 +1,14 @@
 <div class="text-center">
   <% if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
-    <%= link_to "パスワードをお忘れの場合", new_password_path(resource_name), class: "btn btn-link" %><br />
+    <%= link_to "パスワードをお忘れの場合", new_password_path(resource_name), class: "btn btn-link text-muted" %>
   <% end %>
 
   <% if devise_mapping.confirmable? && controller_name != 'confirmations' %>
-    <%= link_to "確認メールを再送する場合", new_user_confirmation_path(resource_name), class: "btn btn-link" %><br />
+    <%= link_to "確認メールを再送する場合", new_user_confirmation_path(resource_name), class: "btn btn-link text-muted" %>
   <% end %>
 
   <% if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
-    <%= link_to "アカウントのロックを解除する", new_unlock_path(resource_name), class: "btn btn-link" %><br />
+    <%= link_to "アカウントのロックを解除する", new_unlock_path(resource_name), class: "btn btn-link text-muted " %>
   <% end %>
 
   <% if devise_mapping.omniauthable? %>
@@ -18,10 +18,8 @@
         <% if provider == :google_oauth2 %>
           <i class="fa-brands fa-google" style="margin-right: 8px;"></i>
         <% end %>
-        <%= "#{label}でサインイン" %>
+        <%= "#{label}でログイン" %>
       <% end %>
     <% end %>
   <% end %>
-
-  <%= link_to '初めての方', new_user_registration_path, class: 'btn btn-outline-success', data: { turbo: true } %>
 </div>

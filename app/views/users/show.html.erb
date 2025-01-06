@@ -1,29 +1,54 @@
 <div class="container">
   <% content_for :title do %>Account<% end %>
-    <div class="mb-5 text-center">
-      <h1 class="display-4">Account</h1>
-    </div>
-
-  <div class="container mt-5">
-    <div class="card mb-4 mx-auto" style="max-width: 800px;">
-      <div class="card-body text-center">
-        <h5 class="card-title mb-4">アカウント情報</h5>
-        <p class="card-text">ユーザー名: <strong><%= @user.name %></strong></p>
-        <% if @user.date_of_birth.present? %>
-          <p class="card-text">生年月日: <strong><%= @user.date_of_birth.strftime("%Y年%-m月%-d日") %></strong></p>
-        <% else %>
-          <p class="card-text">生年月日: <strong>未設定</strong></p>
-        <% end %>
-        <p class="card-text">メールアドレス: <strong><%= @user.email %></strong></p>
-        <p class="card-text">アカウント作成日: <strong><%= @user.created_at.strftime("%Y年%-m月%-d日") %></strong></p>
-        <p class="card-text">アカウント更新日: <strong><%= @user.updated_at.strftime("%Y年%-m月%-d日") %></strong></p>
-      </div>
-    </div>
+  <div class="mb-5 text-center">
+    <h1 class="display-4">Account</h1>
   </div>
 
-    <div class="d-flex justify-content-center">
-      <%= link_to '変更', edit_user_registration_path, class: 'btn btn-outline-primary mx-2', data: { turbo_method: :get } %>
-      <%= link_to '削除', user_registration_path, class: 'btn btn-outline-danger mx-2', data: { confirm: '削除しても良いですか？', turbo_method: :delete } %>
+  <div class="row justify-content-center">
+    <div class="col-10 col-md-4 border border-dark p-3 rounded">
+      <h5 class="card-title mb-4 text-center">アカウント情報</h5>
+      <div class="form-floating mb-3">
+        <%= text_field_tag :name, @user.name, class: 'form-control', id: 'floatingName', readonly: true %>
+        <%= label_tag :name, 'ユーザー名', class: 'form-label', for: 'floatingName' %>
+      </div>
+
+      <% if @user.date_of_birth.present? %>
+        <div class="form-floating mb-3">
+          <%= text_field_tag :date_of_birth, @user.date_of_birth, class: 'form-control', id: 'floatingBirthday', readonly: true %>
+          <%= label_tag :date_of_birth, '生年月日', class: 'form-label', for: 'floatingBirthday' %>
+        </div>
+      <% else %>
+        <div class="form-floating mb-3">
+          <%= text_field_tag :date_of_birth, '未設定', class: 'form-control', id: 'floatingBirthday', readonly: true %>
+          <%= label_tag :date_of_birth, '生年月日', class: 'form-label', for: 'floatingBirthday' %>
+        </div>
+      <% end %>
+
+      <div class="form-floating mb-3">
+        <%= email_field_tag :email, @user.email, class: 'form-control', id: 'floatingEmail', readonly: true %>
+        <%= label_tag :email, 'メールアドレス', class: 'form-label', for: 'floatingEmail' %>
+      </div>
+
+      <div class="form-floating mb-3">
+        <%= text_field_tag :created_at, @user.created_at.strftime("%Y年%-m月%-d日"), class: 'form-control', id: 'floatingCreatedAt', readonly: true %>
+        <%= label_tag :created_at, 'アカウント作成日', class: 'form-label', for: 'floatingCreatedAt' %>
+      </div>
+
+      <div class="form-floating mb-3">
+        <%= text_field_tag :updated_at, @user.updated_at.strftime("%Y年%-m月%-d日"), class: 'form-control', id: 'floatingUpdatedAt', readonly: true %>
+        <%= label_tag :updated_at, 'アカウント変更日', class: 'form-label', for: 'floatingUpdatedAt' %>
+      </div>
+
+      <% if @user.sns_credentials.exists? %>
+        <div class="mb-3">
+          <p class="text-center">googleアカウントを使用したログイン</p>
+        </div>
+      <% end %>
+
+      <div class="d-flex justify-content-center">
+        <%= link_to '変更', edit_user_registration_path, class: 'btn btn-outline-primary mx-2', data: { turbo_method: :get } %>
+        <%= link_to '削除', user_registration_path, class: 'btn btn-outline-danger mx-2', data: { turbo_method: :delete, confirm: '本当にアカウントを削除しますか？' }, onclick: "return confirm('本当にアカウントを削除しますか？');" %>
+      </div>
     </div>
   </div>
 </div>

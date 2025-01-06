@@ -106,18 +106,18 @@
       <%= yield %> <!-- 各ページの内容がここに挿入される -->
     </main>
 
-    <footer class="bg-light text-dark py-4 mt-auto">
+    <footer class="py-4">
       <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
         <!-- ページボタン -->
         <div>
           <%= link_to 'お問い合わせ', 
                 "https://docs.google.com/forms/d/e/1FAIpQLSfs5-SIS7h3jQtT4F3ulKjLrdgpX-EJjNNPqpkwhuBQ6s41dA/viewform?usp=sf_link", 
-                class: "btn btn-link text-muted px-2", target: "_blank", rel: "noopener", data: { turbo: true } %>
-          <%= link_to 'プライバシーポリシー', static_pages_privacy_path, class: "btn btn-link text-muted px-2", data: { turbo: true } %>
-          <%= link_to '利用規約', static_pages_terms_path, class: "btn btn-link text-muted px-2", data: { turbo: true } %>
+                class: "btn btn-link px-2", target: "_blank", rel: "noopener", data: { turbo: true } %>
+          <%= link_to 'プライバシーポリシー', static_pages_privacy_path, class: "btn btn-link px-2", data: { turbo: true } %>
+          <%= link_to '利用規約', static_pages_terms_path, class: "btn btn-link px-2", data: { turbo: true } %>
         </div>
         <!-- コピーライト -->
-        <div class="text-center text-muted mt-3 mt-md-0">
+        <div class="text-center mt-md-0">
           &copy; <%= Time.now.year %> My Website. All rights reserved.
         </div>
       </div>

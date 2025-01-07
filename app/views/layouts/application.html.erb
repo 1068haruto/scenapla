@@ -39,32 +39,37 @@
             <!-- Offcanvas メニュー -->
             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
               <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">メニュー</h5>
+                <h5 class="offcanvas-title" id="offcanvasNavbarLabel"><%= "#{current_user.name}さん" %></h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
               </div>
               <div class="offcanvas-body">
                 <!-- ページボタン -->
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                   <li class="nav-item">
-                    <%= link_to 'ダッシュボード', dashboard_path, class: 'nav-link', data: { turbo: true } %>
+                    <%= link_to 'ホーム', dashboard_path, class: 'nav-link', data: { turbo: true } %>
                   </li>
-                  <li class="nav-item">
-                    <%= link_to 'シミュレーション', incomes_path, class: 'nav-link', data: { turbo: true } %>
+
+                  <li class="nav-item dropdown">
+                    <%= link_to 'シミュレーション', '#', class: 'nav-link dropdown-toggle', id: 'simulationDropdown', role: 'button', data: { bs_toggle: 'dropdown' }, aria: { expanded: 'false' } %>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="simulationDropdown">
+                      <li><%= link_to 'はじめから入力', incomes_path, class: 'dropdown-item', data: { turbo: true } %></li>
+                      <li><%= link_to '収入入力', incomes_path, class: 'dropdown-item', data: { turbo: true } %></li>
+                      <li><%= link_to '支出入力', expenses_path, class: 'dropdown-item', data: { turbo: true } %></li>
+                      <li><%= link_to '資産入力', user_assets_path, class: 'dropdown-item', data: { turbo: true } %></li>
+                      <li><%= link_to 'ライフイベント入力', new_life_event_path, class: 'dropdown-item', data: { turbo: true } %></li>
+                    </ul>
                   </li>
+
                   <li class="nav-item">
                     <%= link_to 'シナリオ', scenarios_path, class: 'nav-link', data: { turbo: true } %>
                   </li>
+
                   <li class="nav-item">
                     <%= link_to 'ライフプラン', life_events_path, class: 'nav-link', data: { turbo: true } %>
                   </li>
-                </ul>
 
-                <!-- アカウント情報とサインアウト -->
-                <ul class="navbar-nav">
                   <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      アカウント情報
-                    </a>
+                    <%= link_to 'アカウント', '#', class: 'nav-link dropdown-toggle', id: 'navbarDropdown', role: 'button', data: { bs_toggle: 'dropdown' }, aria: { expanded: 'false' } %>
                     <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
                       <li><%= link_to 'アカウント情報', user_path(current_user), class: 'dropdown-item' %></li>
                       <li><hr class="dropdown-divider"></li>
@@ -80,8 +85,45 @@
         </div>
       </nav>
     </header>
-  
+
     <main>
+      <ul class="nav nav-tabs justify-content-center bg-light sticky-top">
+        <li class="nav-item">
+          <%= link_to dashboard_path, class: "nav-link text-muted #{'active fw-bold' if current_page?(dashboard_path)}", data: { turbo: true } do %>
+            <span class="d-none d-sm-inline">ホーム</span>
+            <i class="fa-solid fa-house d-sm-none"></i>
+          <% end %>
+        </li>
+
+        <li class="nav-item dropdown">
+          <%= link_to '#', class: "nav-link dropdown-toggle text-muted #{'active fw-bold' if [incomes_path, expenses_path, user_assets_path, new_life_event_path].include?(request.fullpath)}", id: 'navbarDropdown', data: { bs_toggle: 'dropdown', turbo: true }, aria: { expanded: 'false' } do %>
+            <span class="d-none d-sm-inline">シミュレーション</span>
+            <i class="fa-regular fa-keyboard d-sm-none"></i>
+          <% end %>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><%= link_to 'はじめから入力', incomes_path, class: "dropdown-item text-muted", data: { turbo: true } %></li>
+            <li><%= link_to '収入入力', incomes_path, class: "dropdown-item text-muted", data: { turbo: true } %></li>
+            <li><%= link_to '支出入力', expenses_path, class: "dropdown-item text-muted", data: { turbo: true } %></li>
+            <li><%= link_to '資産入力', user_assets_path, class: "dropdown-item text-muted", data: { turbo: true } %></li>
+            <li><%= link_to 'ライフイベント入力', new_life_event_path, class: "dropdown-item text-muted", data: { turbo: true } %></li>
+          </ul>
+        </li>
+
+        <li class="nav-item">
+          <%= link_to scenarios_path, class: "nav-link text-muted #{'active fw-bold' if current_page?(scenarios_path)}", data: { turbo: true } do %>
+            <span class="d-none d-sm-inline">シナリオ</span>
+            <i class="fa-solid fa-chart-line d-sm-none"></i>
+          <% end %>
+        </li>
+
+        <li class="nav-item">
+          <%= link_to life_events_path, class: "nav-link text-muted #{'active fw-bold' if current_page?(life_events_path)}", data: { turbo: true } do %>
+            <span class="d-none d-sm-inline">ライフプラン</span>
+            <i class="fa-regular fa-map d-sm-none"></i>
+          <% end %>
+        </li>
+      </ul>
+
       <% if notice %>
         <div class="alert alert-success alert-dismissible fade show" role="alert">
           <%= notice %>

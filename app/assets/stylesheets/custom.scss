@@ -54,8 +54,6 @@ body {
   }
 
   main {
-    margin-bottom: 20px;  // footerとの間隔
-
     .card {
       &:hover {
         border-color: rgb(55, 105, 223);  // ホバー時の枠線を青に

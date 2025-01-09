@@ -27,14 +27,15 @@
     <header>
       <nav class="navbar navbar-dark">
         <div class="container-fluid">
-          <!-- ブランドロゴ -->
           <%= link_to 'Scenapla', user_signed_in? ? dashboard_path : root_path, class: 'navbar-brand', data: { turbo: false } %>
 
           <% if user_signed_in? %>
-            <!-- ハンバーガーメニュー (offcanvas トリガー) -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-              <span class="navbar-toggler-icon"></span>
-            </button>
+            <div>
+              <span class="sp-btn-username d-none d-md-inline"><%= "#{current_user.name}さん" %></span>
+              <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+            </div>
 
             <!-- Offcanvas メニュー -->
             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
@@ -42,40 +43,50 @@
                 <h5 class="offcanvas-title" id="offcanvasNavbarLabel"><%= "#{current_user.name}さん" %></h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
               </div>
+
               <div class="offcanvas-body">
                 <!-- ページボタン -->
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                  <li class="nav-item">
-                    <%= link_to 'ホーム', dashboard_path, class: 'nav-link', data: { turbo: true } %>
-                  </li>
+                  <% if current_user.date_of_birth.nil? %>  
+                    <li class="nav-item">
+                      <%= link_to "アカウント情報", user_path(current_user), class: 'nav-link' %>
+                    </li>
+                    <li class="nav-item">
+                      <%= link_to 'ログアウト', destroy_user_session_path, data: { turbo_method: :delete }, class: 'nav-link' %>
+                    </li>
+                  <% else %>
+                    <li class="nav-item">
+                      <%= link_to 'ホーム', dashboard_path, class: 'nav-link', data: { turbo: true } %>
+                    </li>
 
-                  <li class="nav-item dropdown">
-                    <%= link_to 'シミュレーション', '#', class: 'nav-link dropdown-toggle', id: 'simulationDropdown', role: 'button', data: { bs_toggle: 'dropdown' }, aria: { expanded: 'false' } %>
-                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="simulationDropdown">
-                      <li><%= link_to 'はじめから入力', incomes_path, class: 'dropdown-item', data: { turbo: true } %></li>
-                      <li><%= link_to '収入入力', incomes_path, class: 'dropdown-item', data: { turbo: true } %></li>
-                      <li><%= link_to '支出入力', expenses_path, class: 'dropdown-item', data: { turbo: true } %></li>
-                      <li><%= link_to '資産入力', user_assets_path, class: 'dropdown-item', data: { turbo: true } %></li>
-                      <li><%= link_to 'ライフイベント入力', new_life_event_path, class: 'dropdown-item', data: { turbo: true } %></li>
-                    </ul>
-                  </li>
+                    <li class="nav-item dropdown">
+                      <%= link_to 'シミュレーション', '#', class: 'nav-link dropdown-toggle', id: 'simulationDropdown', role: 'button', data: { bs_toggle: 'dropdown' }, aria: { expanded: 'false' } %>
+                      <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="simulationDropdown">
+                        <li><%= link_to 'はじめから入力', incomes_path, class: 'dropdown-item', data: { turbo: true } %></li>
+                        <li><%= link_to '収入入力', incomes_path, class: 'dropdown-item', data: { turbo: true } %></li>
+                        <li><%= link_to '支出入力', expenses_path, class: 'dropdown-item', data: { turbo: true } %></li>
+                        <li><%= link_to '資産入力', user_assets_path, class: 'dropdown-item', data: { turbo: true } %></li>
+                        <li><%= link_to 'ライフイベント入力', new_life_event_path, class: 'dropdown-item', data: { turbo: true } %></li>
+                      </ul>
+                    </li>
 
-                  <li class="nav-item">
-                    <%= link_to 'シナリオ', scenarios_path, class: 'nav-link', data: { turbo: true } %>
-                  </li>
+                    <li class="nav-item">
+                      <%= link_to 'シナリオ', scenarios_path, class: 'nav-link', data: { turbo: true } %>
+                    </li>
 
-                  <li class="nav-item">
-                    <%= link_to 'ライフプラン', life_events_path, class: 'nav-link', data: { turbo: true } %>
-                  </li>
+                    <li class="nav-item">
+                      <%= link_to 'ライフプラン', life_events_path, class: 'nav-link', data: { turbo: true } %>
+                    </li>
 
-                  <li class="nav-item dropdown">
-                    <%= link_to 'アカウント', '#', class: 'nav-link dropdown-toggle', id: 'navbarDropdown', role: 'button', data: { bs_toggle: 'dropdown' }, aria: { expanded: 'false' } %>
-                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
-                      <li><%= link_to 'アカウント情報', user_path(current_user), class: 'dropdown-item' %></li>
-                      <li><hr class="dropdown-divider"></li>
-                      <li><%= link_to 'ログアウト', destroy_user_session_path, data: { turbo_method: :delete }, class: 'dropdown-item' %></li>
-                    </ul>
-                  </li>
+                    <li class="nav-item dropdown">
+                      <%= link_to 'アカウント', '#', class: 'nav-link dropdown-toggle', id: 'navbarDropdown', role: 'button', data: { bs_toggle: 'dropdown' }, aria: { expanded: 'false' } %>
+                      <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
+                        <li><%= link_to 'アカウント情報', user_path(current_user), class: 'dropdown-item' %></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><%= link_to 'ログアウト', destroy_user_session_path, data: { turbo_method: :delete }, class: 'dropdown-item' %></li>
+                      </ul>
+                    </li>
+                  <% end %>
                 </ul>
               </div>
             </div>
@@ -87,7 +98,7 @@
     </header>
 
     <main>
-      <% if user_signed_in? %>
+      <% if user_signed_in? && current_user.date_of_birth.present? %>
         <ul class="nav nav-tabs justify-content-center bg-light sticky-top">
           <li class="nav-item">
             <%= link_to dashboard_path, class: "nav-link text-muted #{'active fw-bold' if current_page?(dashboard_path)}", data: { turbo: true } do %>
@@ -147,12 +158,11 @@
         </div>
       <% end %>
 
-      <%= yield %> <!-- 各ページの内容がここに挿入される -->
+      <%= yield %>
     </main>
 
     <footer class="py-4">
       <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
-        <!-- ページボタン -->
         <div>
           <%= link_to 'お問い合わせ', 
                 "https://docs.google.com/forms/d/e/1FAIpQLSfs5-SIS7h3jQtT4F3ulKjLrdgpX-EJjNNPqpkwhuBQ6s41dA/viewform?usp=sf_link", 
@@ -160,7 +170,7 @@
           <%= link_to 'プライバシーポリシー', static_pages_privacy_path, class: "btn btn-link px-2", data: { turbo: true } %>
           <%= link_to '利用規約', static_pages_terms_path, class: "btn btn-link px-2", data: { turbo: true } %>
         </div>
-        <!-- コピーライト -->
+
         <div class="text-center mt-md-0">
           &copy; <%= Time.now.year %> My Website. All rights reserved.
         </div>

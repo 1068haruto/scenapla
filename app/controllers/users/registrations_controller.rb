@@ -4,6 +4,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
   before_action :configure_permitted_parameters
+  before_action :authenticate_user!, only: [:edit_date_of_birth, :update_date_of_birth]
 
   def create
     super do |resource|
@@ -21,15 +22,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
-  # 生年月日を登録するページ表示
+  # 生年月日を単体登録するページ表示
   def edit_date_of_birth
     @resource = current_user
-    unless current_user
-      redirect_to new_user_session_path, alert: 'ログインしてください。'
-    end
   end
 
-  # 生年月日を更新
+  # 生年月日の単体登録処理
   def update_date_of_birth
     if current_user.update(date_of_birth_params)
       redirect_to dashboard_path, notice: '生年月日を登録しました。'

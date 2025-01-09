@@ -1,5 +1,6 @@
+<% content_for :title do %>Edit Account<% end %>
+
 <div class="container">
-  <% content_for :title do %>Edit Account<% end %>
   <div class="mb-5 text-center">
     <h1 class="display-4">Edit Account</h1>
   </div>
@@ -8,7 +9,6 @@
     <div class="col-10 col-md-4 border border-dark p-3 rounded">
       <h5 class="card-title mb-4 text-center">アカウント情報変更</h5>
       <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-
         <%= render "devise/shared/error_messages", resource: resource %>
 
         <div class="form-floating mb-3">
@@ -17,9 +17,8 @@
         </div>
 
         <div class="form-floating mb-3">
-          <%= f.text_field :date_of_birth, class: 'form-control', id: 'floatingBirthday', autofocus: true, placeholder: 'YYYY-MM-DD', pattern: '\d{4}-\d{2}-\d{2}' %>
+          <%= f.date_field :date_of_birth, class: 'form-control', id: 'floatingBirthday', autofocus: true, placeholder: 'YYYY-MM-DD', pattern: '\d{4}-\d{2}-\d{2}' %>
           <%= f.label :date_of_birth, '生年月日', class: 'form-label', for: 'floatingBirthday' %>
-          <small class="form-text text-muted">例: 1990-01-01</small>
         </div>
 
         <div class="form-floating mb-3">

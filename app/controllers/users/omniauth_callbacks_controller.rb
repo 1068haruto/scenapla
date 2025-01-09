@@ -37,23 +37,21 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def callback_for(provider)
     auth = request.env["omniauth.auth"]
-
     @user = User.find_or_create_for_oauth(auth)
 
     if @user.persisted?
-
       @user.skip_confirmation! if auth.provider.present?  # googleログイン時はメール確認をスキップ
-
       sign_in @user, event: :authentication
-      if @user.date_of_birth.nil?
-        redirect_to edit_date_of_birth_path, notice: "#{provider.to_s.capitalize}でログインしました。"
-      else
-        redirect_to dashboard_path, notice: "#{provider.to_s.capitalize}でログインしました。"
-      end
+      redirect_after_auth(provider)
     else
-      # 失敗時のリダイレクト先を統一
       redirect_to new_user_registration_url, alert: "#{provider.to_s.capitalize}ログインに失敗しました。"
     end
+  end
+
+  def redirect_after_auth(provider)
+    path = @user.date_of_birth.nil? ? edit_date_of_birth_path : dashboard_path
+    notice = "#{provider.to_s.capitalize}でログインしました。"
+    redirect_to path, notice: notice
   end
 
   def failure

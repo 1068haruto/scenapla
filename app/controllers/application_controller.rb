@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  # サインイン後とサインアップ後のリダイレクト先を共通化
+  # ログイン後とサインアップ後のリダイレクト先の共通化
   def after_sign_in_path_for(resource)
     if resource.date_of_birth.blank?
       edit_date_of_birth_path
@@ -14,6 +14,6 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_up_path_for(resource)
-    after_sign_in_path_for(resource) # サインイン後と同じパスを利用
+    after_sign_in_path_for(resource) # ログイン後と同じパスを利用
   end
 end

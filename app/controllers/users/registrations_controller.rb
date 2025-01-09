@@ -5,6 +5,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_account_update_params, only: [:update]
   before_action :configure_permitted_parameters
   before_action :authenticate_user!, only: [:edit_date_of_birth, :update_date_of_birth]
+  before_action :set_resource, only: [:edit_date_of_birth, :update_date_of_birth]
 
   def create
     super do |resource|
@@ -22,10 +23,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
-  # 生年月日を単体登録するページ表示
-  def edit_date_of_birth
-    @resource = current_user
-  end
+  # 生年月日の単体登録ページ
+  def edit_date_of_birth; end
 
   # 生年月日の単体登録処理
   def update_date_of_birth
@@ -75,6 +74,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   private
+
+  def set_resource
+    @resource = current_user
+  end
 
   def date_of_birth_params
     params.require(:user).permit(:date_of_birth)

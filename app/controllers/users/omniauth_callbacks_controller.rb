@@ -46,7 +46,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
       sign_in @user, event: :authentication
       if @user.date_of_birth.nil?
-        redirect_to edit_user_registration_path, notice: "#{provider.to_s.capitalize}でログインしました。"
+        redirect_to edit_date_of_birth_path, notice: "#{provider.to_s.capitalize}でログインしました。"
       else
         redirect_to dashboard_path, notice: "#{provider.to_s.capitalize}でログインしました。"
       end

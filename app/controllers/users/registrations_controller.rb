@@ -8,7 +8,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def create
     super do |resource|
       if resource.persisted? && resource.sns_credentials.empty?
-        sign_out resource unless resource.confirmed?
+        sign_out resource unless resource.confirmed?  # SNSを使用しないユーザー用
       end
     end
   end
@@ -18,6 +18,24 @@ class Users::RegistrationsController < Devise::RegistrationsController
       redirect_to user_path(resource), notice: 'アカウント情報が更新されました'
     else
       render :edit
+    end
+  end
+
+  # 生年月日を登録するページ表示
+  def edit_date_of_birth
+    @resource = current_user
+    unless current_user
+      redirect_to new_user_session_path, alert: 'ログインしてください。'
+    end
+  end
+
+  # 生年月日を更新
+  def update_date_of_birth
+    if current_user.update(date_of_birth_params)
+      redirect_to dashboard_path, notice: '生年月日を登録しました。'
+    else
+      flash.now[:alert] = '生年月日の登録に失敗しました。'
+      render :edit_date_of_birth, status: :unprocessable_entity
     end
   end
 
@@ -57,4 +75,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # def after_inactive_sign_up_path_for(resource)
   #   super(resource)
   # end
+
+  private
+
+  def date_of_birth_params
+    params.require(:user).permit(:date_of_birth)
+  end
 end

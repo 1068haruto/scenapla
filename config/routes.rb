@@ -6,7 +6,12 @@ Rails.application.routes.draw do
     sessions: 'users/sessions',
     omniauth_callbacks: 'users/omniauth_callbacks',
   }
-  resources :users, only: [:show, :edit, :update]
+  devise_scope :user do
+    # SNSログインユーザーの生年月日登録
+    get 'users/date_of_birth/edit', to: 'users/registrations#edit_date_of_birth', as: 'edit_date_of_birth'
+    patch 'users/date_of_birth', to: 'users/registrations#update_date_of_birth', as: 'update_date_of_birth'
+  end
+  resources :users, only: [:show]
   resources :incomes do
     collection do
       post :update_simulation_data

@@ -1,7 +1,7 @@
 body {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;  //ビューポートの高さを確保
+  min-height: 100vh;  //ビューポートの高さ確保
 
   //リンクボタン
   .btn-link {
@@ -17,20 +17,20 @@ body {
   header {
     height: 70px;
     background-color: #333;
+    color: white;
 
     .navbar-brand {
-      padding-left: 1rem;  //左に間隔を
+      padding-left: 1rem;
       font-size: 1.8rem;
-      color: white;
     }
 
     .btn-login {
-      margin-right: 0.7rem;  //右に間隔を
+      margin-right: 0.7rem;
     }
 
     .navbar-toggler {
       border-color: white;  // ハンバーガーメニューの枠線を白色に
-      margin-right: 0.7rem;  //右に間隔を
+      margin: auto 0.7rem;  //左右に間隔を
 
       .navbar-toggler-icon {  // ハンバーガーメニュー内の3本線を白色に
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='white' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");

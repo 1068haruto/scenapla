@@ -5,7 +5,7 @@
   </div>
 
   <div class="row justify-content-center">
-    <div class="col-10 col-md-4 border border-dark p-3 rounded bg-light">
+    <div class="col-10 col-md-8 col-lg-4 border border-dark p-3 rounded bg-light">
       <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
 
         <div class="form-floating mb-3">
@@ -35,7 +35,7 @@
   </div>
 
   <div class="row justify-content-center mt-3">
-    <div class="col-10 col-md-4 border border-dark p-3 rounded d-flex justify-content-center align-items-center bg-light flex-nowrap">
+    <div class="col-10 col-md-8 col-lg-4 border border-dark p-3 rounded bg-light d-flex justify-content-center align-items-center flex-nowrap">
       <p class="mb-0 me-2"><strong>初めての方は</strong></p>
       <%= link_to 'アカウント登録', new_user_registration_path, class: 'btn btn-outline-success', data: { turbo: true } %>
     </div>

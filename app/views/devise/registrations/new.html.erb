@@ -6,7 +6,7 @@
   </div>
 
   <div class="row justify-content-center">
-    <div class="col-10 col-md-4 border border-dark p-3 rounded bg-light">
+    <div class="col-10 col-md-8 col-lg-4 border border-dark p-3 rounded bg-light">
       <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
         <%= render "devise/shared/error_messages", resource: resource %>
 
@@ -45,7 +45,7 @@
   </div>
 
   <div class="row justify-content-center mt-3">
-    <div class="col-10 col-md-4 border border-dark p-3 rounded d-flex justify-content-center align-items-center bg-light flex-nowrap">
+    <div class="col-10 col-md-8 col-lg-4 border border-dark p-3 rounded bg-light d-flex justify-content-center align-items-center flex-nowrap">
       <p class="mb-0 me-2"><strong>アカウントをお持ちの方</strong></p>
       <%= link_to 'ログイン', new_user_session_path, class: 'btn btn-outline-primary', data: { turbo: true } %>
     </div>

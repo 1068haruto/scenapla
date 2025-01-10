@@ -1,0 +1,56 @@
+<!-- offcanvasメニュー -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasNavbarLabel"><%= "#{current_user.name}さん" %></h5>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+
+  <div class="offcanvas-body">
+    <!-- ページボタン -->
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <% if current_user.date_of_birth.nil? %>
+        <!-- 生年月日が未登録のユーザーへの表示 -->
+        <li class="nav-item">
+          <%= link_to "アカウント情報", user_path(current_user), class: 'nav-link' %>
+        </li>
+
+        <li class="nav-item">
+          <%= link_to 'ログアウト', destroy_user_session_path, data: { turbo_method: :delete }, class: 'nav-link' %>
+        </li>
+      <% else %>
+        <!-- 生年月日が登録済のユーザーへの表示 -->
+        <li class="nav-item">
+          <%= link_to 'ホーム', dashboard_path, class: 'nav-link', data: { turbo: true } %>
+        </li>
+
+        <li class="nav-item dropdown">
+          <%= link_to 'シミュレーション', '#', class: 'nav-link dropdown-toggle', id: 'simulationDropdown', role: 'button', data: { bs_toggle: 'dropdown' }, aria: { expanded: 'false' } %>
+          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="simulationDropdown">
+            <li><%= link_to 'はじめから入力', incomes_path, class: 'dropdown-item', data: { turbo: true } %></li>
+            <li><%= link_to '収入入力', incomes_path, class: 'dropdown-item', data: { turbo: true } %></li>
+            <li><%= link_to '支出入力', expenses_path, class: 'dropdown-item', data: { turbo: true } %></li>
+            <li><%= link_to '資産入力', user_assets_path, class: 'dropdown-item', data: { turbo: true } %></li>
+            <li><%= link_to 'ライフイベント入力', new_life_event_path, class: 'dropdown-item', data: { turbo: true } %></li>
+          </ul>
+        </li>
+
+        <li class="nav-item">
+          <%= link_to 'シナリオ', scenarios_path, class: 'nav-link', data: { turbo: true } %>
+        </li>
+
+        <li class="nav-item">
+          <%= link_to 'ライフプラン', life_events_path, class: 'nav-link', data: { turbo: true } %>
+        </li>
+
+        <li class="nav-item dropdown">
+          <%= link_to 'アカウント', '#', class: 'nav-link dropdown-toggle', id: 'navbarDropdown', role: 'button', data: { bs_toggle: 'dropdown' }, aria: { expanded: 'false' } %>
+          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
+            <li><%= link_to 'アカウント情報', user_path(current_user), class: 'dropdown-item' %></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><%= link_to 'ログアウト', destroy_user_session_path, data: { turbo_method: :delete }, class: 'dropdown-item' %></li>
+          </ul>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

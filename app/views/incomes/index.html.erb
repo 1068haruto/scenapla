@@ -1,64 +1,87 @@
+<% content_for :title do %>Incomes<% end %>
+
 <div class="container">
-  <% content_for :title do %>Incomes<% end %>
   <div class="mb-5">
     <h1 class="display-4">Incomes</h1>
-    <h4 class="mb-3">現在の月収入と退職ついて教えて下さい。</h4>
+    <h4 class="mb-3">現在の月収入と退職ついて教えてください。</h4>
   </div>
 
-  <%= form_with model: @income, url: incomes_path, local: true, id: "income-form" do |f| %>
-    <div class="row">
-      <div class="col-md-2">
-        <%= f.label :person_type, '対象者', class: 'form-label' %>
-        <%= f.select :person_type, Income.person_types.keys.map { |type| [type, type] }, {}, class: 'form-select' %>
-      </div>
-
-      <div class="col-md-3">
-        <%= f.label :income, '月収（手取り）', class: 'form-label' %>
-        <div class="input-group">
-          <%= f.number_field :income, class: 'form-control' %>
-          <span class="input-group-text">万円</span>
+  <div class="row d-flex align-items-start">
+    <div class="col-md-4 border border-dark rounded p-3 mb-4">
+      <%= form_with model: @income, url: incomes_path, local: true, id: "income-form" do |f| %>
+        <div class="mb-2">
+          <%= f.label :person_type, '対象', class: 'form-label mb-0' %>
+          <%= f.select :person_type, Income.person_types.keys.map { |type| [type, type] }, {}, class: 'form-select' %>
         </div>
-      </div>
 
-      <div class="col-md-2">
-        <%= f.label :retirement_date, '退職時期', class: 'form-label' %>
-        <div class="input-group">
-          <%= f.select :retirement_date, options_for_select((Date.today.year..(Date.today.year + 50)).map { |year| [year, year] }), {}, class: 'form-select' %>
-          <span class="input-group-text">年</span>
+        <div class="mb-2">
+          <%= f.label :income, '月収（手取り）', class: 'form-label mb-0' %>
+          <div class="input-group">
+            <%= f.number_field :income, class: 'form-control' %>
+            <span class="input-group-text">万円</span>
+          </div>
         </div>
-      </div>
 
-      <div class="col-md-3">
-        <%= f.label :retirement_pay, '退職金（手取り）', class: 'form-label' %>
-        <div class="input-group">
-          <%= f.number_field :retirement_pay, class: 'form-control' %>
-          <span class="input-group-text">万円</span>
+        <div class="mb-2">
+          <%= f.label :retirement_date, '退職時期', class: 'form-label mb-0' %>
+          <div class="input-group">
+            <%=
+              f.select :retirement_date,
+              options_for_select((Date.today.year..(Date.today.year + 50)).map { |year| [year, year] }), {},
+              class: 'form-select'
+            %>
+            <span class="input-group-text">年</span>
+          </div>
         </div>
-      </div>
 
-      <div class="mb-5">
-        <button type="submit" class="btn btn-outline-primary">追加</button>
-      </div>
+        <div class="mb-2">
+          <%= f.label :retirement_pay, '退職金（手取り）', class: 'form-label mb-0' %>
+          <div class="input-group">
+            <%= f.number_field :retirement_pay, class: 'form-control' %>
+            <span class="input-group-text">万円</span>
+          </div>
+        </div>
+
+        <div class="mt-3 d-flex justify-content-center">
+          <button type="submit" class="btn btn-outline-primary">追加</button>
+        </div>
+      <% end %>
     </div>
-  <% end %>
 
-  <h5>追加されている収入データ</h5>
-  <% if @incomes.any? %>
-    <% @incomes.each do |income| %>
-      <%= render income %>
-    <% end %>
-  <% else %>
-    <div class="card mb-4">
-      <div class="card-body">
-        <p>データがありません。</p>
-      </div>
+    <div class="col"> <!-- 右側のカラムを追加 -->
+      <h5>追加した収入データ</h5>
+      <% if @incomes.any? %>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">対象</th>
+              <th scope="col">月収</th>
+              <th scope="col">退職時期</th>
+              <th scope="col">退職金</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+
+          <tbody class="table-group-divider">
+            <% @incomes.each_with_index do |income, index| %>
+              <%= render partial: 'income', locals: { income: income, index: index + 1 } %>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <p class="text-secondary">&nbsp;&nbsp;データがありません。</p>
+      <% end %>
     </div>
-  <% end %>
+  </div>
 
   <div class="d-flex justify-content-center">
     <%= link_to 'ホームに戻る', dashboard_path, class: 'btn btn-outline-secondary me-2', data: { turbo: true } %>
     <% if @incomes.any? %>
-      <%= button_to '保存して次へ', update_simulation_data_incomes_path(simulation_id: current_user.simulation.id), method: :post, class: 'btn btn-primary', data: { turbo: true } %>
+      <%=
+        button_to '保存して次へ', update_simulation_data_incomes_path(simulation_id: current_user.simulation.id),
+        method: :post, class: 'btn btn-primary', data: { turbo: true }
+      %>
     <% end %>
   </div>
 </div>

@@ -12,7 +12,7 @@ class IncomesController < ApplicationController
     @income.simulation = current_user.simulation
 
     if @income.save
-      redirect_to incomes_path, notice: '収入データが追加されました'
+      redirect_to incomes_path, notice: '収入データを追加しました'
     else
       render_create_error
     end
@@ -20,9 +20,9 @@ class IncomesController < ApplicationController
 
   def destroy
     if @income.destroy
-      redirect_to incomes_path, notice: '収入データが削除されました'
+      redirect_to incomes_path, notice: '収入データを削除しました。'
     else
-      redirect_to incomes_path, alert: '収入データの削除に失敗しました'
+      redirect_to incomes_path, alert: '収入データを削除できませんでした。'
     end
   end
 
@@ -37,9 +37,9 @@ class IncomesController < ApplicationController
 
     # シミュレーションデータを更新
     if current_user.simulation.update!(income_data: grouped_income_data)
-      redirect_to expenses_path, notice: 'シミュレーションデータが更新されました'
+      redirect_to expenses_path, notice: 'シミュレーションデータに保存しました。'
     else
-      redirect_to incomes_path, alert: 'シミュレーションデータの更新に失敗しました'
+      redirect_to incomes_path, alert: 'シミュレーションデータに保存できませんでした。'
     end
   end
 

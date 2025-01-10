@@ -1,11 +1,12 @@
 <% if income.persisted? %>
-  <div class="row mb-2 border rounded p-2">
-    <p class="col-md-2">対象者：<%= income.person_type %></p>
-    <p class="col-md-2">月収 ※手取り額：<%= income.income %>万円</p>
-    <p class="col-md-2">退職時期：<%= income.retirement_date.year %>年</p>
-    <p class="col-md-2">退職金：<%= income.retirement_pay %>万円</p>
-    <p class="col-md-2">
-      <%= link_to '削除', income_path(income), class: 'btn btn-outline-danger', data: { turbo_method: :delete } %>
-    </p>
-  </div>
+  <tr>
+    <th scope="row"><%= index %></th>
+    <td class="pt-2"><%= income.person_type %></td>
+    <td class="pt-2"><%= income.income %>万円</td>
+    <td class="pt-2"><%= income.retirement_date.year %>年</td>
+    <td class="pt-2"><%= income.retirement_pay %>万円</td>
+    <td class="pt-1 px-1">
+      <%= link_to '削除', income_path(income), class: 'btn btn-outline-danger btn-sm', data: { turbo_method: :delete } %>
+    </td>
+  </tr>
 <% end %>

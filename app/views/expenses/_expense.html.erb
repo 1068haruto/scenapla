@@ -1,16 +1,15 @@
 <% if expense.persisted? %>
-  <div class="row mb-2 border rounded p-2">
-    <p class="col-md-2">住居費：<%= expense.housing_expense %>万円</p>
-    <p class="col-md-3">
-      住宅ローン完済時期：
+  <tr>
+    <td class="pt-2"><%= expense.housing_expense %>万円</td>
+    <td class="pt-2">
       <% if expense.repayment_date.present? %>
         <%= expense.repayment_date.year %>年
       <% else %>
         支払なし
       <% end %>
-    </p>
-    <p class="col-md-2">生活費：<%= expense.living_expenses %>万円</p>
-    <p class="col-md-3">保険費※貯蓄型除く：<%= expense.monthly_premiums %>万円</p>
-    <p class="col-md-2">その他費用：<%= expense.other_expenses %>万円</p>
-  </div>
+    </td>
+    <td class="pt-2"><%= expense.living_expenses %>万円</td>
+    <td class="pt-2"><%= expense.monthly_premiums %>万円</td>
+    <td class="pt-2"><%= expense.other_expenses %>万円</td>
+  </tr>
 <% end %>

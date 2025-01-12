@@ -6,39 +6,41 @@
     <h4 class="mb-3">現在の月収入と退職ついて教えてください。</h4>
   </div>
 
-  <div class="row d-flex align-items-start">
-    <div class="col-md-4 border border-dark rounded p-3 mb-4">
+  <div class="row justify-content-center">
+    <div class="col-11 border border-dark rounded p-3 mb-4">
       <%= form_with model: @income, url: incomes_path, local: true, id: "income-form" do |f| %>
-        <div class="mb-2">
-          <%= f.label :person_type, '対象', class: 'form-label mb-0' %>
-          <%= f.select :person_type, Income.person_types.keys.map { |type| [type, type] }, {}, class: 'form-select', autofocus: true %>
-        </div>
-
-        <div class="mb-2">
-          <%= f.label :income, '月収（手取り）', class: 'form-label mb-0' %>
-          <div class="input-group">
-            <%= f.number_field :income, class: 'form-control' %>
-            <span class="input-group-text">万円</span>
+        <div class="row">
+          <div class="col-md">
+            <%= f.label :person_type, '対象', class: 'form-label mb-0' %>
+            <%= f.select :person_type, Income.person_types.keys.map { |type| [type, type] }, {}, class: 'form-select', autofocus: true %>
           </div>
-        </div>
 
-        <div class="mb-2">
-          <%= f.label :retirement_date, '退職時期', class: 'form-label mb-0' %>
-          <div class="input-group">
-            <%=
-              f.select :retirement_date,
-              options_for_select((Date.today.year..(Date.today.year + 50)).map { |year| [year, year] }), {},
-              class: 'form-select'
-            %>
-            <span class="input-group-text">年</span>
+          <div class="col-md">
+            <%= f.label :income, '月収（手取り）', class: 'form-label mb-0' %>
+            <div class="input-group">
+              <%= f.number_field :income, class: 'form-control' %>
+              <span class="input-group-text">万円</span>
+            </div>
           </div>
-        </div>
 
-        <div class="mb-2">
-          <%= f.label :retirement_pay, '退職金（手取り）', class: 'form-label mb-0' %>
-          <div class="input-group">
-            <%= f.number_field :retirement_pay, class: 'form-control' %>
-            <span class="input-group-text">万円</span>
+          <div class="col-md">
+            <%= f.label :retirement_date, '退職時期', class: 'form-label mb-0' %>
+            <div class="input-group">
+              <%=
+                f.select :retirement_date,
+                options_for_select((Date.today.year..(Date.today.year + 50)).map { |year| [year, year] }), {},
+                class: 'form-select'
+              %>
+              <span class="input-group-text">年</span>
+            </div>  
+          </div>
+
+          <div class="col-md">
+            <%= f.label :retirement_pay, '退職金（手取り）', class: 'form-label mb-0' %>
+            <div class="input-group">
+              <%= f.number_field :retirement_pay, class: 'form-control' %>
+              <span class="input-group-text">万円</span>
+            </div>
           </div>
         </div>
 
@@ -48,30 +50,32 @@
       <% end %>
     </div>
 
-    <div class="col"> <!-- 右側のカラムを追加 -->
-      <h5>追加した収入データ</h5>
-      <% if @incomes.any? %>
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th scope="col"></th>
-              <th scope="col">対象</th>
-              <th scope="col">月収</th>
-              <th scope="col">退職時期</th>
-              <th scope="col">退職金</th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
+    <div class="col-11 p-3 mb-4">
+      <div class="row">
+        <h5>追加した収入データ</h5>
+        <% if @incomes.any? %>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">対象</th>
+                <th scope="col">月収</th>
+                <th scope="col">退職時期</th>
+                <th scope="col">退職金</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
 
-          <tbody class="table-group-divider">
-            <% @incomes.each_with_index do |income, index| %>
-              <%= render partial: 'income', locals: { income: income, index: index + 1 } %>
-            <% end %>
-          </tbody>
-        </table>
-      <% else %>
-        <p class="text-secondary">&nbsp;&nbsp;データがありません。</p>
-      <% end %>
+            <tbody class="table-group-divider">
+              <% @incomes.each_with_index do |income, index| %>
+                <%= render partial: 'income', locals: { income: income, index: index + 1 } %>
+              <% end %>
+            </tbody>
+          </table>
+        <% else %>
+          <p class="text-secondary">&nbsp;&nbsp;データがありません。</p>
+        <% end %>
+      </div>
     </div>
   </div>
 

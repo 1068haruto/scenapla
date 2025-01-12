@@ -1,12 +1,12 @@
 <% if income.persisted? %>
   <tr>
     <th scope="row"><%= index %></th>
-    <td class="pt-2"><%= income.person_type %></td>
-    <td class="pt-2"><%= income.income %>万円</td>
-    <td class="pt-2"><%= income.retirement_date.year %>年</td>
-    <td class="pt-2"><%= income.retirement_pay %>万円</td>
-    <td class="pt-1 px-1">
-      <%= link_to '削除', income_path(income), class: 'btn btn-outline-danger btn-sm', data: { turbo_method: :delete } %>
+    <td><%= income.person_type %></td>
+    <td><%= income.income %>万円</td>
+    <td><%= income.retirement_date.year %>年</td>
+    <td><%= income.retirement_pay %>万円</td>
+    <td class="pt-1">
+      <%= link_to '削除', income_path(income), class: 'btn btn-outline-danger btn-sm px-1 py-1', data: { turbo_method: :delete } %>
     </td>
   </tr>
 <% end %>

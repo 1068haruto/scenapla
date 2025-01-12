@@ -1,13 +1,12 @@
 <% if user_asset.persisted? %>
-  <div class="row mb-2 border rounded p-2">
-    <p class="col-md-2">対象者：<%= user_asset.person_type %></p>
-    <p class="col-md-2">資産種類：<%= user_asset.asset_type %></p>
-    <p class="col-md-2">総額：<%= user_asset.amount %>万円</p>
-    <p class="col-md-2">
-      利回り：<%= user_asset.return_rate.present? ? "#{user_asset.return_rate}%" : 'なし' %>
-    </p>
-    <p class="col-md-2">
-      <%= link_to '削除', user_asset_path(user_asset), data: { turbo_method: :delete }, class: 'btn btn-danger' %>
-    </p>
-  </div>
+  <tr>
+    <th scope="row" class="px-1"><%= index %></th>
+    <td class="px-1"><%= user_asset.person_type %></td>
+    <td class="px-1"><%= user_asset.asset_type %></td>
+    <td class="px-1"><%= user_asset.amount %>万円</td>
+    <td class="px-1"><%= user_asset.return_rate.present? ? "#{user_asset.return_rate}%" : 'なし' %></td>
+    <td class="pt-1 px-1">
+      <%= link_to '削除', user_asset_path(user_asset), class: 'btn btn-outline-danger btn-sm px-1 py-1', data: { turbo_method: :delete } %>
+    </td>
+  </tr>
 <% end %>

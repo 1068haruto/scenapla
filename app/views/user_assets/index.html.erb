@@ -1,60 +1,79 @@
+<% content_for :title do %>Assets<% end %>
+
 <div class="container">
-  <% content_for :title do %>Assets<% end %>
   <div class="mb-5">
     <h1 class="display-4">Assets</h1>
     <h4 class="mb-3">現在の資産について教えて下さい。</h4>
   </div>
 
-  <%= form_with model: @user_asset, id: "user-asset-form" do |f| %>
-    <div class="row">
-      <div class="col-md-2">
-        <%= f.label :person_type, '対象者', class: 'form-label' %>
-        <%= f.select :person_type, @user_asset.class.person_types.keys.map { |key| [key.humanize, key] }, {}, class: "form-select" %>
-      </div>
+  <div class="row d-flex justify-content-center">
+    <div class="col-11 border border-dark rounded p-3 mb-4">
+      <%= form_with model: @user_asset, id: "user-asset-form" do |f| %>
+        <div class="row">
+          <div class="col-md">
+            <%= f.label :person_type, '対象者', class: 'form-label' %>
+            <%= f.select :person_type, @user_asset.class.person_types.keys.map { |key| [key.humanize, key] }, {}, class: "form-select" %>
+          </div>
 
-      <div class="col-md-2">
-        <%= f.label :asset_type, '資産種類', class: 'form-label' %>
-        <%= f.select :asset_type, @user_asset.class.asset_types.keys.map { |key| [key.humanize, key] }, {}, class: "form-select" %>
-      </div>
+          <div class="col-md">
+            <%= f.label :asset_type, '資産種類', class: 'form-label' %>
+            <%= f.select :asset_type, @user_asset.class.asset_types.keys.map { |key| [key.humanize, key] }, {}, class: "form-select" %>
+          </div>
 
-      <div class="col-md-2">
-        <%= f.label :amount, '総額', class: 'form-label' %>
-        <div class="input-group">
-          <%= f.number_field :amount, class: "form-control" %>
-          <span class="input-group-text">万円</span>
+          <div class="col-md">
+            <%= f.label :amount, '総額', class: 'form-label' %>
+            <div class="input-group">
+              <%= f.number_field :amount, class: "form-control" %>
+              <span class="input-group-text">万円</span>
+            </div>
+          </div>
+
+          <div class="col-md">
+            <%= f.label :return_rate, '利回り', class: 'form-label' %>
+            <div class="input-group">
+              <%= f.number_field :return_rate, step: 0.1, class: "form-control" %>
+              <span class="input-group-text">%</span>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <div class="col-md-3">
-        <%= f.label :return_rate, '利回り（ない場合：未入力 or 0入力）', class: 'form-label' %>
-        <div class="input-group">
-          <%= f.number_field :return_rate, step: 0.1, class: "form-control" %>
-          <span class="input-group-text">％</span>
+        <div class="mt-3 d-flex justify-content-center">
+          <%= f.submit '追加', class: 'btn btn-outline-primary' %>
         </div>
-      </div>
-    </div>
-    <div class="mb-5">
-      <%= f.submit '追加', class: 'btn btn-primary' %>
-    </div>
-  <% end %>
-
-  <h5>追加されている資産データ</h5>
-  <% if @user_assets.any? %>
-    <div id="user_assets">
-      <% @user_assets.each do |user_asset| %>
-        <%= render user_asset %>
       <% end %>
     </div>
-  <% else %>
-    <div class="card mb-4">
-      <div class="card-body">
-        <p>データがありません。</p>
+
+    <div class="col-11 p-3 mb-4">
+      <div class="row">
+        <h5>追加されている資産データ</h5>
+        <% if @user_assets.any? %>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col" class="px-1"></th>
+                <th scope="col" class="px-1">対象者</th>
+                <th scope="col" class="px-1">種類</th>
+                <th scope="col" class="px-1">総額</th>
+                <th scope="col" class="px-1">利回り</th>
+                <th scope="col" class="px-1"></th>
+              </tr>
+            </thead>
+
+            <tbody class="table-group-divider">
+              <% @user_assets.each_with_index do |user_asset, index| %>
+                <%= render partial: 'user_asset', locals: { user_asset: user_asset, index: index + 1 } %>
+              <% end %>
+            </tbody>
+          </table>
+        <% else %>
+          <p class="text-secondary">&nbsp;&nbsp;データがありません。</p>
+        <% end %>
       </div>
     </div>
-  <% end %>
+  </div>
 
   <div class="d-flex justify-content-center">
-    <%= link_to '支出に戻る', expenses_path, class: 'btn btn-secondary me-2', data: { turbo: true } %>
+    <%= link_to '支出に戻る', expenses_path, class: 'btn btn-outline-secondary me-2', data: { turbo: true } %>
     <% if @user_assets.any? %>
       <%= button_to '保存して次へ', update_simulation_data_user_assets_path, method: :post, class: 'btn btn-primary' %>
     <% end %>

@@ -6,43 +6,52 @@
     <h4 class="mb-3">現在の月支出について教えて下さい。</h4>
   </div>
 
-  <div class="row d-flex align-items-start">
-    <div class="col-md-4 border border-dark rounded p-3 mb-4">
+  <div class="row d-flex justify-content-center">
+    <div class="col-11 border border-dark rounded p-3 mb-4">
       <%= form_with model: @expense, url: create_or_update_expenses_path, local: true, id: "expense-form" do |f| %>
-        <div class="mb-2">
-          <%= f.label :housing_expense, '住居費 ※家賃orローン', class: 'form-label' %>
-          <div class="input-group">
-            <%= f.number_field :housing_expense, class: 'form-control', required: true, autofocus: true %>
-            <span class="input-group-text">万円</span>
+        <div class="row d-flex justify-content-center">
+          <div class="col-md-4 col-lg-3 col-xl-3">
+            <%= f.label :housing_expense, '住居費 ※家賃orローン', class: 'form-label' %>
+            <div class="input-group">
+              <%= f.number_field :housing_expense, class: 'form-control', required: true, autofocus: true %>
+              <span class="input-group-text">万円</span>
+            </div>
           </div>
-        </div>
 
-        <div class="mb-2">
-          <%= f.label :repayment_date, '住宅ローン完済時期', class: 'form-label' %>
-          <%= f.select :repayment_date, options_for_select([['支払なし', nil]] + (Date.today.year..(Date.today.year + 50)).map { |year| [year, year] }), {}, class: 'form-select' %>
-        </div>
-
-        <div class="mb-2">
-          <%= f.label :living_expenses, '生活費', class: 'form-label' %>
-          <div class="input-group">
-            <%= f.number_field :living_expenses, class: 'form-control', required: true %>
-            <span class="input-group-text">万円</span>
+          <div class="col-md-4 col-lg-3 col-xl-3">
+            <%= f.label :repayment_date, '住宅ローン完済時期', class: 'form-label' %>
+            <div class="input-group">
+              <%=
+                f.select :repayment_date,
+                options_for_select([['支払なし', nil]] + (Date.today.year..(Date.today.year + 50)).map { |year| [year, year] }), {},
+                class: 'form-select'
+              %>
+              <span class="input-group-text">年</span>
+            </div>
           </div>
-        </div>
 
-        <div class="mb-2">
-          <%= f.label :monthly_premiums, '保険費 ※貯蓄型保険除く', class: 'form-label' %>
-          <div class="input-group">
-            <%= f.number_field :monthly_premiums, class: 'form-control', required: true %>
-            <span class="input-group-text">万円</span>
+          <div class="col-md-4 col-lg-3 col-xl-2">
+            <%= f.label :living_expenses, '生活費', class: 'form-label' %>
+            <div class="input-group">
+              <%= f.number_field :living_expenses, class: 'form-control', required: true %>
+              <span class="input-group-text">万円</span>
+            </div>
           </div>
-        </div>
 
-        <div class="mb-2">
-          <%= f.label :other_expenses, 'その他費用', class: 'form-label' %>
-          <div class="input-group">
-            <%= f.number_field :other_expenses, class: 'form-control', required: true %>
-            <span class="input-group-text">万円</span>
+          <div class="col-md-4 col-lg-3 col-xl-2">
+            <%= f.label :monthly_premiums, '保険費 ※貯蓄型除く', class: 'form-label' %>
+            <div class="input-group">
+              <%= f.number_field :monthly_premiums, class: 'form-control', required: true %>
+              <span class="input-group-text">万円</span>
+            </div>
+          </div>
+
+          <div class="col-md-4 col-lg-3 col-xl-2">
+            <%= f.label :other_expenses, 'その他費用', class: 'form-label' %>
+            <div class="input-group">
+              <%= f.number_field :other_expenses, class: 'form-control', required: true %>
+              <span class="input-group-text">万円</span>
+            </div>
           </div>
         </div>
 
@@ -52,28 +61,30 @@
       <% end %>
     </div>
 
-    <div class="col"> <!-- 右側のカラムを追加 -->
-      <h5>追加した支出データ</h5>
-      <h6>※再追加でデータが上書きされます</h6>
-      <% if @latest_expense.present? %>
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th scope="col">住居費</th>
-              <th scope="col">住宅ローン完済時期</th>
-              <th scope="col">生活費</th>
-              <th scope="col">保険費</th>
-              <th scope="col">その他費用</th>
-            </tr>
-          </thead>
+    <div class="col-11 p-3 mb-4">
+      <div class="row">
+        <h5>追加した支出データ</h5>
+        <h6>※再追加でデータが上書きされます</h6>
+        <% if @latest_expense.present? %>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col" class="px-1">住居費</th>
+                <th scope="col" class="px-1">住宅ローン完済</th>
+                <th scope="col" class="px-1">生活費</th>
+                <th scope="col" class="px-1">保険費</th>
+                <th scope="col" class="px-1">その他</th>
+              </tr>
+            </thead>
 
-          <tbody class="table-group-divider">
-            <%= render partial: 'expense', locals: { expense: @latest_expense } %>
-          </tbody>
-        </table>
-      <% else %>
-        <p class="text-secondary">&nbsp;&nbsp;データがありません。</p>
-      <% end %>
+            <tbody class="table-group-divider">
+              <%= render partial: 'expense', locals: { expense: @latest_expense } %>
+            </tbody>
+          </table>
+        <% else %>
+          <p class="text-secondary">&nbsp;&nbsp;データがありません。</p>
+        <% end %>
+      </div>
     </div>
   </div>
 

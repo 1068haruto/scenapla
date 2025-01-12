@@ -1,12 +1,13 @@
 <% if life_event.persisted? %>
-  <div class="row mb-2 border rounded p-2">
-    <p class="col-md-2">イベントタイプ：<%= life_event.event_type %></p>
-    <p class="col-md-2">発生時期：<%= life_event.event_date.year %>年</p>
-    <p class="col-md-2">タイトル：<%= life_event.title %></p>
-    <p class="col-md-2">年額：<%= life_event.amount %>万円</p>
-    <p class="col-md-2">支払期間：<%= life_event.payment_span %>年間</p>
-    <p class="col-md-2">
-      <%= link_to '削除', life_event_path(life_event), data: { turbo_method: :delete }, class: 'btn btn-danger'%>
-    </p>
-  </div>
+  <tr>
+    <th scope="row" class="px-1"><%= index %></th>
+    <td class="px-1"><%= life_event.event_type %></td>
+    <td class="px-1"><%= life_event.event_date.year %>年</td>
+    <td class="px-1"><%= life_event.title %></td>
+    <td class="px-1"><%= life_event.amount %>万円</td>
+    <td class="px-1"><%= life_event.payment_span %>年間</td>
+    <td class="pt-1 px-1">
+      <%= link_to '削除', life_event_path(life_event), class: 'btn btn-outline-danger btn-sm px-1 py-1', data: { turbo_method: :delete } %>
+    </td>
+  </tr>
 <% end %>

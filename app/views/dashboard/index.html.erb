@@ -1,40 +1,45 @@
+<% content_for :title do %>Dashboard<% end %>
+
 <div class="container">
-  <% content_for :title do %>Dashboard<% end %>
-
   <div class="row align-items-center">
-  <h3>今を知り、あなたのこれからを見つけましょう。</h3>
-  <div class="my-3"></div> 
-  <!-- シミュレーション -->
-  <div class="col">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">シミュレーション（情報入力）</h5>
-        <p class="card-text">現状の収支や資産状況、今後のライフイベントを入力し、シナリオを作成する準備をしましょう。</p>
-        <%= link_to '情報入力を始める', incomes_path, class: 'nav-button', data: { turbo_method: :get } %>
-      </div>
+    <div class="mb-5">
+      <h1 class="display-4">Dashboard</h1>
+      <h4 class="mb-3">今を知り、あなたのこれからを見つけましょう</h4>
     </div>
-  </div>
 
-  <!-- シナリオ -->
-  <div class="col">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">シナリオ（結果の確認）</h5>
-        <p class="card-text">それぞれのシナリオから、現状位置と改善点を　把握し、今後をイメージしましょう。</p>
-        <br>
-        <br>
+    <!-- シミュレーション -->
+    <div class="col">
+      <div class="card">
+        <h5 class="card-header">シミュレーション</h5>
+        <div class="card-body">
+          <h5 class="card-title">今の状態を登録する</h5>
+          <p class="card-text">現状の収支や資産状況、今後のライフイベントを入力し、シナリオを作成する準備をしましょう。</p>
+          <%= link_to 'シミュレーションへ', incomes_path, class: 'btn btn-primary', data: { turbo_method: :get } %>
+        </div>
       </div>
     </div>
-  </div>
+
+    <!-- シナリオ -->
+    <div class="col">
+      <div class="card">
+        <h5 class="card-header">シナリオ</h5>
+        <div class="card-body">
+          <h5 class="card-title">結果の確認</h5>
+          <p class="card-text">それぞれのシナリオから、現状位置と改善点を　把握し、今後をイメージしましょう。</p>
+          <%= link_to 'シナリオへ', scenarios_path, class: 'btn btn-primary', data: { turbo_method: :get } %>
+        </div>
+      </div>
+    </div>
   
-  <!-- ライフプラン -->
-  <div class="col">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">ライフプラン（今後の計画）</h5>
-        <p class="card-text">今後のプランを実現させる為に、具体的なプランを時系列に記録しておきましょう。</p>
-        <br>
-        <br>
+    <!-- ライフプラン -->
+    <div class="col">
+      <div class="card">
+        <h5 class="card-header">ライフプラン</h5>
+        <div class="card-body">
+          <h5 class="card-title">計画を立てる</h5>
+          <p class="card-text">今後のプランを実現させる為に、具体的なプランを時系列に記録しておきましょう。</p>
+          <%= link_to 'ライフプランへ', life_events_path, class: 'btn btn-primary', data: { turbo_method: :get } %>
+        </div>
       </div>
     </div>
   </div>

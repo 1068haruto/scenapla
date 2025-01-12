@@ -21,9 +21,9 @@ class UserAssetsController < ApplicationController
     @user_asset = UserAsset.find(params[:id]) # 資産をIDで取得
 
     if @user_asset.destroy
-      redirect_to user_assets_path, notice: '資産データが削除されました'
+      redirect_to user_assets_path, notice: '資産データを削除しました。'
     else
-      redirect_to user_assets_path, alert: '資産データの削除に失敗しました'
+      redirect_to user_assets_path, alert: '資産データを削除できませんでした。'
     end
   end
 
@@ -35,9 +35,9 @@ class UserAssetsController < ApplicationController
     simulation.user_asset_data = user_assets_data
 
     if simulation.save
-      redirect_to new_life_event_path
+      redirect_to new_life_event_path, notice: 'シミュレーションデータに保存しました。'
     else
-      redirect_to user_assets_path, alert: 'シミュレーションデータの更新に失敗しました'
+      redirect_to user_assets_path, alert: 'シミュレーションデータに保存できませんでした。'
     end
   end
 

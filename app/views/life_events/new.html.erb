@@ -6,7 +6,7 @@
     <h4 class="mb-3">今後のライフイベントについて教えて下さい。</h4>
     <p>※必ず実現したいイベントは「現実」、できれば実現したいイベントは「理想」を選択</p>
   </div>
-  
+
   <div class="row d-flex justify-content-center">
     <div class="col-11 border border-dark rounded p-3 mb-4">
       <%= form_with model: @life_event, local: true, id: "life-event-form" do |f| %>
@@ -20,9 +20,14 @@
           </div>
 
           <div class="col-md-3 col-lg-3 col-xl-2">
-            <%= f.label :event_date, '発生時期', class: 'form-label' %>
+            <%= f.label :event_date, '時期', class: 'form-label' %>
             <div class="input-group">
-              <%= f.select :event_date, options_for_select((Date.today.year..(Date.today.year + 50)).map { |year| [year, year] }), {}, class: 'form-select' %>
+              <%=
+                f.select :event_date,
+                options_for_select((Date.today.year..(Date.today.year + 50)).map { |year| [year, year] }),
+                {},
+                class: 'form-select'
+              %>
               <span class="input-group-text">年</span>
             </div>
           </div>
@@ -55,29 +60,15 @@
       <% end %>
     </div>
 
-    <div class="col-11 p-3 mb-4">
+    <div class="col-11 mb-4">
       <div class="row">
         <h5>追加されている資産データ</h5>
         <% if @life_events.any? %>
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th scope="col" class="px-1"></th>
-                <th scope="col" class="px-1">イベントタイプ</th>
-                <th scope="col" class="px-1">発生時期</th>
-                <th scope="col" class="px-1">タイトル</th>
-                <th scope="col" class="px-1">年額</th>
-                <th scope="col" class="px-1">支払期間</th>
-                <th scope="col" class="px-1"></th>
-              </tr>
-            </thead>
-
-            <tbody class="table-group-divider">
-              <% @life_events.each_with_index do |life_event, index| %>
-                <%= render partial: 'life_event', locals: { life_event: life_event, index: index + 1 } %>
-              <% end %>
-            </tbody>
-          </table>
+          <div class="accordion" id="lifeEventsAccordion">
+            <% @life_events.each_with_index do |life_event, index| %>
+              <%= render 'life_event', life_event: life_event, index: index %>
+            <% end %>
+          </div>
         <% else %>
           <p class="text-secondary">&nbsp;&nbsp;データがありません。</p>
         <% end %>

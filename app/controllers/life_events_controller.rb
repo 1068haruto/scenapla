@@ -14,7 +14,7 @@ class LifeEventsController < ApplicationController
   def create
     @life_event = LifeEvent.build(convert_event_date(life_event_params))
     if @life_event.save
-      redirect_to new_life_event_path, notice: 'ライフイベントが追加されました'
+      redirect_to new_life_event_path, notice: 'ライフイベントを追加しました。'
     else
       @life_events = LifeEvent.where(user_id: current_user.id).order(event_date: :asc)
       flash.now[:error] = @life_event.errors.full_messages.join(", ")
@@ -26,9 +26,9 @@ class LifeEventsController < ApplicationController
     @life_event = LifeEvent.find(params[:id])
 
     if @life_event.destroy
-      redirect_to new_life_event_path, notice: 'ライフイベントが削除されました'
+      redirect_to new_life_event_path, notice: 'ライフイベントを削除しました。'
     else
-      redirect_to new_life_event_path, alert: 'ライフイベントの削除に失敗しました'
+      redirect_to new_life_event_path, alert: 'ライフイベントを削除できませんでした。'
     end
   end
 
@@ -36,9 +36,9 @@ class LifeEventsController < ApplicationController
     simulation_id = params[:simulation_id]
 
     if LifeEvent.update_simulation_data(simulation_id)
-      redirect_to scenarios_path
+      redirect_to scenarios_path, notice: 'シミュレーションデータに保存しました。更新ボタンを押して最新のシナリオを表示しましょう。'
     else
-      redirect_to new_life_event_path, alert: 'シミュレーションデータの更新に失敗しました'
+      redirect_to new_life_event_path, alert: 'シミュレーションデータに保存できませんでした'
     end
   end
 

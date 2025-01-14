@@ -1,20 +1,20 @@
 <div class="accordion-item">
-  <h2 class="accordion-header" id="heading-<%= index %>">
+  <h2 class="accordion-header" id="heading-<%= accordion_id %>-<%= index %>">
     <button
       class="accordion-button collapsed"
       type="button"
       data-bs-toggle="collapse"
-      data-bs-target="#collapse-<%= index %>"
+      data-bs-target="#collapse-<%= accordion_id %>-<%= index %>"
       aria-expanded="false"
-      aria-controls="collapse-<%= index %>">
+      aria-controls="collapse-<%= accordion_id %>-<%= index %>">
       <%= life_event.event_date.year %>年（<%= life_event.event_type %>）<%= life_event.title %>
     </button>
   </h2>
   <div
-    id="collapse-<%= index %>"
+    id="collapse-<%= accordion_id %>-<%= index %>"
     class="accordion-collapse collapse"
-    aria-labelledby="heading-<%= index %>"
-    data-bs-parent="#lifeEventsAccordion">
+    aria-labelledby="heading-<%= accordion_id %>-<%= index %>"
+    data-bs-parent="#<%= accordion_id %>">
 
     <div class="accordion-body">
       <ul class="list-unstyled">
@@ -22,14 +22,16 @@
         <li><strong>年額:</strong> <%= life_event.amount %>万円</li>
         <li><strong>支払期間:</strong> <%= life_event.payment_span %>年間</li>
       </ul>
-      <div class="mt-2">
-        <%=
-          link_to '削除',
-          life_event_path(life_event),
-          class: 'btn btn-outline-danger btn-sm px-1 py-1',
-          data: { turbo_method: :delete }
-        %>
-      </div>
+      <% if show_delete_button %>
+        <div class="mt-2">
+          <%=
+            link_to '削除',
+            life_event_path(life_event),
+            class: 'btn btn-outline-danger btn-sm px-1 py-1',
+            data: { turbo_method: :delete }
+          %>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>

@@ -1,23 +1,19 @@
+<% content_for :title do %>Scenarios<% end %>
+
 <div class="container">
-  <% content_for :title do %>Scenario<% end %>
   <div class="mb-5">
     <h1 class="display-4">Scenarios</h1>
     <h4 class="mb-3">シミュレーション結果</h4>
-    <% unless @simulation.user_asset_data.nil? || @simulation.user_asset_data.empty? || (@income_data && @income_data.any? { |entry| entry["amount"].to_f == 0 }) %>
-      <%= button_to '表示 / 更新', update_scenario_simulation_path(@simulation), method: :post, class: 'btn btn-primary mb-3' %>
-      <br>
-      <p>※下記シナリオ表示は、<strong>現在から〜あなたが70歳を迎えるまで</strong>の期間を表しています。</p>
-    <% end %>
+    #表示/非表示の定義について再考が必要。シミュレーションデータを保存するタイミングも再考が必要。
+    <%= button_to '表示 / 更新', update_scenario_simulation_path(@simulation), method: :post, class: 'btn btn-primary mb-3' %>
   </div>
 
   <div class="card mb-4">
     <div class="card-body">
-      <h4>資産寿命データ</h4>
+      <h4>資産寿命</h4>
       <% if @asset_lifespan && @asset_lifespan.yearly_lifespans.present? %>
         <div class="mb-4">
-          <span>
-            <%= @asset_lifespan_updated_at.strftime('%Y年%m月%d日') if @asset_lifespan_updated_at.present? %>時点
-          </span>
+          <span class="mb-4"><%= formatted_date(@asset_lifespan_updated_at) %>時点</span>
         </div>
         <% if @lifespan_years && @lifespan_months %>
           <p>現時点のあなたの資産寿命は、<strong><%= @lifespan_years %>年<%= @lifespan_months %>ヶ月</strong> です。（現在の生活水準の場合）</p>
@@ -39,9 +35,7 @@
           <p>情報入力が完了していないため、現実的シナリオを表示できません。</p>
         <% else %>
           <div class="mb-4">
-            <span>
-              <%= @real_updated_at.strftime('%Y年%m月%d日') if @real_updated_at.present? %>時点
-            </span>
+            <span><%= formatted_date(@real_updated_at) %>時点</span>
           </div>
           <div class="row mb-3">
             <div class="col text-center">
@@ -90,9 +84,7 @@
         <p>理想ライフイベントの登録がないため、理想的シナリオを表示できません。</p>
       <% else %>
         <div class="mb-4">
-          <span>
-            <%= @ideal_updated_at.strftime('%Y年%m月%d日') if @ideal_updated_at.present? %>時点
-          </span>
+          <span><%= formatted_date(@ideal_updated_at) %>時点</span>
         </div>
         <div class="row mb-3">
           <div class="col text-center">
@@ -141,9 +133,7 @@
         <p>資産の登録がないため、運用資産シナリオを表示できません。</p>
       <% else %>
         <div class="mb-4">
-          <span>
-            <%= @user_asset_data_updated_at.strftime('%Y年%m月%d日') if @user_asset_data_updated_at.present? %>時点
-          </span>
+          <span><%= formatted_date(@user_asset_data_updated_at) %>時点</span>
         </div>
         <p>現時点の資産情報を元にした今後の推移です。積立や取り崩しなどを行う場合、資産情報を更新する必要があります。</p>
         <%= area_chart @asset_data, height: "300px", colors: ["#FF5733"], download: {filename: "運用資産シナリオ"}, xtitle: '年', ytitle: '運用資産額（万円）' %>

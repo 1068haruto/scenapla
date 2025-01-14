@@ -60,13 +60,14 @@
       <% end %>
     </div>
 
+
     <div class="col-11 mb-4">
       <div class="row">
-        <h5>追加されている資産データ</h5>
+        <h5>追加したライフイベントデータ</h5>
         <% if @life_events.any? %>
-          <div class="accordion" id="lifeEventsAccordion">
+          <div class="accordion" id="newLifeEventsAccordion">
             <% @life_events.each_with_index do |life_event, index| %>
-              <%= render 'life_event', life_event: life_event, index: index %>
+              <%= render 'life_event',life_event: life_event, index: index, accordion_id: "newLifeEventsAccordion" , show_delete_button: true %>
             <% end %>
           </div>
         <% else %>

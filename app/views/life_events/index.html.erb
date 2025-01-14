@@ -1,55 +1,43 @@
+<% content_for :title do %>LifePlan<% end %>
+
 <div class="container">
-  <% content_for :title do %>LifePlan<% end %>
   <div class="mb-5">
     <h1 class="display-4">LifePlan</h1>
-    <h4 class="mb-3">時系列にライフイベントを確認し、今後を具体化</h4>
-    <p>計画や目標など、年代別にメモを追加できます。</p>
+    <h4 class="mb-3">プランの具体化</h4>
+    <p>今後の計画や目標などをメモに整理しましょう。</p>
   </div>
+
   <% if @grouped_life_events.empty? %>
     <div class="card mb-4">
       <div class="card-body">
-        <p>ライフイベントの登録がないため、ライフプランを表示できません。</p>
+        <p>ライフイベントが未登録のため、表示できません。</p>
       </div>
     </div>
   <% else %>
     <% @grouped_life_events.each do |age_group, events| %>
       <div class="card mb-4">
         <div class="card-body">
-          <h2><%= age_group %>代</h2>
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th>種類</th>
-                <th>時期</th>
-                <th>タイトル</th>
-                <th>年額</th>
-                <th>支払期間</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% events.each do |life_event| %>
-                <tr>
-                  <td><%= life_event.event_type.humanize %></td>
-                  <td><%= life_event.event_date.strftime('%Y年') %></td>
-                  <td><%= life_event.title %></td>
-                  <td><%= number_to_currency(life_event.amount, unit: '¥') %></td>
-                  <td><%= life_event.payment_span %>年間</td>
-                </tr>
-              <% end %>
-              <tr>
-                <td colspan="5">
-                  <div id="memo-container-<%= age_group %>">
-                    <textarea id="memo-content-<%= age_group %>" rows="1" class="form-control" data-age-group="<%= age_group %>" data-id="<%= @memos[age_group]&.first&.id %>" <%= @memos[age_group]&.first&.content.present? ? 'readonly' : '' %>><%= @memos[age_group]&.first&.content.to_s %></textarea>
-                    <button id="memo-button-<%= age_group %>"
-                      class="btn <%= @memos[age_group]&.first&.content.present? ? 'btn-secondary' : 'btn-primary' %> mt-2"
-                      data-action="<%= @memos[age_group]&.first&.content.present? ? 'edit' : 'save' %>">
-                      <%= @memos[age_group]&.first&.content.present? ? '編集' : '保存' %>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <h3><%= age_group %>代</h3>
+          <div class="row">
+            <div class="col-md-5">
+              <div class="accordion" id="lifeEventsAccordion-<%= age_group %>">
+                <% events.each_with_index do |life_event, index| %>
+                  <%= render 'life_event', life_event: life_event, index: index, accordion_id: "lifeEventsAccordion-#{age_group}", show_delete_button: false %>
+                <% end %>
+              </div>
+            </div>
+            <div class="col mt-2 mt-md-0">
+              <% first_memo = @memos[age_group]&.first %>
+              <div id="memo-container-<%= age_group %>">
+                <textarea id="memo-content-<%= age_group %>" rows="2" class="form-control" data-age-group="<%= age_group %>" data-id="<%= first_memo&.id %>" <%= first_memo&.content.present? ? 'readonly' : '' %>><%= first_memo&.content.present? ? first_memo.content : '' %></textarea>
+                <button id="memo-button-<%= age_group %>"
+                  class="btn <%= first_memo&.content.present? ? 'btn-secondary' : 'btn-primary' %> btn-sm mt-2"
+                  data-action="<%= first_memo&.content.present? ? 'edit' : 'save' %>">
+                  <%= first_memo&.content.present? ? '編集' : '保存' %>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     <% end %>

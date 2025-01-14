@@ -7,7 +7,11 @@
       data-bs-target="#collapse-<%= accordion_id %>-<%= index %>"
       aria-expanded="false"
       aria-controls="collapse-<%= accordion_id %>-<%= index %>">
-      <%= life_event.event_date.year %>年（<%= life_event.event_type %>）<%= life_event.title %>
+        <span class="badge rounded-pill <%= life_event.event_type == '理想' ? 'text-success' : 'text-primary' %>">
+          <%= life_event.event_type %>
+        </span>
+        <span class="me-2"></span>
+        <%= life_event.event_date.year %>年 <%= life_event.title %>
     </button>
   </h2>
   <div
@@ -18,7 +22,6 @@
 
     <div class="accordion-body">
       <ul class="list-unstyled">
-        <li><strong>イベントタイプ:</strong> <%= life_event.event_type %></li>
         <li><strong>年額:</strong> <%= life_event.amount %>万円</li>
         <li><strong>支払期間:</strong> <%= life_event.payment_span %>年間</li>
       </ul>

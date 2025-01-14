@@ -60,14 +60,17 @@
       <% end %>
     </div>
 
-
     <div class="col-11 mb-4">
       <div class="row">
         <h5>追加したライフイベントデータ</h5>
         <% if @life_events.any? %>
           <div class="accordion" id="newLifeEventsAccordion">
             <% @life_events.each_with_index do |life_event, index| %>
-              <%= render 'life_event',life_event: life_event, index: index, accordion_id: "newLifeEventsAccordion" , show_delete_button: true %>
+              <%=
+                render 'life_event',
+                life_event: life_event, index: index, accordion_id: "newLifeEventsAccordion",
+                show_delete_button: true
+              %>
             <% end %>
           </div>
         <% else %>
@@ -81,8 +84,10 @@
     <%= link_to '資産に戻る', user_assets_path, class: 'btn btn-outline-secondary me-2', data: { turbo: true } %>
     <% if @life_events.any? %>
       <%=
-        button_to '保存して次へ', update_life_event_data_life_events_path(simulation_id: current_user.simulation.id),
-        method: :post, class: 'btn btn-primary', data: { turbo: true }
+        button_to '保存して次へ',
+        update_life_event_data_life_events_path(simulation_id: current_user.simulation.id),
+        method: :post,
+        class: 'btn btn-primary', data: { turbo: true }
       %>
     <% end %>
   </div>

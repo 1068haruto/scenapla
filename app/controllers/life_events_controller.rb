@@ -1,8 +1,13 @@
 class LifeEventsController < ApplicationController
   def index
-    # ユーザーのライフイベントを取得して年代ごとにグループ化
+    # 表示する年代を計算
+    @age_groups_to_display = ((current_user.age / 10) * 10..70).step(10).to_a
+  
+    # ライフイベントを年代毎にグループ化
     life_events = LifeEvent.where(user_id: current_user.id).order(event_date: :asc)
     @grouped_life_events = life_events.group_by { |event| calculate_age_group(event.event_date.year, current_user.date_of_birth.year) }
+    
+    # メモを年代毎にグループ化
     @memos = Memo.where(user_id: current_user.id).group_by(&:age_group)
   end
 

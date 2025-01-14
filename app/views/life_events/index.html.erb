@@ -7,48 +7,51 @@
     <p>今後の計画や目標などをメモに整理しましょう。</p>
   </div>
 
-  <% if @grouped_life_events.empty? %>
-    <div class="card mb-4">
+  <% @age_groups_to_display.each do |age_group| %>
+    <div class="card mb-3">
       <div class="card-body">
-        <p>ライフイベントが未登録のため、表示できません。</p>
-      </div>
-    </div>
-  <% else %>
-    <% @grouped_life_events.each do |age_group, events| %>
-      <div class="card mb-4">
-        <div class="card-body">
-          <h3><%= age_group %>代</h3>
-          <div class="row">
-            <div class="col-md-5">
+        <h3><%= age_group %>代</h3>
+        <div class="row">
+          <div class="col-md-5">
+            <% if @grouped_life_events[age_group].blank? %>
+              <p>ライフイベント未登録</p>
+            <% else %>
               <div class="accordion" id="lifeEventsAccordion-<%= age_group %>">
-                <% events.each_with_index do |life_event, index| %>
-                  <%= render 'life_event', life_event: life_event, index: index, accordion_id: "lifeEventsAccordion-#{age_group}", show_delete_button: false %>
+                <% @grouped_life_events[age_group].each_with_index do |life_event, index| %>
+                  <%=
+                    render 'life_event', 
+                    life_event: life_event,
+                    index: index,
+                    accordion_id: "lifeEventsAccordion-#{age_group}",
+                    show_delete_button: false
+                  %>
                 <% end %>
               </div>
-            </div>
-            <div class="col mt-2 mt-md-0">
-              <% first_memo = @memos[age_group]&.first %>
-              <div id="memo-container-<%= age_group %>">
-                <textarea id="memo-content-<%= age_group %>" rows="2" class="form-control" data-age-group="<%= age_group %>" data-id="<%= first_memo&.id %>" <%= first_memo&.content.present? ? 'readonly' : '' %>><%= first_memo&.content.present? ? first_memo.content : '' %></textarea>
-                <button id="memo-button-<%= age_group %>"
-                  class="btn <%= first_memo&.content.present? ? 'btn-secondary' : 'btn-primary' %> btn-sm mt-2"
-                  data-action="<%= first_memo&.content.present? ? 'edit' : 'save' %>">
+            <% end %>
+          </div>
+          <div class="col mt-2 mt-md-0">
+            <% first_memo = @memos[age_group]&.first %>
+            <div id="memo-container-<%= age_group %>">
+              <textarea id="memo-content-<%= age_group %>" rows="2" class="form-control" data-age-group="<%= age_group %>" data-id="<%= first_memo&.id %>" <%= first_memo&.content.present? ? 'readonly' : '' %>><%= first_memo&.content.present? ? first_memo.content : '' %></textarea>
+              <button
+                id="memo-button-<%= age_group %>"
+                class="btn <%= first_memo&.content.present? ? 'btn-outline-secondary' : 'btn-outline-primary' %> btn-sm mt-2"
+                data-action="<%= first_memo&.content.present? ? 'edit' : 'save' %>">
                   <%= first_memo&.content.present? ? '編集' : '保存' %>
-                </button>
-              </div>
+              </button>
             </div>
           </div>
         </div>
       </div>
-    <% end %>
+    </div>
   <% end %>
 
   <div class="d-flex justify-content-center">
     <% if @grouped_life_events.empty? %>
-      <%= link_to '情報入力画面へ', incomes_path, class: 'btn btn-primary me-2', data: { turbo_method: :get } %>
+      <%= link_to '情報入力画面へ', incomes_path, class: 'btn btn-primary me-2', data: { turbo: true } %>
     <% else %>
       <div class="d-flex justify-content-center">
-        <%= link_to 'ライフイベント編集', new_life_event_path, class: 'btn btn-secondary me-2', data: { turbo: true } %>
+        <%= link_to 'ライフイベント編集', new_life_event_path, class: 'btn btn-outline-secondary me-2', data: { turbo: true } %>
         <%= link_to 'ホームに戻る', dashboard_path, class: 'btn btn-primary me-2', data: { turbo: true } %>
       </div>
     <% end %>
@@ -100,7 +103,7 @@
                 newButton.dataset.action = "edit";
                 newButton.textContent = "編集";
                 textarea.setAttribute("readonly", true);
-                newButton.classList.replace("btn-primary", "btn-secondary");
+                newButton.classList.replace("btn-outline-primary", "btn-outline-secondary");
               } else {
                 alert(data.message || "保存に失敗しました。");
               }
@@ -110,7 +113,7 @@
           newButton.dataset.action = "save";
           newButton.textContent = "保存";
           textarea.removeAttribute("readonly");
-          newButton.classList.replace("btn-secondary", "btn-primary");
+          newButton.classList.replace("btn-outline-secondary", "btn-outline-primary");
         }
       });
     });

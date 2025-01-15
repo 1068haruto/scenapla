@@ -13,7 +13,7 @@
           <div class="col-md-4 col-lg-3 col-xl-3">
             <%= f.label :housing_expense, '住居費 ※家賃orローン', class: 'form-label' %>
             <div class="input-group">
-              <%= f.number_field :housing_expense, class: 'form-control', required: true, autofocus: true %>
+              <%= f.number_field :housing_expense, class: 'form-control', step: 0.1, required: true, autofocus: true %>
               <span class="input-group-text">万円</span>
             </div>
           </div>
@@ -33,7 +33,7 @@
           <div class="col-md-4 col-lg-3 col-xl-2">
             <%= f.label :living_expenses, '生活費', class: 'form-label' %>
             <div class="input-group">
-              <%= f.number_field :living_expenses, class: 'form-control', required: true %>
+              <%= f.number_field :living_expenses, class: 'form-control', step: 0.1, required: true %>
               <span class="input-group-text">万円</span>
             </div>
           </div>
@@ -41,7 +41,7 @@
           <div class="col-md-4 col-lg-3 col-xl-2">
             <%= f.label :monthly_premiums, '保険費 ※貯蓄型除く', class: 'form-label' %>
             <div class="input-group">
-              <%= f.number_field :monthly_premiums, class: 'form-control', required: true %>
+              <%= f.number_field :monthly_premiums, class: 'form-control', step: 0.1, required: true %>
               <span class="input-group-text">万円</span>
             </div>
           </div>
@@ -49,7 +49,7 @@
           <div class="col-md-4 col-lg-3 col-xl-2">
             <%= f.label :other_expenses, 'その他費用', class: 'form-label' %>
             <div class="input-group">
-              <%= f.number_field :other_expenses, class: 'form-control', required: true %>
+              <%= f.number_field :other_expenses, class: 'form-control', step: 0.1, required: true %>
               <span class="input-group-text">万円</span>
             </div>
           </div>

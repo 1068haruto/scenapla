@@ -50,32 +50,23 @@
       <% end %>
     </div>
 
-    <div class="col-11 p-3 mb-4">
-      <div class="row">
-        <h5>追加した収入データ</h5>
-        <% if @incomes.any? %>
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th scope="col" class="px-1"></th>
-                <th scope="col" class="px-1">対象</th>
-                <th scope="col" class="px-1">月収</th>
-                <th scope="col" class="px-1">退職時期</th>
-                <th scope="col" class="px-1">退職金</th>
-                <th scope="col" class="px-1"></th>
-              </tr>
-            </thead>
-
-            <tbody class="table-group-divider">
-              <% @incomes.each_with_index do |income, index| %>
-                <%= render partial: 'income', locals: { income: income, index: index + 1 } %>
-              <% end %>
-            </tbody>
-          </table>
-        <% else %>
-          <p class="text-secondary">&nbsp;&nbsp;データがありません。</p>
-        <% end %>
-      </div>
+    <div class="col-11 mb-4">
+      <h5>追加したライフイベントデータ</h5>
+      <% if @incomes.any? %>
+        <div class="accordion" id="incomesAccordion">
+          <% @incomes.each_with_index do |income, index| %>
+            <%=
+              render 'income', 
+              income: income,
+              index: index,
+              accordion_id: "incomesAccordion",
+              show_delete_button: true
+          %>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-secondary">&nbsp;&nbsp;データがありません。</p>
+      <% end %>
     </div>
   </div>
 

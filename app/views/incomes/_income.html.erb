@@ -1,39 +1,41 @@
-<div class="accordion-item">
-  <h2 class="accordion-header" id="heading-<%= accordion_id %>-<%= index %>">
-    <button
-      class="accordion-button collapsed"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#collapse-<%= accordion_id %>-<%= index %>"
-      aria-expanded="false"
-      aria-controls="collapse-<%= accordion_id %>-<%= index %>">
-        <span class="badge rounded-pill <%= income.person_type == '配偶者' ? 'text-success' : 'text-primary' %>">
-          <%= income.person_type %>
-        </span>
-    </button>
-  </h2>
-  <div
-    id="collapse-<%= accordion_id %>-<%= index %>"
-    class="accordion-collapse collapse"
-    aria-labelledby="heading-<%= accordion_id %>-<%= index %>"
-    data-bs-parent="#<%= accordion_id %>">
+<% if income.persisted? %>
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="heading-<%= accordion_id %>-<%= index %>">
+      <button
+        class="accordion-button collapsed"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#collapse-<%= accordion_id %>-<%= index %>"
+        aria-expanded="false"
+        aria-controls="collapse-<%= accordion_id %>-<%= index %>">
+          <span class="badge rounded-pill <%= income.person_type == '配偶者' ? 'text-success' : 'text-primary' %>">
+            <%= income.person_type %>
+          </span>
+      </button>
+    </h2>
+    <div
+      id="collapse-<%= accordion_id %>-<%= index %>"
+      class="accordion-collapse collapse"
+      aria-labelledby="heading-<%= accordion_id %>-<%= index %>"
+      data-bs-parent="#<%= accordion_id %>">
 
-    <div class="accordion-body">
-      <ul class="list-unstyled">
-        <li><strong>収入（手取り）:</strong> <%= income.income %>万円</li>
-        <li><strong>退職時期:</strong> <%= income.retirement_date.year %>年</li>
-        <li><strong>退職金（手取り）:</strong> <%= income.retirement_pay %>万円</li>
-      </ul>
-      <% if show_delete_button %>
-        <div class="mt-2">
-          <%=
-            link_to '削除',
-            income_path(income),
-            class: 'btn btn-outline-danger btn-sm px-1 py-1',
-            data: { turbo_method: :delete }
-          %>
-        </div>
-      <% end %>
+      <div class="accordion-body">
+        <ul class="list-unstyled">
+          <li><strong>収入（手取り）:</strong> <%= income.income %>万円</li>
+          <li><strong>退職時期:</strong> <%= income.retirement_date.year %>年</li>
+          <li><strong>退職金（手取り）:</strong> <%= income.retirement_pay %>万円</li>
+        </ul>
+        <% if show_delete_button %>
+          <div class="mt-2">
+            <%=
+              link_to '削除',
+              income_path(income),
+              class: 'btn btn-outline-danger btn-sm px-1 py-1',
+              data: { turbo_method: :delete }
+            %>
+          </div>
+        <% end %>
+      </div>
     </div>
   </div>
-</div>
+<% end %>

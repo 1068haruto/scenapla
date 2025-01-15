@@ -12,7 +12,13 @@
         <div class="row">
           <div class="col-md">
             <%= f.label :person_type, '対象者', class: 'form-label' %>
-            <%= f.select :person_type, @user_asset.class.person_types.keys.map { |key| [key.humanize, key] }, {}, class: "form-select" %>
+            <%=
+              f.select :person_type,
+              @user_asset.class.person_types.keys.map { |key| [key.humanize, key] },
+              {},
+              class: "form-select",
+              autofocus: true
+            %>
           </div>
 
           <div class="col-md">
@@ -23,7 +29,7 @@
           <div class="col-md">
             <%= f.label :amount, '総額', class: 'form-label' %>
             <div class="input-group">
-              <%= f.number_field :amount, class: "form-control" %>
+              <%= f.number_field :amount, class: "form-control", step: 0.1 %>
               <span class="input-group-text">万円</span>
             </div>
           </div>
@@ -43,32 +49,23 @@
       <% end %>
     </div>
 
-    <div class="col-11 p-3 mb-4">
-      <div class="row">
-        <h5>追加されている資産データ</h5>
-        <% if @user_assets.any? %>
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th scope="col" class="px-1"></th>
-                <th scope="col" class="px-1">対象者</th>
-                <th scope="col" class="px-1">種類</th>
-                <th scope="col" class="px-1">総額</th>
-                <th scope="col" class="px-1">利回り</th>
-                <th scope="col" class="px-1"></th>
-              </tr>
-            </thead>
-
-            <tbody class="table-group-divider">
-              <% @user_assets.each_with_index do |user_asset, index| %>
-                <%= render partial: 'user_asset', locals: { user_asset: user_asset, index: index + 1 } %>
-              <% end %>
-            </tbody>
-          </table>
-        <% else %>
-          <p class="text-secondary">&nbsp;&nbsp;データがありません。</p>
-        <% end %>
-      </div>
+    <div class="col-11 mb-4">
+      <h5>追加した資産データ</h5>
+      <% if @user_assets.any? %>
+        <div class="accordion" id="userAssetsAccordion">
+          <% @user_assets.each_with_index do |user_asset, index| %>
+            <%=
+              render 'user_asset', 
+              user_asset: user_asset,
+              index: index,
+              accordion_id: "userAssetsAccordion",
+              show_delete_button: true
+          %>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-secondary">&nbsp;&nbsp;データがありません。</p>
+      <% end %>
     </div>
   </div>
 

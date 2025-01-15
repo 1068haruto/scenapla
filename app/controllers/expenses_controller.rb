@@ -15,7 +15,6 @@ class ExpensesController < ApplicationController
     @expense.simulation = current_user.simulation
 
     if @expense.save
-      @latest_expense = current_user.expenses.last
       redirect_to expenses_path, notice: '支出データを追加しました'
     else
       @latest_expense = @expense

@@ -61,30 +61,20 @@
       <% end %>
     </div>
 
-    <div class="col-11 p-3 mb-4">
-      <div class="row">
-        <h5>追加した支出データ</h5>
-        <h6>※再追加でデータが上書きされます</h6>
-        <% if @latest_expense.present? %>
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th scope="col" class="px-1">住居費</th>
-                <th scope="col" class="px-1">住宅ローン完済</th>
-                <th scope="col" class="px-1">生活費</th>
-                <th scope="col" class="px-1">保険費</th>
-                <th scope="col" class="px-1">その他</th>
-              </tr>
-            </thead>
-
-            <tbody class="table-group-divider">
-              <%= render partial: 'expense', locals: { expense: @latest_expense } %>
-            </tbody>
-          </table>
-        <% else %>
-          <p class="text-secondary">&nbsp;&nbsp;データがありません。</p>
-        <% end %>
-      </div>
+    <div class="col-11 mb-4">
+      <h5>追加した支出データ</h5>
+      <h6>※再追加でデータが上書きされます</h6>
+      <% if @latest_expense.present? %>
+        <div class="accordion" id="expensesAccordion">
+          <%=
+            render 'expense', 
+            expense: @latest_expense,
+            accordion_id: "expensesAccordion"
+          %>
+        </div>
+      <% else %>
+        <p class="text-secondary">&nbsp;&nbsp;データがありません。</p>
+      <% end %>
     </div>
   </div>
 

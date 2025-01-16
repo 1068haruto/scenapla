@@ -42,14 +42,13 @@ gem "devise", "~> 4.9"
 gem 'omniauth', '~> 2.0'
 gem 'omniauth-google-oauth2', '~> 1.0'
 gem 'omniauth-rails_csrf_protection'
-gem 'omniauth-line', '~> 0.1.0'
 
 # グラフ表示
 gem "chartkick", "~> 5.1"
 gem "groupdate", "~> 6.5"
 
-# .envファイルを利用する
-gem 'dotenv-rails', '~> 2.8', groups: [:development, :test]
+# news機能関連
+gem 'http'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

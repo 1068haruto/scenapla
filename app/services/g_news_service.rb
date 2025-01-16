@@ -4,7 +4,7 @@ class GNewsService
   BASE_URL = 'https://gnews.io/api/v4'.freeze
 
   def initialize
-    @api_key = Rails.application.credentials.dig(:gnews, :api_key)
+    @api_key = fetch_api_key
   end
 
   # ニュースを取得するメインメソッド
@@ -29,6 +29,11 @@ class GNewsService
   end
 
   private
+
+  # APIキーを環境変数（本番）またはcredentials（開発）から取得
+  def fetch_api_key
+    ENV['GNEWS_API_KEY'] || Rails.application.credentials.dig(:gnews, :api_key)
+  end
 
   # レスポンスのエラーハンドリング
   def handle_response(response)

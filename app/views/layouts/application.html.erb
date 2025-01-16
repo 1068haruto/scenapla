@@ -33,13 +33,14 @@
             <div>
               <span class="sp-btn-username d-none d-md-inline"><%= "#{current_user.name}さん" %></span>
 
-              <!-- ハンバーガーメニュー（offcanvasのトリガー） -->
+              <!-- ハンバーガーメニュー（オフキャンバスのトリガー） -->
               <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
                 aria-controls="offcanvasNavbar">
                 <span class="navbar-toggler-icon"></span>
               </button>
             </div>
 
+            <!-- オフキャンバス -->
             <%= render 'layouts/offcanvas' %>
           <% else %>
             <%= link_to 'ログイン', new_user_session_path, class: 'btn btn-outline-light btn-login', data: { turbo: true } %>
@@ -50,6 +51,7 @@
 
     <main>
       <% if user_signed_in? && current_user.date_of_birth.present? %>
+        <!-- ナビゲーションタブ -->
         <%= render 'layouts/nav_tabs' %>
       <% end %>
 

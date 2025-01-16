@@ -1,0 +1,19 @@
+<h1>経済ニュース</h1>
+
+<% if flash[:alert].present? %>
+  <p class="alert"><%= flash[:alert] %></p>
+<% end %>
+
+<% if @news.any? %>
+  <ul>
+    <% @news.each do |article| %>
+      <li>
+        <h2><a href="<%= article['url'] %>" target="_blank"><%= article['title'] %></a></h2>
+        <p><%= article['description'] %></p>
+        <p><small>提供元: <%= article['source']['name'] %> | 公開日: <%= article['publishedAt'].to_date %></small></p>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>現在、日本経済に関連するニュースは見つかりませんでした。</p>
+<% end %>

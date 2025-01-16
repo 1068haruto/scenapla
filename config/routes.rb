@@ -43,6 +43,9 @@ Rails.application.routes.draw do
   end
   resources :scenarios, only: [:index]
 
+  # ニュースページ
+  resources :news, only: [:index]
+
   # トップページ
   root to: 'home#index'
 

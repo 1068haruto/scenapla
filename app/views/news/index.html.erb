@@ -11,20 +11,12 @@
   <% end %>
 
   <% if @news.any? %>
-    <ul class="list-group">
-      <% @news.each do |article| %>
-        <li class="list-group-item">
-          <h2 class="h5">
-            <a href="<%= article['url'] %>" target="_blank" class="text-primary"><%= article['title'] %></a>
-          </h2>
-          <p><%= article['description'] %></p>
-          <p class="text-muted">
-            <small>提供元: <%= article['source']['name'] %> | 公開日: <%= article['publishedAt'].to_date %></small>
-          </p>
-        </li>
+    <div class="accordion" id="newsAccordion">
+      <% @news.each_with_index do |article, index| %>
+        <%= render 'news', article: article, index: index, accordion_id: "newsAccordion" %>
       <% end %>
-    </ul>
+    </div>
   <% else %>
-    <div class="alert alert-info">現在、日本経済に関連するニュースは見つかりませんでした。</div>
+    <div class="alert alert-info">ニュースは見つかりませんでした。</div>
   <% end %>
 </div>

@@ -66,11 +66,7 @@
       <h6>※再追加でデータが上書きされます</h6>
       <% if @latest_expense.present? %>
         <div class="accordion" id="expensesAccordion">
-          <%=
-            render 'expense', 
-            expense: @latest_expense,
-            accordion_id: "expensesAccordion"
-          %>
+          <%= render 'expense', expense: @latest_expense, accordion_id: "expensesAccordion" %>
         </div>
       <% else %>
         <p class="text-secondary">&nbsp;&nbsp;データがありません。</p>

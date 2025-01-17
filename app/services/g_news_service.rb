@@ -21,6 +21,9 @@ class GNewsService
     })
 
     handle_response(response)
+  rescue StandardError => e
+    Rails.logger.error "GNews API Error: #{e.message}"
+    []
   end
 
   # 日本経済ニュース専用の簡易メソッド
@@ -40,7 +43,8 @@ class GNewsService
     if response.status.success?
       JSON.parse(response.body.to_s)['articles']
     else
-      raise "GNews API Error: #{response.status} - #{response.body.to_s}"
+      Rails.logger.error "GNews API Response Error: #{response.status} - #{response.body.to_s}"
+      []
     end
   end
 end

@@ -2,39 +2,31 @@ require 'http'
 
 class GNewsService
   BASE_URL = 'https://gnews.io/api/v4'.freeze
+  DEFAULT_LANGUAGE = 'ja'.freeze                # 表示言語（デフォルト: 日本語）
+  DEFAULT_MAX = 10.freeze                       # 最大取得件数（デフォルト: 10）
+  DEFAULT_ENDPOINT = '/search'.freeze           # エンドポイント（デフォルト: /search）
+  CACHE_EXPIRATION = 24.hours.freeze            # キャッシュの有効期限（24時間）
 
-  def initialize
+  def initialize(http_client: HTTP)
+    @http_client = http_client
     @api_key = fetch_api_key
   end
 
-  # ニュースを取得するメインメソッド（キャッシュ対応）
+  # ニュース取得のメインメソッド（キャッシュ対応）
   def fetch_news(topic, options = {})
-    language = options[:language] || 'ja'       # 言語（デフォルト: 日本語）
-    max = options[:max] || 10                   # 最大取得件数（デフォルト: 10）
-    endpoint = options[:endpoint] || '/search'  # エンドポイント（デフォルト: /search）
+    language = options[:language] || DEFAULT_LANGUAGE
+    max = options[:max] || DEFAULT_MAX  
+    endpoint = options[:endpoint] || DEFAULT_ENDPOINT
 
-    cache_key = "gnews/#{topic}/#{language}/#{max}"  # キャッシュキーを作成
+    cache_key = "gnews/#{endpoint}/#{topic}/#{language}/#{max}"  # キャッシュキー作成
 
-    # キャッシュがあれば取得、なければAPIリクエスト
-    result = Rails.cache.fetch(cache_key, expires_in: 24.hours) do
-      Rails.logger.info("Cache miss for key: #{cache_key}. Fetching data from API.")
+    result = fetch_from_cache_or_api(cache_key, topic, language, max, endpoint)  # ニュース取得
 
-      response = HTTP.get("#{BASE_URL}#{endpoint}", params: {
-        q: topic,
-        lang: language,
-        max: max,
-        token: @api_key
-      })
-      handle_response(response)
-    end
-
-    # キャッシュがある場合のログ出力
-    Rails.logger.info("Cache hit for key: #{cache_key}. Returning cached data.") if Rails.cache.exist?(cache_key)
+    log_cache_status(cache_key)
 
     result
-  rescue StandardError => e
-    Rails.logger.error "GNews API Error: #{e.message}"
-    []
+  rescue StandardError => error
+    handle_error(error)
   end
 
   private
@@ -42,6 +34,35 @@ class GNewsService
   # APIキーを環境変数（本番）またはcredentials（開発）から取得
   def fetch_api_key
     ENV['GNEWS_API_KEY'] || Rails.application.credentials.dig(:gnews, :api_key)
+  end
+
+  def fetch_api_key
+    key = ENV['GNEWS_API_KEY'] || Rails.application.credentials.dig(:gnews, :api_key)
+    raise "GNews API Key is missing. Set it in ENV or credentials." unless key
+    key
+  end
+
+  # キャッシュがあれば使用、なければAPIリクエスト
+  def fetch_from_cache_or_api(cache_key, topic, language, max, endpoint)
+    Rails.cache.fetch(cache_key, expires_in: CACHE_EXPIRATION) do
+      Rails.logger.info("Cache miss for key: #{cache_key}. Fetching data from API.")
+      response = HTTP.get("#{BASE_URL}#{endpoint}", params: request_params(topic, language, max))
+      handle_response(response)
+    end
+  end
+
+  def request_params(topic, language, max)
+    {
+      q: topic,
+      lang: language,
+      max: max,
+      token: @api_key
+    }
+  end
+
+  # キャッシュが存在する場合のログ出力
+  def log_cache_status(cache_key)
+    Rails.logger.info("Cache hit for key: #{cache_key}. Returning cached data.") if Rails.cache.exist?(cache_key)
   end
 
   # レスポンスのエラーハンドリング
@@ -52,5 +73,10 @@ class GNewsService
       Rails.logger.error "GNews API Response Error: #{response.status} - #{response.body.to_s}"
       []
     end
+  end
+
+  def handle_error(error)
+    Rails.logger.error "GNews API Error: #{error.message}"
+    []
   end
 end

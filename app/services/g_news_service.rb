@@ -33,10 +33,6 @@ class GNewsService
 
   # APIキーを環境変数（本番）またはcredentials（開発）から取得
   def fetch_api_key
-    ENV['GNEWS_API_KEY'] || Rails.application.credentials.dig(:gnews, :api_key)
-  end
-
-  def fetch_api_key
     key = ENV['GNEWS_API_KEY'] || Rails.application.credentials.dig(:gnews, :api_key)
     raise "GNews API Key is missing. Set it in ENV or credentials." unless key
     key

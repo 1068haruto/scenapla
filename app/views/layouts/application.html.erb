@@ -4,6 +4,20 @@
     <title><%= content_for(:title) || "Scenapla" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="description" content="このアプリは、経済とライフイベントの計画をサポートするツールです。">
+  
+    <!-- OGP Tags (固定値) -->
+    <meta property="og:title" content="Scenapla">
+    <meta property="og:description" content="このアプリは、経済とライフイベントの計画をサポートするツールです。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://scenapla.com">  <!-- トップページURL -->
+    <meta property="og:image" content="<%= asset_path('default-ogp-image.png') %>">  <!-- OGP用画像 -->
+    <meta property="og:site_name" content="Scenapla">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@scenapla">
+    <meta name="twitter:title" content="Scenapla">
+    <meta name="twitter:description" content="このアプリは、経済とライフイベントの計画をサポートするツールです。">
+    <meta name="twitter:image" content="<%= asset_path('default-ogp-image.png') %>">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 

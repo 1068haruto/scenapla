@@ -1,8 +1,8 @@
 class NewsController < ApplicationController
   def index
     @news = fetch_news('経済', 'ja', 10)
-  rescue StandardError => e
-    flash.now[:alert] = "ニュースの取得に失敗しました: #{e.message}"
+  rescue StandardError => error
+    flash.now[:alert] = "ニュースの取得に失敗しました: #{error.message}"
     @news = []
   end
 

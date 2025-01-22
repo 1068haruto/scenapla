@@ -3,7 +3,7 @@ require 'http'
 class GNewsService
   BASE_URL = 'https://gnews.io/api/v4'.freeze
   DEFAULT_LANGUAGE = 'ja'.freeze                # 表示言語（デフォルト: 日本語）
-  DEFAULT_MAX = 10.freeze                       # 最大取得件数（デフォルト: 10）
+  DEFAULT_MAX = 10.freeze                       # 最大取得件数（デフォルト: 10）※ 無料プランでは10件がmax
   DEFAULT_ENDPOINT = '/search'.freeze           # エンドポイント（デフォルト: /search）
   CACHE_EXPIRATION = 24.hours.freeze            # キャッシュの有効期限（24時間）
 
@@ -15,10 +15,10 @@ class GNewsService
   # ニュース取得のメインメソッド（キャッシュ対応）
   def fetch_news(topic, options = {})
     language = options[:language] || DEFAULT_LANGUAGE
-    max = options[:max] || DEFAULT_MAX  
+    max = options[:max] || DEFAULT_MAX
     endpoint = options[:endpoint] || DEFAULT_ENDPOINT
 
-    cache_key = "gnews/#{endpoint}/#{topic}/#{language}/#{max}"  # キャッシュキー作成
+    cache_key = "gnews#{endpoint}/#{topic}/#{language}/#{max}"  # キャッシュキー作成
 
     result = fetch_from_cache_or_api(cache_key, topic, language, max, endpoint)  # ニュース取得
 
@@ -42,7 +42,7 @@ class GNewsService
   def fetch_from_cache_or_api(cache_key, topic, language, max, endpoint)
     Rails.cache.fetch(cache_key, expires_in: CACHE_EXPIRATION) do
       Rails.logger.info("Cache miss for key: #{cache_key}. Fetching data from API.")
-      response = HTTP.get("#{BASE_URL}#{endpoint}", params: request_params(topic, language, max))
+      response = @http_client.get("#{BASE_URL}#{endpoint}", params: request_params(topic, language, max))
       handle_response(response)
     end
   end

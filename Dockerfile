@@ -49,6 +49,9 @@ RUN bundle install && \
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 
+# Install RuboCop and related tools
+RUN gem install rubocop rubocop-rails rubocop-performance
+
 # Copy application code
 COPY . .
 

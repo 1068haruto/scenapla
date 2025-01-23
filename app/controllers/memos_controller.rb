@@ -10,17 +10,17 @@ class MemosController < ApplicationController
     puts params.inspect
 
     if @memo.save
-      render json: { message: '保存しました。', memo: @memo }
+      render json: { message: "保存しました。", memo: @memo }
     else
-      render json: { message: '保存に失敗しました。', errors: @memo.errors.full_messages }, status: :unprocessable_entity
+      render json: { message: "保存に失敗しました。", errors: @memo.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
   def update
     if @memo.update(memo_params)
-      render json: { message: '更新しました。', memo: @memo }
+      render json: { message: "更新しました。", memo: @memo }
     else
-      render json: { message: '更新に失敗しました。', errors: @memo.errors.full_messages }, status: :unprocessable_entity
+      render json: { message: "更新に失敗しました。", errors: @memo.errors.full_messages }, status: :unprocessable_entity
     end
   end
 

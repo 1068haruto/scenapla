@@ -1,10 +1,10 @@
-require 'http'
+require "http"
 
 class GNewsService
-  BASE_URL = 'https://gnews.io/api/v4'.freeze
-  DEFAULT_LANGUAGE = 'ja'.freeze                # 表示言語（デフォルト: 日本語）
+  BASE_URL = "https://gnews.io/api/v4".freeze
+  DEFAULT_LANGUAGE = "ja".freeze                # 表示言語（デフォルト: 日本語）
   DEFAULT_MAX = 10.freeze                       # 最大取得件数（デフォルト: 10）※ 無料プランでは10件がmax
-  DEFAULT_ENDPOINT = '/search'.freeze           # エンドポイント（デフォルト: /search）
+  DEFAULT_ENDPOINT = "/search".freeze           # エンドポイント（デフォルト: /search）
   CACHE_EXPIRATION = 24.hours.freeze            # キャッシュの有効期限（24時間）
 
   def initialize(http_client: HTTP)
@@ -33,7 +33,7 @@ class GNewsService
 
   # APIキーを環境変数（本番）またはcredentials（開発）から取得
   def fetch_api_key
-    key = ENV['GNEWS_API_KEY'] || Rails.application.credentials.dig(:gnews, :api_key)
+    key = ENV["GNEWS_API_KEY"] || Rails.application.credentials.dig(:gnews, :api_key)
     raise "GNews API Key is missing. Set it in ENV or credentials." unless key
     key
   end
@@ -64,9 +64,9 @@ class GNewsService
   # レスポンスのエラーハンドリング
   def handle_response(response)
     if response.status.success?
-      JSON.parse(response.body.to_s)['articles']
+      JSON.parse(response.body.to_s)["articles"]
     else
-      Rails.logger.error "GNews API Response Error: #{response.status} - #{response.body.to_s}"
+      Rails.logger.error "GNews API Response Error: #{response.status} - #{response.body}"
       []
     end
   end

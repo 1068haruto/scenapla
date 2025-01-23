@@ -13,12 +13,12 @@ class User < ApplicationRecord
   has_many :scenarios, dependent: :destroy
   has_many :asset_lifespans, dependent: :destroy
   has_many :sns_credentials, dependent: :destroy
-  
+
   validates :name, presence: { message: "を入力して下さい" }
-  validates :email, presence: true, uniqueness: true, 
+  validates :email, presence: true, uniqueness: true,
             format: { with: /\A[^@\s]+@[^@\s]+\z/, message: "は有効なメールアドレスである必要があります" }
   validates :date_of_birth,
-            format: { with: /\A\d{4}-\d{2}-\d{2}\z/, message: 'はYYYY-MM-DD形式で入力してください' },
+            format: { with: /\A\d{4}-\d{2}-\d{2}\z/, message: "はYYYY-MM-DD形式で入力してください" },
             if: :date_of_birth_required?
   # SNSログインでない場合のみ有効、password_confirmationはDeviseのバリデーションでカバー（validatableモジュール確認）
   validates :password, presence: true, length: { in: 8..128 },
@@ -62,19 +62,19 @@ class User < ApplicationRecord
   # SNS使用ユーザー：登録も更新も無効
   # 一般ユーザー：登録は常に有効、更新は入力があれば有効、なければ無効
   def password_required?
-    if sns_credentials.exists?  
+    if sns_credentials.exists?
       false
-    elsif new_record?    
+    elsif new_record?
       true
-    else                        
-      password.present? || password_confirmation.present? 
+    else
+      password.present? || password_confirmation.present?
     end
   end
 
   # 一般ユーザー：登録も更新も有効
   # SNS使用ユーザー：登録は無効、更新は有効
   def date_of_birth_required?
-    return true if sns_credentials.empty?    
+    return true if sns_credentials.empty?
 
     if sns_credentials.exists? && new_record?
       false
@@ -86,7 +86,7 @@ class User < ApplicationRecord
   def create_simulation_and_scenario_models
     Simulation.create(user: self)  # simulationsテーブル作成
 
-    scenario_types = ['現実', '理想']  # シナリオのタイプを配列に定義
+    scenario_types = [ "現実", "理想" ]  # シナリオのタイプを配列に定義
     # 各シナリオタイプに対応するscenariosテーブル作成
     scenario_types.each do |type|
       Scenario.create(user: self, simulation: simulation, scenario_type: type)

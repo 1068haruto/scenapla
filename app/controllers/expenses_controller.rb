@@ -15,7 +15,7 @@ class ExpensesController < ApplicationController
     @expense.simulation = current_user.simulation
 
     if @expense.save
-      redirect_to expenses_path, notice: '支出データを追加しました'
+      redirect_to expenses_path, notice: "支出データを追加しました"
     else
       @latest_expense = @expense
       render_create_error
@@ -25,9 +25,9 @@ class ExpensesController < ApplicationController
   def update_simulation_data
     expense = current_user.expenses.last
     if expense.update_simulation_data(current_user)
-      redirect_to user_assets_path, notice: 'シミュレーションデータに保存しました'
+      redirect_to user_assets_path, notice: "シミュレーションデータに保存しました"
     else
-      redirect_to expenses_path, alert: 'シミュレーションデータに保存できませんでした'
+      redirect_to expenses_path, alert: "シミュレーションデータに保存できませんでした"
     end
   end
 

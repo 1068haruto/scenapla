@@ -1,23 +1,23 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: {
-    confirmations: 'users/confirmations',
-    passwords: 'users/passwords',
-    registrations: 'users/registrations',
-    sessions: 'users/sessions',
-    omniauth_callbacks: 'users/omniauth_callbacks',
+    confirmations: "users/confirmations",
+    passwords: "users/passwords",
+    registrations: "users/registrations",
+    sessions: "users/sessions",
+    omniauth_callbacks: "users/omniauth_callbacks"
   }
   devise_scope :user do
     # SNSログインユーザーの生年月日登録
-    get 'users/date_of_birth/edit', to: 'users/registrations#edit_date_of_birth', as: 'edit_date_of_birth'
-    patch 'users/date_of_birth', to: 'users/registrations#update_date_of_birth', as: 'update_date_of_birth'
+    get "users/date_of_birth/edit", to: "users/registrations#edit_date_of_birth", as: "edit_date_of_birth"
+    patch "users/date_of_birth", to: "users/registrations#update_date_of_birth", as: "update_date_of_birth"
   end
-  resources :users, only: [:show]
+  resources :users, only: [ :show ]
   resources :incomes do
     collection do
       post :update_simulation_data
     end
   end
-  resources :expenses, only: [:index] do
+  resources :expenses, only: [ :index ] do
     collection do
       post :create_or_update
     end
@@ -41,13 +41,13 @@ Rails.application.routes.draw do
       post :update_scenario
     end
   end
-  resources :scenarios, only: [:index]
+  resources :scenarios, only: [ :index ]
 
   # ニュースページ
-  resources :news, only: [:index]
+  resources :news, only: [ :index ]
 
   # トップページ
-  root to: 'home#index'
+  root to: "home#index"
 
   # ダッシュボード
   get "dashboard" => "dashboard#index", as: :dashboard

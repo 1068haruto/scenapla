@@ -31,14 +31,14 @@ class ScenariosController < ApplicationController
     # 資産シナリオ
     user_assets = @simulation.user_assets.where(user_id: current_user.id)
     if user_assets.any?
-      @asset_data = @simulation.user_asset_data&.map { |entry| [entry["date"], entry["amount"]] }&.to_h || {}
+      @asset_data = @simulation.user_asset_data&.map { |entry| [ entry["date"], entry["amount"] ] }&.to_h || {}
       @user_asset_data_updated_at = @simulation.updated_at
     else
       @asset_data = []
     end
 
     # 現実的シナリオ
-    real_scenario = @scenarios.find { |scenario| scenario.scenario_type == '現実' }
+    real_scenario = @scenarios.find { |scenario| scenario.scenario_type == "現実" }
     if real_scenario
       @real_updated_at = real_scenario.updated_at
       @real_balance_chart_data = real_scenario.balance_chart_data
@@ -58,10 +58,10 @@ class ScenariosController < ApplicationController
     end
 
     # 理想的シナリオ
-    ideal_scenario = @scenarios.find { |scenario| scenario.scenario_type == '理想' }
+    ideal_scenario = @scenarios.find { |scenario| scenario.scenario_type == "理想" }
     events = LifeEvent.where(user_id: current_user.id)
 
-    if ideal_scenario && events.any? { |event| event.event_type == '理想' }
+    if ideal_scenario && events.any? { |event| event.event_type == "理想" }
       @ideal_updated_at = ideal_scenario.updated_at
       @ideal_balance_chart_data = ideal_scenario.balance_chart_data
       @ideal_total_income = ideal_scenario.total_income || 0

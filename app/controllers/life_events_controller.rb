@@ -2,11 +2,11 @@ class LifeEventsController < ApplicationController
   def index
     # 表示する年代を計算
     @age_groups_to_display = ((current_user.age / 10) * 10..70).step(10).to_a
-  
+
     # ライフイベントを年代毎にグループ化
     life_events = LifeEvent.where(user_id: current_user.id).order(event_date: :asc)
     @grouped_life_events = life_events.group_by { |event| calculate_age_group(event.event_date.year, current_user.date_of_birth.year) }
-    
+
     # メモを年代毎にグループ化
     @memos = Memo.where(user_id: current_user.id).group_by(&:age_group)
   end
@@ -19,7 +19,7 @@ class LifeEventsController < ApplicationController
   def create
     @life_event = LifeEvent.build(convert_event_date(life_event_params))
     if @life_event.save
-      redirect_to new_life_event_path, notice: 'ライフイベントを追加しました。'
+      redirect_to new_life_event_path, notice: "ライフイベントを追加しました。"
     else
       @life_events = LifeEvent.where(user_id: current_user.id).order(event_date: :asc)
       flash.now[:error] = @life_event.errors.full_messages.join(", ")
@@ -31,9 +31,9 @@ class LifeEventsController < ApplicationController
     @life_event = LifeEvent.find(params[:id])
 
     if @life_event.destroy
-      redirect_to new_life_event_path, notice: 'ライフイベントを削除しました。'
+      redirect_to new_life_event_path, notice: "ライフイベントを削除しました。"
     else
-      redirect_to new_life_event_path, alert: 'ライフイベントを削除できませんでした。'
+      redirect_to new_life_event_path, alert: "ライフイベントを削除できませんでした。"
     end
   end
 
@@ -41,9 +41,9 @@ class LifeEventsController < ApplicationController
     simulation_id = params[:simulation_id]
 
     if LifeEvent.update_simulation_data(simulation_id)
-      redirect_to scenarios_path, notice: 'シミュレーションデータに保存しました。更新ボタンを押して最新のシナリオを表示しましょう。'
+      redirect_to scenarios_path, notice: "シミュレーションデータに保存しました。更新ボタンを押して最新のシナリオを表示しましょう。"
     else
-      redirect_to new_life_event_path, alert: 'シミュレーションデータに保存できませんでした'
+      redirect_to new_life_event_path, alert: "シミュレーションデータに保存できませんでした"
     end
   end
 

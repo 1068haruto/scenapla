@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-ruby '3.2.3'
+ruby "3.2.3"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.2.1", ">= 7.2.1.1"
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
@@ -39,16 +39,16 @@ gem "devise", "~> 4.9"
 # gem "bcrypt", "~> 3.1.7"
 
 # SNSログイン
-gem 'omniauth', '~> 2.0'
-gem 'omniauth-google-oauth2', '~> 1.0'
-gem 'omniauth-rails_csrf_protection'
+gem "omniauth", "~> 2.0"
+gem "omniauth-google-oauth2", "~> 1.0"
+gem "omniauth-rails_csrf_protection"
 
 # グラフ表示
 gem "chartkick", "~> 5.1"
 gem "groupdate", "~> 6.5"
 
 # news機能関連
-gem 'http'
+gem "http"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -59,6 +59,11 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", "~> 1.0", require: false
+
+  # rubocop関連
+  gem "rubocop", require: false
+  gem "rubocop-rails", require: false
+  gem "rubocop-performance", require: false
 end
 
 group :development do

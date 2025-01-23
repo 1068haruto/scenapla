@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
   # 生年月日未登録者用のページ移動と処理制御（下記 allowed_paths 内にあるものは可能）
   def check_date_of_birth
     if user_signed_in? && current_user.date_of_birth.blank? && !allowed_paths.include?(request.path)
-      redirect_to edit_date_of_birth_path, alert: '生年月日を登録してください。'
+      redirect_to edit_date_of_birth_path, alert: "生年月日を登録してください。"
     end
   end
 
@@ -42,4 +42,3 @@ class ApplicationController < ActionController::Base
     ]
   end
 end
-

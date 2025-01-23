@@ -1,6 +1,6 @@
 class IncomesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_income, only: [:destroy]
+  before_action :set_income, only: [ :destroy ]
 
   def index
     @incomes = current_user.incomes
@@ -12,7 +12,7 @@ class IncomesController < ApplicationController
     @income.simulation = current_user.simulation
 
     if @income.save
-      redirect_to incomes_path, notice: '収入データを追加しました'
+      redirect_to incomes_path, notice: "収入データを追加しました"
     else
       render_create_error
     end
@@ -20,9 +20,9 @@ class IncomesController < ApplicationController
 
   def destroy
     if @income.destroy
-      redirect_to incomes_path, notice: '収入データを削除しました。'
+      redirect_to incomes_path, notice: "収入データを削除しました。"
     else
-      redirect_to incomes_path, alert: '収入データを削除できませんでした。'
+      redirect_to incomes_path, alert: "収入データを削除できませんでした。"
     end
   end
 
@@ -37,9 +37,9 @@ class IncomesController < ApplicationController
 
     # シミュレーションデータを更新
     if current_user.simulation.update!(income_data: grouped_income_data)
-      redirect_to expenses_path, notice: 'シミュレーションデータに保存しました。'
+      redirect_to expenses_path, notice: "シミュレーションデータに保存しました。"
     else
-      redirect_to incomes_path, alert: 'シミュレーションデータに保存できませんでした。'
+      redirect_to incomes_path, alert: "シミュレーションデータに保存できませんでした。"
     end
   end
 
@@ -52,7 +52,7 @@ class IncomesController < ApplicationController
   def set_income
     @income = current_user.incomes.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-    redirect_to incomes_path, alert: '収入データが見つかりません'
+    redirect_to incomes_path, alert: "収入データが見つかりません"
   end
 
   def render_create_error

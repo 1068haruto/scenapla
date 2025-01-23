@@ -24,7 +24,7 @@ module Myapp
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
-    #Railsのバリデーションエラー時に自動的に付与されるfield_with_errorsクラスによって、フォームのHTML構造が変更されるのを防ぐ
+    # Railsのバリデーションエラー時に自動的に付与されるfield_with_errorsクラスによって、フォームのHTML構造が変更されるのを防ぐ
     config.action_view.field_error_proc = Proc.new { |html_tag, _instance| html_tag.html_safe }
   end
 end

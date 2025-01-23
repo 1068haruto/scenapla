@@ -2,15 +2,15 @@ class UserAsset < ApplicationRecord
   belongs_to :user
   belongs_to :simulation
 
-  enum person_type: {本人: 0, 配偶者: 1}
-  enum asset_type: {預金: 0, 貯蓄型保険: 1, 投資_NISA: 2, 投資_iDeCo: 3, 投資_その他: 4}
+  enum person_type: { 本人: 0, 配偶者: 1 }
+  enum asset_type: { 預金: 0, 貯蓄型保険: 1, 投資_NISA: 2, 投資_iDeCo: 3, 投資_その他: 4 }
 
   validates :user_id, presence: true
   validates :simulation_id, presence: true
   validates :person_type, presence: true
   validates :asset_type, presence: true
-  validates :amount, presence: true, numericality: { greater_than_or_equal_to: 0, message: 'は0以上のプラス値で入力して下さい' }
-  validates :return_rate, allow_nil: true, numericality: { greater_than_or_equal_to: 0, message: 'は0以上のプラス値で入力して下さい' }
+  validates :amount, presence: true, numericality: { greater_than_or_equal_to: 0, message: "は0以上のプラス値で入力して下さい" }
+  validates :return_rate, allow_nil: true, numericality: { greater_than_or_equal_to: 0, message: "は0以上のプラス値で入力して下さい" }
 
   def self.calculate_user_assets(user)
     # 対象ユーザーの資産データ取得
@@ -19,12 +19,12 @@ class UserAsset < ApplicationRecord
     # ユーザーが70歳になる年を計算
     current_year = Date.today.year
     user_age = current_year - user.date_of_birth.year
-  
+
     if user_age >= 70
       errors.add(:base, "既に70歳以上のため計算を実行できません")
       return
     end
-  
+
     seventy_year_old_year = current_year + (70 - user_age)
 
     # 年ごとの資産合計を保持

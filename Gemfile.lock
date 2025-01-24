@@ -400,9 +400,9 @@ DEPENDENCIES
   pg (~> 1.1)
   puma (>= 5.0)
   rails (~> 7.2.1, >= 7.2.1.1)
-  rubocop
-  rubocop-performance
-  rubocop-rails
+  rubocop (~> 1.50)
+  rubocop-performance (~> 1.22)
+  rubocop-rails (~> 2.25)
   rubocop-rails-omakase (~> 1.0)
   selenium-webdriver (~> 4.25)
   sprockets-rails (~> 3.5)

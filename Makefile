@@ -9,6 +9,9 @@ SERVICE = web
 rubocop:
 	$(COMPOSE) run --rm $(SERVICE) bundle exec rubocop
 
+rubocop-performance:
+	$(COMPOSE) run --rm $(SERVICE) bundle exec rubocop -P
+
 rubocop-autocorrect:
 	$(COMPOSE) run --rm $(SERVICE) bundle exec rubocop --auto-correct
 

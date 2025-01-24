@@ -412,7 +412,7 @@ DEPENDENCIES
   cssbundling-rails (~> 1.4)
   debug (~> 1.9)
   devise (~> 4.9)
-  factory_bot_rails
+  factory_bot_rails (~> 6.4)
   groupdate (~> 6.5)
   http
   jbuilder (~> 2.13)
@@ -424,7 +424,7 @@ DEPENDENCIES
   pg (~> 1.1)
   puma (>= 5.0)
   rails (~> 7.2.1, >= 7.2.1.1)
-  rspec-rails
+  rspec-rails (~> 7.1)
   rubocop (~> 1.50)
   rubocop-performance (~> 1.22)
   rubocop-rails (~> 2.25)

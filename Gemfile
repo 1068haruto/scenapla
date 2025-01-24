@@ -61,9 +61,9 @@ group :development, :test do
   gem "rubocop-rails-omakase", "~> 1.0", require: false
 
   # rubocop関連
-  gem "rubocop", require: false
-  gem "rubocop-rails", require: false
-  gem "rubocop-performance", require: false
+  gem 'rubocop', '~> 1.50', require: false
+  gem 'rubocop-rails', '~> 2.25', require: false
+  gem 'rubocop-performance', '~> 1.22', require: false
 end
 
 group :development do

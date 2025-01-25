@@ -43,7 +43,7 @@ class Simulation < ApplicationRecord
 
   # total_balanceから不足年数を計算
   def calculate_shortage(total_balance)
-    remaining_years = [ 70 - user.age, 0 ].max # 70歳までの残り年数
+    remaining_years = [ 70 - user.calculate_user_age, 0 ].max # 70歳までの残り年数
     (total_balance.abs / remaining_years).round(2)
   end
 

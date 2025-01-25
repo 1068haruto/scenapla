@@ -29,11 +29,11 @@ RSpec.describe User, type: :model do
   end
 
   describe 'インスタンスメソッドのテスト' do
-    describe '#age' do
+    describe '#calculate_user_age' do
       it '生年月日から年齢を計算すること' do
         user = FactoryBot.build(:user, date_of_birth: "2000-01-01")
         allow(Date).to receive(:today).and_return(Date.new(2025, 1, 1)) # テスト用の固定日
-        expect(user.age).to eq 25
+        expect(user.calculate_user_age).to eq 25
       end
     end
   end

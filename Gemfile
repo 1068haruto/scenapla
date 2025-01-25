@@ -51,13 +51,13 @@ group :development, :test do
   gem "rubocop-rails-omakase", "~> 1.0", require: false  # Omakase Ruby styling
 
   # rubocop関連
-  gem 'rubocop', '~> 1.50', require: false
-  gem 'rubocop-rails', '~> 2.25', require: false
-  gem 'rubocop-performance', '~> 1.22', require: false
+  gem "rubocop", "~> 1.50", require: false
+  gem "rubocop-rails", "~> 2.25", require: false
+  gem "rubocop-performance", "~> 1.22", require: false
 
   # RSpec関連
-  gem "rspec-rails", '~> 7.1', require: false
-  gem "factory_bot_rails", '~> 6.4', require: false
+  gem "rspec-rails", "~> 7.1", require: false
+  gem "factory_bot_rails", "~> 6.4", require: false
 end
 
 group :development do

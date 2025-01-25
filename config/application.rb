@@ -26,5 +26,8 @@ module Myapp
 
     # Railsのバリデーションエラー時に自動的に付与されるfield_with_errorsクラスによって、フォームのHTML構造が変更されるのを防ぐ
     config.action_view.field_error_proc = Proc.new { |html_tag, _instance| html_tag.html_safe }
+
+    # アプリのデフォルト言語を日本語（:ja）に設定
+    config.i18n.default_locale = :ja
   end
 end

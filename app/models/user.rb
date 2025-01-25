@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  # Others available are :confirmable, :lockable, :timeoutable, :trackable
+  # Others available are :lockable, :timeoutable, :trackable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable,
          :omniauthable, omniauth_providers: %i[google_oauth2]
@@ -14,15 +14,13 @@ class User < ApplicationRecord
   has_many :asset_lifespans, dependent: :destroy
   has_many :sns_credentials, dependent: :destroy
 
-  validates :name, presence: { message: "を入力して下さい" }
-  validates :email, presence: true, uniqueness: true,
-            format: { with: /\A[^@\s]+@[^@\s]+\z/, message: "は有効なメールアドレスである必要があります" }
-  validates :date_of_birth,
-            format: { with: /\A\d{4}-\d{2}-\d{2}\z/, message: "はYYYY-MM-DD形式で入力してください" },
-            if: :date_of_birth_required?
-  # SNSログインでない場合のみ有効、password_confirmationはDeviseのバリデーションでカバー（validatableモジュール確認）
-  validates :password, presence: true, length: { in: 8..128 },
-            format: { with: /(?=.*[a-z])(?=.*\d)/, message: "は小文字と数字を含める必要があります" },
+  validates :name, presence: true
+  validates :email, presence: true, uniqueness: true, format: { with: /\A[^@\s]+@[^@\s]+.[a-zA-Z]{2,}\z/ }
+  validates :date_of_birth, presence: true, if: :date_of_birth_required?
+  # SNSログインでない場合のみ有効
+  # password_confirmationは、Deviseのバリデーションでカバー(validatableモジュール確認)
+  validates :password, presence: true, length: { in: 8..30 },
+            format: { with: /(?=.*[a-z])(?=.*\d)/ },
             if: :password_required?
 
   after_create :create_simulation_and_scenario_models  # ユーザー作成後に計算モデル＆結果モデルを作成

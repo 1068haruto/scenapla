@@ -15,13 +15,13 @@ class Expense < ApplicationRecord
   end
 
   def update_simulation_data(current_user)
-    if current_user.age >= 70
+    if current_user.calculate_user_age >= 70
       errors.add(:base, "既に70歳以上のため計算を実行できません")
       return
     end
 
     current_year = Date.today.year
-    seventy_year_old_year = current_year + (70 - current_user.age)
+    seventy_year_old_year = current_year + (70 - current_user.calculate_user_age)
     expense_data = calculate_expenses(current_year, seventy_year_old_year)
     simulation_record = current_user.simulation
 

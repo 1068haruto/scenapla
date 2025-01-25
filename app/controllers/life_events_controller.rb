@@ -1,7 +1,7 @@
 class LifeEventsController < ApplicationController
   def index
     # 表示する年代を計算
-    @age_groups_to_display = ((current_user.age / 10) * 10..70).step(10).to_a
+    @age_groups_to_display = ((current_user.calculate_user_age / 10) * 10..70).step(10).to_a
 
     # ライフイベントを年代毎にグループ化
     life_events = LifeEvent.where(user_id: current_user.id).order(event_date: :asc)

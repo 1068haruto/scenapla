@@ -70,4 +70,12 @@ RSpec.configure do |config|
 
   # FactoryBotの使用許可
   config.include FactoryBot::Syntax::Methods
+
+  # Shoulda Matchersの設定
+  Shoulda::Matchers.configure do |config|
+    config.integrate do |with|
+      with.test_framework :rspec
+      with.library :rails
+    end
+  end
 end

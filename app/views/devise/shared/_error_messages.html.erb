@@ -7,8 +7,16 @@
       %>
     </p>
     <ul>
-      <% resource.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+      <% resource.errors.details.each do |attribute, error_details| %>
+        <% error_details.each do |error| %>
+          <li>
+            <%=
+              I18n.t(
+                "activerecord.errors.models.#{resource.model_name.i18n_key}.attributes.#{attribute}.#{error[:error]}"
+              )
+            %>
+          </li>
+        <% end %>
       <% end %>
     </ul>
   </div>

@@ -3,29 +3,25 @@ ja:
     messages:
       not_saved: "保存できませんでした。"
   activerecord:
-    attributes:
-      user:
-        name: "ユーザー名"
-        email: "メールアドレス"
-        date_of_birth: "生年月日"
-        password: "パスワード"
-        password_confirmation: "確認用パスワード"
     errors:
       models:
         user:
           attributes:
             name:
-              blank: "を入力してください。"
+              blank: "ユーザー名を入力してください。"
             email:
-              blank: "を入力してください。"
-              invalid: "が無効です。"
-              taken: "が既に登録されているものです。"
+              blank: "メールアドレスを入力してください。"
+              invalid: "メールアドレスが無効です。"
+              taken: "このメールアドレスは既に登録されています。"
             date_of_birth:
-              blank: "を入力してください。"
+              blank: "生年月日を入力してください。"
             password:
-              blank: "を入力してください。"
-              too_short: "は最低8文字必要です。"
-              invalid: "は半角英数字である必要があります。"
+              blank: "パスワードを入力してください。"
+              too_short: "パスワードは8字以上30字以下としてください。"
+              too_long: "パスワードは8字以上30字以下としてください。"
+              invalid: "パスワードは英数字である必要があります。"
             password_confirmation:
-              confirmation: "が一致していません。"
+              blank: "確認用パスワードを入力してください。"
+              confirmation: "パスワードが一致していません。"
+
   

@@ -27,16 +27,7 @@ class IncomesController < ApplicationController
   end
 
   def update_simulation_data
-    # Incomeから全ての収入データを取得し、それぞれを配列にする
-    all_income_data = current_user.incomes.flat_map(&:calculate_yearly_income_data)
-
-    # ハッシュ配列に整形された全ての収入データを、年毎に金額を集計して統合する
-    grouped_income_data = all_income_data.group_by { |data| data[:date] }.map do |year, records|
-      { date: year, amount: records.sum { |record| record[:amount] } }
-    end
-
-    # シミュレーションデータを更新
-    if current_user.simulation.update!(income_data: grouped_income_data)
+    if current_user.simulation.update_income_data!(current_user)
       redirect_to expenses_path, notice: "シミュレーションデータに保存しました。"
     else
       redirect_to incomes_path, alert: "シミュレーションデータに保存できませんでした。"

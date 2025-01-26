@@ -45,19 +45,18 @@ gem "http"
 
 group :development, :test do
   gem "debug", "~> 1.9", platforms: %i[ mri windows ], require: "debug/prelude"
-
   gem "brakeman", "~> 6.2", require: false  # Static analysis for security vulnerabilities
-
   gem "rubocop-rails-omakase", "~> 1.0", require: false  # Omakase Ruby styling
 
   # rubocop関連
-  gem "rubocop", "~> 1.50", require: false
-  gem "rubocop-rails", "~> 2.25", require: false
-  gem "rubocop-performance", "~> 1.22", require: false
+  gem "rubocop", "~> 1.50"
+  gem "rubocop-rails", "~> 2.25"
+  gem "rubocop-performance", "~> 1.22"
 
   # RSpec関連
-  gem "rspec-rails", "~> 7.1", require: false
-  gem "factory_bot_rails", "~> 6.4", require: false
+  gem "rspec-rails", "~> 7.1"
+  gem "factory_bot_rails", "~> 6.4"
+  gem "shoulda-matchers", "~> 5.0"
 end
 
 group :development do

@@ -10,6 +10,12 @@ class Simulation < ApplicationRecord
 
   validates :user_id, presence: true
 
+  # 収入データを元にシミュレーションデータを更新
+  def update_income_data!(user)
+    grouped_data = Income.grouped_income_data_for(user)
+    update!(income_data: grouped_data)
+  end
+
   # データを統合し、次年に収支を反映（引数として life_event_data を受け取る）
   def merged_income_expense_event(life_event_data)
     merged = merge_data(income_data, expense_data, life_event_data)

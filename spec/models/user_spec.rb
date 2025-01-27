@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  let(:user) { FactoryBot.build(:user) }
+  let(:user) { build(:user) }
 
   describe 'アソシエーションのテスト' do
     it { should have_many(:incomes).dependent(:destroy) }

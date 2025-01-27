@@ -13,12 +13,47 @@ RSpec.describe Income, type: :model do
   end
 
   describe 'バリデーションのテスト' do
-    it { should validate_presence_of(:person_type) }
-    it { should validate_presence_of(:income) }
-    it { should validate_numericality_of(:income).is_greater_than_or_equal_to(0) }
-    it { should validate_presence_of(:retirement_date) }
-    it { should validate_presence_of(:retirement_pay) }
-    it { should validate_numericality_of(:retirement_pay).is_greater_than_or_equal_to(0) }
+    let(:income) { build(:income) }
+
+    context '必須項目の確認' do
+      it '対象が必須であること' do
+        income.person_type = nil
+        expect(income).not_to be_valid
+        expect(income.errors[:person_type]).to include("対象を選択してください。")
+      end
+
+      it '月収が必須であること' do
+        income.income = nil
+        expect(income).not_to be_valid
+        expect(income.errors[:income]).to include("月収(手取り)は必須です。", "数値を入力してください。")
+      end
+
+      it '退職時期が必須であること' do
+        income.retirement_date = nil
+        expect(income).not_to be_valid
+        expect(income.errors[:retirement_date]).to include("退職時期を入力してください。")
+      end
+
+      it '退職金が必須であること' do
+        income.retirement_pay = nil
+        expect(income).not_to be_valid
+        expect(income.errors[:retirement_pay]).to include("退職金(手取り)は必須です。", "数値を入力してください。")
+      end
+    end
+
+    context 'プラス値入力の確認' do
+      it '収入の入力値が0以上であること' do
+        income.income = -1
+        expect(income).not_to be_valid
+        expect(income.errors[:income]).to include("月収(手取り)は、プラス値で入力してください。")
+      end
+
+      it '退職金の入力値が0以上であること' do
+        income.retirement_pay = -1
+        expect(income).not_to be_valid
+        expect(income.errors[:retirement_pay]).to include("退職金(手取り)は、プラス値で入力してください。")
+      end
+    end
   end
 
   describe 'カスタムセッターのテスト' do
@@ -37,8 +72,8 @@ RSpec.describe Income, type: :model do
         result = income.calculate_income_until_retirement
 
         expect(result).to include(
-          {:amount => 12, :date => 2025}, {:amount => 12, :date => 2026}, {:amount => 12, :date => 2027},
-          {:amount => 12, :date => 2028}, {:amount => 12, :date => 2029}, {:amount => 13, :date => 2030}
+          { amount: 12, date: 2025 }, { amount: 12, date: 2026 }, { amount: 12, date: 2027 },
+          { amount: 12, date: 2028 }, { amount: 12, date: 2029 }, { amount: 13, date: 2030 }
         )
         expect(result).to include({ date: Date.current.year, amount: 12 })
         expect(result.length).to eq(2030 - Date.current.year + 1)
@@ -56,8 +91,8 @@ RSpec.describe Income, type: :model do
         result = Income.grouped_income_data_for(user)
 
         expect(result).to include(
-          {:amount=>24, :date=>2025}, {:amount=>24, :date=>2026}, {:amount=>24, :date=>2027},
-          {:amount=>24, :date=>2028}, {:amount=>24, :date=>2029}, {:amount=>26, :date=>2030}
+          { amount: 24, date: 2025 }, { amount: 24, date: 2026 }, { amount: 24, date: 2027 },
+          { amount: 24, date: 2028 }, { amount: 24, date: 2029 }, { amount: 26, date: 2030 }
         )
         expect(result).to include({ date: Date.current.year, amount: 24 })
         expect(result).to include({ date: 2030, amount: 26 })
@@ -83,7 +118,7 @@ RSpec.describe Income, type: :model do
     describe '.format_income_data' do
       it '# 年毎に収入を合計して整形すること' do
         grouped_data = {
-          2025 => [{ date: 2025, amount: 5 }], 2030 => [{ date: 2030, amount: 1 }, { date: 2030, amount: 2 }]
+          2025 => [ { date: 2025, amount: 5 } ], 2030 => [ { date: 2030, amount: 1 }, { date: 2030, amount: 2 } ]
         }
 
         result = Income.send(:format_income_data, grouped_data)

@@ -3,6 +3,18 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
   let(:user) { FactoryBot.build(:user) }
 
+  describe 'アソシエーションのテスト' do
+    it { should have_many(:incomes).dependent(:destroy) }
+    it { should have_many(:expenses).dependent(:destroy) }
+    it { should have_many(:user_assets).dependent(:destroy) }
+    it { should have_many(:life_events).dependent(:destroy) }
+    it { should have_many(:memos).dependent(:destroy) }
+    it { should have_many(:scenarios).dependent(:destroy) }
+    it { should have_many(:asset_lifespans).dependent(:destroy) }
+    it { should have_many(:sns_credentials).dependent(:destroy) }
+    it { should have_one(:simulation).dependent(:destroy) }
+  end
+
   describe 'バリデーションのテスト' do
     context '必須項目の確認' do
       it 'ユーザー名が必須であること' do
@@ -119,18 +131,6 @@ RSpec.describe User, type: :model do
       expect(user.scenarios.count).to eq 2
       expect(user.scenarios.map(&:scenario_type)).to contain_exactly("現実", "理想")
     end
-  end
-
-  describe 'アソシエーションのテスト' do
-    it { should have_many(:incomes).dependent(:destroy) }
-    it { should have_many(:expenses).dependent(:destroy) }
-    it { should have_many(:user_assets).dependent(:destroy) }
-    it { should have_many(:life_events).dependent(:destroy) }
-    it { should have_many(:memos).dependent(:destroy) }
-    it { should have_many(:scenarios).dependent(:destroy) }
-    it { should have_many(:asset_lifespans).dependent(:destroy) }
-    it { should have_many(:sns_credentials).dependent(:destroy) }
-    it { should have_one(:simulation).dependent(:destroy) }
   end
 
   describe 'クラスメソッドのテスト' do

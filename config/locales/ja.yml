@@ -3,6 +3,7 @@ ja:
     format: "%{message}" # 属性名を含めない
     messages:
       not_saved: "保存できませんでした。"
+      record_invalid: "レコードの保存に失敗しました"
   activerecord:
     errors:
       models:

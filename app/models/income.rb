@@ -9,7 +9,7 @@ class Income < ApplicationRecord
   validates :retirement_date, presence: true
   validates :retirement_pay, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
-  # 入力された年をdate型に整形するカスタムセッター
+  # カスタムセッター: 入力された年を date 型に変換
   def retirement_date=(value)
     super(value.present? ? Date.new(value.to_i, 1, 1) : value)
   end

@@ -27,10 +27,14 @@ ja:
               confirmation: "パスワードが一致していません。"
         income:
           attributes:
+            person_type:
+              blank: "対象を選択してください。"
             income:
               blank: "月収(手取り)は必須です。"
               not_a_number: "数値を入力してください。"
               greater_than_or_equal_to: "月収(手取り)は、プラス値で入力してください。"
+            retirement_date:
+              blank: "退職時期を入力してください。"
             retirement_pay:
               blank: "退職金(手取り)は必須です。"
               not_a_number: "数値を入力してください。"

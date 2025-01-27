@@ -18,7 +18,7 @@
           <div class="col-md">
             <%= f.label :income, '月収（手取り）', class: 'form-label' %>
             <div class="input-group">
-              <%= f.number_field :income, class: 'form-control', step: 0.1 %>
+              <%= f.number_field :income, class: 'form-control', step: 0.1, required: true %>
               <span class="input-group-text">万円</span>
             </div>
           </div>
@@ -38,7 +38,7 @@
           <div class="col-md">
             <%= f.label :retirement_pay, '退職金（手取り）', class: 'form-label' %>
             <div class="input-group">
-              <%= f.number_field :retirement_pay, class: 'form-control', step: 0.1 %>
+              <%= f.number_field :retirement_pay, class: 'form-control', step: 0.1, required: true %>
               <span class="input-group-text">万円</span>
             </div>
           </div>

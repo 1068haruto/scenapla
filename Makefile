@@ -41,6 +41,10 @@ down:
 logs:  # コンテナのログをリアルタイム表示
 	$(COMPOSE) logs -f
 
+rails-c:
+	$(COMPOSE) run --rm $(SERVICE) bundle exec rails console
+
 # -----インストール関連-----
 bundle-install:
 	$(COMPOSE) run --rm $(SERVICE) bundle install
+

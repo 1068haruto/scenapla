@@ -23,8 +23,7 @@ class ExpensesController < ApplicationController
   end
 
   def update_simulation_data
-    expense = current_user.expenses.last
-    if expense.update_simulation_data(current_user)
+    if current_user.simulation.update_expense_data!(current_user)
       redirect_to user_assets_path, notice: "シミュレーションデータに保存しました"
     else
       redirect_to expenses_path, alert: "シミュレーションデータに保存できませんでした"

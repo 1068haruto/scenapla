@@ -1,18 +1,18 @@
 require 'rails_helper'
 
 RSpec.describe Income, type: :model do
-  describe 'アソシエーションのテスト' do
+  describe 'アソシエーションテスト' do
     it { should belong_to(:user) }
     it { should belong_to(:simulation) }
   end
 
-  describe 'enumのテスト' do
+  describe 'enumテスト' do
     it do
       expect(described_class.person_types).to eq({ "本人" => "本人", "配偶者" => "配偶者" })
     end
   end
 
-  describe 'バリデーションのテスト' do
+  describe 'バリデーションテスト' do
     let(:income) { build(:income) }
 
     context '必須項目の確認' do
@@ -56,7 +56,7 @@ RSpec.describe Income, type: :model do
     end
   end
 
-  describe 'カスタムセッターのテスト' do
+  describe 'カスタムセッターテスト' do
     describe '#retirement_date=' do
       it '入力された退職日の値を年始の日付として設定すること' do
         income = build(:income, retirement_date: "2030")
@@ -65,7 +65,7 @@ RSpec.describe Income, type: :model do
     end
   end
 
-  describe 'パブリックメソッドのテスト' do
+  describe 'メソッドテスト' do
     describe '#calculate_income_until_retirement' do
       it '現在〜退職まで年毎に年収のハッシュ配列を作成すること' do
         income = build(:income, retirement_date: 2030)
@@ -80,7 +80,7 @@ RSpec.describe Income, type: :model do
       end
     end
 
-    describe '.grouped_income_data_for' do
+    describe '.generate_income_data_for' do
       let(:user) { create(:user) }
       let(:simulation) { create(:simulation, user: user) }
 
@@ -88,7 +88,7 @@ RSpec.describe Income, type: :model do
         create(:income, user: user, simulation: simulation, income: 1, retirement_date: 2030, retirement_pay: 1)
         create(:income, user: user, simulation: simulation, income: 1, retirement_date: 2030, retirement_pay: 1)
 
-        result = Income.grouped_income_data_for(user)
+        result = Income.generate_income_data_for(user)
 
         expect(result).to include(
           { amount: 24, date: 2025 }, { amount: 24, date: 2026 }, { amount: 24, date: 2027 },
@@ -98,30 +98,28 @@ RSpec.describe Income, type: :model do
         expect(result).to include({ date: 2030, amount: 26 })
       end
     end
-  end
 
-  describe 'プライベートメソッドのテスト' do
-    describe '#calculate_yearly_income, #calculate_total_amount' do
+    describe '#calculate_income_for_year, #calculate_adjusted_income_for_year' do
       it '退職年の年収は退職金を含むこと' do
         income = build(:income, income: 1, retirement_date: 2030, retirement_pay: 1)
-        result = income.send(:calculate_yearly_income, 2030)
+        result = income.send(:calculate_income_for_year, 2030)
         expect(result).to eq({ date: 2030, amount: 13 })
       end
 
       it '退職年以外の年収は退職金を含まないこと' do
         income = build(:income, income: 1, retirement_date: 2030, retirement_pay: 1)
-        result = income.send(:calculate_yearly_income, 2025)
+        result = income.send(:calculate_income_for_year, 2025)
         expect(result).to eq({ date: 2025, amount: 12 })
       end
     end
 
-    describe '.format_income_data' do
+    describe '.format_grouped_data' do
       it '# 年毎に収入を合計して整形すること' do
         grouped_data = {
           2025 => [ { date: 2025, amount: 5 } ], 2030 => [ { date: 2030, amount: 1 }, { date: 2030, amount: 2 } ]
         }
 
-        result = Income.send(:format_income_data, grouped_data)
+        result = Income.send(:format_grouped_data, grouped_data)
 
         expect(result).to include({ date: 2025, amount: 5 }, { date: 2030, amount: 3 })
       end

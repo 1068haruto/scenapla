@@ -39,3 +39,21 @@ ja:
               blank: "退職金(手取り)は必須です。"
               not_a_number: "数値を入力してください。"
               greater_than_or_equal_to: "退職金(手取り)は、プラス値で入力してください。"
+        expense:
+          attributes:
+            housing_expense:
+              blank: "住居費を入力してください。"
+              not_a_number: "数値を入力してください。"
+              greater_than_or_equal_to: "住居費はプラス値で入力してください。"
+            living_expenses:
+              blank: "生活費を入力してください。"
+              not_a_number: "数値を入力してください。"
+              greater_than_or_equal_to: "生活費はプラス値で入力してください。"
+            monthly_premiums:
+              blank: "保険費を入力してください。"
+              not_a_number: "数値を入力してください。"
+              greater_than_or_equal_to: "保険費はプラス値で入力してください。"
+            other_expenses:
+              blank: "その他費用を入力してください。"
+              not_a_number: "数値を入力してください。"
+              greater_than_or_equal_to: "その他費用はプラス値で入力してください。"

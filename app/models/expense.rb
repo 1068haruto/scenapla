@@ -3,62 +3,62 @@ class Expense < ApplicationRecord
   belongs_to :simulation
 
   AGE_LIMIT = 70
-  ERROR_MESSAGES = {
-    over_age_limit: "既に70歳以上のため計算を実行できません",
-    no_simulation: "関連するシミュレーションが存在しません"
-  }.freeze
+  ERROR_MESSAGES = { over_age_limit: "既に70歳以上のため計算を実行できません" }.freeze
+  MONTHS_IN_A_YEAR = 12
 
   validates :user_id, :simulation_id, presence: true
   validates :housing_expense, :living_expenses, :monthly_premiums, :other_expenses,
-            presence: true,
-            numericality: { greater_than_or_equal_to: 0, message: "は0以上のプラス値で入力して下さい" }
-  validates :repayment_date, allow_nil: true, presence: true
+             presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :repayment_date, presence: true, allow_nil: true
 
-  # カスタムセッター: 入力された年を date 型に変換
+  # カスタムセッター：入力された年をdate型に変換
   def repayment_date=(value)
     super(value.present? ? Date.new(value.to_i, 1, 1) : value)
   end
 
-  def update_simulation_data(current_user)
-    return unless validate_user_age(current_user)
+  def self.generate_expense_data_for(user)
+    return unless check_user_age_limit(user)
+    latest_expense = user.expenses.last
 
-    expense_data = build_expense_data(current_user)
+    current_year = Date.today.year
+    year_age_seventy = current_year + (AGE_LIMIT - user.calculate_user_age)
 
-    simulation_record = current_user.simulation
-    if simulation_record
-      simulation_record.update(expense_data: expense_data)
-    else
-      errors.add(:simulation, ERROR_MESSAGES[:no_simulation])
-    end
+    latest_expense.calculate_yearly_expenses(current_year, year_age_seventy)
   end
 
-  private
-
-  def validate_user_age(current_user)
-    if current_user.calculate_user_age >= AGE_LIMIT
+  def self.check_user_age_limit(user)
+    if user.calculate_user_age >= AGE_LIMIT
       errors.add(:base, ERROR_MESSAGES[:over_age_limit])
       return false
     end
     true
   end
 
-  def build_expense_data(current_user)
-    current_year = Date.today.year
-    year_age_seventy = current_year + (AGE_LIMIT - current_user.calculate_user_age)
-
-    calculate_expenses(current_year, year_age_seventy)
-  end
-
-  def calculate_expenses(current_year, year_age_seventy)
-    total_monthly_expense = housing_expense + living_expenses + monthly_premiums + other_expenses
-    repayment_year = repayment_date&.year.to_i
+  def calculate_yearly_expenses(current_year, year_age_seventy)
     (current_year..year_age_seventy).map do |year|
-      yearly_expense = if repayment_year == 0 || year <= repayment_year
-                         total_monthly_expense * 12 * -1
-                       else
-                         (living_expenses + monthly_premiums + other_expenses) * 12 * -1
-                       end
+      yearly_expense = calculate_yearly_expense_for_year(year)
       { date: year, amount: yearly_expense }
     end
+  end
+
+  # 年次支出額を計算
+  def calculate_yearly_expense_for_year(year)
+    repayment_year = repayment_date&.year.to_i
+
+    if repayment_year == 0 || year <= repayment_year
+      total_monthly_expense * MONTHS_IN_A_YEAR * -1
+    else
+      reduced_monthly_expense * MONTHS_IN_A_YEAR * -1
+    end
+  end
+
+  # 総月次支出を計算
+  def total_monthly_expense
+    housing_expense + living_expenses + monthly_premiums + other_expenses
+  end
+
+  # ローン返済終了後の月次支出を計算
+  def reduced_monthly_expense
+    living_expenses + monthly_premiums + other_expenses
   end
 end

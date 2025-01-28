@@ -3,45 +3,45 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
   let(:user) { build(:user) }
 
-  describe 'アソシエーションのテスト' do
-    it { should have_many(:incomes).dependent(:destroy) }
-    it { should have_many(:expenses).dependent(:destroy) }
-    it { should have_many(:user_assets).dependent(:destroy) }
-    it { should have_many(:life_events).dependent(:destroy) }
-    it { should have_many(:memos).dependent(:destroy) }
-    it { should have_many(:scenarios).dependent(:destroy) }
-    it { should have_many(:asset_lifespans).dependent(:destroy) }
-    it { should have_many(:sns_credentials).dependent(:destroy) }
-    it { should have_one(:simulation).dependent(:destroy) }
+  describe 'アソシエーションテスト' do
+    it { is_expected.to have_many(:incomes).dependent(:destroy) }
+    it { is_expected.to have_many(:expenses).dependent(:destroy) }
+    it { is_expected.to have_many(:user_assets).dependent(:destroy) }
+    it { is_expected.to have_many(:life_events).dependent(:destroy) }
+    it { is_expected.to have_many(:memos).dependent(:destroy) }
+    it { is_expected.to have_many(:scenarios).dependent(:destroy) }
+    it { is_expected.to have_many(:asset_lifespans).dependent(:destroy) }
+    it { is_expected.to have_many(:sns_credentials).dependent(:destroy) }
+    it { is_expected.to have_one(:simulation).dependent(:destroy) }
   end
 
-  describe 'バリデーションのテスト' do
+  describe 'バリデーションテスト' do
     context '必須項目の確認' do
-      it 'ユーザー名が必須であること' do
+      it 'ユーザー名がnilの場合無効' do
         user.name = nil
         expect(user).not_to be_valid
         expect(user.errors[:name]).to include("ユーザー名を入力してください。")
       end
 
-      it '生年月日が必須であること' do
+      it '生年月日がnilの場合無効' do
         user.date_of_birth = nil
         expect(user).not_to be_valid
         expect(user.errors[:date_of_birth]).to include("生年月日を入力してください。")
       end
 
-      it 'メールアドレスが必須であること' do
+      it 'メールアドレスがnilの場合無効' do
         user.email = nil
         expect(user).not_to be_valid
         expect(user.errors[:email]).to include("メールアドレスを入力してください。")
       end
 
-      it 'パスワードが必須であること' do
+      it 'パスワードがnilの場合無効' do
         user.password = nil
         expect(user).not_to be_valid
         expect(user.errors[:password]).to include("パスワードを入力してください。")
       end
 
-      it '確認用パスワードが必須であること' do
+      it '確認用パスワードがnilの場合無効' do
         user.password_confirmation = nil
         expect(user).not_to be_valid
         expect(user.errors[:password_confirmation]).to include("確認用パスワードを入力してください。")
@@ -87,7 +87,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe 'カスタムバリデーションのテスト' do
+  describe 'カスタムバリデーションテスト' do
     describe '#password_required?' do
       it 'SNSユーザーは、パスワードは不要であること' do
         sns_mock = double('SnsCredential', exists?: true)
@@ -126,14 +126,14 @@ RSpec.describe User, type: :model do
 
   describe 'コールバックのテスト' do
     it 'ユーザー作成後にシミュレーションとシナリオを作成すること' do
-      user = FactoryBot.create(:user)
+      user = create(:user)
       expect(user.simulation).to be_present
       expect(user.scenarios.count).to eq 2
       expect(user.scenarios.map(&:scenario_type)).to contain_exactly("現実", "理想")
     end
   end
 
-  describe 'クラスメソッドのテスト' do
+  describe 'クラスメソッドテスト' do
     let(:auth) do
       OmniAuth::AuthHash.new(
         uid: "12345",
@@ -143,13 +143,13 @@ RSpec.describe User, type: :model do
     end
 
     describe '.find_or_create_for_oauth' do
-      it '既存のユーザーが存在する場合、そのユーザーを返すこと' do
-        existing_user = FactoryBot.create(:user, email: auth.info.email)
+      it '既存のユーザーが存在する場合、そのユーザーを返す' do
+        existing_user = create(:user, email: auth.info.email)
         user = User.find_or_create_for_oauth(auth)
         expect(user).to eq existing_user
       end
 
-      it 'ユーザーが存在しない場合、ユーザーを新規作成すること' do
+      it 'ユーザーが存在しない場合、ユーザーを新規作成する' do
         user = User.find_or_create_for_oauth(auth)
         expect(user.email).to eq "test@example.com"
         expect(user.name).to eq "テストユーザー"
@@ -157,7 +157,7 @@ RSpec.describe User, type: :model do
     end
 
     describe '.create_user_from_auth' do
-      it 'SNS認証を用いた新規ユーザーを作成すること' do
+      it 'SNS認証を用いた新規ユーザーを作成する' do
         user = User.create_user_from_auth(auth)
         expect(user.email).to eq "test@example.com"
         expect(user.name).to eq "テストユーザー"
@@ -168,9 +168,10 @@ RSpec.describe User, type: :model do
 
   describe 'インスタンスメソッドのテスト' do
     describe '#calculate_user_age' do
-      it '生年月日から年齢を計算できる' do
-        allow(Date).to receive(:today).and_return(Date.new(2025, 1, 1)) # テスト用の固定日
-        expect(user.calculate_user_age).to eq 35
+      let(:user) { create(:user, date_of_birth: 40.years.ago) }
+
+      it '年齢が正しく計算されること' do
+        expect(user.calculate_user_age).to eq(40)
       end
     end
   end

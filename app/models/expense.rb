@@ -3,7 +3,6 @@ class Expense < ApplicationRecord
   belongs_to :simulation
 
   AGE_LIMIT = 70
-  ERROR_MESSAGES = { over_age_limit: "既に70歳以上のため計算を実行できません" }.freeze
   MONTHS_IN_A_YEAR = 12
 
   validates :user_id, :simulation_id, presence: true
@@ -17,21 +16,12 @@ class Expense < ApplicationRecord
   end
 
   def self.generate_expense_data_for(user)
-    return unless check_user_age_limit(user)
     latest_expense = user.expenses.last
 
     current_year = Date.today.year
     year_age_seventy = current_year + (AGE_LIMIT - user.calculate_user_age)
 
     latest_expense.calculate_yearly_expenses(current_year, year_age_seventy)
-  end
-
-  def self.check_user_age_limit(user)
-    if user.calculate_user_age >= AGE_LIMIT
-      errors.add(:base, ERROR_MESSAGES[:over_age_limit])
-      return false
-    end
-    true
   end
 
   def calculate_yearly_expenses(current_year, year_age_seventy)

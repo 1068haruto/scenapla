@@ -17,8 +17,8 @@ class UserAsset < ApplicationRecord
   def self.generate_user_asset_data_for(user)
     assets = where(user: user)
     year_at_seventy = get_year_when_seventy(user)
-
     yearly_totals = initialize_yearly_totals(assets, year_at_seventy)
+
     format_yearly_totals(yearly_totals)
   end
 
@@ -26,9 +26,9 @@ class UserAsset < ApplicationRecord
 
   # ユーザーが70歳になる年を計算
   def self.get_year_when_seventy(user)
-    current_year = Date.today.year
-    user_age = current_year - user.date_of_birth.year
-    current_year + (AGE_LIMIT - user_age)
+    birth_date = user.date_of_birth
+    year_turns_seventy = birth_date + AGE_LIMIT.years
+    year_turns_seventy.year
   end
 
   def self.initialize_yearly_totals(assets, year_at_seventy)
@@ -42,24 +42,20 @@ class UserAsset < ApplicationRecord
   end
 
   def self.calculate_asset_projection(asset, yearly_totals, current_year, year_at_seventy)
-    initial_amount = asset.amount || 0
-    rate = (asset.return_rate.to_f || 0) / 100.0  # 利回りを小数変換
-
-    # 1年目の資産計算(利回り計算なし)
-    yearly_totals[current_year] += initial_amount
-    # 2年目以降の各年の資産計算
-    calculate_future_years(asset.asset_type, initial_amount, rate, yearly_totals, current_year, year_at_seventy)
+    amount = asset.amount
+    rate = asset.return_rate.to_f / 100.0  # 利回りを小数変換
+  
+    # 1年目の資産(利回り計算なし)
+    yearly_totals[current_year] += amount
+    # 2年目以降の資産計算
+    calculate_future_years(asset.asset_type, amount, rate, yearly_totals, current_year, year_at_seventy)
   end
 
-  def self.calculate_future_years(asset_type, initial_amount, rate, yearly_totals, current_year, year_at_seventy)
-    amount = initial_amount  # 初期元本(1年目の資産合計)
-
+  def self.calculate_future_years(asset_type, amount, rate, yearly_totals, current_year, year_at_seventy)
     (current_year + 1..year_at_seventy).each do |year|
-      if rate > 0
-        profit = calculate_profit(amount, rate, asset_type)
-        amount += profit  # 元本に利益加算
-      end
-      yearly_totals[year] += amount  # 年毎に資産を更新(重複加算を防ぐ)
+      profit = calculate_profit(amount, rate, asset_type)
+      amount += profit
+      yearly_totals[year] += amount
     end
   end
 

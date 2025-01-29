@@ -5,7 +5,7 @@
 COMPOSE = docker compose
 SERVICE = web
 
-# -----RuboCop関連タスク-----
+# -----RuboCop関連-----
 rubocop:
 	$(COMPOSE) run --rm $(SERVICE) bundle exec rubocop
 
@@ -18,7 +18,7 @@ rubocop-autocorrect:
 rubocop-gen-config:  # RuboCopの設定ファイル(.rubocop.yml)を自動生成
 	$(COMPOSE) run --rm $(SERVICE) bundle exec rubocop --auto-gen-config
 
-# -----RSpec関連タスク-----
+# -----RSpec関連-----
 rspec:
 	$(COMPOSE) run --rm $(SERVICE) bundle exec rspec
 
@@ -28,7 +28,7 @@ rspec-verbose:  # テスト & 結果をドキュメント形式表示
 rspec-with-coverage:  # テスト & カバレッジレポート生成
 	$(COMPOSE) run --rm $(SERVICE) bundle exec rspec --coverage
 
-# -----その他便利タスク-----
+# -----その他-----
 build:
 	$(COMPOSE) build
 
@@ -47,4 +47,11 @@ rails-c:
 # -----インストール関連-----
 bundle-install:
 	$(COMPOSE) run --rm $(SERVICE) bundle install
+
+# -----マイグレーション関連-----
+db-migrate:
+	$(COMPOSE) run --rm $(SERVICE) bundle exec rails db:migrate
+
+db-migrate-status:
+	$(COMPOSE) run --rm $(SERVICE) bundle exec rails db:migrate:status
 

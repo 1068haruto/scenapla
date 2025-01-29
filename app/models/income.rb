@@ -7,9 +7,8 @@ class Income < ApplicationRecord
   enum person_type: { 本人: "本人", 配偶者: "配偶者" }
 
   validates :user_id, :simulation_id, presence: true
-  validates :person_type, presence: true
+  validates :person_type, :retirement_date, presence: true
   validates :income, presence: true, numericality: { greater_than_or_equal_to: 0 }
-  validates :retirement_date, presence: true
   validates :retirement_pay, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
   # カスタムセッター：入力された年をdate型に変換

@@ -28,17 +28,17 @@ ja:
         income:
           attributes:
             person_type:
-              blank: "対象を選択してください。"
+              blank: "対象者を選択してください。"
             income:
-              blank: "月収(手取り)は必須です。"
+              blank: "月収は必須です。"
               not_a_number: "数値を入力してください。"
-              greater_than_or_equal_to: "月収(手取り)は、プラス値で入力してください。"
+              greater_than_or_equal_to: "月収はプラス値で入力してください。"
             retirement_date:
               blank: "退職時期を入力してください。"
             retirement_pay:
-              blank: "退職金(手取り)は必須です。"
+              blank: "退職金は必須です。"
               not_a_number: "数値を入力してください。"
-              greater_than_or_equal_to: "退職金(手取り)は、プラス値で入力してください。"
+              greater_than_or_equal_to: "退職金はプラス値で入力してください。"
         expense:
           attributes:
             housing_expense:
@@ -57,3 +57,17 @@ ja:
               blank: "その他費用を入力してください。"
               not_a_number: "数値を入力してください。"
               greater_than_or_equal_to: "その他費用はプラス値で入力してください。"
+        user_asset:
+          attributes:
+            person_type:
+              blank: "対象者を入力してください。"
+            asset_type:
+              blank: "資産種類を入力してください。"
+            amount:
+              blank: "総額を入力してください。"
+              not_a_number: "数値を入力して下さい。"
+              greater_than_or_equal_to: "総額はプラス値で入力して下さい。"
+            return_rate:
+              blank: "利回りを入力してください。"
+              not_a_number: "数値を入力して下さい。"
+              greater_than_or_equal_to: "利回りはプラス値で入力して下さい。"

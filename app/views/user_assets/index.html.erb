@@ -29,7 +29,7 @@
           <div class="col-md">
             <%= f.label :amount, '総額', class: 'form-label' %>
             <div class="input-group">
-              <%= f.number_field :amount, class: "form-control", step: 0.1 %>
+              <%= f.number_field :amount, class: "form-control", step: 0.1, required: true %>
               <span class="input-group-text">万円</span>
             </div>
           </div>
@@ -37,7 +37,7 @@
           <div class="col-md">
             <%= f.label :return_rate, '利回り', class: 'form-label' %>
             <div class="input-group">
-              <%= f.number_field :return_rate, step: 0.1, class: "form-control" %>
+              <%= f.number_field :return_rate, class: "form-control", step: 0.1, required: true  %>
               <span class="input-group-text">%</span>
             </div>
           </div>

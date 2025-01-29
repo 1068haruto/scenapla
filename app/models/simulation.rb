@@ -9,16 +9,22 @@ class Simulation < ApplicationRecord
 
   validates :user_id, presence: true
 
-  # 収入データを元にシミュレーションデータを更新
+  # 収入
   def update_income_data!(user)
-    grouped_data = Income.generate_income_data_for(user)
-    update!(income_data: grouped_data)
+    income_data = Income.generate_income_data_for(user)
+    update!(income_data: income_data)
   end
 
-  # 支出データを元にシミュレーションデータを更新
+  # 支出
   def update_expense_data!(user)
     expense_data = Expense.generate_expense_data_for(user)
     update!(expense_data: expense_data)
+  end
+
+  # 資産
+  def update_user_asset_data!(user)
+    user_asset_data = UserAsset.generate_user_asset_data_for(user)
+    update!(user_asset_data: user_asset_data)
   end
 
   # データを統合し、次年に収支を反映（引数として life_event_data を受け取る）

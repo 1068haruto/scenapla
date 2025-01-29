@@ -28,16 +28,10 @@ class UserAssetsController < ApplicationController
   end
 
   def update_simulation_data
-    user_assets_data = UserAsset.calculate_user_assets(current_user)
-
-    # Simulationモデルの該当データを更新
-    simulation = Simulation.find_by(user: current_user)
-    simulation.user_asset_data = user_assets_data
-
-    if simulation.save
-      redirect_to new_life_event_path, notice: "シミュレーションデータに保存しました。"
+    if current_user.simulation.update_user_asset_data!(current_user)
+      redirect_to new_life_event_path, notice: "シミュレーションデータに保存しました"
     else
-      redirect_to user_assets_path, alert: "シミュレーションデータに保存できませんでした。"
+      redirect_to user_assets_path, alert: "シミュレーションデータに保存できませんでした"
     end
   end
 

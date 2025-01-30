@@ -10,19 +10,19 @@ class LifeEvent < ApplicationRecord
 
   def self.generate_life_event_data_for(user)
     life_events = where(user: user)
+    real_events = life_events.where(event_type: 0)
+    ideal_events = life_events.where(event_type: 1)
 
-    # event_typeごとにフィルタリング
-    real_life_events = life_events.where(event_type: 0)  # 現実
-    ideal_life_events = life_events.where(event_type: 1)  # 理想（単独で計算）
+    real_event_data = aggregate_event_data(real_events)
+    ideal_event_data = aggregate_combined_event_data(real_events, ideal_events) if ideal_events.present?
 
-    real_life_event_data = aggregate_event_data(real_life_events)
-    ideal_life_event_data = aggregate_combined_event_data(real_life_events, ideal_life_events) if ideal_life_events.present?
-
-    # シミュレーションデータ更新用に返す
-    { real_life_event_data: real_life_event_data, ideal_life_event_data: ideal_life_event_data }
+    # 更新用に返す
+    { real_event_data: real_event_data, ideal_event_data: ideal_event_data }
   end
 
   private
+
+  # -----共通処理-----
 
   def self.aggregate_event_data(events)
     year_amounts = extract_yearly_amounts(events)
@@ -43,7 +43,7 @@ class LifeEvent < ApplicationRecord
     end.map { |year, amount| { date: year, amount: amount } }
   end
 
-  #-----------------
+  # -----理想データ作成時のみ使用-----
 
   def self.aggregate_combined_event_data(real_events, ideal_events)
     real_data = aggregate_event_data(real_events)

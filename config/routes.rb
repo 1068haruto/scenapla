@@ -32,7 +32,7 @@ Rails.application.routes.draw do
   end
   resources :life_events do
     collection do
-      post :update_life_event_data
+      post :update_simulation_data
     end
   end
   resources :memos, only: %i[create update]

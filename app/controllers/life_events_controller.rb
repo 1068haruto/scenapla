@@ -47,6 +47,14 @@ class LifeEventsController < ApplicationController
     end
   end
 
+  def update_simulation_data
+    if current_user.simulation.update_life_event_data!(current_user)
+      redirect_to scenarios_path, notice: "シミュレーションデータに保存しました。更新ボタンを押して最新のシナリオを表示しましょう。"
+    else
+      redirect_to new_life_event_path, alert: "シミュレーションデータに保存できませんでした。"
+    end
+  end
+
   private
 
   def life_event_params

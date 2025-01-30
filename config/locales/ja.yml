@@ -71,3 +71,17 @@ ja:
               blank: "利回りを入力してください。"
               not_a_number: "数値を入力して下さい。"
               greater_than_or_equal_to: "利回りはプラス値で入力してください。"
+        life_event:
+          attributes:
+            event_type:
+              blank: "イベントタイプを選択してください。"
+            event_date:
+              blank: "時期を選択してください。"
+            title:
+              blank: "タイトルを入力してください。"
+            amount:
+              blank: "年額を入力してください。"
+              not_a_number: "数値を入力して下さい。"
+              greater_than_or_equal_to: "年額はプラス値で入力してください。"
+            payment_span:
+              blank: "支払期間を選択してください。"

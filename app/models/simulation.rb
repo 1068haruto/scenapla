@@ -31,8 +31,8 @@ class Simulation < ApplicationRecord
   def update_life_event_data!(user)
     life_event_data = LifeEvent.generate_life_event_data_for(user)
     update!(
-      real_life_event_data: life_event_data[:real_life_event_data].presence,
-      ideal_life_event_data: life_event_data[:ideal_life_event_data].presence
+      real_life_event_data: life_event_data[:real_event_data].presence,
+      ideal_life_event_data: life_event_data[:ideal_event_data].presence
     )
   end
 

@@ -60,14 +60,14 @@ ja:
         user_asset:
           attributes:
             person_type:
-              blank: "対象者を入力してください。"
+              blank: "対象者を選択してください。"
             asset_type:
-              blank: "資産種類を入力してください。"
+              blank: "資産種類を選択してください。"
             amount:
               blank: "総額を入力してください。"
               not_a_number: "数値を入力して下さい。"
-              greater_than_or_equal_to: "総額はプラス値で入力して下さい。"
+              greater_than_or_equal_to: "総額はプラス値で入力してください。"
             return_rate:
               blank: "利回りを入力してください。"
               not_a_number: "数値を入力して下さい。"
-              greater_than_or_equal_to: "利回りはプラス値で入力して下さい。"
+              greater_than_or_equal_to: "利回りはプラス値で入力してください。"

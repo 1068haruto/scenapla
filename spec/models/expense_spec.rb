@@ -53,6 +53,21 @@ RSpec.describe Expense, type: :model do
       include_examples 'プラス値エラーチェック', :monthly_premiums, '保険費はプラス値で入力してください。'
       include_examples 'プラス値エラーチェック', :other_expenses, 'その他費用はプラス値で入力してください。'
     end
+
+    context '数値入力の確認' do
+      shared_examples '数値入力エラーチェック' do |attribute, error_message|
+        it "#{attribute}がマイナス値の場合無効" do
+          expense.send("#{attribute}=", "abc")
+          expect(expense).not_to be_valid
+          expect(expense.errors[attribute]).to include(error_message)
+        end
+      end
+
+      include_examples '数値入力エラーチェック', :housing_expense, '数値を入力してください。'
+      include_examples '数値入力エラーチェック', :living_expenses, '数値を入力してください。'
+      include_examples '数値入力エラーチェック', :monthly_premiums, '数値を入力してください。'
+      include_examples '数値入力エラーチェック', :other_expenses, '数値を入力してください。'
+    end
   end
 
   describe 'カスタムセッターテスト' do

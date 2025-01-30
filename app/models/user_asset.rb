@@ -41,16 +41,17 @@ class UserAsset < ApplicationRecord
     yearly_totals
   end
 
+  # 1年目の資産設定 & 2年目以降の計算メソッド呼び出し
   def self.calculate_asset_projection(asset, yearly_totals, current_year, year_at_seventy)
     amount = asset.amount
-    rate = asset.return_rate.to_f / 100.0  # 利回りを小数変換
-  
-    # 1年目の資産(利回り計算なし)
-    yearly_totals[current_year] += amount
-    # 2年目以降の資産計算
+    rate = asset.return_rate.to_f / 100.0  # 利回りの小数変換
+
+    yearly_totals[current_year] += amount  # 1年目の資産(利回り計算なし)
+
     calculate_future_years(asset.asset_type, amount, rate, yearly_totals, current_year, year_at_seventy)
   end
 
+  # 2年目以降の資産計算
   def self.calculate_future_years(asset_type, amount, rate, yearly_totals, current_year, year_at_seventy)
     (current_year + 1..year_at_seventy).each do |year|
       profit = calculate_profit(amount, rate, asset_type)

@@ -83,7 +83,7 @@
     <% if @life_events.any? %>
       <%=
         button_to '保存して次へ',
-        update_life_event_data_life_events_path(simulation_id: current_user.simulation.id),
+        update_simulation_data_life_events_path(simulation_id: current_user.simulation.id),
         method: :post,
         class: 'btn btn-primary', data: { turbo: true }
       %>

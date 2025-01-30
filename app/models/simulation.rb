@@ -27,6 +27,21 @@ class Simulation < ApplicationRecord
     update!(user_asset_data: user_asset_data)
   end
 
+  # ライフイベント
+  def update_life_event_data!(user)
+    life_event_data = LifeEvent.generate_life_event_data_for(user)
+    update!(
+      real_life_event_data: life_event_data[:real_life_event_data].presence,
+      ideal_life_event_data: life_event_data[:ideal_life_event_data].presence
+    )
+  end
+
+  def self.update_simulation(simulation_id, real_data, ideal_data)
+    simulation = Simulation.find(simulation_id)
+    simulation.update_user_asset_data!(real_data, ideal_data)
+  end
+
+
   # データを統合し、次年に収支を反映（引数として life_event_data を受け取る）
   def merged_income_expense_event(life_event_data)
     merged = merge_data(income_data, expense_data, life_event_data)

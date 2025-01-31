@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :life_event do
     user
     simulation
-    event_type { "理想" }
+    event_type { 0 }
     event_date { Date.today }
     title { "旅行" }
     amount { 1 }

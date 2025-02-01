@@ -50,7 +50,7 @@ class Simulation < ApplicationRecord
     withdrawal = (total_balance > 0) ? (total_balance / monthly_expense_total).round(2) : 0
     shortage = (total_balance < 0) ? simulation.calculate_shortage(total_balance) : 0
 
-    calculate_and_save_asset_lifespan(simulation)  # 資産寿命の計算と保存
+    calculate_and_save_lifespan_data(simulation)  # 資産寿命の計算と保存
 
     {
       balance_scenario: balance_scenario,
@@ -111,7 +111,7 @@ class Simulation < ApplicationRecord
 
   # ----------資産寿命の計算と保存----------
 
-  def self.calculate_and_save_asset_lifespan(simulation)
+  def self.calculate_and_save_lifespan_data(simulation)
     total_assets = simulation.user_assets.sum(:amount)
     monthly_expense = simulation.get_monthly_expense
 
@@ -120,7 +120,7 @@ class Simulation < ApplicationRecord
     yearly_lifespan = calculate_yearly_lifespan(total_assets, monthly_expense)
     lifespan_years, lifespan_months = convert_to_years_and_months(total_assets, monthly_expense)
 
-    save_lifespan(simulation, yearly_lifespan, lifespan_years, lifespan_months)
+    AssetLifespan.update_lifespan_data!(simulation, yearly_lifespan, lifespan_years, lifespan_months)
   end
 
   def self.calculate_yearly_lifespan(total_assets, monthly_expense)
@@ -152,14 +152,5 @@ class Simulation < ApplicationRecord
   def self.convert_to_years_and_months(total_assets, monthly_expense)
     total_months = (total_assets / monthly_expense).floor
     [ total_months / 12, total_months % 12 ]
-  end
-
-  def self.save_lifespan(simulation, yearly_lifespan, lifespan_years, lifespan_months)
-    simulation.asset_lifespans.create!(
-      user_id: simulation.user_id,
-      yearly_lifespans: yearly_lifespan,
-      lifespan_years: lifespan_years,
-      lifespan_months: lifespan_months
-    )
   end
 end

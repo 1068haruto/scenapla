@@ -9,6 +9,7 @@ class Simulation < ApplicationRecord
 
   validates :user_id, presence: true
 
+  # ----------simulations_table更新処理----------
   # 収入
   def update_income_data!(user)
     income_data = Income.generate_income_data_for(user)
@@ -36,55 +37,68 @@ class Simulation < ApplicationRecord
     )
   end
 
-  def self.update_simulation(simulation_id, real_data, ideal_data)
-    simulation = Simulation.find(simulation_id)
-    simulation.update_user_asset_data!(real_data, ideal_data)
+  # ----------scenario_data計算処理----------
+
+  # 指定されたシナリオタイプのデータ計算
+  def self.calculate_scenario_data(simulation, life_event_data)
+    balance_scenario = simulation.merged_income_expense_event(life_event_data)
+    total_income = simulation.get_total_income
+    total_expense = simulation.get_total_expense(simulation.expense_data, simulation.real_life_event_data, life_event_data)
+    total_balance = total_income + total_expense
+
+    monthly_expense_total = simulation.get_monthly_expense
+    withdrawal = (total_balance > 0) ? (total_balance / monthly_expense_total).round(2) : 0
+    shortage = (total_balance < 0) ? simulation.calculate_shortage(total_balance) : 0
+
+    calculate_and_save_asset_lifespan(simulation)  # 資産寿命の計算と保存
+
+    {
+      balance_scenario: balance_scenario,
+      total_income: total_income,
+      total_expense: total_expense,
+      total_balance: total_balance,
+      withdrawal: withdrawal,
+      shortage: shortage
+    }
   end
 
-
-  # データを統合し、次年に収支を反映（引数として life_event_data を受け取る）
+  # 収入、支出、ライフイベント支出の統合
   def merged_income_expense_event(life_event_data)
     merged = merge_data(income_data, expense_data, life_event_data)
 
-    # 前年の収支を次の年に反映
-    merged.each_cons(2) do |previous, current|
+    merged.each_cons(2) do |previous, current|  # 前年の収支を次年に反映
       current["amount"] += previous["amount"]
     end
-
     merged
   end
 
-  # income_dataの合計を計算
-  def total_income
+  # 生涯収入の計算
+  def get_total_income
     income_data.sum { |entry| entry["amount"].to_f }
   end
 
-  # 合計支出を計算（複数のデータセットを受け取る）
-  def total_expense(*datasets)
-    # データセットを統合して合計金額を算出
+  # 生涯支出の計算
+  def get_total_expense(*datasets)
     merge_data(*datasets).sum { |entry| entry["amount"].to_f }
   end
 
-  # expensesテーブルの指定列を合計
-  def total_expenses_sum
+  # 月間支出の計算(DB側で合計)
+  def get_monthly_expense
     expenses.sum(:housing_expense) +
     expenses.sum(:living_expenses) +
     expenses.sum(:monthly_premiums) +
     expenses.sum(:other_expenses)
   end
 
-  # total_balanceから不足年数を計算
+  # 年間不足額の計算
   def calculate_shortage(total_balance)
     remaining_years = [ 70 - user.calculate_user_age, 0 ].max # 70歳までの残り年数
     (total_balance.abs / remaining_years).round(2)
   end
 
-  private
-
-  # データを統合し、同じdateでamountを合計
+  # データ統合し、同じdateでamountを合計
   def merge_data(*datasets)
-    # nil のデータセットを空配列に変換
-    datasets = datasets.map { |dataset| dataset || [] }
+    datasets = datasets.map { |dataset| dataset || [] }  # nilのデータセットは空配列に変換
 
     merged = datasets.flatten.group_by { |entry| entry["date"] }
     merged.map do |date, entries|
@@ -93,5 +107,59 @@ class Simulation < ApplicationRecord
         "amount" => entries.sum { |entry| entry["amount"].to_f }
       }
     end.sort_by { |entry| entry["date"] }
+  end
+
+  # ----------資産寿命の計算と保存----------
+
+  def self.calculate_and_save_asset_lifespan(simulation)
+    total_assets = simulation.user_assets.sum(:amount)
+    monthly_expense = simulation.get_monthly_expense
+
+    return if monthly_expense <= 0 # 月次支出がない場合、計算をスキップ
+
+    yearly_lifespan = calculate_yearly_lifespan(total_assets, monthly_expense)
+    lifespan_years, lifespan_months = convert_to_years_and_months(total_assets, monthly_expense)
+
+    save_lifespan(simulation, yearly_lifespan, lifespan_years, lifespan_months)
+  end
+
+  def self.calculate_yearly_lifespan(total_assets, monthly_expense)
+    yearly_lifespan = {}
+    remaining_asset = total_assets
+    current_year = Date.today.year
+    current_month = Date.today.month
+
+    # 1年目の残り月分を計算
+    remaining_months = 12 - current_month + 1 # 現在月を含める
+    if remaining_months > 0
+      yearly_lifespan[current_year] = remaining_asset
+      remaining_asset -= monthly_expense * remaining_months
+    end
+
+    # 2年目以降、12ヶ月単位で計算
+    next_year = current_year + 1
+    annual_expense = monthly_expense * 12
+    while remaining_asset > -annual_expense
+      yearly_lifespan[next_year] = remaining_asset
+      remaining_asset -= annual_expense
+      next_year += 1
+    end
+
+    yearly_lifespan
+  end
+
+  # 資産寿命を年と月に変換
+  def self.convert_to_years_and_months(total_assets, monthly_expense)
+    total_months = (total_assets / monthly_expense).floor
+    [ total_months / 12, total_months % 12 ]
+  end
+
+  def self.save_lifespan(simulation, yearly_lifespan, lifespan_years, lifespan_months)
+    simulation.asset_lifespans.create!(
+      user_id: simulation.user_id,
+      yearly_lifespans: yearly_lifespan,
+      lifespan_years: lifespan_years,
+      lifespan_months: lifespan_months
+    )
   end
 end

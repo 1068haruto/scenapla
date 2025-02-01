@@ -79,4 +79,13 @@ class ScenariosController < ApplicationController
       @ideal_shortage = 0
     end
   end
+
+  def update_scenarios
+    success = current_user.scenarios.all?(&:update_scenario_data!)
+    if success
+      redirect_to scenarios_path, notice: "シナリオを更新しました。"
+    else
+      redirect_to scenarios_path, alert: "シナリオを更新できませんでした。"
+    end
+  end
 end

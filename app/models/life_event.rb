@@ -1,7 +1,7 @@
 class LifeEvent < ApplicationRecord
   belongs_to :user
   belongs_to :simulation
- 
+
   enum event_type: { 現実: 0, 理想: 1 }
 
   validates :user_id, :simulation_id, presence: true

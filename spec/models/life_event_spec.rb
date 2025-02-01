@@ -95,7 +95,7 @@ RSpec.describe LifeEvent, type: :model do
     let(:ideal_events) { double('ideal_events') }
     let(:real_event_data) { { some: 'data' } }
     let(:ideal_event_data) { { other: 'data' } }
-    
+
     before do
       allow(described_class).to receive(:where).with(user: user).and_return(life_events)
       allow(life_events).to receive(:where).with(event_type: 0).and_return(real_events)
@@ -103,7 +103,7 @@ RSpec.describe LifeEvent, type: :model do
       allow(described_class).to receive(:aggregate_event_data).with(real_events).and_return(real_event_data)
       allow(described_class).to receive(:aggregate_combined_event_data).with(real_events, ideal_events).and_return(ideal_event_data)
     end
-  
+
     it "内部メソッドが正しく呼ばれ戻り値を返す" do
       result = described_class.generate_life_event_data_for(user)
 
@@ -123,7 +123,7 @@ RSpec.describe LifeEvent, type: :model do
 
   describe ".extract_yearly_amounts" do
     it "イベントごとに支払期間分の金額を正しく算出する" do
-      events = [real_event1, real_event2]
+      events = [ real_event1, real_event2 ]
       result = described_class.send(:extract_yearly_amounts, events)
 
       expect(result).to contain_exactly({ date: 2025, amount: -10 }, { date: 2026, amount: -10 }, { date: 2026, amount: -20 })
@@ -132,7 +132,7 @@ RSpec.describe LifeEvent, type: :model do
 
   describe ".aggregate_by_year" do
     it "年毎に金額を合算する" do
-      yearly_amounts = [{ date: 2025, amount: -10 }, { date: 2026, amount: -10 }, { date: 2026, amount: -20 }]
+      yearly_amounts = [ { date: 2025, amount: -10 }, { date: 2026, amount: -10 }, { date: 2026, amount: -20 } ]
 
       result = described_class.send(:aggregate_by_year, yearly_amounts)
       expect(result).to contain_exactly({ date: 2025, amount: -10 }, { date: 2026, amount: -30 })
@@ -141,7 +141,7 @@ RSpec.describe LifeEvent, type: :model do
 
   describe ".aggregate_event_data" do
     it "イベントのデータを正しく集計する" do
-      events = [real_event1, real_event2]
+      events = [ real_event1, real_event2 ]
       result = described_class.send(:aggregate_event_data, events)
 
       expect(result).to contain_exactly({ date: 2025, amount: -10 }, { date: 2026, amount: -30 })
@@ -152,26 +152,26 @@ RSpec.describe LifeEvent, type: :model do
     let(:real_event1) { { date: 2025, amount: -10 } }
     let(:real_event2) { { date: 2026, amount: -30 } }
     let(:ideal_event1) { { date: 2025, amount: -50 } }
-  
+
     before do
-      allow(described_class).to receive(:aggregate_event_data).with([real_event1, real_event2])
-      allow(described_class).to receive(:aggregate_event_data).with([ideal_event1])
+      allow(described_class).to receive(:aggregate_event_data).with([ real_event1, real_event2 ])
+      allow(described_class).to receive(:aggregate_event_data).with([ ideal_event1 ])
       allow(described_class).to receive(:merge_yearly_amounts)
     end
-  
+
     it "内部メソッドが正しく呼ばれる" do
-      described_class.aggregate_combined_event_data([real_event1, real_event2], [ideal_event1])
-  
-      expect(described_class).to have_received(:aggregate_event_data).with([real_event1, real_event2])
-      expect(described_class).to have_received(:aggregate_event_data).with([ideal_event1])
+      described_class.aggregate_combined_event_data([ real_event1, real_event2 ], [ ideal_event1 ])
+
+      expect(described_class).to have_received(:aggregate_event_data).with([ real_event1, real_event2 ])
+      expect(described_class).to have_received(:aggregate_event_data).with([ ideal_event1 ])
       expect(described_class).to have_received(:merge_yearly_amounts)
     end
   end
 
   describe ".merge_yearly_amounts" do
     it "現実と理想のイベントデータを統合する" do
-      real_data = [{ date: 2025, amount: -10 }, { date: 2026, amount: -30 }]
-      ideal_data = [{ date: 2025, amount: -50 }, { date: 2027, amount: -20 }]
+      real_data = [ { date: 2025, amount: -10 }, { date: 2026, amount: -30 } ]
+      ideal_data = [ { date: 2025, amount: -50 }, { date: 2027, amount: -20 } ]
 
       result = described_class.send(:merge_yearly_amounts, real_data, ideal_data)
 
@@ -179,5 +179,3 @@ RSpec.describe LifeEvent, type: :model do
     end
   end
 end
-
-

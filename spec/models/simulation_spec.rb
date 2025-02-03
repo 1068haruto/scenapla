@@ -15,11 +15,9 @@ RSpec.describe Simulation, type: :model do
   end
 
   describe 'バリデーションテスト' do
-    context '必須項目の確認' do
-      it 'user_idは必須' do
-        simulation.user = nil
-        expect(simulation).not_to be_valid
-      end
+    it 'user_idは必須' do
+      simulation.user = nil
+      expect(simulation).not_to be_valid
     end
   end
 
@@ -34,7 +32,7 @@ RSpec.describe Simulation, type: :model do
         # life_event_dataにreal_life_event_data入っていない場合を想定
         simulation.expense_data = [ { "date"=>2000, "amount"=>100 } ]
         simulation.real_life_event_data = [ { "date"=>2000, "amount"=>100 } ]
-        valid_datasets = [ simulation.expense_data, life_event_data, simulation.real_life_event_data ].compact  # nilを取り除く
+        valid_datasets = [ simulation.expense_data, life_event_data, simulation.real_life_event_data ]
         allow(simulation).to receive(:get_total_expense).with(*valid_datasets).and_return(-1000)
 
         allow(simulation).to receive(:get_monthly_expense).and_return(20)
@@ -60,20 +58,22 @@ RSpec.describe Simulation, type: :model do
     end
 
     describe '.calculate_and_save_lifespan_data' do
+      let(:total_assets) { 120 }
+      let(:monthly_expense) { 10 }
+      let(:yearly_lifespan) { { 2000 => 120, 2001 => 90, 2002 => -30 } }
+      let(:lifespan_years) { 1 }
+      let(:lifespan_months) { 0 }
+
       before do
         allow(simulation.user_assets).to receive(:sum).with(:amount).and_return(total_assets)
         allow(simulation).to receive(:get_monthly_expense).and_return(monthly_expense)
-        allow(AssetLifespan).to receive(:update_lifespan_data!) # ここは一旦モック
+        allow(AssetLifespan).to receive(:update_lifespan_data!)
         allow(described_class).to receive(:calculate_yearly_lifespan).with(total_assets, monthly_expense).and_return(yearly_lifespan)
         allow(described_class).to receive(:convert_to_years_and_months).with(total_assets, monthly_expense).and_return([ lifespan_years, lifespan_months ])
       end
 
       context '月次支出が0以下の場合' do
-        let(:total_assets) { 1000 }
         let(:monthly_expense) { 0 }
-        let(:yearly_lifespan) { nil }
-        let(:lifespan_years) { nil }
-        let(:lifespan_months) { nil }
 
         it '計算をスキップする' do
           expect(AssetLifespan).not_to receive(:update_lifespan_data!)
@@ -82,12 +82,6 @@ RSpec.describe Simulation, type: :model do
       end
 
       context '月次支出が0以上の場合' do
-        let(:total_assets) { 120 } # 1200万円の資産
-        let(:monthly_expense) { 10 } # 月10万円の支出
-        let(:yearly_lifespan) { { 2000 => 120,  2001=> 90, 2002=> -30 } } # 計算上の年間寿命
-        let(:lifespan_years) { 1 }
-        let(:lifespan_months) { 0 }
-
         it '資産寿命データを更新する' do
           expect(AssetLifespan).to receive(:update_lifespan_data!).with(simulation, yearly_lifespan, lifespan_years, lifespan_months)
           described_class.calculate_and_save_lifespan_data(simulation)
@@ -96,15 +90,16 @@ RSpec.describe Simulation, type: :model do
     end
 
     describe '.calculate_yearly_lifespan' do
+      let(:monthly_expense) { 10 }
+
       before do
-        allow(Date).to receive(:today).and_return(Date.new(2000, 10, 1)) # 2023年10月1日を返す
+        allow(Date).to receive(:today).and_return(Date.new(2000, 10, 1))
       end
 
       context '十分な資産がある場合' do
-        let(:total_assets) { 120 } # 120万円
-        let(:monthly_expense) { 10 } # 月10万円
+        let(:total_assets) { 120 }
 
-        it '1年目と2年目の資産を正しく計算することを確認する' do
+        it '1年目と2年目以降の資産を正しく計算することを確認する' do
           result = described_class.calculate_yearly_lifespan(total_assets, monthly_expense)
           expect(result).to eq({ 2000 => 120,  2001=> 90, 2002=> -30 })
         end
@@ -112,7 +107,6 @@ RSpec.describe Simulation, type: :model do
 
       context '資産がゼロの場合' do
         let(:total_assets) { 0 }
-        let(:monthly_expense) { 10 }
 
         it '計算結果が空であること' do
           result = described_class.calculate_yearly_lifespan(total_assets, monthly_expense)
@@ -122,38 +116,33 @@ RSpec.describe Simulation, type: :model do
     end
 
     describe '.convert_to_years_and_months' do
+      let(:total_assets) { 130 }
+
       it '資産寿命が1年以上となる計算が正しくできる' do
-        total_assets = 130
         monthly_expense = 10
 
         expected_result = [ 1, 1 ] # 130万円 / 10万円 = 1年1ヶ月
         result = described_class.convert_to_years_and_months(total_assets, monthly_expense)
-
         expect(result).to eq(expected_result)
       end
 
       it '資産寿命が1年以下となる計算が正しくできる' do
-        total_assets = 120
-        monthly_expense = 20
+        monthly_expense = 13
 
-        expected_result = [ 0, 6 ]  # 120万円 / 20万円 = 0年6ヶ月
+        expected_result = [ 0, 10 ]  # 130万円 / 13万円 = 0年10ヶ月
         result = described_class.convert_to_years_and_months(total_assets, monthly_expense)
-
         expect(result).to eq(expected_result)
       end
 
       it '小数点以下を切り捨て正しく計算ができる' do
-        total_assets = 100
         monthly_expense = 30
 
-        expected_result = [ 0, 3 ]  # 100万円 / 30万円 = 0年3ヶ月(3.333の小数点以下切り捨て)
+        expected_result = [ 0, 4 ]  # 130万円 / 30万円 = 0年4ヶ月(4.333の小数点以下切り捨て)
         result = described_class.convert_to_years_and_months(total_assets, monthly_expense)
-
         expect(result).to eq(expected_result)
       end
 
-      it '月間支出が0の場合にエラーを発生させる' do
-        total_assets = 100
+      it '月間支出が0の場合、エラーとなる' do
         monthly_expense = 0
 
         expect { described_class.convert_to_years_and_months(total_assets, monthly_expense) }.to raise_error(ZeroDivisionError)
@@ -166,20 +155,20 @@ RSpec.describe Simulation, type: :model do
 
     before do
       allow(simulation).to receive(:income_data).and_return(
-        [ { "date" => 2001, "amount" => 500 }, { "date" => 2002, "amount" => 600 } ]
+        [ { "date" => 2001, "amount" => 200 }, { "date" => 2002, "amount" => 300 } ]
       )
       allow(simulation).to receive(:expense_data).and_return(
-        [ { "date" => 2001, "amount" => -200 }, { "date" => 2002, "amount" => -250 } ]
+        [ { "date" => 2001, "amount" => -100 }, { "date" => 2002, "amount" => -150 } ]
       )
     end
 
-    describe 'シミュレーションデータ更新処理' do
+    describe 'simulation_data更新処理メソッド' do
       before do
         allow(Income).to receive(:generate_income_data_for).with(user).and_return(
-          [ { "date" => 2001, "amount" => 500 }, { "date" => 2002, "amount" => 600 } ]
+          [ { "date" => 2001, "amount" => 200 }, { "date" => 2002, "amount" => 300 } ]
         )
         allow(Expense).to receive(:generate_expense_data_for).with(user).and_return(
-          [ { "date" => 2001, "amount" => -200 }, { "date" => 2002, "amount" => -250 } ]
+          [ { "date" => 2001, "amount" => -100 }, { "date" => 2002, "amount" => -150 } ]
         )
         allow(UserAsset).to receive(:generate_user_asset_data_for).with(user).and_return({ "date"=>2000, "amount"=>500 })
         allow(LifeEvent).to receive(:generate_life_event_data_for).with(user).and_return({
@@ -189,12 +178,12 @@ RSpec.describe Simulation, type: :model do
 
       it '#update_income_data!' do
         simulation.update_income_data!(user)
-        expect(simulation.income_data).to eq([ { "date" => 2001, "amount" => 500 }, { "date" => 2002, "amount" => 600 } ])
+        expect(simulation.income_data).to eq([ { "date" => 2001, "amount" => 200 }, { "date" => 2002, "amount" => 300 } ])
       end
 
       it '#update_expense_data!' do
         simulation.update_expense_data!(user)
-        expect(simulation.expense_data).to eq([ { "date" => 2001, "amount" => -200 }, { "date" => 2002, "amount" => -250 } ])
+        expect(simulation.expense_data).to eq([ { "date" => 2001, "amount" => -100 }, { "date" => 2002, "amount" => -150 } ])
       end
 
       it '#update_user_asset_data!' do
@@ -214,17 +203,17 @@ RSpec.describe Simulation, type: :model do
         allow(simulation).to receive(:merge_data).with(
           simulation.income_data, simulation.expense_data, life_event_data
         ).and_return([
-          { "date" => 2001, "amount" => 300 }, # 500 - 200
-          { "date" => 2002, "amount" => 350 }, # 600 - 250
+          { "date" => 2001, "amount" => 100 }, # 200 - 100
+          { "date" => 2002, "amount" => 150 }, # 300 - 150
           { "date" => 2003, "amount" => -100 } # life_event_data
         ])
 
         result = simulation.merged_income_expense_event(life_event_data)
 
         expect(result).to eq([
-          { "date" => 2001, "amount" => 300 },
-          { "date" => 2002, "amount" => 650 }, # 350 + 300 (前年の収支)
-          { "date" => 2003, "amount" => 550 }  # -100 + 650
+          { "date" => 2001, "amount" => 100 },
+          { "date" => 2002, "amount" => 250 }, # 100 + 150
+          { "date" => 2003, "amount" => 150 }  # 250 - 100
         ])
       end
     end
@@ -232,7 +221,7 @@ RSpec.describe Simulation, type: :model do
     describe '#get_total_income' do
       it '収入データを正しく計算する' do
         result = simulation.get_total_income
-        expect(result).to eq(1100) # 500 + 600
+        expect(result).to eq(500) # 200 + 300
       end
     end
 
@@ -240,13 +229,11 @@ RSpec.describe Simulation, type: :model do
       it '支出データを正しく合計する' do
         datasets = [ simulation.expense_data, life_event_data ]
         allow(simulation).to receive(:merge_data).with(*datasets).and_return([
-          { "date" => 2001, "amount" => -100 },
-          { "date" => 2002, "amount" => -200 },
-          { "date" => 2003, "amount" => -300 }
+          { "date" => 2001, "amount" => -100 }, { "date" => 2002, "amount" => -150 }, { "date" => 2003, "amount" => -100 }
         ])
 
         result = simulation.get_total_expense(*datasets)
-        expect(result).to eq(-600) # -100 + -200 + -300
+        expect(result).to eq(-350) # -100 + -150 + -100
       end
     end
 
@@ -287,12 +274,12 @@ RSpec.describe Simulation, type: :model do
 
       it 'nilのデータセットを受け取っても処理できる' do
         dataset1 = [ { "date" => 2000, "amount" => 100 } ]
-        dataset2 = nil
-        dataset3 = [ { "date" => 2000, "amount" => 50 } ]
+        dataset2 = [ { "date" => 2000, "amount" => 50 } ]
+        dataset3 = nil
 
         result = simulation.merge_data(dataset1, dataset2, dataset3)
         expect(result).to eq([
-          { "date" => 2000, "amount" => 150 } # 100 + 50
+          { "date" => 2000, "amount" => 150 }  # 100 + 50
         ])
       end
 
@@ -307,49 +294,8 @@ RSpec.describe Simulation, type: :model do
         result = simulation.merge_data(dataset1)
         expect(result).to eq([
           { "date" => 2000, "amount" => 100 },
-          { "date" => 2001, "amount" => 400 }
+          { "date" => 2001, "amount" => 400 }  # 200 + 200
         ])
-      end
-    end
-
-    describe '#merged_income_expense_event' do
-      it '収入・支出・ライフイベントを統合し、前年の収支を繰り越す' do
-        allow(simulation).to receive(:merge_data).with(
-          simulation.income_data, simulation.expense_data, life_event_data
-        ).and_return([
-          { "date" => 2001, "amount" => 300 }, # 500 - 200
-          { "date" => 2002, "amount" => 350 }, # 600 - 250
-          { "date" => 2003, "amount" => -100 } # life_event_data
-        ])
-
-        result = simulation.merged_income_expense_event(life_event_data)
-
-        expect(result).to eq([
-          { "date" => 2001, "amount" => 300 },
-          { "date" => 2002, "amount" => 650 }, # 350 + 300 (前年の収支)
-          { "date" => 2003, "amount" => 550 }  # -100 + 650
-        ])
-      end
-    end
-
-    describe '#get_total_income' do
-      it '収入データを正しく計算する' do
-        result = simulation.get_total_income
-        expect(result).to eq(1100) # 500 + 600
-      end
-    end
-
-    describe '#get_total_expense' do
-      it '支出データを正しく合計する' do
-        datasets = [ simulation.expense_data, life_event_data ]
-        allow(simulation).to receive(:merge_data).with(*datasets).and_return([
-          { "date" => 2001, "amount" => -100 },
-          { "date" => 2002, "amount" => -200 },
-          { "date" => 2003, "amount" => -300 }
-        ])
-
-        result = simulation.get_total_expense(*datasets)
-        expect(result).to eq(-600) # -100 + -200 + -300
       end
     end
   end

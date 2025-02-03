@@ -10,25 +10,21 @@ class Simulation < ApplicationRecord
   validates :user_id, presence: true
 
   # ----------simulations_table更新処理----------
-  # 収入
   def update_income_data!(user)
     income_data = Income.generate_income_data_for(user)
     update!(income_data: income_data)
   end
 
-  # 支出
   def update_expense_data!(user)
     expense_data = Expense.generate_expense_data_for(user)
     update!(expense_data: expense_data)
   end
 
-  # 資産
   def update_user_asset_data!(user)
     user_asset_data = UserAsset.generate_user_asset_data_for(user)
     update!(user_asset_data: user_asset_data)
   end
 
-  # ライフイベント
   def update_life_event_data!(user)
     life_event_data = LifeEvent.generate_life_event_data_for(user)
     update!(
@@ -39,7 +35,7 @@ class Simulation < ApplicationRecord
 
   # ----------scenario_data計算処理----------
 
-  # 指定されたシナリオタイプのデータ計算
+  # 指定されたシナリオタイプのデータ用意
   def self.calculate_scenario_data(simulation, life_event_data)
     balance_scenario = simulation.merged_income_expense_event(life_event_data)
     total_income = simulation.get_total_income

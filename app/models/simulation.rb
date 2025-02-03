@@ -43,7 +43,11 @@ class Simulation < ApplicationRecord
   def self.calculate_scenario_data(simulation, life_event_data)
     balance_scenario = simulation.merged_income_expense_event(life_event_data)
     total_income = simulation.get_total_income
-    total_expense = simulation.get_total_expense(simulation.expense_data, simulation.real_life_event_data, life_event_data)
+
+    datasets = [ simulation.expense_data, life_event_data ]
+    datasets << simulation.real_life_event_data if life_event_data != simulation.real_life_event_data
+    total_expense = simulation.get_total_expense(*datasets)
+
     total_balance = total_income + total_expense
 
     monthly_expense_total = simulation.get_monthly_expense
@@ -93,7 +97,8 @@ class Simulation < ApplicationRecord
   # 年間不足額の計算
   def calculate_shortage(total_balance)
     remaining_years = [ 70 - user.calculate_user_age, 0 ].max # 70歳までの残り年数
-    (total_balance.abs / remaining_years).round(2)
+    return 0 if remaining_years == 0  # 残り年数が0なら不足額は0
+    (total_balance.abs / remaining_years.to_f).round(2)  # 年数を浮動小数点数に変換
   end
 
   # データ統合し、同じdateでamountを合計

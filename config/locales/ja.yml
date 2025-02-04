@@ -1,4 +1,21 @@
 ja:
+  notice:
+    income:
+      create:
+        success: "収入データを追加しました。"
+      destroy: 
+        success: "収入データを削除しました。"
+        error: "収入データを削除できませんでした。"
+    simulation:
+      update:
+        success: "シミュレーションデータに保存しました。"
+  alert:
+    income:
+      destroy:
+        not_found: "収入データが見つかりません"
+    simulation:
+      update:
+        error: "シミュレーションデータに保存できませんでした。"
   errors:
     format: "%{message}" # 属性名を含めない
     messages:

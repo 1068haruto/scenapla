@@ -1,9 +1,8 @@
 class IncomesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_income, only: [ :destroy ]
+  before_action :set_incomes, only: [:index, :create, :destroy]
 
   def index
-    @incomes = current_user.incomes
     @income = Income.new
   end
 
@@ -12,43 +11,48 @@ class IncomesController < ApplicationController
     @income.simulation = current_user.simulation
 
     if @income.save
-      redirect_to incomes_path, notice: "収入データを追加しました"
+      render_success(t('notice.income.create.success'))
     else
-      render_create_error
+      render_error(@income.errors.full_messages.join(", "))
     end
   end
 
   def destroy
-    if @income.destroy
-      redirect_to incomes_path, notice: "収入データを削除しました。"
+    @income = current_user.incomes.find(params[:id])
+    
+    if @income
+      @income.destroy
+      render_success(t('notice.income.destroy.success'))
     else
-      redirect_to incomes_path, alert: "収入データを削除できませんでした。"
+      redirect_to incomes_path, alert: t('alert.income.destroy.not_found')
     end
   end
 
   def update_simulation_data
     if current_user.simulation.update_income_data!(current_user)
-      redirect_to expenses_path, notice: "シミュレーションデータに保存しました。"
+      redirect_to expenses_path, notice: t('notice.simulation.update.success')
     else
-      redirect_to incomes_path, alert: "シミュレーションデータに保存できませんでした。"
+      redirect_to incomes_path, alert: t('alert.simulation.update.error')
     end
   end
 
   private
 
+  def set_incomes
+    @incomes = current_user.incomes
+  end
+
   def income_params
     params.require(:income).permit(:person_type, :income, :retirement_date, :retirement_pay)
   end
 
-  def set_income
-    @income = current_user.incomes.find(params[:id])
-  rescue ActiveRecord::RecordNotFound
-    redirect_to incomes_path, alert: "収入データが見つかりません"
+  def render_success(message)
+    flash.now[:notice] = message
+    render :index, status: :unprocessable_entity
   end
 
-  def render_create_error
-    @incomes = current_user.incomes
-    flash.now[:error] = @income.errors.full_messages.join(", ")
+  def render_error(message)
+    flash.now[:error] = message
     render :index, status: :unprocessable_entity
   end
 end

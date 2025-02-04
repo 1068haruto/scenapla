@@ -1,4 +1,6 @@
 class LifeEventsController < ApplicationController
+  before_action :authenticate_user!
+
   def index
     # 表示する年代を計算
     @age_groups_to_display = ((current_user.calculate_user_age / 10) * 10..70).step(10).to_a

@@ -1,4 +1,6 @@
 class UserAssetsController < ApplicationController
+  before_action :authenticate_user!
+
   def index
     @user_assets = current_user.user_assets
     @user_asset = UserAsset.new

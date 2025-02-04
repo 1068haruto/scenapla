@@ -1,4 +1,6 @@
 class NewsController < ApplicationController
+  before_action :authenticate_user!
+
   def index
     @news = fetch_news("経済", "ja", 10)
   rescue StandardError => error

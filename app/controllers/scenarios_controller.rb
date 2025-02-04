@@ -1,4 +1,6 @@
 class ScenariosController < ApplicationController
+  before_action :authenticate_user!
+
   def index
     @simulation = Simulation.find_by(user_id: current_user.id)
     @scenarios = Scenario.where(user_id: current_user.id) # 複数のシナリオを取得

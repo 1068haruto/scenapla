@@ -1,8 +1,8 @@
 class IncomesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_incomes, only: [ :index, :create, :destroy ]
 
   def index
+    @incomes = current_user.incomes
     @income = Income.new
   end
 
@@ -18,11 +18,10 @@ class IncomesController < ApplicationController
   end
 
   def destroy
-    @income = current_user.incomes.find(params[:id])
+    income = current_user.incomes.find(params[:id])
 
-    if @income
-      @income.destroy
-      redirect_to incomes_path, alert: t("notice.income.destroy.success")
+    if income.destroy
+      redirect_to incomes_path, notice: t("notice.income.destroy.success")
     else
       render_error(t("alert.income.destroy.not_found"), :not_found)
     end
@@ -47,6 +46,7 @@ class IncomesController < ApplicationController
   end
 
   def render_error(message, status)
+    @incomes = current_user.incomes
     flash.now[:alert] = message
     render :index, status: status
   end

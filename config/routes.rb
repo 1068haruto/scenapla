@@ -31,13 +31,14 @@ Rails.application.routes.draw do
     end
   end
 
-  # -----------------------------------------------------------
-
-  resources :user_assets do
+  # user_asset関連
+  resources :user_assets, only: [ :index, :create, :destroy ] do
     collection do
       post :update_simulation_data
     end
   end
+
+  # -----------------------------------------------------------
   resources :life_events do
     collection do
       post :update_simulation_data

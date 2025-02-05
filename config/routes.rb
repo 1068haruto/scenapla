@@ -13,13 +13,17 @@ Rails.application.routes.draw do
     patch "users/date_of_birth", to: "users/registrations#update_date_of_birth", as: "update_date_of_birth"
   end
 
+  # user関連
   resources :users, only: [ :show ]
-  # -----------------------------------------------------------
-  resources :incomes do
+
+  # income関連
+  resources :incomes, only: [ :index, :create, :destroy ] do
     collection do
       post :update_simulation_data
     end
   end
+
+  # -----------------------------------------------------------
   resources :expenses, only: [ :index ] do
     collection do
       post :create_or_update

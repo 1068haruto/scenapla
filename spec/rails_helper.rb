@@ -78,4 +78,7 @@ RSpec.configure do |config|
       with.library :rails
     end
   end
+
+  # Deviseのヘルパー使用許可
+  config.include Devise::Test::IntegrationHelpers, type: :request
 end

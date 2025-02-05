@@ -8,6 +8,7 @@ FactoryBot.define do
     email { "test@example.com" }
     password { "password1234" }
     password_confirmation { password }
+    confirmed_at { Time.current }
 
     initialize_with do
       dob = Date.today.year - 40

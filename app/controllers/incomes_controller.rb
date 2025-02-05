@@ -1,6 +1,6 @@
 class IncomesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_incomes, only: [:index, :create, :destroy]
+  before_action :set_incomes, only: [ :index, :create, :destroy ]
 
   def index
     @income = Income.new
@@ -11,7 +11,8 @@ class IncomesController < ApplicationController
     @income.simulation = current_user.simulation
 
     if @income.save
-      render_success(t('notice.income.create.success'))
+      render_success(t("notice.income.create.success"))
+      head :created  # 201を返す
     else
       render_error(@income.errors.full_messages.join(", "))
     end
@@ -19,20 +20,21 @@ class IncomesController < ApplicationController
 
   def destroy
     @income = current_user.incomes.find(params[:id])
-    
+
     if @income
       @income.destroy
-      render_success(t('notice.income.destroy.success'))
+      render_success(t("notice.income.destroy.success"))
+      head :no_content  # 204を返す
     else
-      redirect_to incomes_path, alert: t('alert.income.destroy.not_found')
+      redirect_to incomes_path, alert: t("alert.income.destroy.not_found")
     end
   end
 
   def update_simulation_data
     if current_user.simulation.update_income_data!(current_user)
-      redirect_to expenses_path, notice: t('notice.simulation.update.success')
+      redirect_to expenses_path, notice: t("notice.simulation.update.success")
     else
-      redirect_to incomes_path, alert: t('alert.simulation.update.error')
+      redirect_to incomes_path, alert: t("alert.simulation.update.error")
     end
   end
 

@@ -8,6 +8,11 @@ ja:
     expense:
       create_or_update:
         success: "支出データを追加しました。"
+    user_asset:
+      create:
+        success: "資産データを追加しました。"
+      destroy: 
+        success: "資産データを削除しました。"
     simulation:
       update:
         success: "シミュレーションデータに保存しました。"
@@ -15,7 +20,9 @@ ja:
     income:
       destroy:
         error: "収入データを削除できませんでした。"
-        not_found: "収入データが見つかりません"
+    user_asset:
+      destroy:
+        error: "資産データを削除できませんでした。"
     simulation:
       update:
         error: "シミュレーションデータに保存できませんでした。"

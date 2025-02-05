@@ -5,13 +5,13 @@ ja:
         success: "収入データを追加しました。"
       destroy: 
         success: "収入データを削除しました。"
-        error: "収入データを削除できませんでした。"
     simulation:
       update:
         success: "シミュレーションデータに保存しました。"
   alert:
     income:
       destroy:
+        error: "収入データを削除できませんでした。"
         not_found: "収入データが見つかりません"
     simulation:
       update:

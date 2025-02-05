@@ -11,10 +11,9 @@ class IncomesController < ApplicationController
     @income.simulation = current_user.simulation
 
     if @income.save
-      render_success(t("notice.income.create.success"))
-      head :created  # 201を返す
+      redirect_to incomes_path, notice: t("notice.income.create.success")
     else
-      render_error(@income.errors.full_messages.join(", "))
+      render_error(@income.errors.full_messages.join(", "), :unprocessable_entity)
     end
   end
 
@@ -23,10 +22,9 @@ class IncomesController < ApplicationController
 
     if @income
       @income.destroy
-      render_success(t("notice.income.destroy.success"))
-      head :no_content  # 204を返す
+      redirect_to incomes_path, alert: t("notice.income.destroy.success")
     else
-      redirect_to incomes_path, alert: t("alert.income.destroy.not_found")
+      render_error(t("alert.income.destroy.not_found"), :not_found)
     end
   end
 
@@ -48,13 +46,8 @@ class IncomesController < ApplicationController
     params.require(:income).permit(:person_type, :income, :retirement_date, :retirement_pay)
   end
 
-  def render_success(message)
-    flash.now[:notice] = message
-    render :index, status: :unprocessable_entity
-  end
-
-  def render_error(message)
-    flash.now[:error] = message
-    render :index, status: :unprocessable_entity
+  def render_error(message, status)
+    flash.now[:alert] = message
+    render :index, status: status
   end
 end

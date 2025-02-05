@@ -10,9 +10,9 @@ RSpec.describe "Incomes", type: :request do
   end
 
   describe "GET /index" do
-    it "HTTPステータ200を返す" do
+    it "ページを表示し200を返す" do
       get incomes_path
-      expect(response).to have_http_status(:success)  # 200
+      expect(response).to have_http_status(:success)
     end
   end
 
@@ -21,10 +21,10 @@ RSpec.describe "Incomes", type: :request do
       { income: attributes_for(:income) }
     end
 
-    it "保存成功の場合は、201を返す" do
+    it "保存成功の場合は、302を返す" do
       valid_params = { income: attributes_for(:income) }
       post incomes_path, params: valid_params
-      expect(response).to have_http_status(:created) # 201
+      expect(response).to have_http_status(:found)
     end
 
     it "保存失敗の場合は、422返す" do
@@ -35,9 +35,9 @@ RSpec.describe "Incomes", type: :request do
   end
 
   describe "DELETE /destroy" do
-    it "削除成功の場合は、422を返す" do
+    it "削除成功の場合は、302を返す" do
       delete income_path(income)
-      expect(response).to have_http_status(:no_content)  # 204
+      expect(response).to have_http_status(:found)
     end
 
     it "削除失敗の場合は、404を返す" do

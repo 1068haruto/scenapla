@@ -1,42 +1,43 @@
 class ExpensesController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_latest_expense, only: [ :index, :create_or_update ]
 
   def index
-    @latest_expense = current_user.expenses.includes(:simulation).last
     @expense = Expense.new
   end
 
   def create_or_update
-    # ユーザーの最新のexpenseを取得
     @expense = current_user.expenses.last || current_user.expenses.build
 
-    # 新しいパラメータを反映
     @expense.assign_attributes(expense_params)
-    @expense.simulation = current_user.simulation
+    @expense.simulation ||= current_user.simulation # 未設定の場合のみ
 
     if @expense.save
-      redirect_to expenses_path, notice: "支出データを追加しました"
+      redirect_to expenses_path, notice: t("notice.expense.create_or_update.success")
     else
-      @latest_expense = @expense
-      render_create_error
+      render_error
     end
   end
 
   def update_simulation_data
     if current_user.simulation.update_expense_data!(current_user)
-      redirect_to user_assets_path, notice: "シミュレーションデータに保存しました"
+      redirect_to user_assets_path, notice: t("notice.simulation.update.success")
     else
-      redirect_to expenses_path, alert: "シミュレーションデータに保存できませんでした"
+      redirect_to expenses_path, alert: t("alert.simulation.update.error")
     end
   end
 
   private
 
+  def set_latest_expense
+    @latest_expense = current_user.expenses.last
+  end
+
   def expense_params
     params.require(:expense).permit(:housing_expense, :repayment_date, :living_expenses, :monthly_premiums, :other_expenses)
   end
 
-  def render_create_error
+  def render_error
     flash.now[:error] = @expense.errors.full_messages.join(", ")
     render :index, status: :unprocessable_entity
   end

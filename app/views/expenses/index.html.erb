@@ -78,7 +78,7 @@
     <%= link_to '収入に戻る', incomes_path, class: 'btn btn-outline-secondary me-2', data: { turbo: true } %>
     <% if @latest_expense.present? && @latest_expense.id.present? %>
       <%=
-        button_to '保存して次へ', update_simulation_data_expense_path(@latest_expense), class: 'btn btn-primary',
+        button_to '保存して次へ', update_simulation_data_expenses_path, class: 'btn btn-primary',
         method: :post, data: { turbo: true }
       %>
     <% end %>

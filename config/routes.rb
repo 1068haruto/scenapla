@@ -23,15 +23,16 @@ Rails.application.routes.draw do
     end
   end
 
-  # -----------------------------------------------------------
+  # expense関連
   resources :expenses, only: [ :index ] do
     collection do
       post :create_or_update
-    end
-    member do
       post :update_simulation_data
     end
   end
+
+  # -----------------------------------------------------------
+
   resources :user_assets do
     collection do
       post :update_simulation_data

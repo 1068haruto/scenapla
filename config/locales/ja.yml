@@ -5,6 +5,9 @@ ja:
         success: "収入データを追加しました。"
       destroy: 
         success: "収入データを削除しました。"
+    expense:
+      create_or_update:
+        success: "支出データを追加しました。"
     simulation:
       update:
         success: "シミュレーションデータに保存しました。"

@@ -1,8 +1,8 @@
 class IncomesController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_incomes, only: [ :index, :create, :destroy ]
 
   def index
-    @incomes = current_user.incomes
     @income = Income.new
   end
 
@@ -46,7 +46,6 @@ class IncomesController < ApplicationController
   end
 
   def render_error(message, status)
-    @incomes = current_user.incomes
     flash.now[:alert] = message
     render :index, status: status
   end

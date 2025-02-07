@@ -6,22 +6,21 @@ RSpec.describe LifeEvent, type: :model do
   let!(:real_event1) do
     create(:life_event,
       user: user, user: user, simulation: simulation,
-      event_type: "現実", event_date: Date.new(2025, 1, 1), amount: 10, payment_span: 2
+      event_type: "現実", event_date: 2025, amount: 10, payment_span: 2
     )
   end
   let!(:real_event2) do
     create(:life_event,
       user: user, user: user, simulation: simulation,
-      event_type: "現実", event_date: Date.new(2026, 1, 1), amount: 20, payment_span: 1
+      event_type: "現実", event_date: 2026, amount: 20, payment_span: 1
     )
   end
   let!(:ideal_event1) do
     create(:life_event,
       user: user, user: user, simulation: simulation,
-      event_type: "理想", event_date: Date.new(2025, 1, 1), amount: 30, payment_span: 1
+      event_type: "理想", event_date: 2025, amount: 30, payment_span: 1
     )
   end
-
 
   describe 'アソシエーションテスト' do
     it { is_expected.to belong_to(:user) }

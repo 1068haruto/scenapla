@@ -1,5 +1,6 @@
 class UserAssetsController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_incomes, only: [ :index, :create, :destroy ]
 
   def index
     @user_assets = current_user.user_assets
@@ -37,12 +38,15 @@ class UserAssetsController < ApplicationController
 
   private
 
+  def set_incomes
+    @user_assets = current_user.user_assets
+  end
+
   def user_asset_params
     params.require(:user_asset).permit(:person_type, :asset_type, :amount, :return_rate)
   end
 
   def render_error(message, status)
-    @user_assets = current_user.user_assets
     flash.now[:alert] = message
     render :index, status: status
   end

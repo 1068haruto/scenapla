@@ -52,6 +52,9 @@ Rails.application.routes.draw do
     end
   end
 
+  # memo関連
+  resources :memos, only: [ :create, :update ]
+
   root to: "home#index"  # home関連（トップページ）
   get "dashboard/index"  # ダッシュボード
 
@@ -65,7 +68,6 @@ Rails.application.routes.draw do
   end
 
   # -----------------------------------------------------------
-  resources :memos, only: %i[create update]
 
   # ニュースページ
   resources :news, only: [ :index ]

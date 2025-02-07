@@ -156,6 +156,6 @@ class Simulation < ApplicationRecord
   end
 
   def user_asset_chart_data
-    user_asset_data&.map { |entry| [entry["date"], entry["amount"]] }&.to_h || {}
+    user_asset_data&.map { |entry| [ entry["date"], entry["amount"] ] }&.to_h || {}
   end
 end

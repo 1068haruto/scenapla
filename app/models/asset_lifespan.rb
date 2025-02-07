@@ -16,6 +16,6 @@ class AssetLifespan < ApplicationRecord
   end
 
   def user_asset_chart_data
-    yearly_lifespans&.map { |year, amount| [year, amount.to_f] }&.to_h || {}
+    yearly_lifespans&.map { |year, amount| [ year, amount.to_f ] }&.to_h || {}
   end
 end

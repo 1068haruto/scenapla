@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
     if resource.date_of_birth.blank?
       edit_date_of_birth_path
     else
-      dashboard_path
+      dashboard_index_path
     end
   end
 
@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
 
   def allowed_paths
     [
-      dashboard_path,              # ダッシュボードページ
+      dashboard_index_path,              # ダッシュボードページ
       user_path(current_user),     # アカウント情報ページ
       edit_user_registration_path, # アカウント情報変更ページ
       user_registration_path,      # アカウント情報更新処理

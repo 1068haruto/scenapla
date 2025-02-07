@@ -52,26 +52,23 @@ Rails.application.routes.draw do
     end
   end
 
+  root to: "home#index"  # home関連（トップページ）
+  get "dashboard/index"  # ダッシュボード
+
+  # static_page関連（利用規約 & プライバシーポリシー）
+  get "static_pages/terms"
+  get "static_pages/privacy"
+
+  # レターオープナー関連
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  end
+
   # -----------------------------------------------------------
   resources :memos, only: %i[create update]
 
   # ニュースページ
   resources :news, only: [ :index ]
-
-  # トップページ
-  root to: "home#index"
-
-  # ダッシュボード
-  get "dashboard" => "dashboard#index", as: :dashboard
-
-  # 利用規約 & プライバシーポリシー
-  get "static_pages/terms"
-  get "static_pages/privacy"
-
-  # レターオープナー用
-  if Rails.env.development?
-    mount LetterOpenerWeb::Engine, at: "/letter_opener"
-  end
 
   # ヘルスチェック
   get "up" => "rails/health#show", as: :rails_health_check

@@ -29,7 +29,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # 生年月日の単体登録処理
   def update_date_of_birth
     if current_user.update(date_of_birth_params)
-      redirect_to dashboard_path, notice: "生年月日を登録しました。"
+      redirect_to dashboard_index_path, notice: "生年月日を登録しました。"
     else
       flash.now[:alert] = "生年月日の登録に失敗しました。"
       render :edit_date_of_birth, status: :unprocessable_entity

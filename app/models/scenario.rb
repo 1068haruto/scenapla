@@ -8,7 +8,7 @@ class Scenario < ApplicationRecord
 
   # Chart用に整形
   def balance_chart_data
-    balance_scenario.map { |entry| [entry["date"], entry["amount"]] }&.to_h || {}
+    balance_scenario.map { |entry| [ entry["date"], entry["amount"] ] }&.to_h || {}
   end
 
 

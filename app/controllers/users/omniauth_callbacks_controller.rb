@@ -49,7 +49,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def redirect_after_auth(provider)
-    path = @user.date_of_birth.nil? ? edit_date_of_birth_path : dashboard_path
+    path = @user.date_of_birth.nil? ? edit_date_of_birth_path : dashboard_index_path
     notice = "#{provider.to_s.capitalize}でログインしました。"
     redirect_to path, notice: notice
   end

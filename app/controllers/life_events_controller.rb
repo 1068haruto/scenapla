@@ -1,69 +1,66 @@
 class LifeEventsController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_life_events, only: [ :index, :new, :create, :destroy ]
 
   def index
-    # 表示する年代を計算
     @age_groups_to_display = ((current_user.calculate_user_age / 10) * 10..70).step(10).to_a
-
-    # ライフイベントを年代毎にグループ化
-    life_events = LifeEvent.where(user_id: current_user.id).order(event_date: :asc)
-    @grouped_life_events = life_events.group_by { |event| calculate_age_group(event.event_date.year, current_user.date_of_birth.year) }
-
-    # メモを年代毎にグループ化
-    @memos = Memo.where(user_id: current_user.id).group_by(&:age_group)
+    @grouped_life_events = @life_events.group_by {
+      |event| calculate_age_group(event.event_date.year, current_user.date_of_birth.year)
+    }
+    @memos = current_user.memos.group_by(&:age_group)
   end
 
   def new
     @life_event = LifeEvent.new
-    @life_events = LifeEvent.where(user_id: current_user.id).order(event_date: :asc)
   end
 
   def create
-    @life_event = LifeEvent.build(convert_event_date(life_event_params))
+    @life_event = current_user.life_events.build(life_event_params)
+    @life_event.simulation = current_user.simulation
+
     if @life_event.save
-      redirect_to new_life_event_path, notice: "ライフイベントを追加しました。"
+      redirect_to new_life_event_path, notice: t("notice.life_event.create.success")
     else
-      @life_events = LifeEvent.where(user_id: current_user.id).order(event_date: :asc)
-      flash.now[:error] = @life_event.errors.full_messages.join(", ")
-      render :new, status: :unprocessable_entity
+      render_error(@life_event.errors.full_messages.join(", "), :unprocessable_entity)
     end
   end
 
   def destroy
-    @life_event = LifeEvent.find(params[:id])
+    life_event = current_user.life_events.find(params[:id])
 
-    if @life_event.destroy
-      redirect_to new_life_event_path, notice: "ライフイベントを削除しました。"
+    if life_event.destroy
+      redirect_to new_life_event_path, notice: t("notice.life_event.destroy.success")
     else
-      redirect_to new_life_event_path, alert: "ライフイベントを削除できませんでした。"
+      render_error(t("alert.life_event.destroy.error"), :not_found)
     end
   end
 
   def update_simulation_data
     if current_user.simulation.update_life_event_data!(current_user)
-      redirect_to scenarios_path, notice: "シミュレーションデータに保存しました。更新ボタンを押して最新のシナリオを表示しましょう。"
+      redirect_to scenarios_path, notice: t("notice.simulation.update.success")
     else
-      redirect_to new_life_event_path, alert: "シミュレーションデータに保存できませんでした。"
+      redirect_to new_life_event_path, alert: t("alert.simulation.update.error")
     end
   end
 
   private
 
-  def life_event_params
-    params.require(:life_event).permit(:user_id, :simulation_id, :event_type, :event_date, :title, :amount, :payment_span).tap do |whitelisted|
-      whitelisted[:event_type] = whitelisted[:event_type].to_i
-    end
+  def set_life_events
+    @life_events = current_user.life_events.order(event_date: :asc)
   end
 
-  def convert_event_date(params)
-    if params[:event_date].present?
-      params[:event_date] = Date.new(params[:event_date].to_i, 1, 1)
-    end
-    params
+  def life_event_params
+    params.require(:life_event).permit(:event_type, :event_date, :title, :amount, :payment_span)
+      .tap { |p| p[:event_type] = p[:event_type].to_i if p[:event_type].present? }
+  end
+
+  def render_error(message, status)
+    flash.now[:alert] = message
+    render :new, status: status
   end
 
   def calculate_age_group(event_year, birth_year)
     age = event_year - birth_year
-    (age / 10) * 10 # 30代, 40代などに変換
+    (age / 10) * 10
   end
 end

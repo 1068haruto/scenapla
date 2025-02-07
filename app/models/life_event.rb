@@ -8,6 +8,11 @@ class LifeEvent < ApplicationRecord
   validates :event_type, :event_date, :title, :payment_span, presence: true
   validates :amount, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
+  # カスタムセッター：入力された年をdate型に変換
+  def event_date=(value)
+    super(value.present? ? Date.new(value.to_i, 1, 1) : value)
+  end
+
   def self.generate_life_event_data_for(user)
     life_events = where(user: user)
     real_events = life_events.where(event_type: 0)

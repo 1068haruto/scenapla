@@ -13,6 +13,11 @@ ja:
         success: "資産データを追加しました。"
       destroy: 
         success: "資産データを削除しました。"
+    life_event:
+      create:
+        success: "ライフイベントデータを追加しました。"
+      destroy: 
+        success: "ライフイベントデータを削除しました。"
     simulation:
       update:
         success: "シミュレーションデータに保存しました。"
@@ -23,6 +28,9 @@ ja:
     user_asset:
       destroy:
         error: "資産データを削除できませんでした。"
+    life_event:
+      destroy:
+        error: "ライフイベントデータを削除できませんでした。"
     simulation:
       update:
         error: "シミュレーションデータに保存できませんでした。"

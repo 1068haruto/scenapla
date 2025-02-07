@@ -2,67 +2,39 @@ class ScenariosController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @simulation = Simulation.find_by(user_id: current_user.id)
-    @scenarios = Scenario.where(user_id: current_user.id) # 複数のシナリオを取得
+    @simulation = current_user.simulation
+    @scenarios = current_user.scenarios
+    @asset_lifespan = current_user.asset_lifespans.last
 
-    @asset_lifespan = @simulation.asset_lifespans.last # 最新の資産寿命データ
+    # 資産寿命シナリオ
+    @lifespan_years = @asset_lifespan&.lifespan_years
+    @lifespan_months = @asset_lifespan&.lifespan_months
+    @lifespan_chart_data = @asset_lifespan&.user_asset_chart_data
 
-    if @asset_lifespan
-      @lifespan_years = @asset_lifespan.lifespan_years
-      @lifespan_months = @asset_lifespan.lifespan_months
-    else
-      @lifespan_years = nil
-      @lifespan_months = nil
-    end
-
-    # 資産寿命データ　各支出を安全に取得(nilを0に変換)
-    monthly_expenses = @simulation.expenses.sum(:housing_expense).to_f +
-    @simulation.expenses.sum(:living_expenses).to_f +
-    @simulation.expenses.sum(:monthly_premiums).to_f +
-    @simulation.expenses.sum(:other_expenses).to_f
-    # 必要なデータがない場合
+    expense_totals = @simulation.expenses.pluck(:housing_expense, :living_expenses, :monthly_premiums, :other_expenses)
+    monthly_expenses = expense_totals.flatten.sum.to_f
     total_assets = @simulation.user_assets.sum(:amount)
+
     if total_assets <= 0 || monthly_expenses <= 0
       @asset_lifespan = nil
-      @asset_lifespan_updated_at = nil # 資産寿命がない場合もnilを設定
+      @asset_lifespan_updated_at = nil
     else
-      @asset_lifespan = @simulation.asset_lifespans.last # 最新の資産寿命データを取得
-      @asset_lifespan_updated_at = @asset_lifespan&.updated_at # nilの場合はnilが代入される
-    end
-
-    # 資産シナリオ
-    user_assets = @simulation.user_assets.where(user_id: current_user.id)
-    if user_assets.any?
-      @asset_data = @simulation.user_asset_data&.map { |entry| [ entry["date"], entry["amount"] ] }&.to_h || {}
-      @user_asset_data_updated_at = @simulation.updated_at
-    else
-      @asset_data = []
+      @asset_lifespan_updated_at = @asset_lifespan&.updated_at
     end
 
     # 現実的シナリオ
-    real_scenario = @scenarios.find { |scenario| scenario.scenario_type == "現実" }
-    if real_scenario
-      @real_updated_at = real_scenario.updated_at
-      @real_balance_chart_data = real_scenario.balance_chart_data
-      @real_total_income = real_scenario.total_income || 0
-      @real_total_expense = real_scenario.total_expense || 0
-      @real_total_balance = real_scenario.total_balance || 0
-      @real_withdrawal = real_scenario.withdrawal || 0
-      @real_shortage = real_scenario.shortage || 0
-    else
-      # 現実的シナリオが見つからなかった場合の処理
-      @real_balance_chart_data = []
-      @real_total_income = 0
-      @real_total_expense = 0
-      @real_total_balance = 0
-      @real_withdrawal = 0
-      @real_shortage = 0
-    end
+    real_scenario = @scenarios.find { |s| s.scenario_type == "現実" }
+    @real_updated_at = real_scenario&.updated_at
+    @real_balance_chart_data = real_scenario&.balance_chart_data || []
+    @real_total_income = real_scenario&.total_income || 0
+    @real_total_expense = real_scenario&.total_expense || 0
+    @real_total_balance = real_scenario&.total_balance || 0
+    @real_withdrawal = real_scenario&.withdrawal || 0
+    @real_shortage = real_scenario&.shortage || 0
 
     # 理想的シナリオ
-    ideal_scenario = @scenarios.find { |scenario| scenario.scenario_type == "理想" }
-    events = LifeEvent.where(user_id: current_user.id)
-
+    ideal_scenario = @scenarios.find { |s| s.scenario_type == "理想" }
+    events = current_user.life_events
     if ideal_scenario && events.any? { |event| event.event_type == "理想" }
       @ideal_updated_at = ideal_scenario.updated_at
       @ideal_balance_chart_data = ideal_scenario.balance_chart_data
@@ -71,8 +43,7 @@ class ScenariosController < ApplicationController
       @ideal_total_balance = ideal_scenario.total_balance || 0
       @ideal_withdrawal = ideal_scenario.withdrawal || 0
       @ideal_shortage = ideal_scenario.shortage || 0
-    else
-      # 理想的シナリオが見つからなかった場合の処理
+    else  # 理想シナリオが見つからない場合
       @ideal_balance_chart_data = []
       @ideal_total_income = 0
       @ideal_total_expense = 0
@@ -80,14 +51,18 @@ class ScenariosController < ApplicationController
       @ideal_withdrawal = 0
       @ideal_shortage = 0
     end
+
+    # 資産シナリオ
+    @asset_data = @simulation.user_asset_chart_data
+    @user_asset_data_updated_at = @simulation.updated_at if @asset_data.present?
   end
 
   def update_scenarios
     success = current_user.scenarios.all?(&:update_scenario_data!)
     if success
-      redirect_to scenarios_path, notice: "シナリオを更新しました。"
+      redirect_to scenarios_path, notice: t("notice.scenario.update.success")
     else
-      redirect_to scenarios_path, alert: "シナリオを更新できませんでした。"
+      redirect_to scenarios_path, alert: t("alert.scenario.update.error")
     end
   end
 end

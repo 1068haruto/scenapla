@@ -6,10 +6,11 @@ class Scenario < ApplicationRecord
 
   validates :user_id, :simulation_id, presence: true
 
-  # Chartkick用データ形式を返す
+  # Chart用に整形
   def balance_chart_data
-    balance_scenario.map { |entry| [ entry["date"], entry["amount"] ] }.to_h
+    balance_scenario.map { |entry| [entry["date"], entry["amount"]] }&.to_h || {}
   end
+
 
   # シナリオ更新
   def update_scenario_data!

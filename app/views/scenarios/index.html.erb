@@ -20,7 +20,7 @@
         <% else %>
           <p>資産情報が登録されていません。</p>
         <% end %>
-        <%= column_chart @asset_lifespan.yearly_lifespans.map { |year, amount| [year, amount.to_f] }, xtitle: '年', ytitle: '資産額（万円）' %>
+        <%= column_chart @lifespan_chart_data, xtitle: '年', ytitle: '資産額（万円）' %>
       <% else %>
         <p>資産情報の登録がないため、グラフを表示できません。</p>
       <% end %>

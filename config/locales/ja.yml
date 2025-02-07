@@ -21,6 +21,9 @@ ja:
     simulation:
       update:
         success: "シミュレーションデータに保存しました。"
+    scenario:
+      update:
+        success: "シナリオデータを更新しました。"
   alert:
     income:
       destroy:
@@ -34,6 +37,9 @@ ja:
     simulation:
       update:
         error: "シミュレーションデータに保存できませんでした。"
+    scenario:
+      update:
+        error: "シナリオデータを更新できませんでした。"
   errors:
     format: "%{message}" # 属性名を含めない
     messages:

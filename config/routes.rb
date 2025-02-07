@@ -38,18 +38,22 @@ Rails.application.routes.draw do
     end
   end
 
-  # -----------------------------------------------------------
-  resources :life_events do
+  # life_event関連
+  resources :life_events, only: [ :index, :new, :create, :destroy ] do
     collection do
       post :update_simulation_data
     end
   end
-  resources :memos, only: %i[create update]
-  resources :scenarios do
+
+  # scenario関連
+  resources :scenarios, only: [ :index ] do
     collection do
       post :update_scenarios
     end
   end
+
+  # -----------------------------------------------------------
+  resources :memos, only: %i[create update]
 
   # ニュースページ
   resources :news, only: [ :index ]

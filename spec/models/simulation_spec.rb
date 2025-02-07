@@ -295,5 +295,18 @@ RSpec.describe Simulation, type: :model do
         ])
       end
     end
+
+    describe '#user_asset_chart_data' do
+      before do
+        allow(simulation).to receive(:user_asset_data).and_return([
+          { 'date' => '2000', 'amount' => 200 }, { 'date' => '2001', 'amount' => 100 }
+        ])
+      end
+  
+      it 'Chartkick用にフォーマットする' do
+        expected_result = { '2000' => 200, '2001' => 100 }
+        expect(simulation.user_asset_chart_data).to eq(expected_result)
+      end
+    end
   end
 end

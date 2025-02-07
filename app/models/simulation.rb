@@ -154,4 +154,8 @@ class Simulation < ApplicationRecord
     total_months = (total_assets / monthly_expense).floor
     [ total_months / 12, total_months % 12 ]
   end
+
+  def user_asset_chart_data
+    user_asset_data&.map { |entry| [entry["date"], entry["amount"]] }&.to_h || {}
+  end
 end

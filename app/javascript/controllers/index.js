@@ -6,3 +6,7 @@ import { application } from "./application"
 
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
+
+// memo関連
+import MemoController from "./memo_controller";
+application.register("memo", MemoController);

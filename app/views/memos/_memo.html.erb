@@ -1,0 +1,12 @@
+<div id="memo-container-<%= age_group %>" data-controller="memo">
+  <textarea id="memo-content-<%= age_group %>" rows="2" class="form-control" data-memo-target="textarea" data-age-group="<%= age_group %>" data-id="<%= first_memo&.id %>" <%= first_memo&.content.present? ? 'readonly' : '' %>><%= first_memo&.content.present? ? first_memo.content : '' %></textarea>
+  <button 
+    id="memo-button-<%= age_group %>"
+    class="btn <%= first_memo&.content.present? ? 'btn-outline-secondary' : 'btn-outline-primary' %> btn-sm mt-2"
+    data-memo-target="button"
+    data-action="click->memo#toggleEdit"
+    data-action="<%= first_memo&.content.present? ? 'edit' : 'save' %>"
+  >
+    <%= first_memo&.content.present? ? '編集' : '保存' %>
+  </button>
+</div>

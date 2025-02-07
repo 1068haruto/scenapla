@@ -6,7 +6,6 @@
     <h4 class="mb-3">プランの具体化</h4>
     <p>今後の計画や目標などをメモに整理しましょう。</p>
   </div>
-
   <% @age_groups_to_display.each do |age_group| %>
     <div class="card mb-3">
       <div class="card-body">
@@ -31,91 +30,18 @@
           </div>
           <div class="col mt-2 mt-md-0">
             <% first_memo = @memos[age_group]&.first %>
-            <div id="memo-container-<%= age_group %>">
-              <textarea id="memo-content-<%= age_group %>" rows="2" class="form-control" data-age-group="<%= age_group %>" data-id="<%= first_memo&.id %>" <%= first_memo&.content.present? ? 'readonly' : '' %>><%= first_memo&.content.present? ? first_memo.content : '' %></textarea>
-              <button
-                id="memo-button-<%= age_group %>"
-                class="btn <%= first_memo&.content.present? ? 'btn-outline-secondary' : 'btn-outline-primary' %> btn-sm mt-2"
-                data-action="<%= first_memo&.content.present? ? 'edit' : 'save' %>">
-                  <%= first_memo&.content.present? ? '編集' : '保存' %>
-              </button>
-            </div>
+            <%= render "memos/memo", age_group: age_group, first_memo: first_memo %>
           </div>
         </div>
       </div>
     </div>
   <% end %>
-
   <div class="d-flex justify-content-center">
     <% if @grouped_life_events.empty? %>
       <%= link_to '情報入力画面へ', incomes_path, class: 'btn btn-primary me-2', data: { turbo: true } %>
     <% else %>
-      <div class="d-flex justify-content-center">
-        <%= link_to 'ライフイベント編集', new_life_event_path, class: 'btn btn-outline-secondary me-2', data: { turbo: true } %>
-        <%= link_to 'ホームに戻る', dashboard_index_path, class: 'btn btn-primary me-2', data: { turbo: true } %>
-      </div>
+      <%= link_to 'ライフイベント編集', new_life_event_path, class: 'btn btn-outline-secondary me-2', data: { turbo: true } %>
+      <%= link_to 'ホームに戻る', dashboard_index_path, class: 'btn btn-primary me-2', data: { turbo: true } %>
     <% end %>
   </div>
 </div>
-
-<script>
-  document.addEventListener("turbo:load", () => {
-    const memoContainers = document.querySelectorAll("[id^=memo-container-]");
-
-    memoContainers.forEach(container => {
-      // ボタンとテキストエリアを取得
-      const button = container.querySelector("button");
-      const textarea = container.querySelector("textarea");
-
-      // 重複防止のため既存のイベントリスナーを削除
-      const newButton = button.cloneNode(true);
-      button.replaceWith(newButton);
-
-      // イベントリスナーを登録
-      newButton.addEventListener("click", () => {
-        if (newButton.dataset.action === "save") {
-          // 保存処理
-          const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
-          const ageGroup = textarea.dataset.ageGroup;
-          const memoId = textarea.dataset.id; // 既存メモID
-
-          const url = memoId ? `/memos/${memoId}` : "/memos"; // PATCHかPOSTのURLを決定
-          const method = memoId ? "PATCH" : "POST"; // HTTPメソッドを切り替え
-
-          fetch(url, {
-            method: method,
-            headers: {
-              "Content-Type": "application/json",
-              "X-CSRF-Token": csrfToken
-            },
-            body: JSON.stringify({
-              memo: {
-                content: textarea.value,
-                age_group: parseInt(ageGroup)
-              }
-            })
-          })
-            .then(response => response.json())
-            .then(data => {
-              if (data.memo) {
-                // 保存成功後に状態を更新
-                textarea.dataset.id = data.memo.id; // 新しいIDを設定
-                newButton.dataset.action = "edit";
-                newButton.textContent = "編集";
-                textarea.setAttribute("readonly", true);
-                newButton.classList.replace("btn-outline-primary", "btn-outline-secondary");
-              } else {
-                alert(data.message || "保存に失敗しました。");
-              }
-            });
-        } else {
-          // 編集モードに切り替える
-          newButton.dataset.action = "save";
-          newButton.textContent = "保存";
-          textarea.removeAttribute("readonly");
-          newButton.classList.replace("btn-outline-secondary", "btn-outline-primary");
-        }
-      });
-    });
-  });
-</script>

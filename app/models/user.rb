@@ -29,7 +29,7 @@ class User < ApplicationRecord
     age
   end
 
-  # SNSログイン（ユーザーを検索or作成）
+  # snsログイン（ユーザーを検索or作成）
   def self.find_or_create_for_oauth(auth)
     sns = SnsCredential.find_or_create_by(uid: auth.uid, provider: auth.provider)
     user = sns.user || User.find_by(email: auth.info.email)
@@ -41,7 +41,7 @@ class User < ApplicationRecord
 
   private
 
-  # SNSユーザー：登録も更新も無効
+  # sns使用ユーザー：登録も更新も無効
   # 一般ユーザー：登録は有効、更新は入力があれば有効、なければ無効
   def password_required?
     if sns_credentials.exists?
@@ -53,7 +53,7 @@ class User < ApplicationRecord
     end
   end
 
-  # SNS使用ユーザー：登録は無効、更新は有効
+  # sns使用ユーザー：登録は無効、更新は有効
   # 一般ユーザー：登録も更新も有効
   def date_of_birth_required?
     return true if sns_credentials.empty?
@@ -65,17 +65,17 @@ class User < ApplicationRecord
     end
   end
 
+  # 空のsimulation, scenario作成
   def create_simulation_and_scenario_models
     Simulation.create(user: self)
 
-    # 各scenario_typeに対応するテーブル作成
     scenario_types = [ "現実", "理想" ]
     scenario_types.each do |type|
       Scenario.create(user: self, simulation: simulation, scenario_type: type)
     end
   end
 
-  # snsを元にuser作成
+  # snsを元にユーザー作成
   def self.create_user_from_auth(auth)
     user = User.new(
       email: auth.info.email,
@@ -84,7 +84,7 @@ class User < ApplicationRecord
       date_of_birth: nil,  # 生年月日は未設定とする
       confirmed_at: Time.current
     )
-    user.save(validate: false)  # バリデーションをスキップして保存
+    user.save(validate: false)  # バリデーションはスキップ
     user
   end
 

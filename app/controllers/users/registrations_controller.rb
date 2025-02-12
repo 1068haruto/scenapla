@@ -10,7 +10,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def create
     super do |resource|
       if resource.persisted? && resource.sns_credentials.empty?
-        sign_out resource unless resource.confirmed?  # SNSを使用しないユーザー用
+        sign_out resource unless resource.confirmed?  # SNS未使用ユーザー用
       end
     end
   end
@@ -23,8 +23,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
-  # 生年月日の単体登録ページ
-  def edit_date_of_birth; end
+  def edit_date_of_birth; end  # 生年月日の単体登録ページ
 
   # 生年月日の単体登録処理
   def update_date_of_birth

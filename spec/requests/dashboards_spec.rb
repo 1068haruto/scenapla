@@ -18,7 +18,7 @@ RSpec.describe "Dashboards", type: :request do
     context "未ログインの場合" do
       it "loginページにリダイレクトし302を返す" do
         get dashboard_index_path
-        expect(response).to have_http_status(:found) # 302リダイレクト
+        expect(response).to have_http_status(:found)  # 302
         expect(response).to redirect_to(new_user_session_path)
       end
     end

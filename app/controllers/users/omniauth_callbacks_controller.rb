@@ -4,20 +4,8 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   # You should configure your model like this:
   # devise :omniauthable, omniauth_providers: [:twitter]
 
-  # You should also create an action method in this controller like this:
-  # def twitter
-  # end
-
-  # More info at:
-  # https://github.com/heartcombo/devise#omniauth
-
   # GET|POST /resource/auth/twitter
   # def passthru
-  #   super
-  # end
-
-  # GET|POST /users/auth/twitter/callback
-  # def failure
   #   super
   # end
 
@@ -33,6 +21,10 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     callback_for(:google)
   end
 
+  def failure
+    redirect_to new_user_registration_path, alert: "ログインに失敗しました。"
+  end
+
   private
 
   def callback_for(provider)
@@ -44,17 +36,12 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       sign_in @user, event: :authentication
       redirect_after_auth(provider)
     else
-      redirect_to new_user_registration_url, alert: "#{provider.to_s.capitalize}ログインに失敗しました。"
+      redirect_to new_user_registration_path, alert: "#{provider.to_s.capitalize}ログインに失敗しました。"
     end
   end
 
   def redirect_after_auth(provider)
     path = @user.date_of_birth.nil? ? edit_date_of_birth_path : dashboard_index_path
-    notice = "#{provider.to_s.capitalize}でログインしました。"
-    redirect_to path, notice: notice
-  end
-
-  def failure
-    redirect_to root_path
+    redirect_to path, notice: "#{provider.to_s.capitalize}でログインしました。"
   end
 end

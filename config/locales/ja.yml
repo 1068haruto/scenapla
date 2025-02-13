@@ -1,5 +1,9 @@
 ja:
   notice:
+    devise:
+      omniauth:
+        callback:
+          success: "でログインしました。"
     income:
       create:
         success: "収入データを追加しました。"
@@ -25,6 +29,11 @@ ja:
       update:
         success: "シナリオデータを更新しました。"
   alert:
+    devise:
+      omniauth:
+        failure: "でのログインに失敗しました。"
+        callback:
+          failure: "でのログインに失敗しました。"
     income:
       destroy:
         error: "収入データを削除できませんでした。"

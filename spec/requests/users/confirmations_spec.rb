@@ -3,7 +3,7 @@ require 'rails_helper'
 
 RSpec.describe "Users::Confirmations", type: :request do
   let(:user) { create(:user, confirmed_at: nil) }
-  
+
   describe "GET /users/confirmation" do
     before do
       user.send_confirmation_instructions  # 新規登録後に確認メール送信処理

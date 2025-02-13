@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   # Others available are :lockable, :timeoutable, :trackable
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable,
-         :confirmable, :omniauthable, omniauth_providers: %i[google_oauth2]
+         :confirmable, :omniauthable, omniauth_providers: [ :google_oauth2 ]
 
   has_many :incomes, dependent: :destroy
   has_many :expenses, dependent: :destroy

@@ -1,4 +1,14 @@
 ja:
+  message:
+    devise:
+      registration:
+        update:
+          success: "アカウント情報を更新しました。"
+          failure: "アカウント情報を更新できませんでした。"
+        update_date_of_birth:
+          success: "生年月日を登録しました。"
+          failure: "生年月日を登録できませんでした。"
+          not_sign_in: "ログインしてください。"
   notice:
     devise:
       omniauth:

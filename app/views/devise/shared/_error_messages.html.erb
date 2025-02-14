@@ -1,4 +1,4 @@
-<% if resource.errors.any? %>
+<% if resource && resource.errors.any? %>
   <div id="error_explanation" data-turbo-cache="false">
     <p>
       <%= I18n.t("errors.messages.not_saved",

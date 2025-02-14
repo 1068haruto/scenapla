@@ -22,11 +22,17 @@ rubocop-gen-config:  # RuboCopの設定ファイル(.rubocop.yml)を自動生成
 rspec:
 	$(COMPOSE) run --rm $(SERVICE) bundle exec rspec
 
+rspec-focus:  # focusタグが付けられたテストを実行（, :focus do）
+	$(COMPOSE) run --rm $(SERVICE) bundle exec rspec --tag focus
+
 rspec-verbose:  # テスト & 結果をドキュメント形式表示
 	$(COMPOSE) run --rm $(SERVICE) bundle exec rspec --format documentation
 
 rspec-with-coverage:  # テスト & カバレッジレポート生成
 	$(COMPOSE) run --rm $(SERVICE) bundle exec rspec --coverage
+
+rspec-log-fail-fast:  # テスト & リアルタイムでログ表示（最初の失敗で止める）
+	$(COMPOSE) run --rm $(SERVICE) bundle exec rspec --format documentation --fail-fast
 
 # -----その他-----
 build:

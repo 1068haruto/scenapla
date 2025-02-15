@@ -52,6 +52,9 @@ jobs:
       - name: Docker コンテナの起動
         run: docker compose -f compose.yml up -d --build web
 
+      - name: Install dependencies
+        run: docker compose exec -T web bundle install
+
       - name: RSpec 実行
         run: docker compose exec -T web bundle exec rspec
 

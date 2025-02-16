@@ -71,6 +71,9 @@ jobs:
           bundle exec rails credentials:edit # credentialsを復号化
 
       - name: Prepare database for RSpec
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
         run: bundle exec rails db:create db:migrate
 
       - name: Run RSpec tests

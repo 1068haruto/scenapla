@@ -50,12 +50,6 @@ jobs:
           - 5432:5432
         options: --health-cmd="pg_isready" --health-interval=10s --health-timeout=5s --health-retries=3
 
-      # redis:
-      #   image: redis
-      #   ports:
-      #     - 6379:6379
-      #   options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
-
     steps:
       - name: Install packages
         run: sudo apt-get update && sudo apt-get install --no-install-recommends -y google-chrome-stable curl libjemalloc2 libvips postgresql-client
@@ -74,17 +68,18 @@ jobs:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
         run: |
           echo "$RAILS_MASTER_KEY" > config/master.key
-          # credentialsを復号化
-          bundle exec rails credentials:edit
+          bundle exec rails credentials:edit # credentialsを復号化
 
-      - name: Run tests
+      - name: Prepare database for RSpec
+        run: bundle exec rails db:create db:migrate
+
+      - name: Run RSpec tests
         env:
           RAILS_ENV: test
           DATABASE_URL: postgres://postgres:postgres@localhost:5432
-          # REDIS_URL: redis://localhost:6379/0
-          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }} # 環境変数を設定
-          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }} # 環境変数を設定
-        run: bin/rails db:test:prepare test test:system
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+        run: bundle exec rspec
 
       - name: Keep screenshots from failed system tests
         uses: actions/upload-artifact@v4

@@ -75,7 +75,7 @@ jobs:
         run: |
           echo "$RAILS_MASTER_KEY" > config/master.key
           # credentialsを復号化
-          bundle exec rails credentials:decrypt
+          bundle exec rails credentials:edit
 
       - name: Run tests
         env:

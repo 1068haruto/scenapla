@@ -21,9 +21,7 @@ RSpec.describe AssetLifespan, type: :model do
       let(:lifespan_months) { 1 }
 
       context 'asset_lifespanデータがある場合' do
-        before do
-          asset_lifespan
-        end
+        let!(:asset_lifespan) { create(:asset_lifespan, user: user, simulation: simulation) }
 
         it '既存asset_lifespanデータを更新する' do
           expect do

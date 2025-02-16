@@ -69,11 +69,21 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
+      - name: Set up Rails credentials
+        env:
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+        run: |
+          echo "$RAILS_MASTER_KEY" > config/master.key
+          # credentialsを復号化
+          bundle exec rails credentials:edit
+
       - name: Run tests
         env:
           RAILS_ENV: test
           DATABASE_URL: postgres://postgres:postgres@localhost:5432
           # REDIS_URL: redis://localhost:6379/0
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }} # 環境変数を設定
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }} # 環境変数を設定
         run: bin/rails db:test:prepare test test:system
 
       - name: Keep screenshots from failed system tests
@@ -83,3 +93,4 @@ jobs:
           name: screenshots
           path: ${{ github.workspace }}/tmp/screenshots
           if-no-files-found: ignore
+          

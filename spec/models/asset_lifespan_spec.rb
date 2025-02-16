@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe AssetLifespan, type: :model do
-  let(:user) { create(:user) }
-  let(:simulation) { create(:simulation, user: user) }
+  let!(:user) { create(:user) }
+  let!(:simulation) { create(:simulation, user: user) }
   let(:asset_lifespan) { create(:asset_lifespan, user: user, simulation: simulation) }
 
   describe 'アソシエーションテスト' do

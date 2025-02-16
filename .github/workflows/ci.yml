@@ -69,6 +69,12 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
+      - name: Set up Rails credentials
+        env:
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+        run: |
+          echo "$RAILS_MASTER_KEY" > config/master.key
+
       - name: Run tests
         env:
           RAILS_ENV: test
@@ -83,3 +89,4 @@ jobs:
           name: screenshots
           path: ${{ github.workspace }}/tmp/screenshots
           if-no-files-found: ignore
+          

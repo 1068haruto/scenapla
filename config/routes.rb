@@ -55,6 +55,9 @@ Rails.application.routes.draw do
   # memo関連
   resources :memos, only: [ :create, :update ]
 
+  # openai_advice関連
+  resource :openai_advice, only: [:show]
+
   root to: "home#index"  # home関連（トップページ）
   get "dashboard/index"  # ダッシュボード
 

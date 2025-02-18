@@ -6,6 +6,10 @@
     <h4 class="mb-3">プランの具体化</h4>
     <p>今後の計画や目標などをメモに整理しましょう。</p>
   </div>
+  <div>
+    <%= render "openai_advices/show", advice: @advice || "アドバイスがまだありません。" %>
+  </div>
+  
   <% @age_groups_to_display.each do |age_group| %>
     <div class="card mb-3">
       <div class="card-body">

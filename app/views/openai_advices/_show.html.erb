@@ -1,0 +1,8 @@
+<h2>あなたへのアドバイス</h2>
+<% if @advice.nil? %>
+	<p>情報入力が完了していないため、アドバイスを作成できません。</p>
+<% else %>
+	<p><%= @advice %></p>
+<% end %>
+
+<%= button_to 'アドバイス更新', generate_advice_openai_advice_path, method: :post, class: "btn btn-primary" %>

@@ -11,6 +11,7 @@ class User < ApplicationRecord
   has_one :simulation, dependent: :destroy
   has_many :scenarios, dependent: :destroy
   has_many :asset_lifespans, dependent: :destroy
+  has_many :ai_advices, dependent: :destroy
   has_many :sns_credentials, dependent: :destroy
 
   # カスタムのみ記述（email形式 と password長さは、devise.rb側で定義）

@@ -7,7 +7,7 @@ class LifeEventsController < ApplicationController
     @grouped_life_events = @life_events.group_by {
       |event| calculate_age_group(event.event_date.year, current_user.date_of_birth.year)
     }
-    @memos = current_user.memos.group_by(&:age_group) 
+    @memos = current_user.memos.group_by(&:age_group)
 
     @advice_record = current_user.ai_advices.last
     @advice = @advice_record.present? ? @advice_record.content : nil

@@ -1,19 +1,20 @@
 <% content_for :title do %>LifePlan<% end %>
 
 <div class="container">
-  <div class="mb-5">
+  <div class="mb-5 text-center">
     <h1 class="display-4">LifePlan</h1>
     <h4 class="mb-3">プランの具体化</h4>
     <p>今後の計画や目標などをメモに整理しましょう。</p>
   </div>
-  <div>
-    <%= render "openai_advices/show", advice: @advice || "アドバイスがまだありません。" %>
-  </div>
-  
+
+  <%= render "openai_advices/show", advice: @advice %>
+
   <% @age_groups_to_display.each do |age_group| %>
     <div class="card mb-3">
-      <div class="card-body">
+      <div class="card-header">
         <h3><%= age_group %>代</h3>
+      </div>
+      <div class="card-body">
         <div class="row">
           <div class="col-md-5">
             <% if @grouped_life_events[age_group].blank? %>

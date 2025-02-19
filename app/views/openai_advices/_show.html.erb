@@ -1,8 +1,17 @@
-<h2>あなたへのアドバイス</h2>
-<% if @advice.nil? %>
-	<p>情報入力が完了していないため、アドバイスを作成できません。</p>
-<% else %>
-	<p><%= @advice %></p>
-<% end %>
-
-<%= button_to 'アドバイス更新', generate_advice_openai_advice_path, method: :post, class: "btn btn-primary" %>
+<div class="card mb-3">
+  <div class="card-header d-flex align-items-center">
+    <h4 class="mt-2">アドバイス</h4>
+    <%= button_to '生成する', generate_advice_openai_advice_path, method: :post, class: "btn btn-outline-primary btn-sm ms-3" %>
+  </div>
+  <div class="card-body">
+    <% if @advice.nil? %>
+      <p class="text-muted">情報入力の上、「生成する」ボタンを押してください。</p>
+    <% else %>
+      <p>
+        <%= @advice %>
+        <br>
+        <small class="text-muted">※現実的シナリオを基準とした経済面のアドバイスです。</small>
+      </p>
+    <% end %>
+  </div>
+</div>

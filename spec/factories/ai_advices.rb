@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :ai_advice do
-    user { nil }
-    content { "MyText" }
+    user
+    content { "サンプルアドバイス" }
+    real_scenario_updated_at { Time.zone.now }
   end
 end

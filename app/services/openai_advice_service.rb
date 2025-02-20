@@ -16,6 +16,7 @@ class OpenaiAdviceService
     return "シナリオの更新がありません。" unless scenario_updated?
 
     new_advice_content = generate_advice_from_openai
+    return new_advice_content if new_advice_content.start_with?("OpenAI APIエラー:", "エラーが発生しました:")
     @user.ai_advices.create!(content: new_advice_content, real_scenario_updated_at: @scenario.updated_at)
 
     "アドバイスを生成しました。" # 成功時のメッセージを返す

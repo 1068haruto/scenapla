@@ -60,6 +60,9 @@ group :development, :test do
   gem "rspec-rails", "~> 7.1"
   gem "factory_bot_rails", "~> 6.4"
   gem "shoulda-matchers", "~> 5.0"
+
+  # debug関連
+  gem "pry"
 end
 
 group :development do

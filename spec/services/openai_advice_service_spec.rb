@@ -63,22 +63,22 @@ RSpec.describe OpenaiAdviceService do
       end
     end
 
-    context "when OpenAI API returns an error" do
+    context "OpenAI APIがエラーを返す場合" do
       before do
         allow_any_instance_of(OpenAI::Client).to receive(:chat).and_raise(OpenAI::Error.new("APIエラー"))
       end
 
-      it "returns an error message" do
+      it "APIエラーメッセージを返す" do
         expect(service.generate_and_save_advice).to eq("OpenAI APIエラー: APIエラー")
       end
     end
 
-    context "when an unexpected error occurs" do
+    context "予期せぬエラーが発生する場合" do
       before do
         allow_any_instance_of(OpenAI::Client).to receive(:chat).and_raise(StandardError.new("予期しないエラー"))
       end
 
-      it "returns a generic error message" do
+      it "一般的なエラーメッセージを返す" do
         expect(service.generate_and_save_advice).to eq("エラーが発生しました: 予期しないエラー")
       end
     end

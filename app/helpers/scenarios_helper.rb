@@ -23,7 +23,8 @@ module ScenariosHelper
       ytitle: "収支額",
       thousands: ",",
       suffix: "万円",
-      download: { filename: title })
+      download: { filename: title }
+    )
   end
 
   def asset_chart(data)

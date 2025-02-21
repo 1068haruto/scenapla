@@ -17,5 +17,9 @@ class Scenario < ApplicationRecord
     life_event_data = (scenario_type == "現実") ? simulation.real_life_event_data : simulation.ideal_life_event_data
     calculated_data = Simulation.calculate_scenario_data(simulation, life_event_data)
     update!(calculated_data)
+
+  rescue StandardError => e
+    Rails.logger.error("シナリオ更新エラー: #{e.message}")
+    false
   end
 end

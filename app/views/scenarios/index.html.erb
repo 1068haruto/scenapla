@@ -1,141 +1,90 @@
 <% content_for :title do %>Scenarios<% end %>
 
 <div class="container">
-  <div class="mb-5">
+  <div class="mb-5 text-center">
     <h1 class="display-4">Scenarios</h1>
     <h4 class="mb-3">シミュレーション結果</h4>
     <%= button_to '表示 / 更新', update_scenarios_scenarios_path, method: :post, class: 'btn btn-primary mb-3' %>
   </div>
 
   <div class="card mb-4">
+    <div class="card-header">
+      <h4 class="mt-2">資産寿命シナリオ</h4>
+    </div>
     <div class="card-body">
-      <h4>資産寿命</h4>
       <% if @asset_lifespan && @asset_lifespan.yearly_lifespans.present? %>
         <div class="mb-4">
           <span class="mb-4"><%= formatted_date(@asset_lifespan_updated_at) %>時点</span>
         </div>
-        <% if @lifespan_years && @lifespan_months %>
-          <p>現時点のあなたの資産寿命は、<strong><%= @lifespan_years %>年<%= @lifespan_months %>ヶ月</strong> です。（現在の生活水準の場合）</p>
-          <p>資産を瞬間的に捉え、時間換算をすることで本質的な豊かさ表しています。</p>
-        <% else %>
-          <p>資産情報が登録されていません。</p>
-        <% end %>
-        <%= column_chart @lifespan_chart_data, xtitle: '年', ytitle: '資産額（万円）' %>
+        <p>
+          あなたの資産寿命は、<strong><%= @lifespan_years %>年<%= @lifespan_months %>ヶ月</strong> です。（現在の生活水準の場合）
+          <br>
+          資産を時間に換算し、本質的な資産の強さを表しています。
+        </p>
+        <%= lifespan_chart(@lifespan_chart_data) %>
       <% else %>
-        <p>資産情報の登録がないため、グラフを表示できません。</p>
+        <p>情報入力が不足している為、表示できません。</p>
       <% end %>
     </div>
   </div>
 
   <div class="card mb-4">
+    <div class="card-header">
+      <h4 class="mt-2">現実的シナリオ</h4>
+    </div>
     <div class="card-body">
-      <h4>現実的シナリオ</h4>
-        <% if @simulation.user_asset_data.nil? || @simulation.user_asset_data.empty? %>
-          <p>情報入力が完了していないため、現実的シナリオを表示できません。</p>
-        <% else %>
-          <div class="mb-4">
-            <span><%= formatted_date(@real_updated_at) %>時点</span>
-          </div>
-          <div class="row mb-3">
-            <div class="col text-center">
-              <div class="card border-danger mb-2">
-                <div class="card-body">
-                  <p class="card-text">トータル収入：<%= @real_total_income %>万円</p>
-                </div>
-              </div>
-            </div>
-            <div class="col text-center">
-              <div class="card border-info mb-2">
-                <div class="card-body">
-                  <p class="card-text">トータル支出：<%= @real_total_expense %>万円</p>
-                </div>
-              </div>
-            </div>
-            <div class="col text-center">
-              <div class="card border-success mb-2">
-                <div class="card-body">
-                  <p class="card-text">トータル収支：<%= @real_total_balance %>万円</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <% if @real_withdrawal == 0 %>
-            <p>70歳以降：マイナス収支の為、運用資産以外から得られるプラス資産はありません。</p>
-            <p>現状の収入や支出、今後のライフイベントやキャリアパスの見直しをおすすめします。</p>
-          <% else %>
-            <p>70歳以降：<%= @real_withdrawal %>ヶ月目まで運用資産を取り崩さず、70歳までに積み上げたプラス収支で生活できます。</p>
-          <% end %>
-          <% if @real_shortage == 0 %>
-            <p>70歳時点ではプラスですが、それまでにマイナスの年がある場合は、運用資産の取り崩しや収支の改善等でマイナスを補填する必要があります。</p>
-          <% else %>
-            <p>70歳時点のトータル収支を基準とすると、現時点で最低でも<strong>年額<%= @real_shortage %>万円</strong>が不足しています。</p>
-            <p>70歳までにマイナスの年がある場合は、上記不足額以上の金額がその年までに必要となります。</p>
-          <% end %>
-          <%= area_chart @real_balance_chart_data, height: "300px", download: {filename: "現実的シナリオ"}, dataset: {borderWidth: 1}, xtitle: '年', ytitle: '収支額（万円）' %> 
-        <% end %>
+      <% if !@real_balance_chart_data.empty? && @incomes.any? && @expenses.any? %>
+        <div class="mb-4">
+          <span><%= formatted_date(@real_updated_at) %>時点</span>
+        </div>
+        <%= render 'balance_summary', total_income: @real_total_income,
+                                      total_expense: @real_total_expense,
+                                      total_balance: @real_total_balance %>
+        <%= render 'withdrawal_and_shortage', withdrawal: @real_withdrawal, shortage: @real_shortage %>
+        <%= balance_chart(@real_balance_chart_data, "現実シナリオ") %>
+      <% else %>
+        <p>情報入力が不足している為、表示できません。</p>
+      <% end %>
     </div>
   </div>
 
   <div class="card mb-4">
+    <div class="card-header">
+      <h4 class="mt-2">理想的シナリオ</h4>
+    </div>
     <div class="card-body">
-      <h4>理想的シナリオ</h4>
-      <% if @ideal_balance_chart_data.empty? %>
-        <p>理想ライフイベントの登録がないため、理想的シナリオを表示できません。</p>
-      <% else %>
+      <% if !@ideal_balance_chart_data.empty? && @incomes.any? && @expenses.any? %>
         <div class="mb-4">
           <span><%= formatted_date(@ideal_updated_at) %>時点</span>
         </div>
-        <div class="row mb-3">
-          <div class="col text-center">
-            <div class="card border-danger mb-2">
-              <div class="card-body">
-                <p class="card-text">トータル収入：<%= @ideal_total_income %>万円</p>
-              </div>
-            </div>
-          </div>
-          <div class="col text-center">
-            <div class="card border-info mb-2">
-              <div class="card-body">
-                <p class="card-text">トータル支出：<%=  @ideal_total_expense %>万円</p>
-              </div>
-            </div>
-          </div>
-          <div class="col text-center">
-            <div class="card border-success mb-2">
-              <div class="card-body">
-                <p class="card-text">トータル収支：<%=  @ideal_total_balance %>万円</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <% if  @ideal_withdrawal == 0 %>
-          <p>70歳以降：マイナス収支の為、運用資産以外から得られるプラス資産はありません。</p>
-          <p>現状の収入や支出、今後のライフイベントやキャリアパスの見直しをおすすめします。</p>
-        <% else %>
-          <p>70歳以降：<strong><%= @ideal_withdrawal %>ヶ月目</strong>まで運用資産を取り崩さず、70歳までに積み上げたプラス収支で生活できます。</p>
-        <% end %>
-        <% if @ideal_shortage == 0 %>
-          <p>70歳時点ではプラスですが、それまでにマイナスの年がある場合は、運用資産の取り崩しや収支の改善等でマイナスを補填する必要があります。</p>
-        <% else %>
-          <p>70歳時点のトータル収支を基準とすると、現時点で最低でも<strong>年額<%= @ideal_shortage %>万円</strong>が不足しています。</p>
-          <p>70歳までにマイナスの年がある場合は、上記不足額以上の金額がその年までに必要となります。</p>
-        <% end %>
-        <%= area_chart  @ideal_balance_chart_data, height: "300px", download: {filename: "理想的シナリオ"}, dataset: {borderWidth: 1}, xtitle: '年', ytitle: '収支額（万円）' %> 
+        <%= render 'balance_summary', total_income: @ideal_total_income,
+                                      total_expense: @ideal_total_expense,
+                                      total_balance: @ideal_total_balance %>
+        <%= render 'withdrawal_and_shortage', withdrawal: @ideal_withdrawal, shortage: @ideal_shortage %>
+        <%= balance_chart(@ideal_balance_chart_data, "理想シナリオ") %>
+      <% else %>
+        <p>情報入力が不足しているため、表示できません。</p>
       <% end %>
     </div>
   </div>
 
   <div class="card mb-4">
+    <div class="card-header">
+      <h4 class="mt-2">運用資産シナリオ</h4>
+    </div>
     <div class="card-body">
-      <h4>運用資産シナリオ</h4>
-      <% if @asset_data.empty? %>
-        <p>資産の登録がないため、運用資産シナリオを表示できません。</p>
-      <% else %>
+      <% if !@asset_data.empty? && @user_assets.any? %>
         <div class="mb-4">
           <span><%= formatted_date(@user_asset_data_updated_at) %>時点</span>
         </div>
-        <p>現時点の資産情報を元にした今後の推移です。積立や取り崩しなどを行う場合、資産情報を更新する必要があります。</p>
-        <%= area_chart @asset_data, height: "300px", colors: ["#FF5733"], download: {filename: "運用資産シナリオ"}, xtitle: '年', ytitle: '運用資産額（万円）' %>
+        <p>
+          現在の資産を元にした今後の推移です。
+          <br>
+          積立や取り崩しを行った場合は、資産情報を更新してください。
+        </p>
+        <%= asset_chart(@asset_data) %>
+      <% else %>
+        <p>資産情報が未登録のため、表示できません。</p>
       <% end %>
     </div>
   </div>

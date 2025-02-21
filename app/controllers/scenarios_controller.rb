@@ -5,6 +5,8 @@ class ScenariosController < ApplicationController
     @simulation = current_user.simulation
     @scenarios = current_user.scenarios
     @asset_lifespan = current_user.asset_lifespans.last
+    @incomes = current_user.incomes
+    @expenses = current_user.expenses
 
     # 資産寿命シナリオ
     @lifespan_years = @asset_lifespan&.lifespan_years
@@ -53,12 +55,14 @@ class ScenariosController < ApplicationController
     end
 
     # 資産シナリオ
+    @user_assets = current_user.user_assets
     @asset_data = @simulation.user_asset_chart_data
     @user_asset_data_updated_at = @simulation.updated_at if @asset_data.present?
   end
 
   def update_scenarios
     success = current_user.scenarios.all?(&:update_scenario_data!)
+
     if success
       redirect_to scenarios_path, notice: t("notice.scenario.update.success")
     else

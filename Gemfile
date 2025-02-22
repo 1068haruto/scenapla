@@ -46,9 +46,6 @@ gem "http"
 # AI advise関連
 gem "ruby-openai"
 
-# リダイレクトに使用
-gem 'rack-rewrite'
-
 group :development, :test do
   gem "debug", "~> 1.9", platforms: %i[ mri windows ], require: "debug/prelude"
   gem "brakeman", "~> 6.2", require: false  # Static analysis for security vulnerabilities

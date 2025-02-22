@@ -19,9 +19,6 @@ Rails.application.configure do
   # 正しいURLを生成するために設定
   config.action_controller.default_url_options = { host: "scenapla.com", protocol: "https" }
 
-  # ルートURLオプションの設定
-  Rails.application.routes.default_url_options[:host] = "scenapla.com"
-
   # Ensures that a master key has been made available in ENV["RAILS_MASTER_KEY"], config/master.key, or an environment
   # key such as config/credentials/production.key. This key is used to decrypt credentials (and other encrypted files).
   # config.require_master_key = true
@@ -56,6 +53,11 @@ Rails.application.configure do
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = true
+
+  # www.scenapla.com にアクセスされた場合、scenapla.com にリダイレクト
+  config.middleware.insert_before(Rack::Runtime, Rack::Rewrite) do
+    r301 %r{^www\.(.*)$}, 'https://\1'
+  end
 
   # Skip http-to-https redirect for the default health check endpoint.
   # config.ssl_options = { redirect: { exclude: ->(request) { request.path == "/up" } } }

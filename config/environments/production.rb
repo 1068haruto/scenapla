@@ -54,11 +54,6 @@ Rails.application.configure do
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = true
 
-  # www.scenapla.com にアクセスされた場合、scenapla.com にリダイレクト
-  config.middleware.insert_before(Rack::Runtime, Rack::Rewrite) do
-    r301 %r{^www\.(.*)}, 'https://scenapla.com$1'
-  end
-
   # Skip http-to-https redirect for the default health check endpoint.
   # config.ssl_options = { redirect: { exclude: ->(request) { request.path == "/up" } } }
 

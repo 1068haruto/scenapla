@@ -56,9 +56,7 @@ Rails.application.configure do
 
   # www.scenapla.com にアクセスされた場合、scenapla.com にリダイレクト
   config.middleware.insert_before(Rack::Runtime, Rack::Rewrite) do
-    r301 %r{.*}, 'https://scenapla.com$request.fullpath', if: Proc.new { |rack_env|
-      rack_env['HTTP_HOST'] =~ /^www\./
-    }
+    r301 %r{^www\.(.*)}, 'https://scenapla.com$1'
   end
 
   # Skip http-to-https redirect for the default health check endpoint.

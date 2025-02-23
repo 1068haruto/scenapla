@@ -1,24 +1,83 @@
-<div class="container text-center my-7">
-  <h1 class="display-5 mb-4">シナプラ</h1>
-  <p class="lead mb-4">このアプリは、あなたの将来設計をサポートするツールです</p>
+<div class="container text-center">
+  <p class="display-6 mt-3 mb-3">シナプラ</p>
+  <p class="lead mb-4">
+    あなたの経済状態を可視化し、今後の計画をサポートするツールです
+  </p>
 
-  <div class="mb-5"></div> <!-- ここで感覚を広げるための空のdivを追加 -->
+  <hr class="border border-secondary border-2 opacity-50">
 
-  <div class="card mb-4">
-    <div class="card-body">
-      <h5 class="card-title">経済シミュレーション</h5>
-      <p class="card-text">「資産寿命」や理想と現実の「将来の経済シナリオ」を把握できます。</p>
+  <div class="container">
+    <div class="row justify-content-center my-4">
+      <div class="col-lg-6 col-12 mb-4 d-flex justify-content-center">
+        <div class="card h-100 w-100">
+          <div class="card-header d-flex align-items-center justify-content-center">
+            <i class="fa-solid fa-chart-line" style="font-size: 35px;"></i>
+            <h5 class="card-title ms-4 mt-2">経済シミュレーション</h5> 
+          </div>
+          <div class="card-body">
+            <div class="card-text">
+              <p class="mb-0">今、これからの4つの経済状態を可視化できます。</p>
+              <div class="row">
+                <p class="col-6 ps-4 m-0">現在の資産寿命</p>
+                <p class="col-6 pe-4 m-0">現実的シナリオ</p>
+                <p class="col-6 ps-4 m-0">理想的シナリオ</p>
+                <p class="col-6 pe-4 m-0">資産シナリオ</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-6 col-12 mb-4 d-flex justify-content-center">
+        <div class="card h-100 w-100">
+          <div class="card-header d-flex align-items-center justify-content-center">
+            <i class="fa-regular fa-map" style="font-size: 35px;"></i>
+            <h5 class="card-title ms-4 mt-2">ライフプランメモ</h5> 
+          </div>
+          <div class="card-body">
+            <p class="card-text">
+              今後の計画などのメモと一緒に、今後のライフイベントを管理できます。<br>
+              登録したライフイベントは、自動的に年代毎に整理されます。
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-6 col-12 d-flex justify-content-center">
+        <div class="card h-100 w-100">
+          <div class="card-header d-flex align-items-center justify-content-center">
+            <i class="fa-solid fa-user-tie" style="font-size: 35px;"></i>
+            <h5 class="card-title ms-4 mt-2">AIアドバイス</h5> 
+          </div>
+          <div class="card-body">
+            <p class="card-text">
+              「今後どのような行動が必要なのか」<br>
+              「どの時期の経済状態を気を付けるべきか」など<br>
+              シミュレーション結果をもとに、AIがアドバイスを行います。
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-6 col-12 d-flex justify-content-center">
+        <div class="card h-100 w-100">
+          <div class="card-header d-flex align-items-center justify-content-center">
+            <i class="fa-regular fa-newspaper" style="font-size: 35px;"></i>
+            <h5 class="card-title ms-4 mt-2">経済ニュース</h5> 
+          </div>
+          <div class="card-body">
+            <p class="card-text">
+              経済に関係するニュースをチェックできます。<br>
+              「最近何が起こっているのか」を知り、<br>
+              経済状況の把握や、あなたの知識の拡大をサポートします。
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="card mb-4">
-    <div class="card-body">
-      <h5 class="card-title">ライフイベント管理</h5>
-      <p class="card-text">ライフプランを時系列に整理し、メモと一緒に管理できます。</p>
-    </div>
-  </div>
+  <hr class="border border-secondary border-2 opacity-50">
 
-  <div class="mb-5"></div> <!-- ここで感覚を広げるための空のdivを追加 -->
-
-  <%= link_to '始める', new_user_registration_path, class: 'btn btn-primary btn-lg', data: { turbo_method: :get } %>
+  <%= link_to '使ってみる', new_user_registration_path, class: 'btn btn-outline-primary btn-lg px-4 py-1', data: { turbo_method: :get } %>
 </div>

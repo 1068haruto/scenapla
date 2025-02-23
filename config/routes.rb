@@ -1,9 +1,11 @@
 Rails.application.routes.draw do
-  # サブドメインからルートドメインへリダイレクトする
-  constraints(host: /^www\./) do
-    match '(*path)', to: redirect { |params, request|
-      "https://scenapla.com#{request.fullpath}"
-    }, via: :all
+  # サブドメインからルートドメインへリダイレクトする（本番環境）
+  if Rails.env.production?
+    constraints(host: /^www\./) do
+      match "(*path)", to: redirect { |params, request|
+        "https://scenapla.com#{request.fullpath}"
+      }, via: :all
+    end
   end
 
   devise_for :users, controllers: {

@@ -2,7 +2,7 @@
   <li class="nav-item">
     <%= link_to dashboard_index_path, class: "nav-link text-muted #{'active fw-bold' if current_page?(dashboard_index_path)}", data: { turbo: true } do %>
       <i class="fa-solid fa-house"></i>
-      <span class="d-none d-sm-inline">ホーム</span>
+      <span class="d-none d-sm-inline">ダッシュボード</span>
     <% end %>
   </li>
 
@@ -20,7 +20,6 @@
     <% end %>
 
     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-      <li><%= link_to 'はじめから入力', incomes_path, class: "dropdown-item text-muted", data: { turbo: true } %></li>
       <li><%= link_to '収入入力', incomes_path, class: "dropdown-item text-muted", data: { turbo: true } %></li>
       <li><%= link_to '支出入力', expenses_path, class: "dropdown-item text-muted", data: { turbo: true } %></li>
       <li><%= link_to '資産入力', user_assets_path, class: "dropdown-item text-muted", data: { turbo: true } %></li>

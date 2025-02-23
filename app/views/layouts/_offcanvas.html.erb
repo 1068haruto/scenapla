@@ -20,7 +20,7 @@
       <% else %>
         <!-- 生年月日が登録済のユーザーへの表示 -->
         <li class="nav-item">
-          <%= link_to 'ホーム', dashboard_index_path, class: 'nav-link', data: { turbo: true } %>
+          <%= link_to 'ダッシュボード', dashboard_index_path, class: 'nav-link', data: { turbo: true } %>
         </li>
 
         <li class="nav-item">
@@ -30,7 +30,6 @@
         <li class="nav-item dropdown">
           <%= link_to 'シミュレーション', '#', class: 'nav-link dropdown-toggle', id: 'simulationDropdown', role: 'button', data: { bs_toggle: 'dropdown' }, aria: { expanded: 'false' } %>
           <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="simulationDropdown">
-            <li><%= link_to 'はじめから入力', incomes_path, class: 'dropdown-item', data: { turbo: true } %></li>
             <li><%= link_to '収入入力', incomes_path, class: 'dropdown-item', data: { turbo: true } %></li>
             <li><%= link_to '支出入力', expenses_path, class: 'dropdown-item', data: { turbo: true } %></li>
             <li><%= link_to '資産入力', user_assets_path, class: 'dropdown-item', data: { turbo: true } %></li>

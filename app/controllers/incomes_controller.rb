@@ -11,7 +11,7 @@ class IncomesController < ApplicationController
     @income.simulation = current_user.simulation
 
     if @income.save
-      redirect_to incomes_path, notice: t("notice.income.create.success")
+      redirect_to incomes_path, notice: t("message.income.create.success")
     else
       render_error(@income.errors.full_messages.join(", "), :unprocessable_entity)
     end
@@ -21,17 +21,17 @@ class IncomesController < ApplicationController
     income = current_user.incomes.find(params[:id])
 
     if income.destroy
-      redirect_to incomes_path, notice: t("notice.income.destroy.success")
+      redirect_to incomes_path, notice: t("message.income.destroy.success")
     else
-      render_error(t("alert.income.destroy.not_found"), :not_found)
+      render_error(t("message.income.destroy.failure"), :not_found)
     end
   end
 
   def update_simulation_data
     if current_user.simulation.update_income_data!(current_user)
-      redirect_to expenses_path, notice: t("notice.simulation.update.success")
+      redirect_to expenses_path, notice: t("message.simulation.update.success")
     else
-      redirect_to incomes_path, alert: t("alert.simulation.update.error")
+      redirect_to incomes_path, alert: t("message.simulation.update.failure")
     end
   end
 

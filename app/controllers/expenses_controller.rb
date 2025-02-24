@@ -13,7 +13,7 @@ class ExpensesController < ApplicationController
     @expense.simulation ||= current_user.simulation # 未設定の場合のみ
 
     if @expense.save
-      redirect_to expenses_path, notice: t("notice.expense.create_or_update.success")
+      redirect_to expenses_path, notice: t("message.expense.create_or_update.success")
     else
       render_error
     end
@@ -21,9 +21,9 @@ class ExpensesController < ApplicationController
 
   def update_simulation_data
     if current_user.simulation.update_expense_data!(current_user)
-      redirect_to user_assets_path, notice: t("notice.simulation.update.success")
+      redirect_to user_assets_path, notice: t("message.simulation.update.success")
     else
-      redirect_to expenses_path, alert: t("alert.simulation.update.error")
+      redirect_to expenses_path, alert: t("message.simulation.update.failure")
     end
   end
 

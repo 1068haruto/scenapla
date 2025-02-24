@@ -13,7 +13,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def failure
     provider = request.env["omniauth.error.strategy"].name # プロバイダー名の取得
-    redirect_to new_user_registration_path, alert: "#{provider.to_s.capitalize}#{t("alert.devise.omniauth.failure")}"
+    redirect_to new_user_registration_path, alert: "#{provider.to_s.capitalize}#{t("message.devise.omniauth.failure")}"
   end
 
   private
@@ -27,13 +27,13 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       sign_in @user, event: :authentication
       redirect_after_auth(provider)
     else
-      redirect_to new_user_registration_path, alert: "#{provider.to_s.capitalize}#{t("alert.devise.omniauth.callback.failure")}"
+      redirect_to new_user_registration_path, alert: "#{provider.to_s.capitalize}#{t("message.devise.omniauth.callback.failure")}"
     end
   end
 
   def redirect_after_auth(provider)
     path = @user.date_of_birth.nil? ? edit_date_of_birth_path : dashboard_index_path
-    redirect_to path, notice: "#{provider.to_s.capitalize}#{t('notice.devise.omniauth.callback.success')}"
+    redirect_to path, notice: "#{provider.to_s.capitalize}#{t('message.devise.omniauth.callback.success')}"
   end
 
   # protected

@@ -11,7 +11,7 @@ class OpenaiAdviceService
   end
 
   def generate_and_save_advice
-    return "今月のアドバイス取得回数の上限に達しました。" if advice_request_limit_reached?
+    return "今月のアドバイス取得回数の上限に達しました。取得回数は翌月にリセットされます。" if advice_request_limit_reached?
     return "データ入力がないため、アドバイスを生成できません。" unless valid_scenario_data?
     return "シナリオの更新がありません。" unless scenario_updated?
 
@@ -86,7 +86,7 @@ class OpenaiAdviceService
     forecast_str = financial_forecast.map { |age, amount| "#{age}代:#{amount}万円" }.join("、")
 
     <<~PROMPT
-      私は現在#{current_age}歳で、70歳で無職になります。
+      私は現在#{current_age}歳です。
       今後の収支状況は次のようになる見込みです。
       収支状況：#{forecast_str}
       上記の収支状況を評価した上で、今後の計画を立てるには何から考えると良いか、どんな目標を立てると良いかを上記の収支状況をもとにアドバイスをしてください。

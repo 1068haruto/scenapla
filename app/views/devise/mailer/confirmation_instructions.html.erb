@@ -1,14 +1,8 @@
 <p>Welcome <%= @email %>!</p>
-
 <p> Scenapla にご登録いただきありがとうございます。</p>
-
 <br>
-
-<p>アカウントを有効にするには、次のリンクにアクセスして下さい。</p>
-<p><%= link_to 'アカウントを有効化', confirmation_url(@resource, confirmation_token: @token) %></p>
-
-<p>ご意見がありましたらお気軽にご連絡ください。</p>
-
+<p>次のリンクにアクセスし、メールアドレスの確認をしてください。</p>
+<p><%= link_to 'メールアドレスを有効化', confirmation_url(@resource, confirmation_token: @token) %></p>
+<p>ご意見がありましたら、お気軽にご連絡ください。</p>
 <br>
-
 <p>Scenapla 開発者</p>

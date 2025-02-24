@@ -12,7 +12,7 @@ class UserAssetsController < ApplicationController
     @user_asset.simulation = current_user.simulation
 
     if @user_asset.save
-      redirect_to user_assets_path, notice: t("notice.user_asset.create.success")
+      redirect_to user_assets_path, notice: t("message.user_asset.create.success")
     else
       render_error(@user_asset.errors.full_messages.join(", "), :unprocessable_entity)
     end
@@ -22,17 +22,17 @@ class UserAssetsController < ApplicationController
     user_asset = current_user.user_assets.find(params[:id])
 
     if user_asset.destroy
-      redirect_to user_assets_path, notice: t("notice.user_asset.destroy.success")
+      redirect_to user_assets_path, notice: t("message.user_asset.destroy.success")
     else
-      render_error(t("alert.user_assets.destroy.error"), :not_found)
+      render_error(t("message.user_assets.destroy.failure"), :not_found)
     end
   end
 
   def update_simulation_data
     if current_user.simulation.update_user_asset_data!(current_user)
-      redirect_to new_life_event_path, notice: t("notice.simulation.update.success")
+      redirect_to new_life_event_path, notice: t("message.simulation.update.success")
     else
-      redirect_to user_assets_path, alert: t("alert.simulation.update.error")
+      redirect_to user_assets_path, alert: t("message.simulation.update.failure")
     end
   end
 

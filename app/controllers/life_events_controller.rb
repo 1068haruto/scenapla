@@ -22,7 +22,7 @@ class LifeEventsController < ApplicationController
     @life_event.simulation = current_user.simulation
 
     if @life_event.save
-      redirect_to new_life_event_path, notice: t("notice.life_event.create.success")
+      redirect_to new_life_event_path, notice: t("message.life_event.create.success")
     else
       render_error(@life_event.errors.full_messages.join(", "), :unprocessable_entity)
     end
@@ -32,17 +32,17 @@ class LifeEventsController < ApplicationController
     life_event = current_user.life_events.find(params[:id])
 
     if life_event.destroy
-      redirect_to new_life_event_path, notice: t("notice.life_event.destroy.success")
+      redirect_to new_life_event_path, notice: t("message.life_event.destroy.success")
     else
-      render_error(t("alert.life_event.destroy.error"), :not_found)
+      render_error(t("message.life_event.destroy.failure"), :not_found)
     end
   end
 
   def update_simulation_data
     if current_user.simulation.update_life_event_data!(current_user)
-      redirect_to scenarios_path, notice: t("notice.simulation.update.success")
+      redirect_to scenarios_path, notice: t("message.simulation.update.success")
     else
-      redirect_to new_life_event_path, alert: t("alert.simulation.update.error")
+      redirect_to new_life_event_path, alert: t("message.simulation.update.failure")
     end
   end
 

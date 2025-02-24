@@ -9,16 +9,17 @@ ja:
           success: "生年月日を登録しました。"
           failure: "生年月日を登録できませんでした。"
           not_sign_in: "ログインしてください。"
-  notice:
-    devise:
       omniauth:
+        failure: "でのログインに失敗しました。"
         callback:
           success: "でログインしました。"
+          failure: "でのログインに失敗しました。"
     income:
       create:
         success: "収入データを追加しました。"
       destroy: 
         success: "収入データを削除しました。"
+        failure: "収入データを削除できませんでした。"
     expense:
       create_or_update:
         success: "支出データを追加しました。"
@@ -27,38 +28,21 @@ ja:
         success: "資産データを追加しました。"
       destroy: 
         success: "資産データを削除しました。"
+        failure: "資産データを削除できませんでした。"
     life_event:
       create:
         success: "ライフイベントデータを追加しました。"
       destroy: 
         success: "ライフイベントデータを削除しました。"
+        failure: "ライフイベントデータを削除できませんでした。"
     simulation:
       update:
         success: "シミュレーションデータに保存しました。"
+        failure: "シミュレーションデータに保存できませんでした。"
     scenario:
       update:
         success: "シナリオデータを更新しました。"
-  alert:
-    devise:
-      omniauth:
-        failure: "でのログインに失敗しました。"
-        callback:
-          failure: "でのログインに失敗しました。"
-    income:
-      destroy:
-        error: "収入データを削除できませんでした。"
-    user_asset:
-      destroy:
-        error: "資産データを削除できませんでした。"
-    life_event:
-      destroy:
-        error: "ライフイベントデータを削除できませんでした。"
-    simulation:
-      update:
-        error: "シミュレーションデータに保存できませんでした。"
-    scenario:
-      update:
-        error: "シナリオデータを更新できませんでした。"
+        failure: "シナリオデータを更新できませんでした。"
   errors:
     format: "%{message}" # 属性名を含めない
     messages:

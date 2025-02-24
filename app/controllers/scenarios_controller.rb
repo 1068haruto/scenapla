@@ -64,9 +64,9 @@ class ScenariosController < ApplicationController
     success = current_user.scenarios.all?(&:update_scenario_data!)
 
     if success
-      redirect_to scenarios_path, notice: t("notice.scenario.update.success")
+      redirect_to scenarios_path, notice: t("message.scenario.update.success")
     else
-      redirect_to scenarios_path, alert: t("alert.scenario.update.error")
+      redirect_to scenarios_path, alert: t("message.scenario.update.failure")
     end
   end
 end

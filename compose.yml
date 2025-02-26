@@ -11,8 +11,8 @@ services:
     ports:
       - 5432:5432
     healthcheck:
-      # test: ["CMD-SHELL", "pg_isready -d myapp_development -U postgres"]
-      test: ["CMD-SHELL", "pg_isready -d myapp_test -U postgres"]
+      # test: ["CMD-SHELL", "pg_isready -d scenapla_development -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -d scenapla_test -U postgres"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -25,9 +25,9 @@ services:
     tty: true
     stdin_open: true
     volumes:
-      - .:/myapp
+      - .:/scenapla
       - bundle_data:/usr/local/bundle:cached
-      - node_modules:/myapp/node_modules
+      - node_modules:/scenapla/node_modules
     environment:
       TZ: Asia/Tokyo
     ports:

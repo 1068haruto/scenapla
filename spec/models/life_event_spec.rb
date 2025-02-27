@@ -6,19 +6,19 @@ RSpec.describe LifeEvent, type: :model do
   let!(:real_event1) do
     create(:life_event,
       user: user, user: user, simulation: simulation,
-      event_type: "現実", event_date: 2025, amount: 10, payment_span: 2
+      event_type: "現実", event_date: 2025, amount: 10, payment_period: 2
     )
   end
   let!(:real_event2) do
     create(:life_event,
       user: user, user: user, simulation: simulation,
-      event_type: "現実", event_date: 2026, amount: 20, payment_span: 1
+      event_type: "現実", event_date: 2026, amount: 20, payment_period: 1
     )
   end
   let!(:ideal_event1) do
     create(:life_event,
       user: user, user: user, simulation: simulation,
-      event_type: "理想", event_date: 2025, amount: 30, payment_span: 1
+      event_type: "理想", event_date: 2025, amount: 30, payment_period: 1
     )
   end
 
@@ -65,9 +65,9 @@ RSpec.describe LifeEvent, type: :model do
       end
 
       it '支払期間は必須' do
-        life_event.payment_span = nil
+        life_event.payment_period = nil
         expect(life_event).not_to be_valid
-        expect(life_event.errors[:payment_span]).to include("支払期間を選択してください。")
+        expect(life_event.errors[:payment_period]).to include("支払期間を選択してください。")
       end
     end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_27_212816) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_27_220204) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -75,9 +75,12 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_27_212816) do
     t.date "event_date", null: false
     t.string "title", null: false
     t.decimal "amount", default: "0.0", null: false
-    t.integer "payment_span", default: 1, null: false
+    t.integer "payment_period", default: 1, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["simulation_id"], name: "index_life_events_on_simulation_id"
+    t.index ["user_id"], name: "index_life_events_on_user_id"
+    t.check_constraint "amount >= 0::numeric", name: "check_life_events_amount_positive"
   end
 
   create_table "memos", force: :cascade do |t|
@@ -169,6 +172,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_27_212816) do
   add_foreign_key "expenses", "users"
   add_foreign_key "incomes", "simulations"
   add_foreign_key "incomes", "users"
+  add_foreign_key "life_events", "simulations"
+  add_foreign_key "life_events", "users"
   add_foreign_key "memos", "users"
   add_foreign_key "scenarios", "simulations"
   add_foreign_key "scenarios", "users"

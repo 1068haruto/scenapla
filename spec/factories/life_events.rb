@@ -6,6 +6,6 @@ FactoryBot.define do
     event_date { 2030 }
     title { "旅行" }
     amount { 1 }
-    payment_span { 1 }
+    payment_period { 1 }
   end
 end

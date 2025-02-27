@@ -43,9 +43,9 @@
           </div>
 
           <div class="col-md-3 col-lg-2 col-xl-2">
-            <%= f.label :payment_span, '支払期間', class: 'form-label' %>
+            <%= f.label :payment_period, '支払期間', class: 'form-label' %>
             <div class="input-group">
-              <%= f.select :payment_span, (1..10).map { |i| [i.to_s, i] }, {selected: 1 }, class: 'form-select' %>
+              <%= f.select :payment_period, (1..10).map { |i| [i.to_s, i] }, {selected: 1 }, class: 'form-select' %>
               <span class="input-group-text">年間</span>
             </div>
           </div>

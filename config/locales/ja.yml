@@ -127,5 +127,5 @@ ja:
               blank: "年額を入力してください。"
               not_a_number: "数値を入力して下さい。"
               greater_than_or_equal_to: "年額はプラス値で入力してください。"
-            payment_span:
+            payment_period:
               blank: "支払期間を選択してください。"

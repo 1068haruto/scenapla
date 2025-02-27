@@ -53,7 +53,7 @@ class LifeEventsController < ApplicationController
   end
 
   def life_event_params
-    params.require(:life_event).permit(:event_type, :event_date, :title, :amount, :payment_span)
+    params.require(:life_event).permit(:event_type, :event_date, :title, :amount, :payment_period)
       .tap { |p| p[:event_type] = p[:event_type].to_i if p[:event_type].present? }
   end
 

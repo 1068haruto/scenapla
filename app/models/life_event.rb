@@ -5,7 +5,7 @@ class LifeEvent < ApplicationRecord
   enum event_type: { 現実: 0, 理想: 1 }
 
   validates :user_id, :simulation_id, presence: true
-  validates :event_type, :event_date, :title, :payment_span, presence: true
+  validates :event_type, :event_date, :title, :payment_period, presence: true
   validates :amount, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
   # カスタムセッター：入力された年をdate型に変換
@@ -36,7 +36,7 @@ class LifeEvent < ApplicationRecord
 
   def self.extract_yearly_amounts(events)
     events.flat_map do |event|
-      (0...event.payment_span).map do |i|
+      (0...event.payment_period).map do |i|
         { date: event.event_date.year + i, amount: -event.amount }
       end
     end

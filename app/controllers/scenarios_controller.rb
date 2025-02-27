@@ -13,7 +13,7 @@ class ScenariosController < ApplicationController
     @lifespan_months = @asset_lifespan&.lifespan_months
     @lifespan_chart_data = @asset_lifespan&.user_asset_chart_data
 
-    expense_totals = @simulation.expenses.pluck(:housing_expense, :living_expenses, :monthly_premiums, :other_expenses)
+    expense_totals = @simulation.expenses.pluck(:housing_expenses, :living_expenses, :monthly_premiums, :other_expenses)
     monthly_expenses = expense_totals.flatten.sum.to_f
     total_assets = @simulation.user_assets.sum(:amount)
 

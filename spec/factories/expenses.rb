@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :expense do
     user
     simulation
-    housing_expense { 1 }
+    housing_expenses { 1 }
     living_expenses { 1 }
     monthly_premiums { 1 }
     other_expenses { 1 }

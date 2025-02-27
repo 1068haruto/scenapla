@@ -33,7 +33,7 @@ RSpec.describe Expense, type: :model do
         end
       end
 
-      include_examples '必須項目エラーチェック', :housing_expense, '住居費を入力してください。'
+      include_examples '必須項目エラーチェック', :housing_expenses, '住居費を入力してください。'
       include_examples '必須項目エラーチェック', :living_expenses, '生活費を入力してください。'
       include_examples '必須項目エラーチェック', :monthly_premiums, '保険費を入力してください。'
       include_examples '必須項目エラーチェック', :other_expenses, 'その他費用を入力してください。'
@@ -48,7 +48,7 @@ RSpec.describe Expense, type: :model do
         end
       end
 
-      include_examples 'プラス値エラーチェック', :housing_expense, '住居費はプラス値で入力してください。'
+      include_examples 'プラス値エラーチェック', :housing_expenses, '住居費はプラス値で入力してください。'
       include_examples 'プラス値エラーチェック', :living_expenses, '生活費はプラス値で入力してください。'
       include_examples 'プラス値エラーチェック', :monthly_premiums, '保険費はプラス値で入力してください。'
       include_examples 'プラス値エラーチェック', :other_expenses, 'その他費用はプラス値で入力してください。'
@@ -63,7 +63,7 @@ RSpec.describe Expense, type: :model do
         end
       end
 
-      include_examples '数値入力エラーチェック', :housing_expense, '数値を入力してください。'
+      include_examples '数値入力エラーチェック', :housing_expenses, '数値を入力してください。'
       include_examples '数値入力エラーチェック', :living_expenses, '数値を入力してください。'
       include_examples '数値入力エラーチェック', :monthly_premiums, '数値を入力してください。'
       include_examples '数値入力エラーチェック', :other_expenses, '数値を入力してください。'

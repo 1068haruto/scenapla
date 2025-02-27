@@ -6,7 +6,7 @@ RSpec.describe "Expenses", type: :request do
   let(:expense) { create(:expense, user: user, simulation: simulation) }
 
   let(:valid_params) { attributes_for(:expense) }    # factorybotデータ
-  let(:invalid_params) { { housing_expense: nil } }  # 無効なデータ(その他属性はfactorybot通り)
+  let(:invalid_params) { { housing_expenses: nil } }  # 無効なデータ(その他属性はfactorybot通り)
 
   before do
     sign_in user

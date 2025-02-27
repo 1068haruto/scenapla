@@ -85,7 +85,7 @@ ja:
               greater_than_or_equal_to: "退職金はプラス値で入力してください。"
         expense:
           attributes:
-            housing_expense:
+            housing_expenses:
               blank: "住居費を入力してください。"
               not_a_number: "数値を入力してください。"
               greater_than_or_equal_to: "住居費はプラス値で入力してください。"

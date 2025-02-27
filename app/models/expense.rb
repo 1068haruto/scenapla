@@ -6,7 +6,7 @@ class Expense < ApplicationRecord
   MONTHS_IN_A_YEAR = 12
 
   validates :user_id, :simulation_id, presence: true
-  validates :housing_expense, :living_expenses, :monthly_premiums, :other_expenses,
+  validates :housing_expenses, :living_expenses, :monthly_premiums, :other_expenses,
              presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :repayment_date, presence: true, allow_nil: true
 
@@ -44,7 +44,7 @@ class Expense < ApplicationRecord
 
   # 総月次支出を計算
   def total_monthly_expense
-    housing_expense + living_expenses + monthly_premiums + other_expenses
+    housing_expenses + living_expenses + monthly_premiums + other_expenses
   end
 
   # ローン返済終了後の月次支出を計算

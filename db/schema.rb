@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_27_204450) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_27_212816) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -137,6 +137,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_27_204450) do
     t.decimal "return_rate", default: "0.0", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["simulation_id"], name: "index_user_assets_on_simulation_id"
+    t.index ["user_id"], name: "index_user_assets_on_user_id"
+    t.check_constraint "amount >= 0::numeric", name: "check_user_assets_amount_positive"
+    t.check_constraint "return_rate >= 0::numeric", name: "check_user_assets_return_rate_positive"
   end
 
   create_table "users", force: :cascade do |t|
@@ -170,4 +174,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_27_204450) do
   add_foreign_key "scenarios", "users"
   add_foreign_key "simulations", "users"
   add_foreign_key "sns_credentials", "users"
+  add_foreign_key "user_assets", "simulations"
+  add_foreign_key "user_assets", "users"
 end

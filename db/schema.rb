@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_27_182721) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_27_204450) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -38,17 +38,19 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_27_182721) do
   create_table "expenses", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "simulation_id", null: false
-    t.decimal "housing_expense", default: "0.0", null: false
+    t.decimal "housing_expenses", default: "0.0", null: false
     t.date "repayment_date"
     t.decimal "living_expenses", default: "0.0", null: false
     t.decimal "monthly_premiums", default: "0.0", null: false
     t.decimal "other_expenses", default: "0.0", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.check_constraint "housing_expense >= 0::numeric", name: "check_housing_expense_positive"
-    t.check_constraint "living_expenses >= 0::numeric", name: "check_living_expenses_positive"
-    t.check_constraint "monthly_premiums >= 0::numeric", name: "check_monthly_premiums_positive"
-    t.check_constraint "other_expenses >= 0::numeric", name: "check_other_expenses_positive"
+    t.index ["simulation_id"], name: "index_expenses_on_simulation_id"
+    t.index ["user_id"], name: "index_expenses_on_user_id"
+    t.check_constraint "housing_expenses >= 0::numeric", name: "check_expenses_housing_expenses_positive"
+    t.check_constraint "living_expenses >= 0::numeric", name: "check_expenses_living_expenses_positive"
+    t.check_constraint "monthly_premiums >= 0::numeric", name: "check_expenses_monthly_premiums_positive"
+    t.check_constraint "other_expenses >= 0::numeric", name: "check_expenses_other_expenses_positive"
   end
 
   create_table "incomes", force: :cascade do |t|
@@ -159,6 +161,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_27_182721) do
   add_foreign_key "ai_advices", "users"
   add_foreign_key "asset_lifespans", "simulations"
   add_foreign_key "asset_lifespans", "users"
+  add_foreign_key "expenses", "simulations"
+  add_foreign_key "expenses", "users"
   add_foreign_key "incomes", "simulations"
   add_foreign_key "incomes", "users"
   add_foreign_key "memos", "users"

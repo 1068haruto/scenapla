@@ -34,7 +34,7 @@ class ExpensesController < ApplicationController
   end
 
   def expense_params
-    params.require(:expense).permit(:housing_expense, :repayment_date, :living_expenses, :monthly_premiums, :other_expenses)
+    params.require(:expense).permit(:housing_expenses, :repayment_date, :living_expenses, :monthly_premiums, :other_expenses)
   end
 
   def render_error

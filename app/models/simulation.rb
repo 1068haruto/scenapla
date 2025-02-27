@@ -84,7 +84,7 @@ class Simulation < ApplicationRecord
 
   # 月間支出の計算(DB側で合計)
   def get_monthly_expense
-    expenses.sum(:housing_expense) +
+    expenses.sum(:housing_expenses) +
     expenses.sum(:living_expenses) +
     expenses.sum(:monthly_premiums) +
     expenses.sum(:other_expenses)

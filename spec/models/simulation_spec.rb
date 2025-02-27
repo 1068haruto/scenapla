@@ -236,7 +236,7 @@ RSpec.describe Simulation, type: :model do
 
     describe '#get_monthly_expense' do
       it '正しい月間支出を計算する' do
-        create(:expense, user: user, simulation: simulation, housing_expense: 10, living_expenses: 20, monthly_premiums: 30, other_expenses: 40)
+        create(:expense, user: user, simulation: simulation, housing_expenses: 10, living_expenses: 20, monthly_premiums: 30, other_expenses: 40)
 
         expect(simulation.get_monthly_expense).to eq(10 + 20 + 30 + 40)
       end

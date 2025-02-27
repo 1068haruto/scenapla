@@ -3,7 +3,7 @@ FactoryBot.define do
     user
     simulation
     person_type { "本人" }
-    income { 1 }
+    amount { 1 }
     retirement_date { 2030 }
     retirement_pay { 1 }
   end

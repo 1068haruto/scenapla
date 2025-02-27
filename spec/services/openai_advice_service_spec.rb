@@ -20,7 +20,7 @@ RSpec.describe OpenaiAdviceService do
       end
 
       it "処理を中断し、上限到達メッセージを返す" do
-        expect(service.generate_and_save_advice).to eq("今月のアドバイス取得回数の上限に達しました。")
+        expect(service.generate_and_save_advice).to eq("今月のアドバイス取得回数の上限に達しました。取得回数は翌月にリセットされます。")
       end
     end
 

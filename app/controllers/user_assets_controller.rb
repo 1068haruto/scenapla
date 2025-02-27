@@ -1,6 +1,6 @@
 class UserAssetsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_incomes, only: [ :index, :create, :destroy ]
+  before_action :set_user_assets, only: [ :index, :create, :destroy ]
 
   def index
     @user_assets = current_user.user_assets
@@ -38,7 +38,7 @@ class UserAssetsController < ApplicationController
 
   private
 
-  def set_incomes
+  def set_user_assets
     @user_assets = current_user.user_assets
   end
 

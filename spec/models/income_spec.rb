@@ -14,7 +14,7 @@ RSpec.describe Income, type: :model do
 
   describe 'enumテスト' do
     it 'person_typesが正しい値を持つ' do
-      expect(described_class.person_types).to eq({ "本人" => "本人", "配偶者" => "配偶者" })
+      expect(described_class.person_types).to eq({ "本人" => 0, "配偶者" => 1 })
     end
   end
 
@@ -32,9 +32,9 @@ RSpec.describe Income, type: :model do
       end
 
       it '月収は必須' do
-        income.income = nil
+        income.amount = nil
         expect(income).not_to be_valid
-        expect(income.errors[:income]).to include("月収は必須です。", "数値を入力してください。")
+        expect(income.errors[:amount]).to include("月収は必須です。", "数値を入力してください。")
       end
 
       it '退職時期は必須' do
@@ -52,9 +52,9 @@ RSpec.describe Income, type: :model do
 
     context 'プラス値入力の確認' do
       it '収入が0以上' do
-        income.income = -1
+        income.amount = -1
         expect(income).not_to be_valid
-        expect(income.errors[:income]).to include("月収はプラス値で入力してください。")
+        expect(income.errors[:amount]).to include("月収はプラス値で入力してください。")
       end
 
       it '退職金が0以上' do
@@ -80,8 +80,8 @@ RSpec.describe Income, type: :model do
       let(:simulation) { create(:simulation, user: user) }
 
       it '指定されたユーザーの全収入データを1つのハッシュ配列に整形すること' do
-        create(:income, user: user, simulation: simulation, income: 1, retirement_date: 2030, retirement_pay: 1)
-        create(:income, user: user, simulation: simulation, income: 1, retirement_date: 2030, retirement_pay: 1)
+        create(:income, user: user, simulation: simulation, amount: 1, retirement_date: 2030, retirement_pay: 1)
+        create(:income, user: user, simulation: simulation, amount: 1, retirement_date: 2030, retirement_pay: 1)
 
         result = Income.generate_income_data_for(user)
 
@@ -124,13 +124,13 @@ RSpec.describe Income, type: :model do
 
     describe '#calculate_income_for_year, #calculate_adjusted_income_for_year' do
       it '退職年の年収は退職金を含むこと' do
-        income = build(:income, income: 1, retirement_date: 2030, retirement_pay: 1)
+        income = build(:income, amount: 1, retirement_date: 2030, retirement_pay: 1)
         result = income.send(:calculate_income_for_year, 2030)
         expect(result).to eq({ date: 2030, amount: 13 })
       end
 
       it '退職年以外の年収は退職金を含まないこと' do
-        income = build(:income, income: 1, retirement_date: 2030, retirement_pay: 1)
+        income = build(:income, amount: 1, retirement_date: 2030, retirement_pay: 1)
         result = income.send(:calculate_income_for_year, 2025)
         expect(result).to eq({ date: 2025, amount: 12 })
       end

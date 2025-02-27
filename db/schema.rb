@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_19_060927) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_27_182721) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -54,16 +54,16 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_19_060927) do
   create_table "incomes", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "simulation_id", null: false
-    t.string "person_type", null: false
-    t.decimal "income", default: "0.0", null: false
+    t.integer "person_type", default: 0, null: false
+    t.decimal "amount", default: "0.0", null: false
     t.date "retirement_date", null: false
-    t.decimal "retirement_pay", default: "0.0"
+    t.decimal "retirement_pay", default: "0.0", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["simulation_id"], name: "index_incomes_on_simulation_id"
     t.index ["user_id"], name: "index_incomes_on_user_id"
-    t.check_constraint "income >= 0::numeric", name: "income_positive_check"
-    t.check_constraint "retirement_pay >= 0::numeric", name: "retirement_pay_positive_check"
+    t.check_constraint "amount >= 0::numeric", name: "check_incomes_amount_positive"
+    t.check_constraint "retirement_pay >= 0::numeric", name: "check_incomes_retirement_pay_positive"
   end
 
   create_table "life_events", force: :cascade do |t|

@@ -44,6 +44,9 @@ up:
 down:
 	$(COMPOSE) down
 
+restart:
+	$(COMPOSE) restart
+
 logs:  # コンテナのログをリアルタイム表示
 	$(COMPOSE) logs -f
 

@@ -10,16 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_28_173837) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_28_195519) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "ai_advices", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.text "content"
+    t.text "content", null: false
+    t.datetime "real_scenario_updated_at", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "real_scenario_updated_at"
     t.index ["user_id"], name: "index_ai_advices_on_user_id"
   end
 

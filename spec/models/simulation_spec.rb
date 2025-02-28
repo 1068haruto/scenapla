@@ -26,10 +26,10 @@ RSpec.describe Simulation, type: :model do
         allow(simulation).to receive(:merged_income_expense_event).with(life_event_data).and_return({ "date"=>2000, "amount"=>100 })
         allow(simulation).to receive(:get_total_income).and_return(2000)
 
-        # life_event_dataにreal_life_event_data入っていない場合を想定
+        # life_event_dataにreal_event_data入っていない場合を想定
         simulation.expense_data = [ { "date"=>2000, "amount"=>100 } ]
-        simulation.real_life_event_data = [ { "date"=>2000, "amount"=>100 } ]
-        valid_datasets = [ simulation.expense_data, life_event_data, simulation.real_life_event_data ]
+        simulation.real_event_data = [ { "date"=>2000, "amount"=>100 } ]
+        valid_datasets = [ simulation.expense_data, life_event_data, simulation.real_event_data ]
         allow(simulation).to receive(:get_total_expense).with(*valid_datasets).and_return(-1000)
 
         allow(simulation).to receive(:get_monthly_expense).and_return(20)
@@ -190,8 +190,8 @@ RSpec.describe Simulation, type: :model do
 
       it '#update_life_event_data!' do
         simulation.update_life_event_data!(user)
-        expect(simulation.real_life_event_data).to eq({ "date"=>2010, "amount"=>100 })
-        expect(simulation.ideal_life_event_data).to eq({ "date"=>2020, "amount"=>200 })
+        expect(simulation.real_event_data).to eq({ "date"=>2010, "amount"=>100 })
+        expect(simulation.ideal_event_data).to eq({ "date"=>2020, "amount"=>200 })
       end
     end
 

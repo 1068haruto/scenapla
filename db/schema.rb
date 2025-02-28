@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_28_142728) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_28_173837) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -26,13 +26,15 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_28_142728) do
   create_table "asset_lifespans", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "simulation_id", null: false
-    t.jsonb "yearly_lifespans", default: {}, null: false
+    t.integer "lifespan_years", default: 0, null: false
+    t.integer "lifespan_months", default: 0, null: false
+    t.jsonb "asset_lifespan_scenario", default: {}, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "lifespan_years"
-    t.integer "lifespan_months"
     t.index ["simulation_id"], name: "index_asset_lifespans_on_simulation_id"
     t.index ["user_id"], name: "index_asset_lifespans_on_user_id"
+    t.check_constraint "lifespan_months::numeric >= 0::numeric", name: "check_asset_lifespans_lifespan_months_positive"
+    t.check_constraint "lifespan_years::numeric >= 0::numeric", name: "check_asset_lifespans_lifespan_years_positive"
   end
 
   create_table "expenses", force: :cascade do |t|

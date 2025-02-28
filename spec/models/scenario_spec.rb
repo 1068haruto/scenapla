@@ -37,8 +37,8 @@ RSpec.describe Scenario, type: :model do
 
     describe '#update_scenario_data!' do
       before do
-        allow(simulation).to receive(:real_life_event_data).and_return('real_data')
-        allow(simulation).to receive(:ideal_life_event_data).and_return('ideal_data')
+        allow(simulation).to receive(:real_event_data).and_return('real_data')
+        allow(simulation).to receive(:ideal_event_data).and_return('ideal_data')
         allow(Simulation).to receive(:calculate_scenario_data).with(simulation, 'real_data').and_return({ result: 'updated_real_data' })
         allow(Simulation).to receive(:calculate_scenario_data).with(simulation, 'ideal_data').and_return({ result: 'updated_ideal_data' })
       end

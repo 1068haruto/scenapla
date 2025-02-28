@@ -12,7 +12,7 @@ RSpec.describe Scenario, type: :model do
 
   describe 'enumテスト' do
     it 'scenario_typeが正しい値を持つ' do
-      expect(described_class.scenario_types).to eq({ '現実' => '現実', '理想' => '理想' })
+      expect(described_class.scenario_types).to eq({ '現実' => 0, '理想' => 1 })
     end
   end
 

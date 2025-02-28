@@ -11,7 +11,7 @@ RSpec.describe AssetLifespan, type: :model do
   end
 
   describe 'バリデーションテスト' do
-    it { is_expected.to validate_presence_of(:yearly_lifespans) }
+    it { is_expected.to validate_presence_of(:asset_lifespan_scenario) }
   end
 
   describe 'クラスメソッドテスト' do
@@ -27,7 +27,7 @@ RSpec.describe AssetLifespan, type: :model do
           expect do
             described_class.update_lifespan_data!(simulation, yearly_lifespan, lifespan_years, lifespan_months)
             asset_lifespan.reload
-          end.to change { asset_lifespan.yearly_lifespans }.from({ "2000" => 10, "2001" => -10 }).to({ "2000" => 20, "2001" => -20 })
+          end.to change { asset_lifespan.asset_lifespan_scenario }.from({ "2000" => 10, "2001" => -10 }).to({ "2000" => 20, "2001" => -20 })
             .and change { asset_lifespan.lifespan_years }.to(2)
             .and change { asset_lifespan.lifespan_months }.to(1)
         end
@@ -40,7 +40,7 @@ RSpec.describe AssetLifespan, type: :model do
           end.to change { described_class.count }.by(1)
 
           new_lifespan = described_class.last
-          expect(new_lifespan.yearly_lifespans).to eq({ "2000" => 20, "2001" => -20 })
+          expect(new_lifespan.asset_lifespan_scenario).to eq({ "2000" => 20, "2001" => -20 })
           expect(new_lifespan.lifespan_years).to eq(2)
           expect(new_lifespan.lifespan_months).to eq(1)
         end

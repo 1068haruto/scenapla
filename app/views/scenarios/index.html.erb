@@ -12,7 +12,7 @@
       <h4 class="mt-2">資産寿命シナリオ</h4>
     </div>
     <div class="card-body">
-      <% if @asset_lifespan && @asset_lifespan.yearly_lifespans.present? %>
+      <% if @asset_lifespan && @asset_lifespan.asset_lifespan_scenario.present? %>
         <div class="mb-4">
           <span class="mb-4"><%= formatted_date(@asset_lifespan_updated_at) %>時点</span>
         </div>

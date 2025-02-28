@@ -8,7 +8,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.2]
       t.string :encrypted_password, null: false, default: ""
 
       ## Additional fields
-      t.string :name               # ユーザーの名前を追加
+      t.string :name, null: false  # ユーザーの名前を追加
       t.date   :date_of_birth      # ユーザーの生年月日を追加
 
       ## Recoverable

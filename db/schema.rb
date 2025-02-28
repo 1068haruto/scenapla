@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_28_104515) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_28_142728) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -95,14 +95,14 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_28_104515) do
   create_table "scenarios", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "simulation_id", null: false
-    t.string "scenario_type"
-    t.jsonb "asset_scenario", default: {}
-    t.jsonb "balance_scenario", default: {}
+    t.integer "scenario_type"
     t.decimal "total_income"
     t.decimal "total_expense"
     t.decimal "total_balance"
     t.decimal "withdrawal"
     t.decimal "shortage"
+    t.jsonb "asset_scenario", default: {}
+    t.jsonb "balance_scenario", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["simulation_id"], name: "index_scenarios_on_simulation_id"

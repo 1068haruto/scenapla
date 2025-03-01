@@ -41,10 +41,10 @@ gem "chartkick", "~> 5.1"
 gem "groupdate", "~> 6.5"
 
 # news機能関連
-gem "http"
+gem "http", "~> 5.2"
 
 # AI advise関連
-gem "ruby-openai"
+gem "ruby-openai", "~> 7.4"
 
 group :development, :test do
   gem "debug", "~> 1.9", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -62,7 +62,7 @@ group :development, :test do
   gem "shoulda-matchers", "~> 5.0"
 
   # debug関連
-  gem "pry"
+  gem "pry", "~> 0.15"
 end
 
 group :development do

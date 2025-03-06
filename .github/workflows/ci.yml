@@ -78,7 +78,19 @@ jobs:
       - name: Check database.yml content
         run: cat config/database.yml
 
+      # DATABASE_URLの値を確認
+      - name: Check DATABASE_URL
+        run: echo "DATABASE_URL=$DATABASE_URL"
+
+      # PGHOSTの値を確認
+      - name: Check PGHOST
+        run: echo "PGHOST=$PGHOST"
+
       - name: Prepare database for RSpec
+        env:
+          RAILS_ENV: test
+          PGHOST: 127.0.0.1  # PGHOSTを明示的に設定
+          DATABASE_URL: ""   # DATABASE_URLを無効化してdatabase.ymlの設定を適用
         run: bundle exec rails db:test:prepare
 
       - name: assets precompile

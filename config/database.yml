@@ -43,7 +43,7 @@ development:
 test:
   <<: *default
   database: scenapla_test
-  host: db
+  host: localhost
   username: postgres
   password: password
 

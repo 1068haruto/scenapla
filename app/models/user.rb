@@ -14,11 +14,11 @@ class User < ApplicationRecord
   has_many :ai_advices, dependent: :destroy
   has_many :sns_credentials, dependent: :destroy
 
-  # カスタムのみ記述（email形式 と password長さは、devise.rb側で定義）
+  # カスタムのみ（email形式は、devise.rbで定義）
   validates :name, presence: true
   validates :date_of_birth, presence: true, if: :date_of_birth_required?
   validates :email, presence: true, uniqueness: true
-  validates :password, presence: true, format: { with: /(?=.*[a-z])(?=.*\d)/ }, if: :password_required?
+  validates :password, presence: true, format: { with: /\A(?=.*[a-z])(?=.*\d)[a-z\d]{8,}\z/ }, if: :password_required?
   validates :password_confirmation, presence: true, if: -> { password.present? }
 
   after_create :create_simulation_and_scenario_models

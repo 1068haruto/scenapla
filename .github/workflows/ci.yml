@@ -75,6 +75,9 @@ jobs:
       #    echo "$RAILS_MASTER_KEY" > config/master.key
       #    bundle exec rails credentials:edit # credentialsを復号化
 
+      - name: Check database.yml content
+        run: cat config/database.yml
+
       - name: Prepare database for RSpec
         run: bundle exec rails db:test:prepare
 

@@ -5,6 +5,10 @@ on:
   push:
     branches: [ main ]
 
+env:
+  GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+  GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+
 jobs:
   scan_ruby:
     runs-on: ubuntu-latest
@@ -44,9 +48,8 @@ jobs:
       postgres:
         image: postgres
         env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password # 変更
-          POSTGRES_DB: scenapla_test  # 変更（指定）
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: test
         ports:
           - 5432:5432
         options: --health-cmd="pg_isready -U postgres -d postgres" --health-interval=10s --health-timeout=5s --health-retries=5
@@ -64,28 +67,25 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
-      - name: Set up Rails credentials
-        env:
-          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-        run: |
-          echo "$RAILS_MASTER_KEY" > config/master.key
-          bundle exec rails credentials:edit # credentialsを復号化
+      #- name: Set up Rails credentials
+      #  env:
+      #    RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+      #  run: |
+      #    echo "$RAILS_MASTER_KEY" > config/master.key
+      #    bundle exec rails credentials:edit # credentialsを復号化
 
       - name: Prepare database for RSpec
-        env:
-          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-        #run: bundle exec rails db:create db:migrate
-        run: bundle exec rails db:test:prepare #変更
+        run: bundle exec rails db:test:prepare
+
+      - name: assets precompile
+        run: bundle exec rake assets:test:precompile
 
       - name: Run RSpec tests
         env:
           RAILS_ENV: test
           #DATABASE_URL: postgres://postgres:postgres@localhost:5432
           #DATABASE_URL: postgres://postgres:postgres@localhost:5432/scenapla_test
-          DATABASE_URL: postgres://postgres:password@localhost:5432/scenapla_test # 変更
-          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          #DATABASE_URL: postgres://postgres:password@localhost:5432/scenapla_test # 変更
         run: bundle exec rspec
 
       - name: Keep screenshots from failed system tests

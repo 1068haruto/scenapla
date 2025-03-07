@@ -48,7 +48,7 @@ group :development, :test do
 
   # rubocop関連
   gem "rubocop", "~> 1.50"
-  gem "rubocop-rails", "~> 2.25"
+  gem "rubocop-rails", "~> 2.30"
   gem "rubocop-performance", "~> 1.22"
 
   # RSpec関連

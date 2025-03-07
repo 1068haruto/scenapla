@@ -54,7 +54,7 @@ group :development, :test do
   # RSpec関連
   gem "rspec-rails", "~> 7.1"
   gem "factory_bot_rails", "~> 6.4"
-  gem "shoulda-matchers", "~> 5.0"
+  gem "shoulda-matchers", "~> 6.4"
 
   # debug関連
   gem "pry", "~> 0.15"

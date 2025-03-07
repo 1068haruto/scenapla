@@ -27,7 +27,7 @@ gem "bootsnap", "~> 1.18", require: false
 gem "devise", "~> 4.9"
 
 # auth認証関連
-gem "omniauth", "~> 2.0"
+gem "omniauth", "~> 2.1"
 gem "omniauth-google-oauth2", "~> 1.0"
 gem "omniauth-rails_csrf_protection"
 

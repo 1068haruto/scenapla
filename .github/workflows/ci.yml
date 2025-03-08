@@ -69,30 +69,24 @@ jobs:
         with:
           ruby-version: .ruby-version
           bundler-cache: true
-
-      - name: Check database.yml content
-        run: cat config/database.yml
-
-      # DATABASE_URLを明示的に設定し、値を確認
-      - name: Set DATABASE_URL
-        run: echo "DATABASE_URL=postgresql://postgres:password@127.0.0.1:5432/scenapla_test" >> $GITHUB_ENV
-
-      # PGHOSTも明示的に設定し、値を確認
-      - name: Set PGHOST
-        run: echo "PGHOST=127.0.0.1" >> $GITHUB_ENV
-
-      - name: Prepare database for RSpec
-        env:
-          RAILS_ENV: test
-          PGHOST: 127.0.0.1  # PGHOSTを明示的に設定
-        run: bundle exec rails db:test:prepare
+      
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      
+      - name: Prepare database
+        run: |
+          cp config/database.yml.ci config/database.yml
+          run: bundle exec rails db:test:prepare
 
       - name: assets precompile
         run: bundle exec rake assets:precompile RAILS_ENV=test
 
       - name: Run RSpec tests
-        env:
-          RAILS_ENV: test
         run: bundle exec rspec
 
       - name: Keep screenshots from failed system tests

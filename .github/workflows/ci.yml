@@ -77,13 +77,14 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-node-
-      
-      - name: Prepare database
-        run: |
-          cp config/database.yml.ci config/database.yml
-          run: bundle exec rails db:test:prepare
 
-      - name: assets precompile
+      - name: Copy congig file
+        run: cp config/database.yml.ci config/database.yml
+
+      - name: Prepare database
+        run: bundle exec rails db:test:prepare
+
+      - name: Assets precompile
         run: bundle exec rake assets:precompile RAILS_ENV=test
 
       - name: Run RSpec tests

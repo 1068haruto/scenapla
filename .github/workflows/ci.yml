@@ -88,7 +88,7 @@ jobs:
         run: bundle exec rails db:test:prepare
 
       - name: assets precompile
-        run: bundle exec rake assets:test:precompile
+        run: bundle exec rake assets:precompile RAILS_ENV=test
 
       - name: Run RSpec tests
         env:

@@ -82,7 +82,7 @@ jobs:
         run: cp config/database.yml.ci config/database.yml
 
       - name: Prepare database
-        run: bundle exec rails db:test:prepare
+        run: RAILS_ENV=test bundle exec rails db:test:prepare
 
       - name: Assets precompile
         run: bundle exec rake assets:precompile RAILS_ENV=test

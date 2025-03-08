@@ -5,6 +5,10 @@ on:
   push:
     branches: [ main ]
 
+env:
+  GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+  GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+
 jobs:
   scan_ruby:
     runs-on: ubuntu-latest
@@ -45,47 +49,50 @@ jobs:
         image: postgres
         env:
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password # 変更
-          POSTGRES_DB: scenapla_test  # 変更（指定）
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: test
         ports:
           - 5432:5432
-        options: --health-cmd="pg_isready -U postgres -d postgres" --health-interval=10s --health-timeout=5s --health-retries=5
+        options: --health-cmd="pg_isready -U postgres -d test" --health-interval=10s --health-timeout=5s --health-retries=5
 
     steps:
       - name: Install packages
         run: sudo apt-get update && sudo apt-get install --no-install-recommends -y google-chrome-stable curl libjemalloc2 libvips postgresql-client
 
+      # リポジトリのコードをCI環境にクローン（チェックアウト）
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # CI環境にRubyをセットアップ
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: .ruby-version
           bundler-cache: true
 
-      - name: Set up Rails credentials
-        env:
-          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-        run: |
-          echo "$RAILS_MASTER_KEY" > config/master.key
-          bundle exec rails credentials:edit # credentialsを復号化
+      - name: Check database.yml content
+        run: cat config/database.yml
+
+      # DATABASE_URLを明示的に設定し、値を確認
+      - name: Set DATABASE_URL
+        run: echo "DATABASE_URL=postgresql://postgres:password@127.0.0.1:5432/scenapla_test" >> $GITHUB_ENV
+
+      # PGHOSTも明示的に設定し、値を確認
+      - name: Set PGHOST
+        run: echo "PGHOST=127.0.0.1" >> $GITHUB_ENV
 
       - name: Prepare database for RSpec
         env:
-          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-        #run: bundle exec rails db:create db:migrate
-        run: bundle exec rails db:test:prepare #変更
+          RAILS_ENV: test
+          PGHOST: 127.0.0.1  # PGHOSTを明示的に設定
+        run: bundle exec rails db:test:prepare
+
+      - name: assets precompile
+        run: bundle exec rake assets:test:precompile
 
       - name: Run RSpec tests
         env:
           RAILS_ENV: test
-          #DATABASE_URL: postgres://postgres:postgres@localhost:5432
-          #DATABASE_URL: postgres://postgres:postgres@localhost:5432/scenapla_test
-          DATABASE_URL: postgres://postgres:password@localhost:5432/scenapla_test # 変更
-          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
         run: bundle exec rspec
 
       - name: Keep screenshots from failed system tests

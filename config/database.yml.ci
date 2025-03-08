@@ -1,0 +1,7 @@
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: scenapla_test
+  host: 127.0.0.1
+  username: postgres
+  password: password

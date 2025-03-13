@@ -7,40 +7,15 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="description" content="このアプリは、経済とライフイベントの計画をサポートするツールです。">
 
-    <!-- OGP -->
-    <meta property="og:title" content="Scenapla">
-    <meta property="og:description" content="このアプリは、経済とライフイベントの計画をサポートするツールです。">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://scenapla.com">
-    <meta property="og:image" content="https://scenapla.com/default-ogp-image.png">
-    <meta property="og:site_name" content="Scenapla">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@scenapla">
-    <meta name="twitter:title" content="Scenapla">
-    <meta name="twitter:description" content="このアプリは、経済とライフイベントの計画をサポートするツールです。">
-    <meta name="twitter:image" content="https://scenapla.com/default-ogp-image.png">
-    <meta property="fb:app_id" content="<%= facebook_app_id %>">
-
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <%= render "layouts/ogp" %>
     <%= yield :head %>
+    <%= render "layouts/analytics" %>
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-K2ESRMDEY1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-K2ESRMDEY1');
-    </script>
-
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" href="/apple-touch-icon-512.png">
-    <link rel="manifest" href="/manifest.json">
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">  <!-- bootstrapのCSS -->
-    <script src="https://kit.fontawesome.com/8096f95eec.js" crossorigin="anonymous"></script>  <!-- FontAwesomeのJSキット -->
+    <%= render "layouts/external_resources" %>
+    <%= render "layouts/icons" %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
@@ -78,7 +53,7 @@
         <%= render 'layouts/nav_tabs' %>
       <% end %>
 
-      <!-- アラートの表示 -->
+      <!-- メッセージ表示 -->
       <%= render 'layouts/alert', message: notice, type: 'success' %>
       <%= render 'layouts/alert', message: alert, type: 'danger' %>
       <%= render 'layouts/alert', message: flash.now[:error], type: 'danger' %>

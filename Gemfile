@@ -47,7 +47,7 @@ group :development, :test do
   gem "rubocop-rails-omakase", "~> 1.0", require: false  # Omakase Ruby styling
 
   # rubocop関連
-  gem "rubocop", "~> 1.50"
+  gem "rubocop", "~> 1.74"
   gem "rubocop-rails", "~> 2.25"
   gem "rubocop-performance", "~> 1.22"
 

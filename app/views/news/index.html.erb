@@ -6,10 +6,6 @@
     <h4 class="mb-3">経済情報をチェック</h4>
   </div>
 
-  <% if flash[:alert].present? %>
-    <div class="alert alert-danger"><%= flash[:alert] %></div>
-  <% end %>
-
   <% if @news.any? %>
     <div class="accordion" id="newsAccordion">
       <% @news.each_with_index do |article, index| %>

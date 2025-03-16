@@ -42,7 +42,7 @@ class IncomesController < ApplicationController
   end
 
   def income_params
-    params.require(:income).permit(:person_type, :amount, :retirement_date, :retirement_pay)
+    params.require(:income).permit(:person_type, :monthly_income, :yearly_bonus, :retirement_date, :retirement_pay)
   end
 
   def render_error(message, status)

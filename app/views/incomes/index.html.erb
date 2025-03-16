@@ -16,9 +16,17 @@
           </div>
 
           <div class="col-md">
-            <%= f.label :amount, '月収（手取り）', class: 'form-label' %>
+            <%= f.label :monthly_income, '月収（手取り）', class: 'form-label' %>
             <div class="input-group">
-              <%= f.number_field :amount, class: 'form-control', step: 0.1, required: true %>
+              <%= f.number_field :monthly_income, class: 'form-control', step: 0.1, required: true %>
+              <span class="input-group-text">万円</span>
+            </div>
+          </div>
+
+          <div class="col-md">
+            <%= f.label :yearly_bonus, '賞与年額（手取り）', class: 'form-label' %>
+            <div class="input-group">
+              <%= f.number_field :yearly_bonus, class: 'form-control', step: 0.1, required: true %>
               <span class="input-group-text">万円</span>
             </div>
           </div>
@@ -55,13 +63,7 @@
       <% if @incomes.any? %>
         <div class="accordion" id="incomesAccordion">
           <% @incomes.each_with_index do |income, index| %>
-            <%=
-              render 'income', 
-              income: income,
-              index: index,
-              accordion_id: "incomesAccordion",
-              show_delete_button: true
-            %>
+            <%= render 'income', income: income, index: index, accordion_id: "incomesAccordion", show_delete_button: true %>
           <% end %>
         </div>
       <% else %>

@@ -8,8 +8,7 @@ class Income < ApplicationRecord
 
   validates :user_id, :simulation_id, presence: true
   validates :person_type, :retirement_date, presence: true
-  validates :amount, presence: true, numericality: { greater_than_or_equal_to: 0 }
-  validates :retirement_pay, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :monthly_income, :yearly_bonus, :retirement_pay, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
   # カスタムセッター：入力された年をdate型に変換
   def retirement_date=(value)
@@ -46,7 +45,7 @@ class Income < ApplicationRecord
   private
 
   def calculate_income_for_year(year)
-    yearly_amount = amount.to_i * MONTHS_IN_A_YEAR
+    yearly_amount = (monthly_income.to_i * MONTHS_IN_A_YEAR) + yearly_bonus
     yearly_total_amount = calculate_adjusted_income_for_year(year, yearly_amount)
 
     { date: year, amount: yearly_total_amount }

@@ -41,7 +41,6 @@ class Simulation < ApplicationRecord
     total_income = simulation.get_total_income
 
     datasets = [ simulation.expense_data, life_event_data ]
-    datasets << simulation.real_event_data if life_event_data != simulation.real_event_data
     total_expense = simulation.get_total_expense(*datasets)
 
     total_balance = total_income + total_expense

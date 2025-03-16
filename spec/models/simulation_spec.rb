@@ -19,38 +19,51 @@ RSpec.describe Simulation, type: :model do
   end
 
   describe 'クラスメソッドテスト' do
-    let(:life_event_data) { { "date"=>2000, "amount"=>100 } }
+    describe ".calculate_scenario_data222" do
+      let(:life_event_data) { [ { "date" => 2000, "amount" => 100 } ] }
 
-    describe '.calculate_scenario_data' do
       before do
-        allow(simulation).to receive(:merged_income_expense_event).with(life_event_data).and_return({ "date"=>2000, "amount"=>100 })
+        allow(simulation).to receive(:merged_income_expense_event).with(life_event_data).and_return([ { "date" => 2000, "amount" => 100 } ])
         allow(simulation).to receive(:get_total_income).and_return(2000)
-
-        # life_event_dataにreal_event_data入っていない場合を想定
-        simulation.expense_data = [ { "date"=>2000, "amount"=>100 } ]
-        simulation.real_event_data = [ { "date"=>2000, "amount"=>100 } ]
-        valid_datasets = [ simulation.expense_data, life_event_data, simulation.real_event_data ]
-        allow(simulation).to receive(:get_total_expense).with(*valid_datasets).and_return(-1000)
-
         allow(simulation).to receive(:get_monthly_expense).and_return(20)
-        allow(simulation).to receive(:calculate_shortage).with(1000).and_return(100)
         allow(described_class).to receive(:calculate_and_save_lifespan_data).with(simulation)
       end
 
-      it 'シナリオデータを計算する各処理が正しく呼ばれる' do
-        result = described_class.calculate_scenario_data(simulation, life_event_data)
+      context "total_balance が正の場合" do
+        before do
+          allow(simulation).to receive(:get_total_expense).with(simulation.expense_data, life_event_data).and_return(-1000)
+        end
 
-        expect(result[:balance_scenario]).to eq({ "date"=>2000, "amount"=>100 })
-        expect(result[:total_income]).to eq(2000)
-        expect(result[:total_expense]).to eq(-1000)
-        expect(result[:total_balance]).to eq(1000)  # 2000 + (-1000)
-        expect(result[:withdrawal]).to eq(50)  # 1000 / 20
-        expect(result[:shortage]).to eq(0)  # total_balance > 0 のため
+        it "シナリオデータを正しく計算し、資産寿命データを計算・保存する" do
+          result = described_class.calculate_scenario_data(simulation, life_event_data)
+
+          expect(result[:balance_scenario]).to eq([ { "date" => 2000, "amount" => 100 } ])
+          expect(result[:total_income]).to eq(2000)
+          expect(result[:total_expense]).to eq(-1000)
+          expect(result[:total_balance]).to eq(1000)
+          expect(result[:withdrawal]).to eq(50)
+          expect(result[:shortage]).to eq(0)
+          expect(described_class).to have_received(:calculate_and_save_lifespan_data).with(simulation)
+        end
       end
 
-      it '資産寿命データの計算と保存をする処理が呼ばれる' do
-        expect(described_class).to receive(:calculate_and_save_lifespan_data).with(simulation)
-        described_class.calculate_scenario_data(simulation, life_event_data)
+      context "total_balance が負の場合" do
+        before do
+          allow(simulation).to receive(:get_total_expense).with(simulation.expense_data, life_event_data).and_return(-3000)
+          allow(simulation).to receive(:calculate_shortage).with(-1000).and_return(100)
+        end
+
+        it "シナリオデータを正しく計算し、資産寿命データを計算・保存する" do
+          result = described_class.calculate_scenario_data(simulation, life_event_data)
+
+          expect(result[:balance_scenario]).to eq([ { "date" => 2000, "amount" => 100 } ])
+          expect(result[:total_income]).to eq(2000)
+          expect(result[:total_expense]).to eq(-3000)
+          expect(result[:total_balance]).to eq(-1000)
+          expect(result[:withdrawal]).to eq(0)
+          expect(result[:shortage]).to eq(100)
+          expect(described_class).to have_received(:calculate_and_save_lifespan_data).with(simulation)
+        end
       end
     end
 

@@ -19,15 +19,12 @@ class LifeEvent < ApplicationRecord
     ideal_events = life_events.where(event_type: 1)
 
     real_event_data = aggregate_event_data(real_events)
-    ideal_event_data = aggregate_combined_event_data(real_events, ideal_events) if ideal_events.present?
+    ideal_event_data = aggregate_event_data(real_events + ideal_events) if ideal_events.present?
 
-    # 更新用に返す
     { real_event_data: real_event_data, ideal_event_data: ideal_event_data }
   end
 
   private
-
-  # -----共通処理-----
 
   def self.aggregate_event_data(events)
     year_amounts = extract_yearly_amounts(events)
@@ -44,21 +41,6 @@ class LifeEvent < ApplicationRecord
 
   def self.aggregate_by_year(year_amounts)
     year_amounts.group_by { |event| event[:date] }.transform_values do |events|
-      events.sum { |event| event[:amount] }
-    end.map { |year, amount| { date: year, amount: amount } }
-  end
-
-  # -----理想データ作成時のみ使用-----
-
-  def self.aggregate_combined_event_data(real_events, ideal_events)
-    real_data = aggregate_event_data(real_events)
-    ideal_data = aggregate_event_data(ideal_events)
-    merge_yearly_amounts(real_data, ideal_data)
-  end
-
-  def self.merge_yearly_amounts(real_data, ideal_data)
-    combined_data = (real_data + ideal_data).group_by { |event| event[:date] }
-    combined_data.transform_values do |events|
       events.sum { |event| event[:amount] }
     end.map { |year, amount| { date: year, amount: amount } }
   end

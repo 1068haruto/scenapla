@@ -77,6 +77,10 @@ ja:
               blank: "月収は必須です。"
               not_a_number: "数値を入力してください。"
               greater_than_or_equal_to: "月収はプラス値で入力してください。"
+            yearly_bonus:
+              blank: "賞与年額は必須です。"
+              not_a_number: "数値を入力してください。"
+              greater_than_or_equal_to: "賞与年額はプラス値で入力してください。"
             retirement_date:
               blank: "退職時期を入力してください。"
             retirement_pay:

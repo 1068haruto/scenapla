@@ -37,6 +37,12 @@ RSpec.describe Income, type: :model do
         expect(income.errors[:monthly_income]).to include("月収は必須です。", "数値を入力してください。")
       end
 
+      it '賞与年額は必須' do
+        income.yearly_bonus = nil
+        expect(income).not_to be_valid
+        expect(income.errors[:yearly_bonus]).to include("賞与年額は必須です。", "数値を入力してください。")
+      end
+
       it '退職時期は必須' do
         income.retirement_date = nil
         expect(income).not_to be_valid
@@ -55,6 +61,12 @@ RSpec.describe Income, type: :model do
         income.monthly_income = -1
         expect(income).not_to be_valid
         expect(income.errors[:monthly_income]).to include("月収はプラス値で入力してください。")
+      end
+
+      it '収入が0以上' do
+        income.yearly_bonus = -1
+        expect(income).not_to be_valid
+        expect(income.errors[:yearly_bonus]).to include("賞与年額はプラス値で入力してください。")
       end
 
       it '退職金が0以上' do
@@ -80,17 +92,17 @@ RSpec.describe Income, type: :model do
       let(:simulation) { create(:simulation, user: user) }
 
       it '指定されたユーザーの全収入データを1つのハッシュ配列に整形すること' do
-        create(:income, user: user, simulation: simulation, monthly_income: 1, retirement_date: 2030, retirement_pay: 1)
-        create(:income, user: user, simulation: simulation, monthly_income: 1, retirement_date: 2030, retirement_pay: 1)
+        create(:income, user: user, simulation: simulation, monthly_income: 1, yearly_bonus: 1, retirement_date: 2030, retirement_pay: 1)
+        create(:income, user: user, simulation: simulation, monthly_income: 1, yearly_bonus: 1, retirement_date: 2030, retirement_pay: 1)
 
         result = Income.generate_income_data_for(user)
 
         expect(result).to include(
-          { amount: 24, date: 2025 }, { amount: 24, date: 2026 }, { amount: 24, date: 2027 },
-          { amount: 24, date: 2028 }, { amount: 24, date: 2029 }, { amount: 26, date: 2030 }
+          { amount: 26, date: 2025 }, { amount: 26, date: 2026 }, { amount: 26, date: 2027 },
+          { amount: 26, date: 2028 }, { amount: 26, date: 2029 }, { amount: 28, date: 2030 }
         )
-        expect(result).to include({ date: Date.current.year, amount: 24 })
-        expect(result).to include({ date: 2030, amount: 26 })
+        expect(result).to include({ date: Date.current.year, amount: 26 })
+        expect(result).to include({ date: 2030, amount: 28 })
       end
     end
 

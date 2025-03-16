@@ -90,42 +90,53 @@ RSpec.describe LifeEvent, type: :model do
 
   describe ".generate_life_event_data_for" do
     let(:life_events) { double('life_events') }
-    let(:real_events) { double('real_events') }
-    let(:ideal_events) { double('ideal_events') }
-    let(:real_event_data) { { some: 'data' } }
-    let(:ideal_event_data) { { other: 'data' } }
+    let(:real_events) { [ double('real_event1'), double('real_event2') ] }
+    let(:ideal_events) { [ double('ideal_event1'), double('ideal_event2') ] }
+    let(:real_event_data) { { some: 'real_data' } }
+    let(:ideal_event_data) { { some: 'ideal_data' } }
 
     before do
       allow(described_class).to receive(:where).with(user: user).and_return(life_events)
       allow(life_events).to receive(:where).with(event_type: 0).and_return(real_events)
       allow(life_events).to receive(:where).with(event_type: 1).and_return(ideal_events)
       allow(described_class).to receive(:aggregate_event_data).with(real_events).and_return(real_event_data)
-      allow(described_class).to receive(:aggregate_combined_event_data).with(real_events, ideal_events).and_return(ideal_event_data)
     end
 
-    it "内部メソッドが正しく呼ばれ戻り値を返す" do
-      result = described_class.generate_life_event_data_for(user)
+    context "ideal_eventsが存在する場合" do
+      before do
+        allow(ideal_events).to receive(:present?).and_return(true)
+        allow(described_class).to receive(:aggregate_event_data).with(real_events + ideal_events).and_return(ideal_event_data)
+      end
 
-      # where
-      expect(described_class).to have_received(:where).with(user: user)
-      expect(life_events).to have_received(:where).with(event_type: 0)
-      expect(life_events).to have_received(:where).with(event_type: 1)
+      it "内部メソッドが正しく呼ばれ、結合された理想データを返す" do
+        result = described_class.generate_life_event_data_for(user)
 
-      # aggregate_event_data と aggregate_combined_event_data
-      expect(described_class).to have_received(:aggregate_event_data).with(real_events)
-      expect(described_class).to have_received(:aggregate_combined_event_data).with(real_events, ideal_events)
+        expect(described_class).to have_received(:where).with(user: user)
+        expect(life_events).to have_received(:where).with(event_type: 0)
+        expect(life_events).to have_received(:where).with(event_type: 1)
+        expect(described_class).to have_received(:aggregate_event_data).with(real_events)
+        expect(described_class).to have_received(:aggregate_event_data).with(real_events + ideal_events)
 
-      # 戻り値
-      expect(result).to eq({ real_event_data: real_event_data, ideal_event_data: ideal_event_data })
+        expect(result).to eq({ real_event_data: real_event_data, ideal_event_data: ideal_event_data })
+      end
     end
-  end
 
-  describe ".extract_yearly_amounts" do
-    it "イベントごとに支払期間分の金額を正しく算出する" do
-      events = [ real_event1, real_event2 ]
-      result = described_class.send(:extract_yearly_amounts, events)
+    context "ideal_events が存在しない場合" do
+      before do
+        allow(ideal_events).to receive(:present?).and_return(false)
+      end
 
-      expect(result).to contain_exactly({ date: 2025, amount: -10 }, { date: 2026, amount: -10 }, { date: 2026, amount: -20 })
+      it "内部メソッドが正しく呼ばれ、理想データはnilを返す" do
+        result = described_class.generate_life_event_data_for(user)
+
+        expect(described_class).to have_received(:where).with(user: user)
+        expect(life_events).to have_received(:where).with(event_type: 0)
+        expect(life_events).to have_received(:where).with(event_type: 1)
+        expect(described_class).to have_received(:aggregate_event_data).with(real_events)
+        expect(described_class).not_to have_received(:aggregate_event_data).with(real_events + ideal_events)
+
+        expect(result).to eq({ real_event_data: real_event_data, ideal_event_data: nil })
+      end
     end
   end
 
@@ -139,42 +150,37 @@ RSpec.describe LifeEvent, type: :model do
   end
 
   describe ".aggregate_event_data" do
-    it "イベントのデータを正しく集計する" do
+    let(:real_event1) { double("real_event1", event_date: Date.new(2025, 1, 1), payment_period: 1, amount: 10) }
+    let(:real_event2) { double("real_event2", event_date: Date.new(2026, 1, 1), payment_period: 1, amount: 30) }
+
+    it "イベントのデータを集計する" do
       events = [ real_event1, real_event2 ]
+      year_amounts = [ { date: 2025, amount: -10 }, { date: 2026, amount: -30 } ]
+
+      allow(described_class).to receive(:extract_yearly_amounts).with(events).and_return(year_amounts)
+      allow(described_class).to receive(:aggregate_by_year).with(year_amounts).and_return([
+        { date: 2025, amount: -10 }, { date: 2026, amount: -30 }
+      ])
+
       result = described_class.send(:aggregate_event_data, events)
 
       expect(result).to contain_exactly({ date: 2025, amount: -10 }, { date: 2026, amount: -30 })
     end
   end
 
-  describe ".aggregate_combined_event_data" do
-    let(:real_event1) { { date: 2025, amount: -10 } }
-    let(:real_event2) { { date: 2026, amount: -30 } }
-    let(:ideal_event1) { { date: 2025, amount: -50 } }
+  describe ".extract_yearly_amounts" do
+    let(:real_event1) { double("real_event1", event_date: Date.new(2025, 1, 1), payment_period: 2, amount: 10) }
+    let(:real_event2) { double("real_event2", event_date: Date.new(2026, 1, 1), payment_period: 1, amount: 20) }
 
-    before do
-      allow(described_class).to receive(:aggregate_event_data).with([ real_event1, real_event2 ])
-      allow(described_class).to receive(:aggregate_event_data).with([ ideal_event1 ])
-      allow(described_class).to receive(:merge_yearly_amounts)
-    end
+    it "イベントごとに支払期間分の金額を正しく算出する" do
+      events = [ real_event1, real_event2 ]
+      result = described_class.send(:extract_yearly_amounts, events)
 
-    it "内部メソッドが正しく呼ばれる" do
-      described_class.aggregate_combined_event_data([ real_event1, real_event2 ], [ ideal_event1 ])
-
-      expect(described_class).to have_received(:aggregate_event_data).with([ real_event1, real_event2 ])
-      expect(described_class).to have_received(:aggregate_event_data).with([ ideal_event1 ])
-      expect(described_class).to have_received(:merge_yearly_amounts)
-    end
-  end
-
-  describe ".merge_yearly_amounts" do
-    it "現実と理想のイベントデータを統合する" do
-      real_data = [ { date: 2025, amount: -10 }, { date: 2026, amount: -30 } ]
-      ideal_data = [ { date: 2025, amount: -50 }, { date: 2027, amount: -20 } ]
-
-      result = described_class.send(:merge_yearly_amounts, real_data, ideal_data)
-
-      expect(result).to contain_exactly({ date: 2025, amount: -60 }, { date: 2026, amount: -30 }, { date: 2027, amount: -20 })
+      expect(result).to contain_exactly(
+        { date: 2025, amount: -10 }, # real_event1 の 1年目
+        { date: 2026, amount: -10 }, # real_event1 の 2年目
+        { date: 2026, amount: -20 }  # real_event2 の 1年目
+      )
     end
   end
 end

@@ -5,20 +5,17 @@ RSpec.describe LifeEvent, type: :model do
   let!(:simulation) { create(:simulation, user: user) }
   let!(:real_event1) do
     create(:life_event,
-      user: user, user: user, simulation: simulation,
-      event_type: "現実", event_date: 2025, amount: 10, payment_period: 2
+      user: user, simulation: simulation, event_type: "現実", event_date: 2025, amount: 10, payment_period: 2
     )
   end
   let!(:real_event2) do
     create(:life_event,
-      user: user, user: user, simulation: simulation,
-      event_type: "現実", event_date: 2026, amount: 20, payment_period: 1
+      user: user, simulation: simulation, event_type: "現実", event_date: 2026, amount: 20, payment_period: 1
     )
   end
   let!(:ideal_event1) do
     create(:life_event,
-      user: user, user: user, simulation: simulation,
-      event_type: "理想", event_date: 2025, amount: 30, payment_period: 1
+      user: user, simulation: simulation, event_type: "理想", event_date: 2025, amount: 30, payment_period: 1
     )
   end
 

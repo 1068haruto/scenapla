@@ -8,7 +8,6 @@ class Expense < ApplicationRecord
   validates :user_id, :simulation_id, presence: true
   validates :housing_expenses, :living_expenses, :monthly_premiums, :other_expenses,
              presence: true, numericality: { greater_than_or_equal_to: 0 }
-  validates :repayment_date, presence: true, allow_nil: true
 
   # カスタムセッター：入力された年をdate型に変換
   def repayment_date=(value)

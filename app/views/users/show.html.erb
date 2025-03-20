@@ -51,11 +51,13 @@
 
       <div class="d-flex justify-content-center">
         <%= link_to '変更', edit_user_registration_path, class: 'btn btn-outline-primary mx-2', data: { turbo_method: :get } %>
+      <!--
         <%=
           link_to '削除', user_registration_path, class: 'btn btn-outline-danger mx-2',
           data: { turbo_method: :delete, confirm: '本当にアカウントを削除しますか？' },
           onclick: "return confirm('本当にアカウントを削除しますか？');"
         %>
+      -->
       </div>
     </div>
   </div>

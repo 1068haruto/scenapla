@@ -62,16 +62,16 @@ PC、タブレット、スマートフォン
   2. シミュレーション結果確認  
     以下の4つのシミュレーションが表示されます。  
     1. 資産寿命  
-      ![画像を表示できません](./public/screen-asset_lifespan.png)
+      ![画像を表示できません](./public/screen-asset_lifespan.png)  
 
     2. 現実的シナリオ（必ず実現したいライフイベントを考慮した経済状況）  
-      ![画像を表示できません](./public/screen-real_scenario.png)
+      ![画像を表示できません](./public/screen-real_scenario.png)  
   
     3. 理想的シナリオ（できれば実現したいライフイベントを考慮した経済状況）  
-      ![画像を表示できません](./public/screen-ideal_scenario.png)
+      ![画像を表示できません](./public/screen-ideal_scenario.png)  
 
     4. 運用資産シナリオ  
-      ![画像を表示できません](./public/screen-asset_scenario.png)
+      ![画像を表示できません](./public/screen-asset_scenario.png)  
 
   3. AIアドバイス確認 & ライフプランの記録  
     登録されたライフイベントは自動的に時系列に並びます。  

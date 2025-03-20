@@ -19,6 +19,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  def destroy
+    redirect_to root_path
+  end
+
   def edit_date_of_birth; end
 
   def update_date_of_birth

@@ -1,7 +1,7 @@
 require "openai"
 
 class OpenaiAdviceService
-  ADVICE_LIMIT_PER_MONTH = 5
+  ADVICE_LIMIT_PER_MONTH = 3
   MAX_TOKENS = 300
   TEMPERATURE = 0.7
 

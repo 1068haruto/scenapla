@@ -21,7 +21,7 @@ class User < ApplicationRecord
   validates :password, presence: true, format: { with: /\A(?=.*[a-z])(?=.*\d)[a-z\d]{8,}\z/ }, if: :password_required?
   validates :password_confirmation, presence: true, if: -> { password.present? }
 
-  after_create :create_simulation_and_scenario_models
+  after_create :initialize_simulation_and_scenarios
 
   def calculate_user_age
     current_date = Date.today
@@ -30,13 +30,9 @@ class User < ApplicationRecord
     age
   end
 
-  # snsログイン（ユーザーを検索or作成）
   def self.find_or_create_for_oauth(auth)
     sns = SnsCredential.find_or_create_by(uid: auth.uid, provider: auth.provider)
-    user = sns.user || User.find_by(email: auth.info.email)
-    if user.nil?
-      user = self.create_user_from_auth(auth)
-    end
+    user = sns.user || User.find_by(email: auth.info.email) || self.create_user_from_auth(auth)
     self.associate_sns_with_user(sns, user)
   end
 
@@ -45,38 +41,21 @@ class User < ApplicationRecord
   # sns使用ユーザー：登録も更新も無効
   # 一般ユーザー：登録は有効、更新は入力があれば有効、なければ無効
   def password_required?
-    if sns_credentials.exists?
-      false
-    elsif new_record?
-      true
-    else
-      password.present? || password_confirmation.present?
-    end
+    return false if sns_credentials.exists?
+    new_record? || password.present? || password_confirmation.present?
   end
 
   # sns使用ユーザー：登録は無効、更新は有効
   # 一般ユーザー：登録も更新も有効
   def date_of_birth_required?
-    return true if sns_credentials.empty?
-
-    if sns_credentials.exists? && new_record?
-      false
-    else
-      true
-    end
+    sns_credentials.empty? || !new_record?
   end
 
-  # 空のsimulation, scenario作成
-  def create_simulation_and_scenario_models
-    Simulation.create(user: self)
-
-    scenario_types = [ "現実", "理想" ]
-    scenario_types.each do |type|
-      Scenario.create(user: self, simulation: simulation, scenario_type: type)
-    end
+  def initialize_simulation_and_scenarios
+    simulation = create_simulation!
+    simulation.scenarios.create!([ { user: self, scenario_type: "現実" }, { user: self, scenario_type: "理想" } ])
   end
 
-  # snsを元にユーザー作成
   def self.create_user_from_auth(auth)
     user = User.new(
       email: auth.info.email,
@@ -89,7 +68,6 @@ class User < ApplicationRecord
     user
   end
 
-  # snsとuserの関連付け
   def self.associate_sns_with_user(sns, user)
     sns.user = user
     sns.save!

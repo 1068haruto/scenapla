@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  let(:user) { build(:user) }
-
   describe 'アソシエーションテスト' do
     it { is_expected.to have_many(:incomes).dependent(:destroy) }
     it { is_expected.to have_many(:expenses).dependent(:destroy) }
@@ -16,6 +14,8 @@ RSpec.describe User, type: :model do
   end
 
   describe 'バリデーションテスト' do
+    let(:user) { build(:user) }
+
     context '必須項目の確認' do
       it 'ユーザー名がnilの場合無効' do
         user.name = nil
@@ -48,21 +48,21 @@ RSpec.describe User, type: :model do
       end
     end
 
-    it 'パスワードと確認用パスワードが一致しない場合、無効であること' do
+    it 'パスワードと確認用パスワードが不一致の場合は無効' do
       user.password_confirmation = "different_password"
       expect(user).not_to be_valid
       expect(user.errors[:password_confirmation]).to include("パスワードが一致していません。")
     end
 
     context 'パスワードの長さ' do
-      it '8字未満は無効であること' do
+      it '8字未満は無効' do
         user.password = 'short'
         user.password_confirmation = 'short'
         expect(user).not_to be_valid
         expect(user.errors[:password]).to include("パスワードは8字以上30字以下としてください。")
       end
 
-      it '30字を超える場合は無効であること' do
+      it '30字を超える場合は無効' do
         user.password = 'a' * 31
         user.password_confirmation = 'a' * 31
         expect(user).not_to be_valid
@@ -71,14 +71,14 @@ RSpec.describe User, type: :model do
     end
 
     context 'パスワードの形式（英数字）' do
-      it '文字のみのパスワードは無効であること' do
+      it '文字のみのパスワードは無効' do
         user.password = 'onlyletters'
         user.password_confirmation = 'onlyletters'
         expect(user).not_to be_valid
         expect(user.errors[:password]).to include("パスワードは英数字である必要があります。")
       end
 
-      it '数字のみのパスワードは無効であること' do
+      it '数字のみのパスワードは無効' do
         user.password = '1234567890'
         user.password_confirmation = '1234567890'
         expect(user).not_to be_valid
@@ -88,36 +88,58 @@ RSpec.describe User, type: :model do
   end
 
   describe 'カスタムバリデーションテスト' do
+    let(:user) { build(:user) }
+
     describe '#password_required?' do
-      it 'SNSユーザーは、パスワードは不要であること' do
+      it 'SNSユーザーは、パスワードが不要' do
         sns_mock = double('SnsCredential', exists?: true)
         allow(user).to receive(:sns_credentials).and_return(sns_mock)
         expect(user.send(:password_required?)).to be false
       end
 
-      it '一般ユーザーは、パスワードが必須であること' do
+      it '新規一般ユーザーは、パスワードが必須' do
         sns_mock = double('SnsCredential', exists?: false)
         allow(user).to receive(:sns_credentials).and_return(sns_mock)
+        allow(user).to receive(:new_record?).and_return(true)
+        expect(user.send(:password_required?)).to be true
+      end
+
+      it '既存一般ユーザーは、パスワードが不要（パスワードが未入力の場合）' do
+        sns_mock = double('SnsCredential', exists?: false)
+        allow(user).to receive(:sns_credentials).and_return(sns_mock)
+        allow(user).to receive(:new_record?).and_return(false)
+        allow(user).to receive(:password).and_return(nil)
+        allow(user).to receive(:password_confirmation).and_return(nil)
+        expect(user.send(:password_required?)).to be false
+      end
+
+      it '既存一般ユーザーは、パスワードが必須（パスワードが入力されている場合）' do
+        sns_mock = double('SnsCredential', exists?: false)
+        allow(user).to receive(:sns_credentials).and_return(sns_mock)
+        allow(user).to receive(:new_record?).and_return(false)
+        allow(user).to receive(:password).and_return('changepassword')
+        allow(user).to receive(:password_confirmation).and_return('changepassword')
         expect(user.send(:password_required?)).to be true
       end
     end
 
     describe '#date_of_birth_required?' do
-      it 'SNSユーザーは、生年月日は不要であること' do
-        sns_mock = double('SnsCredential', empty?: false, exists?: true)
+      it 'SNSユーザーは、新規レコードの場合は生年月日は不要' do
+        sns_mock = double('SnsCredential', empty?: false)
         allow(user).to receive(:sns_credentials).and_return(sns_mock)
+        allow(user).to receive(:new_record?).and_return(true)
         expect(user.send(:date_of_birth_required?)).to be false
       end
 
-      it 'SNSユーザーが既存レコードのとき、生年月日は必須であること' do
-        sns_mock = double('SnsCredential', empty?: false, exists?: true)
+      it 'SNSユーザーは、既存レコードのときは生年月日は必須' do
+        sns_mock = double('SnsCredential', empty?: false)
         allow(user).to receive(:sns_credentials).and_return(sns_mock)
         allow(user).to receive(:new_record?).and_return(false)
         expect(user.send(:date_of_birth_required?)).to be true
       end
 
-      it '一般ユーザーは、生年月日が必須であること' do
-        sns_mock = double('SnsCredential', empty?: true, exists?: false)
+      it '一般ユーザーは、生年月日が必須' do
+        sns_mock = double('SnsCredential', empty?: true)
         allow(user).to receive(:sns_credentials).and_return(sns_mock)
         expect(user.send(:date_of_birth_required?)).to be true
       end

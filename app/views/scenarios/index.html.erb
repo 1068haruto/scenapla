@@ -28,45 +28,23 @@
     </div>
   </div>
 
-  <div class="card mb-4">
-    <div class="card-header">
-      <h4 class="mt-2">現実的シナリオ</h4>
-    </div>
-    <div class="card-body">
-      <% if !@real_balance_chart_data.empty? && @incomes.any? && @expenses.any? %>
-        <div class="mb-4">
-          <span><%= formatted_date(@real_updated_at) %>時点</span>
-        </div>
-        <%= render 'balance_summary', total_income: @real_total_income,
-                                      total_expense: @real_total_expense,
-                                      total_balance: @real_total_balance %>
-        <%= render 'withdrawal_and_shortage', withdrawal: @real_withdrawal, shortage: @real_shortage %>
-        <%= balance_chart(@real_balance_chart_data, "現実シナリオ") %>
-      <% else %>
-        <p>情報入力が不足している為、表示できません。</p>
-      <% end %>
-    </div>
-  </div>
+  <%= render 'scenario_card', title: "現実的シナリオ",
+                              updated_at: @real_updated_at,
+                              balance_chart_data: @real_balance_chart_data,
+                              total_income: @real_total_income,
+                              total_expense: @real_total_expense,
+                              total_balance: @real_total_balance,
+                              withdrawal: @real_withdrawal,
+                              shortage: @real_shortage %>
 
-  <div class="card mb-4">
-    <div class="card-header">
-      <h4 class="mt-2">理想的シナリオ</h4>
-    </div>
-    <div class="card-body">
-      <% if !@ideal_balance_chart_data.empty? && @incomes.any? && @expenses.any? %>
-        <div class="mb-4">
-          <span><%= formatted_date(@ideal_updated_at) %>時点</span>
-        </div>
-        <%= render 'balance_summary', total_income: @ideal_total_income,
-                                      total_expense: @ideal_total_expense,
-                                      total_balance: @ideal_total_balance %>
-        <%= render 'withdrawal_and_shortage', withdrawal: @ideal_withdrawal, shortage: @ideal_shortage %>
-        <%= balance_chart(@ideal_balance_chart_data, "理想シナリオ") %>
-      <% else %>
-        <p>情報入力が不足しているため、表示できません。</p>
-      <% end %>
-    </div>
-  </div>
+  <%= render 'scenario_card', title: "理想的シナリオ",
+                              updated_at: @ideal_updated_at,
+                              balance_chart_data: @ideal_balance_chart_data,
+                              total_income: @ideal_total_income,
+                              total_expense: @ideal_total_expense,
+                              total_balance: @ideal_total_balance,
+                              withdrawal: @ideal_withdrawal,
+                              shortage: @ideal_shortage %>
 
   <div class="card mb-4">
     <div class="card-header">

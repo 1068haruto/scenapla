@@ -8,12 +8,11 @@ class ScenariosController < ApplicationController
     @incomes = current_user.incomes
     @expenses = current_user.expenses
     @user_assets = current_user.user_assets
-    events = current_user.life_events
 
-    setup_asset_lifespan          # 資産寿命シナリオ
-    setup_real_scenario           # 現実的シナリオ
-    setup_ideal_scenario(events)  # 理想的シナリオ
-    setup_asset_scenario          # 資産シナリオ
+    setup_asset_lifespan  # 資産寿命シナリオ
+    setup_real_scenario   # 現実的シナリオ
+    setup_ideal_scenario  # 理想的シナリオ
+    setup_asset_scenario  # 資産シナリオ
   end
 
   def update_scenarios
@@ -48,6 +47,10 @@ class ScenariosController < ApplicationController
   def setup_real_scenario
     real_scenario = @scenarios.find_by(scenario_type: "現実")
 
+    if real_scenario.nil?
+      return @real_balance_chart_data = []
+    end
+
     @real_updated_at = real_scenario&.updated_at
     @real_balance_chart_data = real_scenario&.balance_chart_data || []
     @real_total_income = real_scenario&.total_income || 0
@@ -57,10 +60,13 @@ class ScenariosController < ApplicationController
     @real_shortage = real_scenario&.shortage || 0
   end
 
-  def setup_ideal_scenario(events)
+  def setup_ideal_scenario
     ideal_scenario = @scenarios.find_by(scenario_type: "理想")
-
-    return reset_ideal_scenario if ideal_scenario.nil? || events.none? { |event| event.event_type == "理想" }
+    ideal_event = current_user.life_events.find_by(event_type: "理想")
+  
+    if ideal_scenario.nil? || ideal_event.nil?
+      return @ideal_balance_chart_data = []
+    end
 
     @ideal_updated_at = ideal_scenario.updated_at
     @ideal_balance_chart_data = ideal_scenario.balance_chart_data || []
@@ -69,15 +75,6 @@ class ScenariosController < ApplicationController
     @ideal_total_balance = ideal_scenario.total_balance || 0
     @ideal_withdrawal = ideal_scenario.withdrawal || 0
     @ideal_shortage = ideal_scenario.shortage || 0
-  end
-
-  def reset_ideal_scenario
-    @ideal_balance_chart_data = []
-    @ideal_total_income = 0
-    @ideal_total_expense = 0
-    @ideal_total_balance = 0
-    @ideal_withdrawal = 0
-    @ideal_shortage = 0
   end
 
   def setup_asset_scenario

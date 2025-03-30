@@ -5,11 +5,9 @@
   <div class="card-body">
     <% if !balance_chart_data.empty? && @incomes.any? && @expenses.any? %>
       <div class="mb-4">
-        <span><%= formatted_date(updated_at) %>時点</span>
+        <span class="mb-4"><%= formatted_date(updated_at) %>時点</span>
       </div>
-      <%= render 'balance_summary', total_income: total_income,
-                                    total_expense: total_expense,
-                                    total_balance: total_balance %>
+      <%= render 'balance_summary', total_income: total_income, total_expense: total_expense, total_balance: total_balance %>
       <%= render 'withdrawal_and_shortage', withdrawal: withdrawal, shortage: shortage %>
       <%= balance_chart(balance_chart_data, title) %>
     <% else %>

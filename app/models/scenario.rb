@@ -6,13 +6,10 @@ class Scenario < ApplicationRecord
 
   validates :user_id, :simulation_id, presence: true
 
-  # Chart用に整形
   def balance_chart_data
     balance_scenario.map { |entry| [ entry["date"], entry["amount"] ] }&.to_h || {}
   end
 
-
-  # シナリオ更新
   def update_scenario_data!
     life_event_data = (scenario_type == "現実") ? simulation.real_event_data : simulation.ideal_event_data
     calculated_data = Simulation.calculate_scenario_data(simulation, life_event_data)

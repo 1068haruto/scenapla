@@ -63,7 +63,7 @@ class ScenariosController < ApplicationController
   def setup_ideal_scenario
     ideal_scenario = @scenarios.find_by(scenario_type: "理想")
     ideal_event = current_user.life_events.find_by(event_type: "理想")
-  
+
     if ideal_scenario.nil? || ideal_event.nil?
       return @ideal_balance_chart_data = []
     end

@@ -22,51 +22,91 @@ RSpec.describe Expense, type: :model do
 
   describe 'バリデーションテスト' do
     context '必須項目の確認' do
-      it { is_expected.to validate_presence_of(:user_id) }
-      it { is_expected.to validate_presence_of(:simulation_id) }
-
-      shared_examples '必須項目エラーチェック' do |attribute, error_message|
-        it "#{attribute}がnilの場合無効" do
-          expense.send("#{attribute}=", nil)
-          expect(expense).not_to be_valid
-          expect(expense.errors[attribute]).to include(error_message)
-        end
+      it 'user_idは必須' do
+        expense.user_id = nil
+        expect(expense).not_to be_valid
       end
 
-      include_examples '必須項目エラーチェック', :housing_expenses, '住居費を入力してください。'
-      include_examples '必須項目エラーチェック', :living_expenses, '生活費を入力してください。'
-      include_examples '必須項目エラーチェック', :monthly_premiums, '保険費を入力してください。'
-      include_examples '必須項目エラーチェック', :other_expenses, 'その他費用を入力してください。'
+      it 'simulation_idは必須' do
+        expense.simulation_id = nil
+        expect(expense).not_to be_valid
+      end
+
+      it '住居費は必須' do
+        expense.housing_expenses = nil
+        expect(expense).not_to be_valid
+        expect(expense.errors[:housing_expenses]).to include("住居費を入力してください。")
+      end
+
+      it '生活費は必須' do
+        expense.living_expenses = nil
+        expect(expense).not_to be_valid
+        expect(expense.errors[:living_expenses]).to include("生活費を入力してください。")
+      end
+
+      it '保険費は必須' do
+        expense.monthly_premiums = nil
+        expect(expense).not_to be_valid
+        expect(expense.errors[:monthly_premiums]).to include("保険費を入力してください。")
+      end
+
+      it 'その他費用は必須' do
+        expense.other_expenses = nil
+        expect(expense).not_to be_valid
+        expect(expense.errors[:other_expenses]).to include("その他費用を入力してください。")
+      end
     end
 
-    context 'プラス値の確認' do
-      shared_examples 'プラス値エラーチェック' do |attribute, error_message|
-        it "#{attribute}がマイナス値の場合無効" do
-          expense.send("#{attribute}=", -1)
-          expect(expense).not_to be_valid
-          expect(expense.errors[attribute]).to include(error_message)
-        end
+    context 'プラス値入力の確認' do
+      it '住居費は0以上' do
+        expense.housing_expenses = -1
+        expect(expense).not_to be_valid
+        expect(expense.errors[:housing_expenses]).to include("住居費はプラス値で入力してください。")
       end
 
-      include_examples 'プラス値エラーチェック', :housing_expenses, '住居費はプラス値で入力してください。'
-      include_examples 'プラス値エラーチェック', :living_expenses, '生活費はプラス値で入力してください。'
-      include_examples 'プラス値エラーチェック', :monthly_premiums, '保険費はプラス値で入力してください。'
-      include_examples 'プラス値エラーチェック', :other_expenses, 'その他費用はプラス値で入力してください。'
+      it '住居費は0以上' do
+        expense.living_expenses = -1
+        expect(expense).not_to be_valid
+        expect(expense.errors[:living_expenses]).to include("生活費はプラス値で入力してください。")
+      end
+
+      it '保険費は0以上' do
+        expense.monthly_premiums = -1
+        expect(expense).not_to be_valid
+        expect(expense.errors[:monthly_premiums]).to include("保険費はプラス値で入力してください。")
+      end
+
+      it '保険費は0以上' do
+        expense.other_expenses = -1
+        expect(expense).not_to be_valid
+        expect(expense.errors[:other_expenses]).to include("その他費用はプラス値で入力してください。")
+      end
     end
 
     context '数値入力の確認' do
-      shared_examples '数値入力エラーチェック' do |attribute, error_message|
-        it "#{attribute}がマイナス値の場合無効" do
-          expense.send("#{attribute}=", "abc")
-          expect(expense).not_to be_valid
-          expect(expense.errors[attribute]).to include(error_message)
-        end
+      it "住居費が文字列の場合、無効" do
+        expense.housing_expenses = "abc"
+        expect(expense).not_to be_valid
+        expect(expense.errors[:housing_expenses]).to include("数値を入力してください。")
       end
 
-      include_examples '数値入力エラーチェック', :housing_expenses, '数値を入力してください。'
-      include_examples '数値入力エラーチェック', :living_expenses, '数値を入力してください。'
-      include_examples '数値入力エラーチェック', :monthly_premiums, '数値を入力してください。'
-      include_examples '数値入力エラーチェック', :other_expenses, '数値を入力してください。'
+      it "生活費が文字列の場合、無効" do
+        expense.living_expenses = "abc"
+        expect(expense).not_to be_valid
+        expect(expense.errors[:living_expenses]).to include("数値を入力してください。")
+      end
+
+      it "保険費が文字列の場合、無効" do
+        expense.monthly_premiums = "abc"
+        expect(expense).not_to be_valid
+        expect(expense.errors[:monthly_premiums]).to include("数値を入力してください。")
+      end
+
+      it "その他費用が文字列の場合、無効" do
+        expense.other_expenses = "abc"
+        expect(expense).not_to be_valid
+        expect(expense.errors[:other_expenses]).to include("数値を入力してください。")
+      end
     end
   end
 

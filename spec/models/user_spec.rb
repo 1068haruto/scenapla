@@ -17,38 +17,38 @@ RSpec.describe User, type: :model do
     let(:user) { build(:user) }
 
     context '必須項目の確認' do
-      it 'ユーザー名がnilの場合無効' do
+      it 'ユーザー名は必須' do
         user.name = nil
         expect(user).not_to be_valid
         expect(user.errors[:name]).to include("ユーザー名を入力してください。")
       end
 
-      it '生年月日がnilの場合無効' do
+      it '生年月日は必須' do
         user.date_of_birth = nil
         expect(user).not_to be_valid
         expect(user.errors[:date_of_birth]).to include("生年月日を入力してください。")
       end
 
-      it 'メールアドレスがnilの場合無効' do
+      it 'メールアドレスは必須' do
         user.email = nil
         expect(user).not_to be_valid
         expect(user.errors[:email]).to include("メールアドレスを入力してください。")
       end
 
-      it 'パスワードがnilの場合無効' do
+      it 'パスワードは必須' do
         user.password = nil
         expect(user).not_to be_valid
         expect(user.errors[:password]).to include("パスワードを入力してください。")
       end
 
-      it '確認用パスワードがnilの場合無効' do
+      it '確認用パスワードは必須' do
         user.password_confirmation = nil
         expect(user).not_to be_valid
         expect(user.errors[:password_confirmation]).to include("確認用パスワードを入力してください。")
       end
     end
 
-    it 'パスワードと確認用パスワードが不一致の場合は無効' do
+    it 'パスワードと確認用パスワードが不一致の場合、無効' do
       user.password_confirmation = "different_password"
       expect(user).not_to be_valid
       expect(user.errors[:password_confirmation]).to include("パスワードが一致していません。")
@@ -62,7 +62,7 @@ RSpec.describe User, type: :model do
         expect(user.errors[:password]).to include("パスワードは8字以上30字以下としてください。")
       end
 
-      it '30字を超える場合は無効' do
+      it '30字以上は無効' do
         user.password = 'a' * 31
         user.password_confirmation = 'a' * 31
         expect(user).not_to be_valid
@@ -70,19 +70,33 @@ RSpec.describe User, type: :model do
       end
     end
 
-    context 'パスワードの形式（英数字）' do
-      it '文字のみのパスワードは無効' do
+    context 'パスワードの形式（半角英数字8~30字）' do
+      it '文字のみの場合、無効' do
         user.password = 'onlyletters'
         user.password_confirmation = 'onlyletters'
         expect(user).not_to be_valid
-        expect(user.errors[:password]).to include("パスワードは英数字である必要があります。")
+        expect(user.errors[:password]).to include("パスワードは半角英数字としてください。")
       end
 
-      it '数字のみのパスワードは無効' do
+      it '数字のみの場合、無効' do
         user.password = '1234567890'
         user.password_confirmation = '1234567890'
         expect(user).not_to be_valid
-        expect(user.errors[:password]).to include("パスワードは英数字である必要があります。")
+        expect(user.errors[:password]).to include("パスワードは半角英数字としてください。")
+      end
+
+      it '大文字を含む場合、無効' do
+        user.password = 'ABC123'
+        user.password_confirmation = 'ABC123'
+        expect(user).not_to be_valid
+        expect(user.errors[:password]).to include("パスワードは半角英数字としてください。")
+      end
+
+      it '特殊文字を含む場合、無効' do
+        user.password = 'abcd@123'
+        user.password_confirmation = 'abcd@123'
+        expect(user).not_to be_valid
+        expect(user.errors[:password]).to include("パスワードは半角英数字としてください。")
       end
     end
   end

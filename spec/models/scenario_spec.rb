@@ -17,8 +17,17 @@ RSpec.describe Scenario, type: :model do
   end
 
   describe 'バリデーションテスト' do
-    it { is_expected.to validate_presence_of(:user_id) }
-    it { is_expected.to validate_presence_of(:simulation_id) }
+    context '必須項目の確認' do
+      it 'user_idは必須' do
+        scenario.user_id = nil
+        expect(scenario).not_to be_valid
+      end
+
+      it 'simulation_idは必須' do
+        scenario.simulation_id = nil
+        expect(scenario).not_to be_valid
+      end
+    end
   end
 
   describe 'インスタンスメソッドテスト' do

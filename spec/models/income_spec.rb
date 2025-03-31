@@ -22,8 +22,15 @@ RSpec.describe Income, type: :model do
     let(:income) { build(:income) }
 
     context '必須項目の確認' do
-      it { is_expected.to validate_presence_of(:user_id) }
-      it { is_expected.to validate_presence_of(:simulation_id) }
+      it 'user_idは必須' do
+        income.user_id = nil
+        expect(income).not_to be_valid
+      end
+
+      it 'simulation_idは必須' do
+        income.simulation_id = nil
+        expect(income).not_to be_valid
+      end
 
       it '対象は必須' do
         income.person_type = nil
@@ -73,6 +80,26 @@ RSpec.describe Income, type: :model do
         income.retirement_pay = -1
         expect(income).not_to be_valid
         expect(income.errors[:retirement_pay]).to include("退職金はプラス値で入力してください。")
+      end
+    end
+
+    context '数値入力の確認' do
+      it "月収が文字列の場合、無効" do
+        income.monthly_income = "abc"
+        expect(income).not_to be_valid
+        expect(income.errors[:monthly_income]).to include("数値を入力してください。")
+      end
+
+      it "賞与が文字列の場合、無効" do
+        income.yearly_bonus = "abc"
+        expect(income).not_to be_valid
+        expect(income.errors[:yearly_bonus]).to include("数値を入力してください。")
+      end
+
+      it "退職金が文字列の場合、無効" do
+        income.retirement_pay = "abc"
+        expect(income).not_to be_valid
+        expect(income.errors[:retirement_pay]).to include("数値を入力してください。")
       end
     end
   end

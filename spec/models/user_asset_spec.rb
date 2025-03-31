@@ -36,8 +36,15 @@ RSpec.describe UserAsset, type: :model do
 
   describe 'バリデーションテスト' do
     context '必須項目の確認' do
-      it { is_expected.to validate_presence_of(:user_id) }
-      it { is_expected.to validate_presence_of(:simulation_id) }
+      it 'user_idは必須' do
+        user_asset.user_id = nil
+        expect(user_asset).not_to be_valid
+      end
+
+      it 'simulation_idは必須' do
+        user_asset.simulation_id = nil
+        expect(user_asset).not_to be_valid
+      end
 
       it '対象者は必須' do
         user_asset.person_type = nil
@@ -65,13 +72,13 @@ RSpec.describe UserAsset, type: :model do
     end
 
     context 'プラス値入力の確認' do
-      it '総額が0以上' do
+      it '総額は0以上' do
         user_asset.amount = -1
         expect(user_asset).not_to be_valid
         expect(user_asset.errors[:amount]).to include("総額はプラス値で入力してください。")
       end
 
-      it '利回りが0以上' do
+      it '利回りは0以上' do
         user_asset.return_rate = -1
         expect(user_asset).not_to be_valid
         expect(user_asset.errors[:return_rate]).to include("利回りはプラス値で入力してください。")
@@ -79,13 +86,13 @@ RSpec.describe UserAsset, type: :model do
     end
 
     context '数値入力の確認' do
-      it '総額が数値である' do
+      it '総額が文字列の場合、無効' do
         user_asset.amount = 'abc'
         expect(user_asset).not_to be_valid
         expect(user_asset.errors[:amount]).to include("数値を入力して下さい。")
       end
 
-      it '利回りが数値である' do
+      it '利回りが文字列の場合、無効' do
         user_asset.return_rate = 'abc'
         expect(user_asset).not_to be_valid
         expect(user_asset.errors[:return_rate]).to include("数値を入力して下さい。")

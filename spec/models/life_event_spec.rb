@@ -34,8 +34,15 @@ RSpec.describe LifeEvent, type: :model do
     let(:life_event) { build(:life_event) }
 
     context '必須項目の確認' do
-      it { is_expected.to validate_presence_of(:user_id) }
-      it { is_expected.to validate_presence_of(:simulation_id) }
+      it 'user_idは必須' do
+        life_event.user_id = nil
+        expect(life_event).not_to be_valid
+      end
+
+      it 'simulation_idは必須' do
+        life_event.simulation_id = nil
+        expect(life_event).not_to be_valid
+      end
 
       it 'イベントタイプは必須' do
         life_event.event_type = nil
@@ -69,7 +76,7 @@ RSpec.describe LifeEvent, type: :model do
     end
 
     context 'プラス値入力の確認' do
-      it '年額が0以上' do
+      it '年額は0以上' do
         life_event.amount = -1
         expect(life_event).not_to be_valid
         expect(life_event.errors[:amount]).to include("年額はプラス値で入力してください。")
@@ -77,7 +84,7 @@ RSpec.describe LifeEvent, type: :model do
     end
 
     context '数値入力の確認' do
-      it '年額が数値である' do
+      it '年額が文字列の場合、無効' do
         life_event.amount = 'abc'
         expect(life_event).not_to be_valid
         expect(life_event.errors[:amount]).to include("数値を入力して下さい。")

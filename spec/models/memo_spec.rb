@@ -9,6 +9,16 @@ RSpec.describe Memo, type: :model do
   end
 
   describe 'バリデーションテスト' do
-    it { is_expected.to validate_presence_of(:age_group) }
+    context '必須項目の確認' do
+      it 'user_idは必須' do
+        memo.user_id = nil
+        expect(memo).not_to be_valid
+      end
+
+      it 'age_groupは必須' do
+        memo.age_group = nil
+        expect(memo).not_to be_valid
+      end
+    end
   end
 end

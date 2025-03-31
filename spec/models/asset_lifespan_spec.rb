@@ -11,7 +11,56 @@ RSpec.describe AssetLifespan, type: :model do
   end
 
   describe 'バリデーションテスト' do
-    it { is_expected.to validate_presence_of(:asset_lifespan_scenario) }
+    context '必須項目の確認' do
+      it 'user_idは必須' do
+        asset_lifespan.user_id = nil
+        expect(asset_lifespan).not_to be_valid
+      end
+
+      it 'simulation_idは必須' do
+        asset_lifespan.simulation_id = nil
+        expect(asset_lifespan).not_to be_valid
+      end
+
+      it 'asset_lifespan_scenarioは必須' do
+        asset_lifespan.asset_lifespan_scenario = nil
+        expect(asset_lifespan).not_to be_valid
+      end
+
+      it 'lifespan_yearsは必須' do
+        asset_lifespan.lifespan_years = nil
+        expect(asset_lifespan).not_to be_valid
+      end
+
+      it 'lifespan_monthsは必須' do
+        asset_lifespan.lifespan_months = nil
+        expect(asset_lifespan).not_to be_valid
+      end
+    end
+
+    context 'プラス値の確認' do
+      it 'lifespan_yearsは、0以上' do
+        asset_lifespan.lifespan_years = -1
+        expect(asset_lifespan).not_to be_valid
+      end
+
+      it 'lifespan_monthsは、0以上' do
+        asset_lifespan.lifespan_months = -1
+        expect(asset_lifespan).not_to be_valid
+      end
+    end
+
+    context '数値の確認' do
+      it "lifespan_yearsが文字列の場合、無効" do
+        asset_lifespan.lifespan_years = "abc"
+        expect(asset_lifespan).not_to be_valid
+      end
+
+      it "lifespan_yearsが文字列の場合、無効" do
+        asset_lifespan.lifespan_months = "abc"
+        expect(asset_lifespan).not_to be_valid
+      end
+    end
   end
 
   describe 'クラスメソッドテスト' do

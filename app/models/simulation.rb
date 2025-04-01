@@ -34,8 +34,6 @@ class Simulation < ApplicationRecord
   end
 
   # ----------scenario_data計算処理----------
-
-  # 指定されたシナリオタイプのデータ用意
   def self.calculate_scenario_data(simulation, life_event_data)
     balance_scenario = simulation.merged_income_expense_event(life_event_data)
     total_income = simulation.get_total_income
@@ -61,52 +59,47 @@ class Simulation < ApplicationRecord
     }
   end
 
-  # 収入、支出、ライフイベント支出の統合
   def merged_income_expense_event(life_event_data)
     merged = merge_data(income_data, expense_data, life_event_data)
 
-    merged.each_cons(2) do |previous, current|  # 前年の収支を次年に反映
-      current["amount"] += previous["amount"]
+    # 前年収支を次年に反映
+    merged.each_cons(2) do |previous, current|
+      current["amount"] = (current["amount"] + previous["amount"]).round(1)
     end
+
     merged
   end
 
-  # 生涯収入の計算
-  def get_total_income
-    income_data.sum { |entry| entry["amount"].to_f }
-  end
-
-  # 生涯支出の計算
-  def get_total_expense(*datasets)
-    merge_data(*datasets).sum { |entry| entry["amount"].to_f }
-  end
-
-  # 月間支出の計算(DB側で合計)
-  def get_monthly_expense
-    expenses.sum(:housing_expenses) +
-    expenses.sum(:living_expenses) +
-    expenses.sum(:monthly_premiums) +
-    expenses.sum(:other_expenses)
-  end
-
-  # 年間不足額の計算
-  def calculate_shortage(total_balance)
-    remaining_years = [ 70 - user.calculate_user_age, 0 ].max # 70歳までの残り年数
-    return 0 if remaining_years == 0  # 残り年数が0なら不足額は0
-    (total_balance.abs / remaining_years.to_f).round(2)  # 年数を浮動小数点数に変換
-  end
-
-  # データ統合し、同じdateでamountを合計
   def merge_data(*datasets)
-    datasets = datasets.map { |dataset| dataset || [] }  # nilのデータセットは空配列に変換
-
+    datasets = datasets.map { |dataset| dataset || [] }           # nilの場合は空配列に変換
     merged = datasets.flatten.group_by { |entry| entry["date"] }
+
     merged.map do |date, entries|
       {
         "date" => date,
         "amount" => entries.sum { |entry| entry["amount"].to_f }
       }
     end.sort_by { |entry| entry["date"] }
+  end
+
+  def get_total_income
+    income_data.sum { |entry| entry["amount"].to_f }
+  end
+
+  def get_total_expense(*datasets)
+    merge_data(*datasets).sum { |entry| entry["amount"].to_f }
+  end
+
+  def get_monthly_expense  # (DB側処理)
+    expenses.sum(:housing_expenses) + expenses.sum(:living_expenses) +
+    expenses.sum(:monthly_premiums) + expenses.sum(:other_expenses)
+  end
+
+  def calculate_shortage(total_balance)
+    remaining_years = 70 - user.calculate_user_age  # 70歳までの残り年数
+    return 0 if remaining_years <= 0                # 0以下なら不足額は0
+
+    (total_balance.abs / remaining_years.to_f).round(1)
   end
 
   # ----------資産寿命の計算と保存----------

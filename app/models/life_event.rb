@@ -40,8 +40,14 @@ class LifeEvent < ApplicationRecord
   end
 
   def self.aggregate_by_year(year_amounts)
-    year_amounts.group_by { |event| event[:date] }.transform_values do |events|
+    grouped_events_by_date = year_amounts.group_by { |event| event[:date] }
+
+    aggregated_amounts = grouped_events_by_date.transform_values do |events|
       events.sum { |event| event[:amount] }
-    end.map { |year, amount| { date: year, amount: amount } }
+    end
+
+    aggregated_amounts.map do |year, amount|
+      { date: year, amount: amount }
+    end
   end
 end

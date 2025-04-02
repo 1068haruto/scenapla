@@ -75,7 +75,7 @@
   <div class="d-flex justify-content-center">
     <%= link_to 'ホームに戻る', dashboard_index_path, class: 'btn btn-outline-secondary me-2', data: { turbo: true } %>
     <% if @incomes.any? %>
-      <%= button_to '保存して次へ', update_income_data_simulation_path, method: :post, class: 'btn btn-primary', data: { turbo: true } %>
+      <%= button_to '保存して次へ', update_income_data_simulation_path, class: 'btn btn-primary', method: :post, data: { turbo: true } %>
     <% end %>
   </div>
 </div>

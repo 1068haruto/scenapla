@@ -9,17 +9,6 @@ class Simulation < ApplicationRecord
 
   validates :user_id, presence: true
 
-  # ----------simulations_table更新処理----------
-  def update_income_data!(user)
-    income_data = Income.generate_income_data_for(user)
-    update!(income_data: income_data)
-  end
-
-  def update_expense_data!(user)
-    expense_data = Expense.generate_expense_data_for(user)
-    update!(expense_data: expense_data)
-  end
-
   def update_user_asset_data!(user)
     user_asset_data = UserAsset.generate_user_asset_data_for(user)
     update!(user_asset_data: user_asset_data)

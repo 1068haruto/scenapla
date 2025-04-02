@@ -21,12 +21,7 @@ Rails.application.routes.draw do
   end
 
   resources :users, only: [ :show ]
-
-  resources :incomes, only: [ :index, :create, :destroy ] do
-    collection do
-      post :update_simulation_data
-    end
-  end
+  resources :incomes, only: [ :index, :create, :destroy ]
 
   resources :expenses, only: [ :index ] do
     collection do
@@ -45,6 +40,10 @@ Rails.application.routes.draw do
     collection do
       post :update_simulation_data
     end
+  end
+
+  resource :simulation, only: [] do
+    post :update_income_data
   end
 
   resources :scenarios, only: [ :index ] do

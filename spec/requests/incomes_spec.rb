@@ -45,18 +45,4 @@ RSpec.describe "Incomes", type: :request do
       expect(response).to have_http_status(:not_found) # 404
     end
   end
-
-  describe "POST /update_simulation_data" do
-    it "成功した場合はexpenses_pathにリダイレクトする" do
-      allow_any_instance_of(Simulation).to receive(:update_income_data!).and_return(true)
-      post update_simulation_data_incomes_path
-      expect(response).to have_http_status(:found)  # 302
-    end
-
-    it "失敗した場合はincomes_pathにリダイレクトする" do
-      allow_any_instance_of(Simulation).to receive(:update_income_data!).and_return(false)
-      post update_simulation_data_incomes_path
-      expect(response).to have_http_status(:found)  # 302
-    end
-  end
 end

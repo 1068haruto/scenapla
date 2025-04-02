@@ -9,30 +9,6 @@ class Simulation < ApplicationRecord
 
   validates :user_id, presence: true
 
-  # ----------simulations_table更新処理----------
-  def update_income_data!(user)
-    income_data = Income.generate_income_data_for(user)
-    update!(income_data: income_data)
-  end
-
-  def update_expense_data!(user)
-    expense_data = Expense.generate_expense_data_for(user)
-    update!(expense_data: expense_data)
-  end
-
-  def update_user_asset_data!(user)
-    user_asset_data = UserAsset.generate_user_asset_data_for(user)
-    update!(user_asset_data: user_asset_data)
-  end
-
-  def update_life_event_data!(user)
-    life_event_data = LifeEvent.generate_life_event_data_for(user)
-    update!(
-      real_event_data: life_event_data[:real_event_data].presence,
-      ideal_event_data: life_event_data[:ideal_event_data].presence
-    )
-  end
-
   # ----------scenario_data計算処理----------
   def self.calculate_scenario_data(simulation, life_event_data)
     balance_scenario = simulation.merged_income_expense_event(life_event_data)

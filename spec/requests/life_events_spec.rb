@@ -57,28 +57,4 @@ RSpec.describe "LifeEvents", type: :request do
       end
     end
   end
-
-  describe "POST /update_simulation_data" do
-    context "成功した場合" do
-      before do
-        allow_any_instance_of(Simulation).to receive(:update_life_event_data!).and_return(true)
-      end
-
-      it "scenarios_pathにリダイレクトし302を返す" do
-        post update_simulation_data_life_events_path
-        expect(response).to have_http_status(:found)  # 302
-      end
-    end
-
-    context "失敗した場合" do
-      before do
-        allow_any_instance_of(Simulation).to receive(:update_life_event_data!).and_return(false)
-      end
-
-      it "new_life_event_pathにリダイレクトし302を返す" do
-        post update_simulation_data_life_events_path
-        expect(response).to have_http_status(:found)  # 302
-      end
-    end
-  end
 end

@@ -177,42 +177,6 @@ RSpec.describe Simulation, type: :model do
       )
     end
 
-    describe 'simulation_data更新処理メソッド' do
-      before do
-        allow(Income).to receive(:generate_income_data_for).with(user).and_return(
-          [ { "date" => 2001, "amount" => 200 }, { "date" => 2002, "amount" => 300 } ]
-        )
-        allow(Expense).to receive(:generate_expense_data_for).with(user).and_return(
-          [ { "date" => 2001, "amount" => -100 }, { "date" => 2002, "amount" => -150 } ]
-        )
-        allow(UserAsset).to receive(:generate_user_asset_data_for).with(user).and_return({ "date"=>2000, "amount"=>500 })
-        allow(LifeEvent).to receive(:generate_life_event_data_for).with(user).and_return({
-          real_event_data: { "date"=>2010, "amount"=>100 }, ideal_event_data: { "date"=>2020, "amount"=>200 }
-        })
-      end
-
-      it '#update_income_data!' do
-        simulation.update_income_data!(user)
-        expect(simulation.income_data).to eq([ { "date" => 2001, "amount" => 200 }, { "date" => 2002, "amount" => 300 } ])
-      end
-
-      it '#update_expense_data!' do
-        simulation.update_expense_data!(user)
-        expect(simulation.expense_data).to eq([ { "date" => 2001, "amount" => -100 }, { "date" => 2002, "amount" => -150 } ])
-      end
-
-      it '#update_user_asset_data!' do
-        simulation.update_user_asset_data!(user)
-        expect(simulation.user_asset_data).to eq({ "date"=>2000, "amount"=>500 })
-      end
-
-      it '#update_life_event_data!' do
-        simulation.update_life_event_data!(user)
-        expect(simulation.real_event_data).to eq({ "date"=>2010, "amount"=>100 })
-        expect(simulation.ideal_event_data).to eq({ "date"=>2020, "amount"=>200 })
-      end
-    end
-
     describe '#merged_income_expense_event' do
       it '収入・支出・ライフイベントを統合し、前年の収支を繰り越す' do
         allow(simulation).to receive(:merge_data).with(

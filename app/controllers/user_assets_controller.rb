@@ -28,14 +28,6 @@ class UserAssetsController < ApplicationController
     end
   end
 
-  def update_simulation_data
-    if current_user.simulation.update_user_asset_data!(current_user)
-      redirect_to new_life_event_path, notice: t("message.simulation.update.success")
-    else
-      redirect_to user_assets_path, alert: t("message.simulation.update.failure")
-    end
-  end
-
   private
 
   def set_user_assets

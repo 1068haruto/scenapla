@@ -38,14 +38,6 @@ class LifeEventsController < ApplicationController
     end
   end
 
-  def update_simulation_data
-    if current_user.simulation.update_life_event_data!(current_user)
-      redirect_to scenarios_path, notice: t("message.simulation.update.success")
-    else
-      redirect_to new_life_event_path, alert: t("message.simulation.update.failure")
-    end
-  end
-
   private
 
   def set_life_events

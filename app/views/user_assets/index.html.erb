@@ -72,7 +72,7 @@
   <div class="d-flex justify-content-center">
     <%= link_to '支出に戻る', expenses_path, class: 'btn btn-outline-secondary me-2', data: { turbo: true } %>
     <% if @user_assets.any? %>
-      <%= button_to '保存して次へ', update_simulation_data_user_assets_path, method: :post, class: 'btn btn-primary' %>
+      <%= button_to '保存して次へ', update_user_asset_data_simulation_path, class: 'btn btn-primary', method: :post, data: { turbo: true } %>
     <% end %>
   </div>
 </div>

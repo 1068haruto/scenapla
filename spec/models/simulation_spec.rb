@@ -177,8 +177,6 @@ RSpec.describe Simulation, type: :model do
       )
     end
 
-    
-
     describe '#merged_income_expense_event' do
       it '収入・支出・ライフイベントを統合し、前年の収支を繰り越す' do
         allow(simulation).to receive(:merge_data).with(

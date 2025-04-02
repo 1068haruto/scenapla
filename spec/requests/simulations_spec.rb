@@ -27,7 +27,7 @@ RSpec.describe "Simulations", type: :request do
     context '失敗した場合' do
       before do
         allow(Income).to receive(:generate_income_data_for).and_return(income_data)
-        allow_any_instance_of(Simulation).to receive(:update!).and_return(false)
+        allow_any_instance_of(Simulation).to receive(:update).and_return(false)
         post update_income_data_simulation_path
       end
 
@@ -44,7 +44,7 @@ RSpec.describe "Simulations", type: :request do
     context '成功した場合' do
       before do
         allow(Expense).to receive(:generate_expense_data_for).and_return(expense_data)
-        allow_any_instance_of(Simulation).to receive(:update!).and_return(true)
+        allow_any_instance_of(Simulation).to receive(:update).and_return(true)
         post update_expense_data_simulation_path
       end
 
@@ -57,7 +57,7 @@ RSpec.describe "Simulations", type: :request do
     context '失敗した場合' do
       before do
         allow(Expense).to receive(:generate_expense_data_for).and_return(expense_data)
-        allow_any_instance_of(Simulation).to receive(:update!).and_return(false)
+        allow_any_instance_of(Simulation).to receive(:update).and_return(false)
         post update_expense_data_simulation_path
       end
 
@@ -87,7 +87,7 @@ RSpec.describe "Simulations", type: :request do
     context '失敗した場合' do
       before do
         allow(UserAsset).to receive(:generate_user_asset_data_for).and_return(user_asset_data)
-        allow_any_instance_of(Simulation).to receive(:update!).and_return(false)
+        allow_any_instance_of(Simulation).to receive(:update).and_return(false)
         post update_user_asset_data_simulation_path
       end
 
@@ -117,7 +117,7 @@ RSpec.describe "Simulations", type: :request do
     context '失敗した場合' do
       before do
         allow(LifeEvent).to receive(:generate_life_event_data_for).and_return(life_event_data)
-        allow_any_instance_of(Simulation).to receive(:update!).and_return(false)
+        allow_any_instance_of(Simulation).to receive(:update).and_return(false)
         post update_life_event_data_simulation_path
       end
 

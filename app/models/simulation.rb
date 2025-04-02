@@ -9,11 +9,6 @@ class Simulation < ApplicationRecord
 
   validates :user_id, presence: true
 
-  def update_user_asset_data!(user)
-    user_asset_data = UserAsset.generate_user_asset_data_for(user)
-    update!(user_asset_data: user_asset_data)
-  end
-
   def update_life_event_data!(user)
     life_event_data = LifeEvent.generate_life_event_data_for(user)
     update!(

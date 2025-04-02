@@ -50,28 +50,4 @@ RSpec.describe "UserAssets", type: :request do
       end
     end
   end
-
-  describe "POST /update_simulation_data" do
-    context "成功した場合" do
-      before do
-        allow_any_instance_of(Simulation).to receive(:update_user_asset_data!).and_return(true)
-      end
-
-      it "new_life_event_pathへリダイレクトし302を返す" do
-        post update_simulation_data_user_assets_path
-        expect(response).to have_http_status(:found) # 302
-      end
-    end
-
-    context "失敗した場合" do
-      before do
-        allow_any_instance_of(Simulation).to receive(:update_user_asset_data!).and_return(false)
-      end
-
-      it "user_assets_pathへリダイレクトし302を返す" do
-        post update_simulation_data_user_assets_path
-        expect(response).to have_http_status(:found) # 302
-      end
-    end
-  end
 end

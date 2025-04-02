@@ -22,4 +22,15 @@ class SimulationsController < ApplicationController
       redirect_to expenses_path, alert: t("message.simulation.update.failure")
     end
   end
+
+  def update_user_asset_data
+    return redirect_to user_assets_path, alert: t("message.simulation.update.failure") unless current_user.simulation
+
+    user_asset_data = UserAsset.generate_user_asset_data_for(current_user)
+    if current_user.simulation.update!(user_asset_data: user_asset_data)
+      redirect_to new_life_event_path, notice: t("message.simulation.update.success")
+    else
+      redirect_to user_assets_path, alert: t("message.simulation.update.failure")
+    end
+  end
 end

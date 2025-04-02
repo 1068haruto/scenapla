@@ -27,14 +27,6 @@ class IncomesController < ApplicationController
     end
   end
 
-  def update_simulation_data
-    if current_user.simulation.update_income_data!(current_user)
-      redirect_to expenses_path, notice: t("message.simulation.update.success")
-    else
-      redirect_to incomes_path, alert: t("message.simulation.update.failure")
-    end
-  end
-
   private
 
   def set_incomes

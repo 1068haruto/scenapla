@@ -30,17 +30,13 @@ Rails.application.routes.draw do
   end
 
   resources :user_assets, only: [ :index, :create, :destroy ]
-
-  resources :life_events, only: [ :index, :new, :create, :destroy ] do
-    collection do
-      post :update_simulation_data
-    end
-  end
+  resources :life_events, only: [ :index, :new, :create, :destroy ]
 
   resource :simulation, only: [] do
     post :update_income_data
     post :update_expense_data
     post :update_user_asset_data
+    post :update_life_event_data
   end
 
   resources :scenarios, only: [ :index ] do

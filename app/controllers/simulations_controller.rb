@@ -33,4 +33,18 @@ class SimulationsController < ApplicationController
       redirect_to user_assets_path, alert: t("message.simulation.update.failure")
     end
   end
+
+  def update_life_event_data
+    return redirect_to new_life_event_path, alert: t("message.simulation.update.failure") unless current_user.simulation
+
+    life_event_data = LifeEvent.generate_life_event_data_for(current_user)
+    if current_user.simulation.update!(
+      real_event_data: life_event_data[:real_event_data].presence,
+      ideal_event_data: life_event_data[:ideal_event_data].presence
+    )
+      redirect_to scenarios_path, notice: t("message.simulation.update.success")
+    else
+      redirect_to new_life_event_path, alert: t("message.simulation.update.failure")
+    end
+  end
 end

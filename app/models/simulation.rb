@@ -9,14 +9,6 @@ class Simulation < ApplicationRecord
 
   validates :user_id, presence: true
 
-  def update_life_event_data!(user)
-    life_event_data = LifeEvent.generate_life_event_data_for(user)
-    update!(
-      real_event_data: life_event_data[:real_event_data].presence,
-      ideal_event_data: life_event_data[:ideal_event_data].presence
-    )
-  end
-
   # ----------scenario_data計算処理----------
   def self.calculate_scenario_data(simulation, life_event_data)
     balance_scenario = simulation.merged_income_expense_event(life_event_data)

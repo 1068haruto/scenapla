@@ -68,7 +68,7 @@ RSpec.describe "Simulations", type: :request do
     end
   end
 
-  describe 'POST /simulation/update_expense_data' do
+  describe 'POST /simulation/update_user_asset_data' do
     let(:user_asset_data) { { user_asset_data: "test user_asset data" } }
 
     context '成功した場合' do
@@ -94,6 +94,36 @@ RSpec.describe "Simulations", type: :request do
       it 'user_assets_pathへリダイレクトする' do
         expect(response).to have_http_status(:found) # 302
         expect(response).to redirect_to(user_assets_path)
+      end
+    end
+  end
+
+  describe 'POST /simulation/update_life_event_data' do
+    let(:life_event_data) { { real_event_data: "test real event data", ideal_event_data: "test ideal event data" } }
+
+    context '成功した場合' do
+      before do
+        allow(LifeEvent).to receive(:generate_life_event_data_for).and_return(life_event_data)
+        allow_any_instance_of(Simulation).to receive(:update!).and_return(true)
+        post update_life_event_data_simulation_path
+      end
+
+      it 'scenarios_pathへリダイレクトする' do
+        expect(response).to have_http_status(:found) # 302
+        expect(response).to redirect_to(scenarios_path)
+      end
+    end
+
+    context '失敗した場合' do
+      before do
+        allow(LifeEvent).to receive(:generate_life_event_data_for).and_return(life_event_data)
+        allow_any_instance_of(Simulation).to receive(:update!).and_return(false)
+        post update_life_event_data_simulation_path
+      end
+
+      it 'new_life_event_pathへリダイレクトする' do
+        expect(response).to have_http_status(:found) # 302
+        expect(response).to redirect_to(new_life_event_path)
       end
     end
   end

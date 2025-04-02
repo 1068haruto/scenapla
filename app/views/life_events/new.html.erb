@@ -78,12 +78,7 @@
   <div class="d-flex justify-content-center">
     <%= link_to '資産に戻る', user_assets_path, class: 'btn btn-outline-secondary me-2', data: { turbo: true } %>
     <% if @life_events.any? %>
-      <%=
-        button_to '保存して次へ',
-        update_simulation_data_life_events_path(simulation_id: current_user.simulation.id),
-        method: :post,
-        class: 'btn btn-primary', data: { turbo: true }
-      %>
+      <%= button_to '保存して次へ', update_life_event_data_simulation_path, class: 'btn btn-primary', method: :post, data: { turbo: true } %>
     <% end %>
   </div>
 </div>

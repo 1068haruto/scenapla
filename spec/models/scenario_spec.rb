@@ -48,8 +48,8 @@ RSpec.describe Scenario, type: :model do
       before do
         allow(simulation).to receive(:real_event_data).and_return('real_data')
         allow(simulation).to receive(:ideal_event_data).and_return('ideal_data')
-        allow(Simulation).to receive(:calculate_scenario_data).with(simulation, 'real_data').and_return({ result: 'updated_real_data' })
-        allow(Simulation).to receive(:calculate_scenario_data).with(simulation, 'ideal_data').and_return({ result: 'updated_ideal_data' })
+        allow(Simulation).to receive(:generate_scenario_data).with(simulation, 'real_data').and_return({ result: 'updated_real_data' })
+        allow(Simulation).to receive(:generate_scenario_data).with(simulation, 'ideal_data').and_return({ result: 'updated_ideal_data' })
       end
 
       it '現実のシナリオデータ更新処理が呼ばれる' do

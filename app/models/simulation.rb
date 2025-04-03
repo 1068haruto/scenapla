@@ -9,8 +9,8 @@ class Simulation < ApplicationRecord
 
   validates :user_id, presence: true
 
-  # ----------scenario_data計算処理----------
-  def self.calculate_scenario_data(simulation, life_event_data)
+  # ----------scenario_data生成----------
+  def self.generate_scenario_data(simulation, life_event_data)
     balance_scenario = simulation.merged_income_expense_event(life_event_data)
     total_income = simulation.get_total_income
 
@@ -20,7 +20,7 @@ class Simulation < ApplicationRecord
     total_balance = total_income + total_expense
 
     monthly_expense_total = simulation.get_monthly_expense
-    withdrawal = (total_balance > 0) ? (total_balance / monthly_expense_total).round(2) : 0
+    withdrawal = (total_balance > 0) ? (total_balance / monthly_expense_total).round(1) : 0
     shortage = (total_balance < 0) ? simulation.calculate_shortage(total_balance) : 0
 
     calculate_and_save_lifespan_data(simulation)  # 資産寿命の計算と保存
@@ -59,11 +59,11 @@ class Simulation < ApplicationRecord
   end
 
   def get_total_income
-    income_data.sum { |entry| entry["amount"].to_f }
+    income_data.sum { |entry| entry["amount"].to_f }.round(1)
   end
 
   def get_total_expense(*datasets)
-    merge_data(*datasets).sum { |entry| entry["amount"].to_f }
+    merge_data(*datasets).sum { |entry| entry["amount"].to_f }.round(1)
   end
 
   def get_monthly_expense  # (DB側処理)

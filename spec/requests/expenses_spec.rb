@@ -34,4 +34,16 @@ RSpec.describe "Expenses", type: :request do
       end
     end
   end
+
+  describe "DELETE /destroy" do
+    it "削除成功の場合、302を返す" do
+      delete expense_path(expense)
+      expect(response).to have_http_status(:found)
+    end
+
+    it "削除失敗の場合、404を返す" do
+      delete expense_path(-1) # 存在しないID
+      expect(response).to have_http_status(:not_found) # 404
+    end
+  end
 end

@@ -15,7 +15,17 @@ class ExpensesController < ApplicationController
     if @expense.save
       redirect_to expenses_path, notice: t("message.expense.create_or_update.success")
     else
-      render_error
+      render_error(@expense.errors.full_messages.join(", "), :unprocessable_entity)
+    end
+  end
+
+  def destroy
+    expense = current_user.expenses.find(params[:id])
+
+    if expense.destroy
+      redirect_to expenses_path, notice: t("message.expense.destroy.success")
+    else
+      render_error(t("message.expense.destroy.failure"), :not_found)
     end
   end
 
@@ -29,8 +39,8 @@ class ExpensesController < ApplicationController
     params.require(:expense).permit(:housing_expenses, :repayment_date, :living_expenses, :monthly_premiums, :other_expenses)
   end
 
-  def render_error
-    flash.now[:error] = @expense.errors.full_messages.join(", ")
-    render :index, status: :unprocessable_entity
+  def render_error(message, status)
+    flash.now[:alert] = message
+    render :index, status: status
   end
 end

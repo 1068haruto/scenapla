@@ -20,17 +20,18 @@ Rails.application.routes.draw do
     patch "users/date_of_birth", to: "users/registrations#update_date_of_birth", as: "update_date_of_birth"
   end
 
-  resources :users, only: [ :show ]
-  resources :incomes, only: [ :index, :create, :destroy ]
+  resources :users,       only: [ :show ]
+  resources :incomes,     only: [ :index, :create, :destroy ]
+  resources :user_assets, only: [ :index, :create, :destroy ]
+  resources :life_events, only: [ :index, :new, :create, :destroy ]
+  resources :memos,       only: [ :create, :update ]
+  resources :news,        only: [ :index ]
 
-  resources :expenses, only: [ :index ] do
+  resources :expenses, only: [ :index, :destroy ] do
     collection do
       post :create_or_update
     end
   end
-
-  resources :user_assets, only: [ :index, :create, :destroy ]
-  resources :life_events, only: [ :index, :new, :create, :destroy ]
 
   resource :simulation, only: [] do
     post :update_income_data
@@ -45,20 +46,16 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :memos, only: [ :create, :update ]
-
   resource :openai_advice, only: [] do
     collection do
       post :generate_advice
     end
   end
 
-  resources :news, only: [ :index ]
-
-  root "home#index"           # トップ
-  get "static_pages/terms"    # 利用規約
-  get "static_pages/privacy"  # プライバシーポリシー
-  get "dashboard/index"       # ダッシュボード
+  root "home#index"
+  get "static_pages/terms"
+  get "static_pages/privacy"
+  get "dashboard/index"
 
   if Rails.env.development?
     mount LetterOpenerWeb::Engine, at: "/letter_opener"

@@ -8,7 +8,7 @@
 
   <div class="row d-flex justify-content-center">
     <div class="col-11 border border-dark rounded p-3 mb-4">
-      <%= form_with model: @expense, url: create_or_update_expenses_path, local: true, id: "expense-form" do |f| %>
+      <%= form_with model: @expense, url: create_or_update_expenses_path, local: true do |f| %>
         <div class="row d-flex justify-content-center">
           <div class="col-md-4 col-lg-3 col-xl-3">
             <%= f.label :housing_expenses, '住居費（家賃orローン）', class: 'form-label' %>
@@ -23,7 +23,8 @@
             <div class="input-group">
               <%=
                 f.select :repayment_date,
-                options_for_select([['支払なし', nil]] + (Date.today.year..(Date.today.year + 50)).map { |year| [year, year] }), {},
+                options_for_select([['支払なし', nil]] + (Date.today.year..(Date.today.year + 50)).map { |year| [year, year] }),
+                {},
                 class: 'form-select'
               %>
               <span class="input-group-text">年</span>
@@ -65,9 +66,7 @@
       <h5>追加した支出データ</h5>
       <h6>※再追加でデータが上書きされます</h6>
       <% if @latest_expense.present? %>
-        <div class="accordion" id="expensesAccordion">
-          <%= render 'expense', expense: @latest_expense, accordion_id: "expensesAccordion" %>
-        </div>
+        <%= render 'registered_expense', expense: @latest_expense, accordion_id: "expensesAccordion" %>
       <% else %>
         <p class="text-secondary">&nbsp;&nbsp;データがありません。</p>
       <% end %>
@@ -76,11 +75,8 @@
 
   <div class="d-flex justify-content-center">
     <%= link_to '収入に戻る', incomes_path, class: 'btn btn-outline-secondary me-2', data: { turbo: true } %>
-    <% if @latest_expense.present? && @latest_expense.id.present? %>
-      <%=
-        button_to '保存して次へ', update_expense_data_simulation_path, class: 'btn btn-primary',
-        method: :post, data: { turbo: true }
-      %>
+    <% if @latest_expense.present? %>
+      <%= button_to '保存して次へ', update_expense_data_simulation_path, class: 'btn btn-primary', method: :post, data: { turbo: true } %>
     <% end %>
   </div>
 </div>

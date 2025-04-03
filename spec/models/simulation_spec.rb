@@ -24,7 +24,7 @@ RSpec.describe Simulation, type: :model do
   end
 
   describe 'クラスメソッドテスト' do
-    describe ".calculate_scenario_data222" do
+    describe ".generate_scenario_data222" do
       let(:life_event_data) { [ { "date" => 2000, "amount" => 100 } ] }
 
       before do
@@ -40,7 +40,7 @@ RSpec.describe Simulation, type: :model do
         end
 
         it "シナリオデータを正しく計算し、資産寿命データを計算・保存する" do
-          result = described_class.calculate_scenario_data(simulation, life_event_data)
+          result = described_class.generate_scenario_data(simulation, life_event_data)
 
           expect(result[:balance_scenario]).to eq([ { "date" => 2000, "amount" => 100 } ])
           expect(result[:total_income]).to eq(2000)
@@ -59,7 +59,7 @@ RSpec.describe Simulation, type: :model do
         end
 
         it "シナリオデータを正しく計算し、資産寿命データを計算・保存する" do
-          result = described_class.calculate_scenario_data(simulation, life_event_data)
+          result = described_class.generate_scenario_data(simulation, life_event_data)
 
           expect(result[:balance_scenario]).to eq([ { "date" => 2000, "amount" => 100 } ])
           expect(result[:total_income]).to eq(2000)

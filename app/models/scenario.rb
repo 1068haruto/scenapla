@@ -12,7 +12,7 @@ class Scenario < ApplicationRecord
 
   def update_scenario_data!
     life_event_data = (scenario_type == "現実") ? simulation.real_event_data : simulation.ideal_event_data
-    calculated_data = Simulation.calculate_scenario_data(simulation, life_event_data)
+    calculated_data = Simulation.generate_scenario_data(simulation, life_event_data)
     update!(calculated_data)
 
   rescue StandardError => e

@@ -3,14 +3,10 @@ class LifeEventsController < ApplicationController
   before_action :set_life_events, only: [ :index, :new, :create, :destroy ]
 
   def index
-    @age_groups_to_display = ((current_user.calculate_user_age / 10) * 10..70).step(10).to_a
-    @grouped_life_events = @life_events.group_by {
-      |event| calculate_age_group(event.event_date.year, current_user.date_of_birth.year)
-    }
-    @memos = current_user.memos.group_by(&:age_group)
-
-    @advice_record = current_user.ai_advices.last
-    @advice = @advice_record.present? ? @advice_record.content : nil
+    @age_groups = calculate_age_groups
+    @grouped_life_events = group_life_events
+    @memos = group_memos
+    @advice = get_advice
   end
 
   def new
@@ -54,8 +50,23 @@ class LifeEventsController < ApplicationController
     render :new, status: status
   end
 
-  def calculate_age_group(event_year, birth_year)
-    age = event_year - birth_year
-    (age / 10) * 10
+  def calculate_age_groups
+    ((current_user.calculate_user_age / 10) * 10..70).step(10).to_a
+  end
+
+  def group_life_events
+    @life_events.group_by do |event|
+      age = event.event_date.year - current_user.date_of_birth.year
+      (age / 10) * 10
+    end
+  end
+
+  def group_memos
+    current_user.memos.group_by(&:age_group)
+  end
+
+  def get_advice
+    advice_record = current_user.ai_advices.last
+    advice_record.present? ? advice_record.content : nil
   end
 end

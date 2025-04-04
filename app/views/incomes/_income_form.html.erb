@@ -1,0 +1,48 @@
+<%= form_with model: income, url: incomes_path, local: true do |f| %>
+	<div class="row d-flex justify-content-center">
+    <div class="col-md-4 col-lg-2 col-xl-2">
+      <%= f.label :person_type, '対象者', class: 'form-label' %>
+      <%= f.select :person_type, Income.person_types.keys.map { |type| [type, type] }, {}, class: 'form-select', autofocus: true %>
+    </div>
+
+    <div class="col-md-4 col-lg-3 col-xl-2">
+      <%= f.label :monthly_income, '月収（手取り）', class: 'form-label' %>
+      <div class="input-group">
+        <%= f.number_field :monthly_income, class: 'form-control', step: 0.1, required: true %>
+        <span class="input-group-text">万円</span>
+      </div>
+    </div>
+
+    <div class="col-md-4 col-lg-3 col-xl-2">
+      <%= f.label :yearly_bonus, '賞与年額（手取り）', class: 'form-label' %>
+      <div class="input-group">
+        <%= f.number_field :yearly_bonus, class: 'form-control', step: 0.1, required: true %>
+        <span class="input-group-text">万円</span>
+      </div>
+    </div>
+
+    <div class="col-md-4 col-lg-3 col-xl-2">
+      <%= f.label :retirement_date, '退職時期', class: 'form-label' %>
+      <div class="input-group">
+        <%=
+          f.select :retirement_date,
+          options_for_select((Date.today.year..(Date.today.year + 50)).map { |year| [year, year] }), {},
+          class: 'form-select'
+        %>
+        <span class="input-group-text">年</span>
+      </div>  
+    </div>
+
+    <div class="col-md-4 col-lg-3 col-xl-2">
+      <%= f.label :retirement_pay, '退職金（手取り）', class: 'form-label' %>
+      <div class="input-group">
+        <%= f.number_field :retirement_pay, class: 'form-control', step: 0.1, required: true %>
+        <span class="input-group-text">万円</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-3 d-flex justify-content-center">
+    <%= f.submit '追加', class: 'btn btn-outline-primary' %>
+  </div>
+<% end %>

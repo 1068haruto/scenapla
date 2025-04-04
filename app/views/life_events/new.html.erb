@@ -9,52 +9,7 @@
   <div class="row d-flex justify-content-center">
     <p class="text-center">必ず実現したいイベントは「現実」、できれば実現したいイベントは「理想」を選択</p>
     <div class="col-11 border border-dark rounded p-3 mb-4">
-      <%= form_with model: @life_event, local: true do |f| %>
-        <div class="row d-flex justify-content-center">
-          <div class="col-md-3 col-lg-3 col-xl-2">
-            <%= f.label :event_type, 'イベントタイプ', class: 'form-label' %>
-            <%= f.select :event_type, [['現実', 0], ['理想', 1]], { selected: 0 }, class: 'form-select', autofocus: true %>
-          </div>
-
-          <div class="col-md-3 col-lg-3 col-xl-2">
-            <%= f.label :event_date, '時期', class: 'form-label' %>
-            <div class="input-group">
-              <%=
-                f.select :event_date,
-                options_for_select((Date.today.year..(Date.today.year + 50)).map { |year| [year, year] }),
-                {},
-                class: 'form-select'
-              %>
-              <span class="input-group-text">年</span>
-            </div>
-          </div>
-
-          <div class="col-md-5 col-lg-4 col-xl-3">
-            <%= f.label :title, 'タイトル', class: 'form-label' %>
-            <%= f.text_field :title, class: 'form-control', placeholder: '引越し、車購入、結婚など...', required: true %>
-          </div>
-
-          <div class="col-md-3 col-lg-3 col-xl-2">
-            <%= f.label :amount, '年額', class: 'form-label' %>
-            <div class="input-group">
-              <%= f.number_field :amount, class: 'form-control', step: 0.1, required: true %>
-              <span class="input-group-text">万円</span>
-            </div>
-          </div>
-
-          <div class="col-md-3 col-lg-2 col-xl-2">
-            <%= f.label :payment_period, '支払期間', class: 'form-label' %>
-            <div class="input-group">
-              <%= f.select :payment_period, (1..10).map { |i| [i.to_s, i] }, {selected: 1 }, class: 'form-select' %>
-              <span class="input-group-text">年間</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="mt-3 d-flex justify-content-center">
-          <%= f.submit '追加', class: 'btn btn-outline-primary' %>
-        </div>
-      <% end %>
+      <%= render 'life_event_form', life_event: @life_event %>
     </div>
 
     <div class="col-11 mb-4">

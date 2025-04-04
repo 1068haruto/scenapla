@@ -7,13 +7,13 @@
         data-bs-toggle="collapse"
         data-bs-target="#collapse-<%= accordion_id %>-<%= index %>"
         aria-expanded="false"
-        aria-controls="collapse-<%= accordion_id %>-<%= index %>">
-
+        aria-controls="collapse-<%= accordion_id %>-<%= index %>"
+      >
         <!-- 画像部分 -->
         <% if article['image'] %>
           <img src="<%= article['image'] %>" alt="<%= article['title'] %>" class="news-image me-3">
         <% else %>
-          <img src="/placeholder-image.jpg" alt="No Image" class="news-image me-3">  <!-- 画像がない場合の代替画像 -->
+          <img src="/placeholder-image.jpg" alt="No Image" class="news-image me-3">
         <% end %>
 
         <!-- テキスト部分 -->
@@ -29,8 +29,8 @@
       id="collapse-<%= accordion_id %>-<%= index %>"
       class="accordion-collapse collapse"
       aria-labelledby="heading-<%= accordion_id %>-<%= index %>"
-      data-bs-parent="#<%= accordion_id %>">
-
+      data-bs-parent="#<%= accordion_id %>"
+    >
       <div class="accordion-body">
         <p><%= article['description'] %></p>
         <a href="<%= article['url'] %>" target="_blank" class="text-primary ">記事全文を確認する</a>

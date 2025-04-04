@@ -7,34 +7,33 @@
         data-bs-toggle="collapse"
         data-bs-target="#collapse-<%= accordion_id %>-<%= index %>"
         aria-expanded="false"
-        aria-controls="collapse-<%= accordion_id %>-<%= index %>">
-          <span class="badge rounded-pill <%= user_asset.person_type == '配偶者' ? 'text-success' : 'text-primary' %>">
-            <%= user_asset.person_type %>
-          </span>
-          <%= user_asset.asset_type %>
+        aria-controls="collapse-<%= accordion_id %>-<%= index %>"
+      >
+        <span class="badge rounded-pill <%= user_asset.person_type == '配偶者' ? 'text-success' : 'text-primary' %>">
+          <%= user_asset.person_type %>
+        </span>
+        <%= user_asset.asset_type %>
       </button>
     </h2>
     <div
       id="collapse-<%= accordion_id %>-<%= index %>"
       class="accordion-collapse collapse"
       aria-labelledby="heading-<%= accordion_id %>-<%= index %>"
-      data-bs-parent="#<%= accordion_id %>">
-
+      data-bs-parent="#<%= accordion_id %>"
+    >
       <div class="accordion-body">
         <ul class="list-unstyled">
           <li><strong>総額:</strong><%= user_asset.amount %>万円</li>
           <li><strong>利回り:</strong><%= user_asset.return_rate.present? ? "#{user_asset.return_rate}%" : 'なし' %></li>
         </ul>
-        <% if show_delete_button %>
-          <div class="mt-2">
-            <%=
-              link_to '削除',
-              user_asset_path(user_asset),
-              class: 'btn btn-outline-danger btn-sm px-1 py-1',
-              data: { turbo_method: :delete }
-            %>
-          </div>
-        <% end %>
+        <div class="mt-2">
+          <%=
+            link_to '削除',
+            user_asset_path(user_asset),
+            class: 'btn btn-outline-danger btn-sm px-1 py-1',
+            data: { turbo_method: :delete }
+          %>
+        </div>
       </div>
     </div>
   </div>

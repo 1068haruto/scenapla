@@ -9,7 +9,7 @@
   <% if @news.any? %>
     <div class="accordion" id="newsAccordion">
       <% @news.each_with_index do |article, index| %>
-        <%= render 'news', article: article, index: index, accordion_id: "newsAccordion" %>
+        <%= render 'fetched_news', article: article, index: index, accordion_id: "newsAccordion" %>
       <% end %>
     </div>
   <% else %>

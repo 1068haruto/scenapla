@@ -1,0 +1,20 @@
+<header>
+  <nav class="navbar navbar-dark">
+    <div class="container-fluid">
+      <%= link_to 'Scenapla', user_signed_in? ? dashboard_index_path : root_path, class: 'navbar-brand', data: { turbo: false } %>
+      <% if user_signed_in? %>
+        <div>
+          <span class="sp-btn-username d-none d-md-inline"><%= "#{current_user.name}さん" %></span>
+
+          <!-- ハンバーガー（オフキャンバストリガー） -->
+          <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+        <%= render 'layouts/offcanvas' %>
+      <% else %>
+        <%= link_to 'ログイン', new_user_session_path, class: 'btn btn-outline-light btn-login', data: { turbo: true } %>
+      <% end %>
+    </div>
+  </nav>
+</header>

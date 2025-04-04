@@ -1,4 +1,3 @@
-<!-- offcanvasメニュー -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
   <div class="offcanvas-header">
     <h5 class="offcanvas-title" id="offcanvasNavbarLabel"><%= "#{current_user.name}さん" %></h5>
@@ -6,9 +5,9 @@
   </div>
 
   <div class="offcanvas-body">
-    <!-- ページボタン -->
     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
       <% if current_user.date_of_birth.nil? %>
+        
         <!-- 生年月日が未登録のユーザーへの表示 -->
         <li class="nav-item">
           <%= link_to "アカウント情報", user_path(current_user), class: 'nav-link' %>
@@ -18,6 +17,7 @@
           <%= link_to 'ログアウト', destroy_user_session_path, data: { turbo_method: :delete }, class: 'nav-link' %>
         </li>
       <% else %>
+        
         <!-- 生年月日が登録済のユーザーへの表示 -->
         <li class="nav-item">
           <%= link_to 'ダッシュボード', dashboard_index_path, class: 'nav-link', data: { turbo: true } %>

@@ -11,45 +11,16 @@
     <%= csp_meta_tag %>
 
     <%= render "layouts/ogp" %>
-    <%= yield :head %>
     <%= render "layouts/analytics" %>
-
-    <%= render "layouts/external_resources" %>
+    <%= render "layouts/resources" %>
     <%= render "layouts/icons" %>
-
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
   <body>
-    <header>
-      <nav class="navbar navbar-dark">
-        <div class="container-fluid">
-          <%= link_to 'Scenapla', user_signed_in? ? dashboard_index_path : root_path, class: 'navbar-brand', data: { turbo: false } %>
-
-          <% if user_signed_in? %>
-            <div>
-              <span class="sp-btn-username d-none d-md-inline"><%= "#{current_user.name}さん" %></span>
-
-              <!-- ハンバーガー（オフキャンバストリガー） -->
-              <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-                aria-controls="offcanvasNavbar">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-            </div>
-
-            <!-- オフキャンバス -->
-            <%= render 'layouts/offcanvas' %>
-          <% else %>
-            <%= link_to 'ログイン', new_user_session_path, class: 'btn btn-outline-light btn-login', data: { turbo: true } %>
-          <% end %>
-        </div>
-      </nav>
-    </header>
+    <%= render 'layouts/header' %>
 
     <main>
       <% if user_signed_in? && current_user.date_of_birth.present? %>
-        <!-- ナビゲーションタブ -->
         <%= render 'layouts/nav_tabs' %>
       <% end %>
 
@@ -61,20 +32,6 @@
       <%= yield %>
     </main>
 
-    <footer class="py-4">
-      <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
-        <div>
-          <%= link_to 'お問い合わせ', 
-                "https://docs.google.com/forms/d/e/1FAIpQLSfs5-SIS7h3jQtT4F3ulKjLrdgpX-EJjNNPqpkwhuBQ6s41dA/viewform?usp=sf_link", 
-                class: "btn btn-link px-2", target: "_blank", rel: "noopener", data: { turbo: true } %>
-          <%= link_to 'プライバシーポリシー', static_pages_privacy_path, class: "btn btn-link px-2", data: { turbo: true } %>
-          <%= link_to '利用規約', static_pages_terms_path, class: "btn btn-link px-2", data: { turbo: true } %>
-        </div>
-
-        <div class="text-center mt-md-0">
-          &copy; <%= Time.now.year %> My Website. All rights reserved.
-        </div>
-      </div>
-    </footer>
+    <%= render 'layouts/footer' %>
   </body>
 </html>

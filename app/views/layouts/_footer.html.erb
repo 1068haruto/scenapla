@@ -1,0 +1,17 @@
+<footer class="py-4">
+  <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+    <div>
+      <%=
+        link_to 'お問い合わせ', 
+        "https://docs.google.com/forms/d/e/1FAIpQLSfs5-SIS7h3jQtT4F3ulKjLrdgpX-EJjNNPqpkwhuBQ6s41dA/viewform?usp=sf_link", 
+        class: "btn btn-link px-2", target: "_blank", rel: "noopener", data: { turbo: true }
+      %>
+      <%= link_to 'プライバシーポリシー', static_pages_privacy_path, class: "btn btn-link px-2", data: { turbo: true } %>
+      <%= link_to '利用規約', static_pages_terms_path, class: "btn btn-link px-2", data: { turbo: true } %>
+    </div>
+
+    <div class="text-center mt-md-0">
+      &copy; <%= Time.now.year %> Scenapla. All rights reserved.
+    </div>
+  </div>
+</footer>

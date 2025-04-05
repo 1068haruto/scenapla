@@ -10,10 +10,10 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= render "layouts/ogp" %>
-    <%= render "layouts/analytics" %>
-    <%= render "layouts/resources" %>
-    <%= render "layouts/icons" %>
+    <%= render "layouts/head/ogp" %>
+    <%= render "layouts/head/analytics" %>
+    <%= render "layouts/head/resources" %>
+    <%= render "layouts/head/icons" %>
   </head>
 
   <body>
@@ -21,13 +21,13 @@
 
     <main>
       <% if user_signed_in? && current_user.date_of_birth.present? %>
-        <%= render 'layouts/nav_tabs' %>
+        <%= render 'layouts/main/nav_tabs' %>
       <% end %>
 
       <!-- メッセージ表示 -->
-      <%= render 'layouts/alert', message: notice, type: 'success' %>
-      <%= render 'layouts/alert', message: alert, type: 'danger' %>
-      <%= render 'layouts/alert', message: flash.now[:error], type: 'danger' %>
+      <%= render 'layouts/main/alert', message: notice, type: 'success' %>
+      <%= render 'layouts/main/alert', message: alert, type: 'danger' %>
+      <%= render 'layouts/main/alert', message: flash.now[:error], type: 'danger' %>
 
       <%= yield %>
     </main>

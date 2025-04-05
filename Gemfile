@@ -44,7 +44,7 @@ gem "ruby-openai", "~> 7.4"
 group :development, :test do
   gem "debug", "~> 1.9", platforms: %i[ mri windows ], require: "debug/prelude"
   gem "brakeman", "~> 7.0", require: false  # Static analysis for security vulnerabilities
-  gem "rubocop-rails-omakase", "~> 1.0", require: false  # Omakase Ruby styling
+  gem "rubocop-rails-omakase", "~> 1.1", require: false  # Omakase Ruby styling
 
   # rubocop関連
   gem "rubocop", "~> 1.50"

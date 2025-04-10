@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe AssetLifespan, type: :model do
   let!(:user) { create(:user) }
   let!(:simulation) { create(:simulation, user: user) }
-  let(:asset_lifespan) { create(:asset_lifespan, user: user, simulation: simulation) }
+  let(:asset_lifespan) { build(:asset_lifespan, user: user, simulation: simulation) }
 
   describe 'アソシエーションテスト' do
     it { is_expected.to belong_to(:user) }

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe AiAdvice, type: :model do
   let!(:user) { create(:user) }
-  let(:ai_advice) { create(:ai_advice, user: user) }
+  let(:ai_advice) { build(:ai_advice, user: user) }
 
   describe 'アソシエーションテスト' do
     it { is_expected.to belong_to(:user) }

@@ -1,3 +1,6 @@
+## サービス名  
+[Scenapla](https://scenapla.com/)  
+[![Image from Gyazo](https://i.gyazo.com/ac33f0a14906f6b649b95a5130d2f72e.png)](https://gyazo.com/ac33f0a14906f6b649b95a5130d2f72e)  
 ## サービス概要  
 ### 現状と未来を見える化し、人生設計をサポート  
 本サービスは、個人の経済状況やキャリアの方向性に悩む人のための「経済シミュレーション・ライフプラン管理ツール」です。
@@ -47,22 +50,22 @@ PC、タブレット、スマートフォン
 ### 利用イメージ  
 #### 1. 情報入力  
 シミュレーションを行うための情報を入力します。  
-![入力画面](./public/screen-income.png)  
+[![Image from Gyazo](https://i.gyazo.com/1371f2429575ea14fa7b7bab6d8f3ed7.png)](https://gyazo.com/1371f2429575ea14fa7b7bab6d8f3ed7)  
 #### 2. シミュレーション結果確認  
 4つのシミュレーション結果が表示されます。  
 1. 資産寿命  
-![資産寿命](./public/screen-asset_lifespan.png)  
+[![Image from Gyazo](https://i.gyazo.com/a8d5f18803ad6a40627561b24d8aa34e.png)](https://gyazo.com/a8d5f18803ad6a40627561b24d8aa34e)  
 2. 現実的シナリオ（必ず実現したいライフイベントを考慮した経済状況）  
-![現実的シナリオ](./public/screen-real_scenario.png)  
+[![Image from Gyazo](https://i.gyazo.com/6d05f332613db0e9ce3a062aae3f7f62.png)](https://gyazo.com/6d05f332613db0e9ce3a062aae3f7f62)  
 3. 理想的シナリオ（できれば実現したいライフイベントを考慮した経済状況）  
-![理想的シナリオ](./public/screen-ideal_scenario.png)  
+[![Image from Gyazo](https://i.gyazo.com/ea97f88e3a78b43551891706812e914f.png)](https://gyazo.com/ea97f88e3a78b43551891706812e914f)  
 4. 運用資産シナリオ  
-![運用資産](./public/screen-asset_scenario.png)  
+[![Image from Gyazo](https://i.gyazo.com/7d26a907011ebf8f8a632b9609f8a37b.png)](https://gyazo.com/7d26a907011ebf8f8a632b9609f8a37b)  
 #### 3. AIアドバイス確認 & ライフプラン記録  
 登録されたライフイベントは自動的に時系列に並び、計画やメモを記録できます。  
-![ライフプラン](./public/screen-life_plan.png)  
+[![Image from Gyazo](https://i.gyazo.com/56bb190880ea0d5db5112d1b908f68c7.png)](https://gyazo.com/56bb190880ea0d5db5112d1b908f68c7)  
 #### 4. ニュースの確認  
-![ニュース](./public/screen-news.png)  
+[![Image from Gyazo](https://i.gyazo.com/f0057180fdc6b6eae1ee548489e699d3.png)](https://gyazo.com/f0057180fdc6b6eae1ee548489e699d3)
 
 ## サービスの差別化ポイント・推しポイント  
 - **柔軟なシミュレーション**  
@@ -86,4 +89,4 @@ PC、タブレット、スマートフォン
 | CI/CDツール | GitHub Actions |  
 
 ### ER図  
-![ER図](./public/erd-scenapla.png)  
+[![Image from Gyazo](https://i.gyazo.com/4fb50d1b89bd29ff8795f595b77e749b.png)](https://gyazo.com/4fb50d1b89bd29ff8795f595b77e749b)  

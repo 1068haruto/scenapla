@@ -1,6 +1,6 @@
-## サービス名  
-[Scenapla](https://scenapla.com/)  
 [![Image from Gyazo](https://i.gyazo.com/ac33f0a14906f6b649b95a5130d2f72e.png)](https://gyazo.com/ac33f0a14906f6b649b95a5130d2f72e)  
+## サービス名  
+### [Scenapla（シナプラ）](https://scenapla.com/)  
 ## サービス概要  
 ### 現状と未来を見える化し、人生設計をサポート  
 本サービスは、個人の経済状況やキャリアの方向性に悩む人のための「経済シミュレーション・ライフプラン管理ツール」です。

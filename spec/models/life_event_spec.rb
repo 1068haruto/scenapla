@@ -3,21 +3,6 @@ require 'rails_helper'
 RSpec.describe LifeEvent, type: :model do
   let!(:user) { create(:user) }
   let!(:simulation) { create(:simulation, user: user) }
-  let!(:real_event1) do
-    create(:life_event,
-      user: user, simulation: simulation, event_type: "現実", event_date: 2025, amount: 10, payment_period: 2
-    )
-  end
-  let!(:real_event2) do
-    create(:life_event,
-      user: user, simulation: simulation, event_type: "現実", event_date: 2026, amount: 20, payment_period: 1
-    )
-  end
-  let!(:ideal_event1) do
-    create(:life_event,
-      user: user, simulation: simulation, event_type: "理想", event_date: 2025, amount: 30, payment_period: 1
-    )
-  end
 
   describe 'アソシエーションテスト' do
     it { is_expected.to belong_to(:user) }
@@ -181,9 +166,9 @@ RSpec.describe LifeEvent, type: :model do
       result = described_class.send(:extract_yearly_amounts, events)
 
       expect(result).to contain_exactly(
-        { date: 2025, amount: -10 }, # real_event1 の 1年目
-        { date: 2026, amount: -10 }, # real_event1 の 2年目
-        { date: 2026, amount: -20 }  # real_event2 の 1年目
+        { date: 2025, amount: -10 },  # real_event1の1年目
+        { date: 2026, amount: -10 },  # real_event1の2年目
+        { date: 2026, amount: -20 }   # real_event2の1年目
       )
     end
   end

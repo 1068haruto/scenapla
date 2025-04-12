@@ -7,8 +7,8 @@ FactoryBot.define do
     confirmed_at { Time.current }
     date_of_birth { Date.new(Date.today.year - 40, 1, 1) }
 
-    # user作成時のscenarioデータ作成を抑制する必要がある特定のテストに使用。下記のように呼び出す。
-    # let!(:user) { create(:user, :without_scenarios) }
+    # user作成時のscenarioデータ作成を抑制する必要があるテストで使用。
+    # 次のように使用する。let!(:user) { create(:user, :without_scenarios) }
     trait :without_scenarios do
       after(:create) { |user| user.scenarios.delete_all }
     end

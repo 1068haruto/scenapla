@@ -150,7 +150,6 @@ RSpec.describe Expense, type: :model do
       let(:current_year) { 2025 }
       let(:year_age_seventy) { 2027 }
 
-      # モック化
       before do
         allow(model).to receive(:calculate_yearly_expense_for_year).with(2025).and_return(100)
         allow(model).to receive(:calculate_yearly_expense_for_year).with(2026).and_return(200)
@@ -159,7 +158,6 @@ RSpec.describe Expense, type: :model do
 
       it '各年のデータを含むハッシュの配列を返す' do
         result = model.calculate_yearly_expenses(current_year, year_age_seventy)
-
         expect(result).to eq([
           { date: 2025, amount: 100 }, { date: 2026, amount: 200 }, { date: 2027, amount: 300 }
         ])

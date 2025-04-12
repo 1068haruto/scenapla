@@ -76,7 +76,8 @@ RSpec.describe AssetLifespan, type: :model do
           expect do
             described_class.update_lifespan_data!(simulation, yearly_lifespan, lifespan_years, lifespan_months)
             asset_lifespan.reload
-          end.to change { asset_lifespan.asset_lifespan_scenario }.from({ "2000" => 10, "2001" => -10 }).to({ "2000" => 20, "2001" => -20 })
+          end.to change { asset_lifespan.asset_lifespan_scenario }
+            .from({ "2000" => 10, "2001" => -10 }).to({ "2000" => 20, "2001" => -20 })
             .and change { asset_lifespan.lifespan_years }.to(2)
             .and change { asset_lifespan.lifespan_months }.to(1)
         end

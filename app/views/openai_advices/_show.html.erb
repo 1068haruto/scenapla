@@ -2,6 +2,7 @@
   <div class="card-header d-flex align-items-center">
     <h4 class="mt-2">AI からのアドバイス</h4>
     <%= button_to '生成する', generate_advice_openai_advice_path, method: :post, class: "btn btn-outline-primary btn-sm ms-3" %>
+    <p class="mt-3 ms-auto text-muted">今月の生成可能回数 残り <%= @remaining_advice_count %> 回</p>
   </div>
   <div class="card-body">
     <% if @advice.nil? %>

@@ -7,6 +7,7 @@ class LifeEventsController < ApplicationController
     @grouped_life_events = group_life_events
     @memos = group_memos
     @advice = get_advice
+    @remaining_advice_count = get_advice_count
   end
 
   def new
@@ -68,5 +69,12 @@ class LifeEventsController < ApplicationController
   def get_advice
     advice_record = current_user.ai_advices.last
     advice_record.present? ? advice_record.content : nil
+  end
+
+  def get_advice_count
+    start_of_month = Time.zone.now.beginning_of_month
+    monthly_advice_total = current_user.ai_advices.where("created_at >= ?", start_of_month).count
+    result = monthly_advice_total - 3
+    result < 0 ? result.abs : result
   end
 end

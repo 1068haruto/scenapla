@@ -47,14 +47,14 @@ group :development, :test do
   gem "rubocop-rails-omakase", "~> 1.1", require: false  # Omakase Ruby styling
 
   # rubocop関連
-  gem "rubocop", "~> 1.50"
-  gem "rubocop-rails", "~> 2.25"
+  gem "rubocop", "~> 1.75"
+  gem "rubocop-rails", "~> 2.32"
   gem "rubocop-performance", "~> 1.22"
 
   # RSpec関連
   gem "rspec-rails", "~> 7.1"
   gem "factory_bot_rails", "~> 6.4"
-  gem "shoulda-matchers", "~> 5.0"
+  gem "shoulda-matchers", "~> 6.5"
 
   # debug関連
   gem "pry", "~> 0.15"
@@ -67,5 +67,5 @@ end
 
 group :test do
   gem "capybara", "~> 3.40"
-  gem "selenium-webdriver", "~> 4.25"
+  gem "selenium-webdriver", "~> 4.32"
 end

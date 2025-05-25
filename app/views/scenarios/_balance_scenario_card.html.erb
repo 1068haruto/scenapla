@@ -1,0 +1,15 @@
+<div class="card-header d-flex align-items-center">
+  <h4 class="mt-2"><%= title %></h4>
+  <% if show_balance_scenario?(balance_chart_data) %>
+    <span class="ms-auto"><%= formatted_date(updated_at) %>時点</span>
+  <% end %>
+</div>
+<div class="card-body">
+  <% if show_balance_scenario?(balance_chart_data) %>
+    <%= render 'balance_summary', total_income: total_income, total_expense: total_expense, total_balance: total_balance %>
+    <%= render 'withdrawal_and_shortage', withdrawal: withdrawal, shortage: shortage %>
+    <%= balance_chart(balance_chart_data, title) %>
+  <% else %>
+    <p>情報入力が不足しているため、表示できません。</p>
+  <% end %>
+</div>

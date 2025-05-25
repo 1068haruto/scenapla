@@ -11,7 +11,7 @@ class OpenaiAdviceService
   end
 
   def generate_and_save_advice
-    return "今月のアドバイス取得回数の上限に達しました。取得回数は翌月にリセットされます。" if advice_request_limit_reached?
+    return "今月のアドバイス生成可能回数の上限に達しました。回数は翌月にリセットされます。" if advice_request_limit_reached?
     return "データ入力がないため、アドバイスを生成できません。" unless valid_scenario_data?
     return "シナリオの更新がありません。" unless scenario_updated?
 

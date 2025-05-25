@@ -11,18 +11,16 @@
   <div class="card mb-4">
     <div class="card-header d-flex align-items-center">
       <h4 class="mt-2">資産寿命シナリオ</h4>
-      <% if show_asset_lifespan_scenario? %>
+      <% if show_asset_lifespan_scenario?(@asset_lifespan) %>
         <span class="ms-auto"><%= formatted_date(@asset_lifespan_updated_at) %>時点</span>
       <% end %>
     </div>
     <div class="card-body">
-      <% if show_asset_lifespan_scenario? %>
-        <p>
-          現在の生活水準の場合、資産寿命は<strong><%= @lifespan_years %>年<%= @lifespan_months %>ヶ月</strong> です。
-        </p>
+      <% if show_asset_lifespan_scenario?(@asset_lifespan) %>
+        <p>現在の生活水準の場合、資産寿命は<strong><%= @lifespan_years %>年<%= @lifespan_months %>ヶ月</strong> です。</p>
         <%= lifespan_chart(@lifespan_chart_data) %>
       <% else %>
-        <p>情報入力が不足している為、表示できません。</p>
+        <p>支出または資産情報が未登録ため、表示できません。</p>
       <% end %>
     </div>
   </div>
@@ -57,21 +55,26 @@
   <div class="card mb-4">
     <div class="card-header d-flex align-items-center">
       <h4 class="mt-2">資産運用シナリオ</h4>
-      <% if show_asset_scenario? %>
+      <% if show_asset_scenario?(@asset_data, @user_assets) %>
         <span class="ms-auto"><%= formatted_date(@user_asset_data_updated_at) %>時点</span>
       <% end %>
     </div>
     <div class="card-body">
-      <% if show_asset_scenario? %>
-        <p>
-          現在の資産を運用した場合の今後の推移です。
-        </p>
+      <% if show_asset_scenario?(@asset_data, @user_assets) %>
+        <p>現在の資産を運用した場合の今後の推移です。</p>
         <%= asset_chart(@asset_data) %>
       <% else %>
         <p>資産情報が未登録のため、表示できません。</p>
       <% end %>
     </div>
   </div>
+
+  <% if show_next_button?(@simulation) %>
+    <p class="mb-5 text-muted">
+      ※ 各シナリオは、特定の前提条件に基づいて算出した概算値であり、市場の動向や個々の状況変化により、実際の数値とは異なる場合があります。<br>
+      &nbsp;&nbsp;&nbsp;将来を保証するものではなく、意思決定の補助としてご利用ください。
+    </p>
+  <% end %>
 
   <div class="d-flex justify-content-center">
     <% if show_next_button?(@simulation) %>
@@ -81,11 +84,4 @@
       <%= link_to '情報入力画面へ', incomes_path, class: 'btn btn-primary me-2', data: { turbo_method: :get } %>
     <% end %>
   </div>
-
-  <% if show_next_button?(@simulation) %>
-    <p class="mt-5 text-muted">
-      ※ 各シナリオは、特定の前提条件に基づいて算出した概算値であり、市場の動向や個々の状況変化により、実際の数値とは異なる場合があります。<br>
-      &nbsp;&nbsp;&nbsp;将来を保証するものではなく、意思決定の補助としてご利用ください。
-    </p>
-  <% end %>
 </div>

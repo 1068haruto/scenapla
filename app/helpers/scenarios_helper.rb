@@ -1,19 +1,21 @@
 module ScenariosHelper
   # 条件分岐 -----------------------------
-  def show_asset_lifespan_scenario?
-    @asset_lifespan.present? && @asset_lifespan.asset_lifespan_scenario.present?
+  def show_asset_lifespan_scenario?(asset_lifespan)
+    asset_lifespan.present? && asset_lifespan.asset_lifespan_scenario.present?
   end
 
   def show_balance_scenario?(balance_chart_data)
     !balance_chart_data.empty? && @incomes.any? && @expenses.any?
   end
 
-  def show_asset_scenario?
-    !@asset_data.empty? && @user_assets.any?
+  def show_asset_scenario?(asset_data, user_assets)
+    !asset_data.empty? && user_assets.any?
   end
 
   def show_next_button?(simulation)
-    simulation.user_asset_data.present? && simulation.user_asset_data.any?
+    # 「資産入力情報があり、資産データが存在する」or「収入と支出入力情報があり、収入と支出データが存在する」場合に表示
+    simulation.user_assets.present? && simulation.user_asset_data.any? ||
+    simulation.incomes.present? && simulation.expenses.present? && simulation.income_data.any? && simulation.expense_data.any?
   end
 
   # 日付表示部分 --------------------------

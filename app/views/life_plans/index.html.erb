@@ -1,0 +1,52 @@
+<% content_for :title do %>LifePlan<% end %>
+
+<div class="container">
+  <div class="mt-3 mb-5 text-center">
+    <h1 class="display-4">LifePlan</h1>
+    <h4 class="mb-3">プランの具体化</h4>
+    <p>今後の計画や目標などをメモに整理しましょう。</p>
+  </div>
+
+  <%= render "openai_advices/show", advice: @advice %>
+
+  <% @age_groups.each do |age_group| %>
+    <div class="card mb-3">
+      <div class="card-header">
+        <h3 class="mt-2"><%= age_group %>代</h3>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-5">
+            <% if @grouped_life_events[age_group].blank? %>
+              <p>ライフイベント未登録</p>
+            <% else %>
+              <div class="accordion" id="lifeEventsAccordion-<%= age_group %>">
+                <% @grouped_life_events[age_group].each_with_index do |life_event, index| %>
+                  <%=
+                    render 'life_events/registered_life_event', 
+                    life_event: life_event,
+                    index: index,
+                    accordion_id: "lifeEventsAccordion-#{age_group}",
+                    show_delete_button: false
+                  %>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+          <div class="col mt-2 mt-md-0">
+            <% first_memo = @memos[age_group]&.first %>
+            <%= render "memos/memo", age_group: age_group, first_memo: first_memo %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="d-flex justify-content-center">
+    <% if @grouped_life_events.empty? %>
+      <%= link_to '情報入力画面へ', incomes_path, class: 'btn btn-primary me-2', data: { turbo: true } %>
+    <% else %>
+      <%= link_to 'ライフイベント編集', life_events_path, class: 'btn btn-outline-secondary me-2', data: { turbo: true } %>
+    <% end %>
+  </div>
+</div>

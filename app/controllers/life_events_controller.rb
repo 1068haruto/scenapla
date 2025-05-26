@@ -1,16 +1,8 @@
 class LifeEventsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_life_events, only: [ :index, :new, :create, :destroy ]
+  before_action :set_life_events, only: [ :index, :create, :destroy ]
 
   def index
-    @age_groups = calculate_age_groups
-    @grouped_life_events = group_life_events
-    @memos = group_memos
-    @advice = get_advice
-    @remaining_advice_count = get_advice_count
-  end
-
-  def new
     @life_event = LifeEvent.new
   end
 
@@ -19,7 +11,7 @@ class LifeEventsController < ApplicationController
     @life_event.simulation = current_user.simulation
 
     if @life_event.save
-      redirect_to new_life_event_path, notice: t("message.life_event.create.success")
+      redirect_to life_events_path, notice: t("message.life_event.create.success")
     else
       render_error(@life_event.errors.full_messages.join(", "), :unprocessable_entity)
     end
@@ -29,7 +21,7 @@ class LifeEventsController < ApplicationController
     life_event = current_user.life_events.find(params[:id])
 
     if life_event.destroy
-      redirect_to new_life_event_path, notice: t("message.life_event.destroy.success")
+      redirect_to life_events_path, notice: t("message.life_event.destroy.success")
     else
       render_error(t("message.life_event.destroy.failure"), :not_found)
     end
@@ -48,33 +40,6 @@ class LifeEventsController < ApplicationController
 
   def render_error(message, status)
     flash.now[:alert] = message
-    render :new, status: status
-  end
-
-  def calculate_age_groups
-    ((current_user.calculate_user_age / 10) * 10..70).step(10).to_a
-  end
-
-  def group_life_events
-    @life_events.group_by do |event|
-      age = event.event_date.year - current_user.date_of_birth.year
-      (age / 10) * 10
-    end
-  end
-
-  def group_memos
-    current_user.memos.group_by(&:age_group)
-  end
-
-  def get_advice
-    advice_record = current_user.ai_advices.last
-    advice_record.present? ? advice_record.content : nil
-  end
-
-  def get_advice_count
-    start_of_month = Time.zone.now.beginning_of_month
-    monthly_advice_total = current_user.ai_advices.where("created_at >= ?", start_of_month).count
-    result = monthly_advice_total - 3
-    result < 0 ? result.abs : result
+    render :index, status: status
   end
 end

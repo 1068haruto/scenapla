@@ -19,16 +19,9 @@ RSpec.describe "LifeEvents", type: :request do
     end
   end
 
-  describe "GET /new" do
-    it "ページを表示し200を返す" do
-      get new_life_event_path
-      expect(response).to have_http_status(:success)  # 200
-    end
-  end
-
   describe "POST /create" do
     context "有効なフォーム入力の場合" do
-      it "new_life_event_pathにリダイレクトし302を返す" do
+      it "life_events_pathにリダイレクトし302を返す" do
         post life_events_path, params: { life_event: valid_params }
         expect(response).to have_http_status(:found)  # 302
       end
@@ -44,7 +37,7 @@ RSpec.describe "LifeEvents", type: :request do
 
   describe "DELETE /destroy" do
     context "イベントデータがあり、削除成功した場合" do
-      it "new_life_event_pathにリダイレクトし302を返す" do
+      it "life_events_pathにリダイレクトし302を返す" do
         delete life_event_path(life_event)
         expect(response).to have_http_status(:found)  # 302
       end

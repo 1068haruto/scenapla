@@ -78,9 +78,9 @@ RSpec.describe "Simulations", type: :request do
         post update_user_asset_data_simulation_path
       end
 
-      it 'new_life_event_pathへリダイレクトする' do
+      it 'life_events_pathへリダイレクトする' do
         expect(response).to have_http_status(:found) # 302
-        expect(response).to redirect_to(new_life_event_path)
+        expect(response).to redirect_to(life_events_path)
       end
     end
 
@@ -121,9 +121,9 @@ RSpec.describe "Simulations", type: :request do
         post update_life_event_data_simulation_path
       end
 
-      it 'new_life_event_pathへリダイレクトする' do
+      it 'life_events_pathへリダイレクトする' do
         expect(response).to have_http_status(:found) # 302
-        expect(response).to redirect_to(new_life_event_path)
+        expect(response).to redirect_to(life_events_path)
       end
     end
   end

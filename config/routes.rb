@@ -7,6 +7,10 @@ Rails.application.routes.draw do
     end
   end
 
+  root "home#index"
+  get "static_pages/terms"
+  get "static_pages/privacy"
+
   devise_for :users, controllers: {
     confirmations: "users/confirmations",
     passwords: "users/passwords",
@@ -20,10 +24,12 @@ Rails.application.routes.draw do
     patch "users/date_of_birth", to: "users/registrations#update_date_of_birth", as: "update_date_of_birth"
   end
 
+  resources :dashboard,   only: [ :index ]
   resources :users,       only: [ :show ]
   resources :incomes,     only: [ :index, :create, :destroy ]
   resources :user_assets, only: [ :index, :create, :destroy ]
-  resources :life_events, only: [ :index, :new, :create, :destroy ]
+  resources :life_events, only: [ :index, :create, :destroy ]
+  resources :life_plans,  only: [ :index ]
   resources :memos,       only: [ :create, :update ]
   resources :news,        only: [ :index ]
 
@@ -51,11 +57,6 @@ Rails.application.routes.draw do
       post :generate_advice
     end
   end
-
-  root "home#index"
-  get "static_pages/terms"
-  get "static_pages/privacy"
-  get "dashboard/index"
 
   if Rails.env.development?
     mount LetterOpenerWeb::Engine, at: "/letter_opener"

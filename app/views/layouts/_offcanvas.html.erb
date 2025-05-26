@@ -33,7 +33,7 @@
             <li><%= link_to '収入入力', incomes_path, class: 'dropdown-item', data: { turbo: true } %></li>
             <li><%= link_to '支出入力', expenses_path, class: 'dropdown-item', data: { turbo: true } %></li>
             <li><%= link_to '資産入力', user_assets_path, class: 'dropdown-item', data: { turbo: true } %></li>
-            <li><%= link_to 'ライフイベント入力', new_life_event_path, class: 'dropdown-item', data: { turbo: true } %></li>
+            <li><%= link_to 'ライフイベント入力', life_events_path, class: 'dropdown-item', data: { turbo: true } %></li>
           </ul>
         </li>
 
@@ -42,7 +42,7 @@
         </li>
 
         <li class="nav-item">
-          <%= link_to 'ライフプラン', life_events_path, class: 'nav-link', data: { turbo: true } %>
+          <%= link_to 'ライフプラン', life_plans_path, class: 'nav-link', data: { turbo: true } %>
         </li>
 
         <li class="nav-item dropdown">

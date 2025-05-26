@@ -79,7 +79,7 @@
   <div class="d-flex justify-content-center">
     <% if show_next_button?(@simulation) %>
       <%= link_to '条件を変えて再入力', incomes_path, class: 'btn btn-outline-secondary me-2', data: { turbo: true } %>
-      <%= link_to 'ライフプランへ', life_events_path, class: 'btn btn-primary me-2', data: { turbo: true } %>
+      <%= link_to 'ライフプランへ', life_plans_path, class: 'btn btn-primary me-2', data: { turbo: true } %>
     <% else %>
       <%= link_to '情報入力画面へ', incomes_path, class: 'btn btn-primary me-2', data: { turbo_method: :get } %>
     <% end %>

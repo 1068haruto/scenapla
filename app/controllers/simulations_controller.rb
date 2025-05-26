@@ -26,7 +26,7 @@ class SimulationsController < ApplicationController
     user_asset_data = UserAsset.generate_user_asset_data_for(current_user)
 
     if @simulation.update(user_asset_data: user_asset_data)
-      update_success(new_life_event_path)
+      update_success(life_events_path)
     else
       update_failure(user_assets_path)
     end
@@ -41,7 +41,7 @@ class SimulationsController < ApplicationController
     )
       update_success(scenarios_path)
     else
-      update_failure(new_life_event_path)
+      update_failure(life_events_path)
     end
   end
 

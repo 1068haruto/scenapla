@@ -1,6 +1,7 @@
 class IncomesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_incomes, only: [ :index, :create, :destroy ]
+  before_action :set_incomes, only: [:index, :edit, :update, :create, :destroy]
+  before_action :set_income, only: [:edit, :update, :destroy]
 
   def index
     @income = Income.new
@@ -17,10 +18,24 @@ class IncomesController < ApplicationController
     end
   end
 
-  def destroy
-    income = current_user.incomes.find(params[:id])
+  def edit
+    if @income
+      render :index
+    else
+      render_error(t("message.income.edit.failure"), :not_found)
+    end
+  end
 
-    if income.destroy
+  def update
+    if @income.update(income_params)
+      redirect_to incomes_path, notice: t("message.income.update.success")
+    else
+      render_error(t("message.income.update.failure"), :unprocessable_entity)
+    end
+  end
+
+  def destroy
+    if @income.destroy
       redirect_to incomes_path, notice: t("message.income.destroy.success")
     else
       render_error(t("message.income.destroy.failure"), :not_found)
@@ -31,6 +46,10 @@ class IncomesController < ApplicationController
 
   def set_incomes
     @incomes = current_user.incomes
+  end
+
+  def set_income
+    @income = current_user.incomes.find(params[:id])
   end
 
   def income_params

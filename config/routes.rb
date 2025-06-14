@@ -26,7 +26,7 @@ Rails.application.routes.draw do
 
   resources :dashboard,   only: [ :index ]
   resources :users,       only: [ :show ]
-  resources :incomes,     only: [ :index, :create, :destroy ]
+  resources :incomes,     only: [ :index, :create, :edit, :update, :destroy ]
   resources :user_assets, only: [ :index, :create, :destroy ]
   resources :life_events, only: [ :index, :create, :destroy ]
   resources :life_plans,  only: [ :index ]

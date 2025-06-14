@@ -31,6 +31,7 @@
             <li><strong>その他費用:</strong> <%= expense.other_expenses %>万円</li>
           </ul>
           <div class="mt-2">
+            <%= link_to '編集', edit_expense_path(expense), class: 'btn btn-outline-secondary btn-sm me-2' %>
             <%= link_to '削除', expense_path(expense), class: 'btn btn-outline-danger btn-sm px-1 py-1', data: { turbo_method: :delete } %>
           </div>
         </div>

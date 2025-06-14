@@ -18,7 +18,7 @@ ja:
       create:
         success: "収入データを追加しました。"
       edit:
-        failure: "収入データが見つかりません。"
+        failure: "収入データありません。"
       update:
         success: "収入データを変更しました。"
         failure: "収入データを変更できませんでした。"
@@ -26,8 +26,13 @@ ja:
         success: "収入データを削除しました。"
         failure: "収入データを削除できませんでした。"
     expense:
-      create_or_update:
+      create:
         success: "支出データを追加しました。"
+      edit:
+        failure: "支出データがありません。"
+      update:
+        success: "支出データを変更しました。"
+        failure: "支出データを変更できませんでした。"
       destroy: 
         success: "支出データを削除しました。"
         failure: "支出データを削除できませんでした。"

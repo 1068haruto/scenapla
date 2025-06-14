@@ -17,6 +17,11 @@ ja:
     income:
       create:
         success: "収入データを追加しました。"
+      edit:
+        failure: "収入データが見つかりません。"
+      update:
+        success: "収入データを変更しました。"
+        failure: "収入データを変更できませんでした。"
       destroy: 
         success: "収入データを削除しました。"
         failure: "収入データを削除できませんでした。"

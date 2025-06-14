@@ -1,4 +1,7 @@
-<%= form_with model: income, url: incomes_path, local: true do |f| %>
+<%= form_with model: income, url: income.persisted? ? income_path(income) : incomes_path,
+                             method: income.persisted? ? :patch : :post,
+                             local: true do |f|
+%>
 	<div class="row d-flex justify-content-center">
     <div class="col-md-4 col-lg-2 col-xl-2">
       <%= f.label :person_type, '対象者', class: 'form-label' %>
@@ -26,7 +29,11 @@
       <div class="input-group">
         <%=
           f.select :retirement_date,
-          options_for_select((Date.today.year..(Date.today.year + 50)).map { |year| [year, year] }), {},
+          options_for_select(
+            (Date.today.year..(Date.today.year + 50)).map { |year| [year, year] },
+            income.retirement_date&.year
+          ),
+          {},
           class: 'form-select'
         %>
         <span class="input-group-text">年</span>
@@ -43,6 +50,9 @@
   </div>
 
   <div class="mt-3 d-flex justify-content-center">
-    <%= f.submit '追加', class: 'btn btn-outline-primary' %>
+    <%= f.submit income.persisted? ? '更新' : '追加', class: 'btn btn-outline-primary me-2' %>
+    <% if income.persisted? %>
+      <%= link_to 'キャンセル', incomes_path, class: 'btn btn-outline-secondary' %>
+    <% end %>
   </div>
 <% end %>

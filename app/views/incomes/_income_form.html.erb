@@ -1,7 +1,4 @@
-<%= form_with model: income, url: income.persisted? ? income_path(income) : incomes_path,
-                             method: income.persisted? ? :patch : :post,
-                             local: true do |f|
-%>
+<%= form_with model: income, local: true do |f| %>
 	<div class="row d-flex justify-content-center">
     <div class="col-md-4 col-lg-2 col-xl-2">
       <%= f.label :person_type, '対象者', class: 'form-label' %>

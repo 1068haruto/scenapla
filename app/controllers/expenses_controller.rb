@@ -1,6 +1,6 @@
 class ExpensesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_latest_expense, only: [ :index, :edit, :update, :create, :destroy ]
+  before_action :set_latest_expense, only: [ :index, :create, :edit, :update, :destroy ]
   before_action :set_expense, only: [ :edit, :update, :destroy ]
 
   def index

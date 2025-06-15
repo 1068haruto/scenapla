@@ -30,7 +30,7 @@ class IncomesController < ApplicationController
     if @income.update(income_params)
       redirect_to incomes_path, notice: t("message.income.update.success")
     else
-      render_error(t("message.income.update.failure"), :unprocessable_entity)
+      render_error(@income.errors.full_messages.join(", "), :unprocessable_entity)
     end
   end
 

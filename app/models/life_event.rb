@@ -4,6 +4,8 @@ class LifeEvent < ApplicationRecord
 
   enum event_type: { 現実: 0, 理想: 1 }
 
+  PAYMENT_PERIOD_OPTIONS = (1..10).to_a.freeze
+
   validates :user_id, :simulation_id, presence: true
   validates :event_type, :event_date, :title, :payment_period, presence: true
   validates :amount, presence: true, numericality: { greater_than_or_equal_to: 0 }

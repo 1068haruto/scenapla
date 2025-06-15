@@ -29,7 +29,7 @@ Rails.application.routes.draw do
   resources :incomes,     only: [ :index, :create, :edit, :update, :destroy ]
   resources :expenses,    only: [ :index, :create, :edit, :update, :destroy ]
   resources :user_assets, only: [ :index, :create, :edit, :update, :destroy ]
-  resources :life_events, only: [ :index, :create, :destroy ]
+  resources :life_events, only: [ :index, :create, :edit, :update, :destroy ]
   resources :life_plans,  only: [ :index ]
   resources :memos,       only: [ :create, :update ]
   resources :news,        only: [ :index ]

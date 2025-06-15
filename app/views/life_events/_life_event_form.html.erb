@@ -2,7 +2,13 @@
 	<div class="row d-flex justify-content-center">
 		<div class="col-md-3 col-lg-3 col-xl-2">
 			<%= f.label :event_type, 'イベントタイプ', class: 'form-label' %>
-			<%= f.select :event_type, [['現実', 0], ['理想', 1]], { selected: 0 }, class: 'form-select', autofocus: true %>
+			<%=
+				f.select :event_type,
+				[['現実', 0], ['理想', 1]],
+				{ selected: life_event.event_type_before_type_cast },
+				class: 'form-select',
+				autofocus: true
+			%>
 		</div>
 
 		<div class="col-md-3 col-lg-3 col-xl-2">
@@ -10,7 +16,10 @@
 			<div class="input-group">
 				<%=
 					f.select :event_date,
-					options_for_select((Date.today.year..(Date.today.year + 50)).map { |year| [year, year] }),
+					options_for_select(
+						(Date.today.year..(Date.today.year + 50)).map { |year| [year, year] },
+						life_event.event_date&.year
+					),
 					{},
 					class: 'form-select'
 				%>
@@ -34,13 +43,21 @@
 		<div class="col-md-3 col-lg-2 col-xl-2">
 			<%= f.label :payment_period, '支払期間', class: 'form-label' %>
 			<div class="input-group">
-				<%= f.select :payment_period, (1..10).map { |i| [i.to_s, i] }, {selected: 1 }, class: 'form-select' %>
+				<%=
+					f.select :payment_period,
+  				LifeEvent::PAYMENT_PERIOD_OPTIONS.map { |n| ["#{n}", n] },
+  				{},
+  				class: 'form-select'
+				%>
 				<span class="input-group-text">年間</span>
 			</div>
 		</div>
 	</div>
 
 	<div class="mt-3 d-flex justify-content-center">
-		<%= f.submit '追加', class: 'btn btn-outline-primary' %>
+		<%= f.submit life_event.persisted? ? '更新' : '追加', class: 'btn btn-outline-primary me-2' %>
+    <% if life_event.persisted? %>
+      <%= link_to 'キャンセル', life_events_path, class: 'btn btn-outline-secondary' %>
+    <% end %>
 	</div>
 <% end %>

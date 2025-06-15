@@ -47,6 +47,10 @@ ja:
     life_event:
       create:
         success: "ライフイベントデータを追加しました。"
+      edit:
+        failure: "ライフイベントデータがありません。"
+      update:
+        success: "ライフイベントデータを変更しました。"
       destroy: 
         success: "ライフイベントデータを削除しました。"
         failure: "ライフイベントデータを削除できませんでした。"

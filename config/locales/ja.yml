@@ -21,7 +21,6 @@ ja:
         failure: "収入データありません。"
       update:
         success: "収入データを変更しました。"
-        failure: "収入データを変更できませんでした。"
       destroy: 
         success: "収入データを削除しました。"
         failure: "収入データを削除できませんでした。"
@@ -32,13 +31,16 @@ ja:
         failure: "支出データがありません。"
       update:
         success: "支出データを変更しました。"
-        failure: "支出データを変更できませんでした。"
       destroy: 
         success: "支出データを削除しました。"
         failure: "支出データを削除できませんでした。"
     user_asset:
       create:
         success: "資産データを追加しました。"
+      edit:
+        failure: "資産データがありません。"
+      update:
+        success: "資産データを変更しました。"
       destroy: 
         success: "資産データを削除しました。"
         failure: "資産データを削除できませんでした。"

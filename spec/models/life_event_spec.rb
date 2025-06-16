@@ -32,13 +32,13 @@ RSpec.describe LifeEvent, type: :model do
       it 'イベントタイプは必須' do
         life_event.event_type = nil
         expect(life_event).not_to be_valid
-        expect(life_event.errors[:event_type]).to include("イベントタイプを選択してください。")
+        expect(life_event.errors[:event_type]).to include("イベントタイプを入力してください。")
       end
 
       it '時期は必須' do
         life_event.event_date = nil
         expect(life_event).not_to be_valid
-        expect(life_event.errors[:event_date]).to include("時期を選択してください。")
+        expect(life_event.errors[:event_date]).to include("時期を入力してください。")
       end
 
       it 'タイトルは必須' do
@@ -56,7 +56,7 @@ RSpec.describe LifeEvent, type: :model do
       it '支払期間は必須' do
         life_event.payment_period = nil
         expect(life_event).not_to be_valid
-        expect(life_event.errors[:payment_period]).to include("支払期間を選択してください。")
+        expect(life_event.errors[:payment_period]).to include("支払期間を入力してください。")
       end
     end
 
@@ -72,7 +72,7 @@ RSpec.describe LifeEvent, type: :model do
       it '年額が文字列の場合、無効' do
         life_event.amount = 'abc'
         expect(life_event).not_to be_valid
-        expect(life_event.errors[:amount]).to include("数値を入力して下さい。")
+        expect(life_event.errors[:amount]).to include("数値を入力してください。")
       end
     end
   end

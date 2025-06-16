@@ -35,19 +35,19 @@ RSpec.describe Income, type: :model do
       it '対象は必須' do
         income.person_type = nil
         expect(income).not_to be_valid
-        expect(income.errors[:person_type]).to include("対象者を選択してください。")
+        expect(income.errors[:person_type]).to include("対象者を入力してください。")
       end
 
       it '月収は必須' do
         income.monthly_income = nil
         expect(income).not_to be_valid
-        expect(income.errors[:monthly_income]).to include("月収は必須です。", "数値を入力してください。")
+        expect(income.errors[:monthly_income]).to include("月収を入力してください。", "数値を入力してください。")
       end
 
       it '賞与年額は必須' do
         income.yearly_bonus = nil
         expect(income).not_to be_valid
-        expect(income.errors[:yearly_bonus]).to include("賞与年額は必須です。", "数値を入力してください。")
+        expect(income.errors[:yearly_bonus]).to include("賞与年額を入力してください。", "数値を入力してください。")
       end
 
       it '退職時期は必須' do
@@ -59,7 +59,7 @@ RSpec.describe Income, type: :model do
       it '退職金は必須' do
         income.retirement_pay = nil
         expect(income).not_to be_valid
-        expect(income.errors[:retirement_pay]).to include("退職金は必須です。", "数値を入力してください。")
+        expect(income.errors[:retirement_pay]).to include("退職金を入力してください。", "数値を入力してください。")
       end
     end
 

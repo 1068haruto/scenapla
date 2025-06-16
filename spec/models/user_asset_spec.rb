@@ -49,13 +49,13 @@ RSpec.describe UserAsset, type: :model do
       it '対象者は必須' do
         user_asset.person_type = nil
         expect(user_asset).not_to be_valid
-        expect(user_asset.errors[:person_type]).to include("対象者を選択してください。")
+        expect(user_asset.errors[:person_type]).to include("対象者を入力してください。")
       end
 
       it '資産種類は必須' do
         user_asset.asset_type = nil
         expect(user_asset).not_to be_valid
-        expect(user_asset.errors[:asset_type]).to include("資産種類を選択してください。")
+        expect(user_asset.errors[:asset_type]).to include("資産種類を入力してください。")
       end
 
       it '総額は必須' do
@@ -89,13 +89,13 @@ RSpec.describe UserAsset, type: :model do
       it '総額が文字列の場合、無効' do
         user_asset.amount = 'abc'
         expect(user_asset).not_to be_valid
-        expect(user_asset.errors[:amount]).to include("数値を入力して下さい。")
+        expect(user_asset.errors[:amount]).to include("数値を入力してください。")
       end
 
       it '利回りが文字列の場合、無効' do
         user_asset.return_rate = 'abc'
         expect(user_asset).not_to be_valid
-        expect(user_asset.errors[:return_rate]).to include("数値を入力して下さい。")
+        expect(user_asset.errors[:return_rate]).to include("数値を入力してください。")
       end
     end
   end

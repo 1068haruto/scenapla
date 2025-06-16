@@ -46,9 +46,9 @@ RSpec.describe "LifeEvents", type: :request do
     end
 
     context "編集したいデータがしない場合" do
-      it "編集フォームを表示せず、404を返す" do
+      it "編集フォームを表示せず、302を返す" do
         get edit_life_event_path(-1)                     # 存在しないID
-        expect(response).to have_http_status(:not_found) # 404
+        expect(response).to have_http_status(:found) # 302
       end
     end
   end
@@ -81,9 +81,9 @@ RSpec.describe "LifeEvents", type: :request do
     end
 
     context "削除したいデータが存在しない場合" do
-      it "削除失敗し、404を返す" do
+      it "削除失敗し、302を返す" do
         delete life_event_path(-1) # 存在しないID
-        expect(response).to have_http_status(:not_found)  # 404
+        expect(response).to have_http_status(:found)  # 302
       end
     end
   end

@@ -1,6 +1,6 @@
 class IncomesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_incomes, only: [ :index, :edit, :update, :create, :destroy ]
+  before_action :set_incomes, only: [ :index, :create, :edit, :update, :destroy ]
   before_action :set_income_or_redirect, only: [ :edit, :update, :destroy ]
 
   def index

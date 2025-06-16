@@ -16,7 +16,7 @@ class ExpensesController < ApplicationController
       old_expense.destroy if old_expense.present? && old_expense.id != @expense.id
       redirect_to expenses_path, notice: t("common.actions.create", model: "支出データ")
     else
-      render_error(@expense.errors.full_messages.join(", "), :unprocessable_entity)
+      render_error(@expense.errors.full_messages.join, :unprocessable_entity)
     end
   end
 

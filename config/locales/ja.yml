@@ -1,73 +1,50 @@
 ja:
-  message:
-    devise:
-      registration:
-        update:
-          success: "アカウント情報を更新しました。"
-          failure: "アカウント情報を更新できませんでした。"
-        update_date_of_birth:
-          success: "生年月日を登録しました。"
-          failure: "生年月日を登録できませんでした。"
-          not_sign_in: "ログインしてください。"
-      omniauth:
-        failure: "でのログインに失敗しました。"
-        callback:
-          success: "でログインしました。"
-          failure: "でのログインに失敗しました。"
-    income:
-      create:
-        success: "収入データを追加しました。"
-      edit:
-        failure: "収入データありません。"
-      update:
-        success: "収入データを変更しました。"
-      destroy: 
-        success: "収入データを削除しました。"
-        failure: "収入データを削除できませんでした。"
-    expense:
-      create:
-        success: "支出データを追加しました。"
-      edit:
-        failure: "支出データがありません。"
-      update:
-        success: "支出データを変更しました。"
-      destroy: 
-        success: "支出データを削除しました。"
-        failure: "支出データを削除できませんでした。"
-    user_asset:
-      create:
-        success: "資産データを追加しました。"
-      edit:
-        failure: "資産データがありません。"
-      update:
-        success: "資産データを変更しました。"
-      destroy: 
-        success: "資産データを削除しました。"
-        failure: "資産データを削除できませんでした。"
-    life_event:
-      create:
-        success: "ライフイベントデータを追加しました。"
-      edit:
-        failure: "ライフイベントデータがありません。"
-      update:
-        success: "ライフイベントデータを変更しました。"
-      destroy: 
-        success: "ライフイベントデータを削除しました。"
-        failure: "ライフイベントデータを削除できませんでした。"
-    simulation:
-      update:
-        success: "シミュレーションデータに保存しました。"
-        failure: "シミュレーションデータに保存できませんでした。"
-    scenario:
-      update:
-        success: "シナリオデータを更新しました。"
-        failure: "シナリオデータを更新できませんでした。"
+  common:
+    actions:
+      create: "%{model}を追加しました。"
+      update: "%{model}を更新しました。"
+      update_failed: "%{model}を更新できませんでした。"
+      destroy: "%{model}を削除しました。"
+      destroy_failed: "%{model}を削除できませんでした。"
+      not_found: "%{model}がありません。"
+      save: "%{model}に保存しました。"
+      save_failed: "%{model}に保存できませんでした。"
+
   errors:
     format: "%{message}" # 属性名を含めない
     messages:
       not_saved: "保存できませんでした。"
       record_invalid: "レコードの保存に失敗しました"
+      not_a_number: "数値を入力してください。"
+      greater_than_or_equal_to: "%{attribute}はプラス値で入力してください。"
+      blank: "%{attribute}を入力してください。"
+  
   activerecord:
+    attributes:
+      income:
+        person_type: "対象者"
+        monthly_income: "月収"
+        yearly_bonus: "賞与年額"
+        retirement_date: "退職時期"
+        retirement_pay: "退職金"
+      expense:
+        housing_expenses: "住居費"
+        living_expenses: "生活費"
+        monthly_premiums: "保険費"
+        other_expenses: "その他費用"
+      user_asset:
+        person_type: "対象者"
+        asset_type: "資産種類"
+        amount: "総額"
+        return_rate: "利回り"
+      life_event:
+        event_type: "イベントタイプ"
+        event_date: "時期"
+        title: "タイトル"
+        amount: "年額"
+        payment_period: "支払期間"
+
+# ----------以下、devise・ユーザー関連----------
     errors:
       models:
         user:
@@ -88,67 +65,18 @@ ja:
             password_confirmation:
               blank: "確認用パスワードを入力してください。"
               confirmation: "パスワードが一致していません。"
-        income:
-          attributes:
-            person_type:
-              blank: "対象者を選択してください。"
-            monthly_income:
-              blank: "月収は必須です。"
-              not_a_number: "数値を入力してください。"
-              greater_than_or_equal_to: "月収はプラス値で入力してください。"
-            yearly_bonus:
-              blank: "賞与年額は必須です。"
-              not_a_number: "数値を入力してください。"
-              greater_than_or_equal_to: "賞与年額はプラス値で入力してください。"
-            retirement_date:
-              blank: "退職時期を入力してください。"
-            retirement_pay:
-              blank: "退職金は必須です。"
-              not_a_number: "数値を入力してください。"
-              greater_than_or_equal_to: "退職金はプラス値で入力してください。"
-        expense:
-          attributes:
-            housing_expenses:
-              blank: "住居費を入力してください。"
-              not_a_number: "数値を入力してください。"
-              greater_than_or_equal_to: "住居費はプラス値で入力してください。"
-            living_expenses:
-              blank: "生活費を入力してください。"
-              not_a_number: "数値を入力してください。"
-              greater_than_or_equal_to: "生活費はプラス値で入力してください。"
-            monthly_premiums:
-              blank: "保険費を入力してください。"
-              not_a_number: "数値を入力してください。"
-              greater_than_or_equal_to: "保険費はプラス値で入力してください。"
-            other_expenses:
-              blank: "その他費用を入力してください。"
-              not_a_number: "数値を入力してください。"
-              greater_than_or_equal_to: "その他費用はプラス値で入力してください。"
-        user_asset:
-          attributes:
-            person_type:
-              blank: "対象者を選択してください。"
-            asset_type:
-              blank: "資産種類を選択してください。"
-            amount:
-              blank: "総額を入力してください。"
-              not_a_number: "数値を入力して下さい。"
-              greater_than_or_equal_to: "総額はプラス値で入力してください。"
-            return_rate:
-              blank: "利回りを入力してください。"
-              not_a_number: "数値を入力して下さい。"
-              greater_than_or_equal_to: "利回りはプラス値で入力してください。"
-        life_event:
-          attributes:
-            event_type:
-              blank: "イベントタイプを選択してください。"
-            event_date:
-              blank: "時期を選択してください。"
-            title:
-              blank: "タイトルを入力してください。"
-            amount:
-              blank: "年額を入力してください。"
-              not_a_number: "数値を入力して下さい。"
-              greater_than_or_equal_to: "年額はプラス値で入力してください。"
-            payment_period:
-              blank: "支払期間を選択してください。"
+  message:
+    devise:
+      registration:
+        update:
+          success: "アカウント情報を更新しました。"
+          failure: "アカウント情報を更新できませんでした。"
+        update_date_of_birth:
+          success: "生年月日を登録しました。"
+          failure: "生年月日を登録できませんでした。"
+          not_sign_in: "ログインしてください。"
+      omniauth:
+        failure: "でのログインに失敗しました。"
+        callback:
+          success: "でログインしました。"
+          failure: "でのログインに失敗しました。"

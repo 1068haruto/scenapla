@@ -1,7 +1,7 @@
 class LifeEventsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_life_events, only: [ :index, :create, :edit, :update, :destroy ]
-  before_action :set_life_event, only: [ :edit, :update, :destroy ]
+  before_action :set_life_event_or_redirect, only: [ :edit, :update, :destroy ]
 
   def index
     @life_event = LifeEvent.new
@@ -12,33 +12,29 @@ class LifeEventsController < ApplicationController
     @life_event.simulation = current_user.simulation
 
     if @life_event.save
-      redirect_to life_events_path, notice: t("message.life_event.create.success")
+      redirect_to life_events_path, notice: t("common.actions.create", model: "ライフイベントデータ")
     else
-      render_error(@life_event.errors.full_messages.join(", "), :unprocessable_entity)
+      render_error(@life_event.errors.full_messages.join, :unprocessable_entity)
     end
   end
 
   def edit
-    if @life_event
-      render :index
-    else
-      render_error(t("message.life_event.edit.failure"), :not_found)
-    end
+    render :index
   end
 
   def update
     if @life_event.update(life_event_params)
-      redirect_to life_events_path, notice: t("message.life_event.update.success")
+      redirect_to life_events_path, notice: t("common.actions.update", model: "ライフイベントデータ")
     else
-      render_error(@life_event.errors.full_messages.join(", "), :unprocessable_entity)
+      render_error(@life_event.errors.full_messages.join, :unprocessable_entity)
     end
   end
 
   def destroy
     if @life_event.destroy
-      redirect_to life_events_path, notice: t("message.life_event.destroy.success")
+      redirect_to life_events_path, notice: t("common.actions.destroy", model: "ライフイベントデータ")
     else
-      render_error(t("message.life_event.destroy.failure"), :not_found)
+      render_error(t("common.actions.destroy_failed", model: "ライフイベントデータ"), :unprocessable_entity)
     end
   end
 
@@ -48,8 +44,12 @@ class LifeEventsController < ApplicationController
     @life_events = current_user.life_events.order(event_date: :asc)
   end
 
-  def set_life_event
-    @life_event = current_user.life_events.find(params[:id])
+  def set_life_event_or_redirect
+    @life_event = current_user.life_events.find_by(id: params[:id])  # 存在しない場合、nilとする
+
+    unless @life_event
+      redirect_to life_events_path, alert: t("common.actions.not_found", model: "ライフイベントデータ")
+    end
   end
 
   def life_event_params

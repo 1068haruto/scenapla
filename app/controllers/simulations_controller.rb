@@ -52,10 +52,10 @@ class SimulationsController < ApplicationController
   end
 
   def update_success(path)
-    redirect_to path, notice: t("message.simulation.update.success")
+    redirect_to path, notice: t("common.actions.save", model: "シミュレーションデータ")
   end
 
   def update_failure(path)
-    redirect_to path, alert: t("message.simulation.update.failure")
+    redirect_to path, alert: t("common.actions.save_failed", model: "シミュレーションデータ")
   end
 end

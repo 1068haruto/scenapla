@@ -3,7 +3,7 @@ class UserAsset < ApplicationRecord
   belongs_to :simulation
 
   AGE_LIMIT = 70
-  TAX_RATE = 0.2
+  TAX_RATE = 0.20315  # 20.315％（所得税等15.315％、住民税５％）
   ASSET_TYPE_IS_OTHER = "投資_その他"
 
   enum person_type: { 本人: 0, 配偶者: 1 }
@@ -43,7 +43,7 @@ class UserAsset < ApplicationRecord
   # 1年目の資産設定 & 2年目以降の計算メソッド呼び出し
   def self.calculate_asset_projection(asset, yearly_totals, current_year, year_at_seventy)
     amount = asset.amount
-    rate = asset.return_rate.to_f / 100.0  # 利回りの小数変換
+    rate = asset.return_rate.to_f / 100.0  # 利回りの小数変換（例　10%の場合：0.1）
 
     yearly_totals[current_year] += amount  # 1年目の資産(利回り計算なし)
 
@@ -62,7 +62,7 @@ class UserAsset < ApplicationRecord
   # 利益計算
   def self.calculate_profit(amount, rate, asset_type)
     profit = amount * rate
-    profit -= profit * TAX_RATE if asset_type == ASSET_TYPE_IS_OTHER  # 資産種類が4の場合、利益の20%を課税
+    profit -= profit * TAX_RATE if asset_type == ASSET_TYPE_IS_OTHER  # 資産種類が4の場合、利益の20.315%を課税
     profit
   end
 

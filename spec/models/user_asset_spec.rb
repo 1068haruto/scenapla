@@ -11,15 +11,15 @@ RSpec.describe UserAsset, type: :model do
   end
 
   describe '定数テスト' do
-    it 'AGE_LIMITは70である' do
+    it 'AGE_LIMITは、「70」である' do
       expect(described_class::AGE_LIMIT).to eq(70)
     end
 
-    it 'TAX_RATEは12である' do
-      expect(described_class::TAX_RATE).to eq(0.2)
+    it 'TAX_RATEは、「0.20315」である' do
+      expect(described_class::TAX_RATE).to eq(0.20315)
     end
 
-    it 'ASSET_TYPE_IS_OTHERは12である' do
+    it 'ASSET_TYPE_IS_OTHERは、「12」である' do
       expect(described_class::ASSET_TYPE_IS_OTHER).to eq("投資_その他")
     end
   end
@@ -202,7 +202,7 @@ RSpec.describe UserAsset, type: :model do
     describe '.calculate_profit' do
       amount = 10
 
-      it '利回りが0の場合、利益は0となる' do
+      it '利回りが0の場合、利益は0とする' do
         rate = 0
         asset_type = "預金"
         profit = described_class.calculate_profit(amount, rate, asset_type)
@@ -220,7 +220,7 @@ RSpec.describe UserAsset, type: :model do
         rate = 0.1
         asset_type = "投資_その他"
         profit = described_class.calculate_profit(amount, rate, asset_type)
-        expect(profit).to eq(0.8) # 10 * 0.1 * 0.8
+        expect(profit).to eq(0.7968500000000001) # 10 * 0.1 = 1, 1 - (1 * 0.20315) = 0.7968500...1
       end
     end
 

@@ -46,3 +46,6 @@
 # Ignore Docker-related files
 /.dockerignore
 /Dockerfile*
+
+# scenapla
+scenapla_history.txt

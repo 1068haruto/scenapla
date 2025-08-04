@@ -4,7 +4,7 @@ ruby "3.2.3"
 
 gem "rails", "~> 7.2.1", ">= 7.2.1.1"
 gem "sprockets-rails", "~> 3.5"     # The original asset pipeline for Rails
-gem "pg", "~> 1.1"                  # Use postgresql as the database for Active Record
+gem "pg", "~> 1.6"                  # Use postgresql as the database for Active Record
 gem "puma", ">= 5.0"                # Use the Puma web server
 gem "jsbundling-rails", "~> 1.3"    # Bundle and transpile JavaScript
 gem "turbo-rails", "~> 2.0"         # Hotwire's SPA-like page accelerator

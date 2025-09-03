@@ -39,7 +39,7 @@ gem "groupdate", "~> 6.5"
 gem "http", "~> 5.2"
 
 # ai_advise関連
-gem "ruby-openai", "~> 7.4"
+gem "ruby-openai", "~> 8.3"
 
 group :development, :test do
   gem "debug", "~> 1.9", platforms: %i[ mri windows ], require: "debug/prelude"

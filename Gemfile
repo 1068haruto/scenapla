@@ -36,7 +36,7 @@ gem "chartkick", "~> 5.1"
 gem "groupdate", "~> 6.5"
 
 # news関連
-gem "http", "~> 5.2"
+gem "http", "~> 5.3"
 
 # ai_advise関連
 gem "ruby-openai", "~> 7.4"

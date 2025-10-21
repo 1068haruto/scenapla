@@ -10,7 +10,7 @@ gem "jsbundling-rails", "~> 1.3"    # Bundle and transpile JavaScript
 gem "turbo-rails", "~> 2.0"         # Hotwire's SPA-like page accelerator
 gem "stimulus-rails", "~> 1.3"      # Hotwire's modest JavaScript framework
 gem "cssbundling-rails", "~> 1.4"   # Bundle and process CSS
-gem "jbuilder", "~> 2.13"           # Build JSON APIs with ease
+gem "jbuilder", "~> 2.14"           # Build JSON APIs with ease
 
 # gem "redis", ">= 4.0.1"　　　　　 　# Use Redis adapter to run Action Cable in production
 # gem "kredis"                      # Use Kredis to get higher-level data types in Redis

@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 ruby "3.2.3"
 
-gem "rails", "~> 7.2.1", ">= 7.2.1.1"
+gem "rails", "~> 8.1.1"
 gem "sprockets-rails", "~> 3.5"
 gem "pg", "~> 1.6"
 gem "puma", ">= 7.1"

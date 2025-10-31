@@ -1,10 +1,12 @@
 <div class="container text-center">
-  <p class="display-6 mt-3 mb-3">シナプラ</p>
-  <p class="lead mb-4">
-    あなたの経済状態を可視化し、今後の計画をサポートするツールです
-  </p>
-
+  <h3 class="mt-5 mb-5">
+    経済状態 × ライフプラン の可視化<br>
+    今後をデザインする。
+  </h3>
   <%= render 'shared/feature_cards' %>
-
-  <%= link_to '使ってみる', new_user_registration_path, class: 'btn btn-outline-primary btn-lg px-4 py-1', data: { turbo_method: :get } %>
+  <%= link_to 'スタート',
+    new_user_registration_path,
+    class: 'btn btn-outline-primary btn-lg px-4 py-1',
+    data: { turbo: true }
+  %>
 </div>

@@ -11,13 +11,11 @@
     <div class="col-md-4 col-lg-3 col-xl-3">
       <%= f.label :repayment_date, '住宅ローン完済時期', class: 'form-label' %>
       <div class="input-group">
-        <%=
-          f.select :repayment_date,
+        <%= f.select :repayment_date,
           options_for_select(
             [['支払なし', nil]] + (Date.today.year..(Date.today.year + 50)).map { |year| [year, year] },
             expense.repayment_date&.year
-          ),
-          {},
+          ),{},
           class: 'form-select'
         %>
         <span class="input-group-text">年</span>

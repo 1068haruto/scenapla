@@ -17,8 +17,7 @@
       <% if @life_events.any? %>
         <div class="accordion" id="newLifeEventsAccordion">
           <% @life_events.each_with_index do |life_event, index| %>
-            <%=
-              render 'registered_life_event',
+            <%= render 'registered_life_event',
               life_event: life_event,
               index: index,
               accordion_id: "newLifeEventsAccordion",
@@ -33,9 +32,9 @@
   </div>
 
   <div class="d-flex justify-content-center">
-    <%= link_to '資産に戻る', user_assets_path, class: 'btn btn-outline-secondary me-2', data: { turbo: true } %>
+    <%= back_button('戻る', user_assets_path) %>
     <% if @life_events.any? %>
-      <%= button_to '保存して次へ', update_life_event_data_simulation_path, class: 'btn btn-primary', method: :post, data: { turbo: true } %>
+      <%= next_button_post('保存して次へ', update_life_event_data_simulation_path) %>
     <% end %>
   </div>
 </div>

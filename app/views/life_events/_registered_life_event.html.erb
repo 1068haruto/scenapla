@@ -15,6 +15,7 @@
       <%= life_event.event_date.year %>年 <%= life_event.title %>
     </button>
   </h2>
+
   <div
     id="collapse-<%= accordion_id %>-<%= index %>"
     class="accordion-collapse collapse"
@@ -28,8 +29,8 @@
       </ul>
       <% if show_delete_button %>
         <div class="mt-2">
-          <%= link_to '編集', edit_life_event_path(life_event), class: 'btn btn-outline-secondary btn-sm me-2' %>
-          <%= link_to '削除', life_event_path(life_event), class: 'btn btn-outline-danger btn-sm px-1 py-1', data: { turbo_method: :delete } %>
+          <%= edit_button(edit_life_event_path(life_event)) %>
+          <%= delete_button(life_event_path(life_event)) %>
         </div>
       <% end %>
     </div>

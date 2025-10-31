@@ -29,7 +29,7 @@
 
         <div class="mt-2">
           <%= edit_button(edit_user_asset_path(user_asset)) %>
-          <%= link_to '削除', user_asset_path(user_asset), class: 'btn btn-outline-danger btn-sm px-1 py-1', data: { turbo_method: :delete } %>
+          <%= delete_button(user_asset_path(user_asset)) %>
         </div>
       </div>
     </div>

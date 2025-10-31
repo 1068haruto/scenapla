@@ -19,4 +19,8 @@ module ApplicationHelper
   def edit_button(path)
     link_to '編集', path, class: 'btn btn-outline-secondary btn-sm me-2', data: { turbo: true }
   end
+
+  def delete_button(path)
+    link_to '削除', path, class: 'btn btn-outline-danger btn-sm px-1 py-1', data: { turbo_method: :delete }
+  end
 end

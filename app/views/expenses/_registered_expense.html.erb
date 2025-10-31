@@ -32,7 +32,7 @@
           </ul>
           <div class="mt-2">
             <%= edit_button(edit_expense_path(expense)) %>
-            <%= link_to '削除', expense_path(expense), class: 'btn btn-outline-danger btn-sm px-1 py-1', data: { turbo_method: :delete } %>
+            <%= delete_button(expense_path(expense)) %>
           </div>
         </div>
       </div>

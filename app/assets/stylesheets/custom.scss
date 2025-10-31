@@ -1,17 +1,13 @@
 body {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;  //ビューポートの高さ確保
+  min-height: 100vh;
 
-  //リンクボタン
   .btn-link {
-    text-decoration: none;  // 下線を消す
+    text-decoration: none;
     color: $text-muted;
 
-    &:hover {
-      text-decoration: underline;
-      color: $text-muted;  // ホバー時も同色
-    }
+    &:hover { text-decoration: underline; color: $text-muted; }
   }
 
   header {
@@ -19,36 +15,28 @@ body {
     background-color: #333;
     color: white;
 
-    .navbar-brand {
-      padding-left: 1rem;
-      font-size: 1.8rem;
-    }
-
-    .btn-login {
-      margin-right: 0.7rem;
-    }
+    .navbar-brand { padding-left: 1rem; font-size: 1.8rem; }
+    .btn-login { margin-right: 0.7rem; }
 
     .navbar-toggler {
-      border-color: white;  // ハンバーガーメニューの枠線を白色に
-      margin: auto 0.7rem;  //左右に間隔を
+      border-color: white;
+      margin: auto 0.7rem;
 
-      .navbar-toggler-icon {  // ハンバーガーメニュー内の3本線を白色に
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='white' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+      .navbar-toggler-icon {
+        background-image: url(
+          "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='white' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E"
+        );
       }
     }
 
     .offcanvas {
       background-color: #333;
 
-      .offcanvas-title {
-        color: white;
-      }
-    
+      .offcanvas-title { color: white; }
+
       .nav-link {
         color: white;
-        &:hover {
-          text-decoration: underline;
-        }
+        &:hover { text-decoration: underline; }
       }
     }
   }
@@ -57,15 +45,13 @@ body {
     padding-bottom: 1.25rem;
 
     .card {
-      &:hover {
-        border-color: rgb(55, 105, 223);  // ホバー時の枠線を青に
-      }
+      &:hover { border-color: rgb(55, 105, 223); }
     }
   }
 
   footer {
     background-color: lightgrey;
-    margin-top: auto;  // フレックスボックスで自動的に下に寄せる
+    margin-top: auto;
     color: $text-muted;
   }
 }

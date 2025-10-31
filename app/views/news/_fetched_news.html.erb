@@ -9,18 +9,28 @@
         aria-expanded="false"
         aria-controls="collapse-<%= accordion_id %>-<%= index %>"
       >
-        <!-- 画像部分 -->
         <% if article['image'] %>
-          <img src="<%= article['image'] %>" alt="<%= article['title'] %>" class="news-image me-3">
+          <img
+            src="<%= article['image'] %>"
+            alt="<%= article['title'] %>"
+            class="me-3"
+            style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;"
+          >
         <% else %>
-          <img src="/placeholder-image.jpg" alt="No Image" class="news-image me-3">
+          <img
+            src="/placeholder-image.jpg"
+            alt="No Image"
+            class="me-3"
+            style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;"
+          >
         <% end %>
 
-        <!-- テキスト部分 -->
         <div>
           <h5 class="mb-1"><%= article['title'] %></h5>
           <p class="text-muted mb-0">
-            <small>提供元: <%= article['source']['name'] %> | 公開日: <%= article['publishedAt'].to_date %></small>
+            <small>
+              提供元: <%= article['source']['name'] %> | 公開日: <%= article['publishedAt'].to_date %>
+            </small>
           </p>
         </div>
       </button>
@@ -33,7 +43,9 @@
     >
       <div class="accordion-body">
         <p><%= article['description'] %></p>
-        <a href="<%= article['url'] %>" target="_blank" class="text-primary ">記事全文を確認する</a>
+        <ahref="<%= article['url'] %>" target="_blank" class="text-primary ">
+          記事全文を確認する
+        </a>
       </div>
     </div>
   </div>

@@ -22,7 +22,7 @@ gem "omniauth", "~> 2.1"
 gem "omniauth-google-oauth2", "~> 1.0"
 gem "omniauth-rails_csrf_protection"
 # グラフ表示
-gem "chartkick", "~> 5.1"
+gem "chartkick", "~> 5.2"
 gem "groupdate", "~> 6.5"
 # ニュース
 gem "http", "~> 5.3"

@@ -16,7 +16,11 @@
       <% if @user_assets.any? %>
         <div class="accordion" id="userAssetsAccordion">
           <% @user_assets.each_with_index do |user_asset, index| %>
-            <%= render 'registered_user_asset', user_asset: user_asset, index: index, accordion_id: "userAssetsAccordion" %>
+            <%= render 'registered_user_asset',
+              user_asset: user_asset,
+              index: index,
+              accordion_id: "userAssetsAccordion"
+            %>
           <% end %>
         </div>
       <% else %>

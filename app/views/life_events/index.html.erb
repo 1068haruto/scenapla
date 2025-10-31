@@ -17,8 +17,7 @@
       <% if @life_events.any? %>
         <div class="accordion" id="newLifeEventsAccordion">
           <% @life_events.each_with_index do |life_event, index| %>
-            <%=
-              render 'registered_life_event',
+            <%= render 'registered_life_event',
               life_event: life_event,
               index: index,
               accordion_id: "newLifeEventsAccordion",

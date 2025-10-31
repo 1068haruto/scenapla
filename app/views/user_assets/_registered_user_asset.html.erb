@@ -15,6 +15,7 @@
         <%= user_asset.asset_type %>
       </button>
     </h2>
+
     <div
       id="collapse-<%= accordion_id %>-<%= index %>"
       class="accordion-collapse collapse"
@@ -23,8 +24,14 @@
     >
       <div class="accordion-body">
         <ul class="list-unstyled">
-          <li><strong>総額:</strong><%= user_asset.amount %>万円</li>
-          <li><strong>利回り:</strong><%= user_asset.return_rate.present? ? "#{user_asset.return_rate}%" : 'なし' %></li>
+          <li>
+            <strong>総額:</strong>
+            <%= user_asset.amount %>万円
+          </li>
+          <li>
+            <strong>利回り:</strong>
+            <%= user_asset.return_rate.present? ? "#{user_asset.return_rate}%" : 'なし' %>
+          </li>
         </ul>
 
         <div class="mt-2">

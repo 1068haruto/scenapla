@@ -14,6 +14,7 @@
       <div class="card-header">
         <h3 class="mt-2"><%= age_group %>代</h3>
       </div>
+
       <div class="card-body">
         <div class="row">
           <div class="col-md-5">
@@ -33,6 +34,7 @@
               </div>
             <% end %>
           </div>
+
           <div class="col mt-2 mt-md-0">
             <% first_memo = @memos[age_group]&.first %>
             <%= render "memos/memo", age_group: age_group, first_memo: first_memo %>
@@ -43,6 +45,7 @@
   <% end %>
 
   <div class="d-flex justify-content-center">
+    # todo: helper
     <% if @grouped_life_events.empty? %>
       <%= link_to '情報入力画面へ', incomes_path, class: 'btn btn-primary me-2', data: { turbo: true } %>
     <% else %>

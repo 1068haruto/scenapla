@@ -6,8 +6,15 @@
 </div>
 <div class="card-body">
   <% if show_balance_scenario?(balance_chart_data) %>
-    <%= render 'balance_summary', total_income: total_income, total_expense: total_expense, total_balance: total_balance %>
-    <%= render 'withdrawal_and_shortage', withdrawal: withdrawal, shortage: shortage %>
+    <%= render 'balance_summary',
+      total_income: total_income,
+      total_expense: total_expense,
+      total_balance: total_balance
+    %>
+    <%= render 'withdrawal_and_shortage',
+      withdrawal: withdrawal,
+      shortage: shortage
+    %>
     <%= balance_chart(balance_chart_data, title) %>
   <% else %>
     <p>ライフイベント情報が未登録のため、表示できません。</p>

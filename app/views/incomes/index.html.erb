@@ -16,7 +16,11 @@
       <% if @incomes.any? %>
         <div class="accordion" id="incomesAccordion">
           <% @incomes.each_with_index do |income, index| %>
-            <%= render 'registered_income', income: income, index: index, accordion_id: "incomesAccordion" %>
+            <%= render 'registered_income',
+              income: income,
+              index: index,
+              accordion_id: "incomesAccordion"
+            %>
           <% end %>
         </div>
       <% else %>

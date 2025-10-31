@@ -14,8 +14,12 @@
     <div class="col-11 mb-4">
       <h5>追加した支出データ</h5>
       <h6>※再追加でデータが上書きされます</h6>
+
       <% if @latest_expense.present? %>
-        <%= render 'registered_expense', expense: @latest_expense, accordion_id: "expensesAccordion" %>
+        <%= render 'registered_expense',
+          expense: @latest_expense,
+          accordion_id: "expensesAccordion"
+        %>
       <% else %>
         <p class="text-secondary">&nbsp;&nbsp;データがありません。</p>
       <% end %>

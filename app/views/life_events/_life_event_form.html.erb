@@ -2,8 +2,7 @@
 	<div class="row d-flex justify-content-center">
 		<div class="col-md-3 col-lg-3 col-xl-2">
 			<%= f.label :event_type, 'イベントタイプ', class: 'form-label' %>
-			<%=
-				f.select :event_type,
+			<%= f.select :event_type,
 				[['現実', 0], ['理想', 1]],
 				{ selected: life_event.event_type_before_type_cast },
 				class: 'form-select',
@@ -14,13 +13,11 @@
 		<div class="col-md-3 col-lg-3 col-xl-2">
 			<%= f.label :event_date, '時期', class: 'form-label' %>
 			<div class="input-group">
-				<%=
-					f.select :event_date,
+				<%= f.select :event_date,
 					options_for_select(
 						(Date.today.year..(Date.today.year + 50)).map { |year| [year, year] },
 						life_event.event_date&.year
-					),
-					{},
+					), {},
 					class: 'form-select'
 				%>
 				<span class="input-group-text">年</span>
@@ -29,13 +26,21 @@
 
 		<div class="col-md-5 col-lg-4 col-xl-3">
 			<%= f.label :title, 'タイトル', class: 'form-label' %>
-			<%= f.text_field :title, class: 'form-control', placeholder: '引越し、車購入、結婚など...', required: true %>
+			<%= f.text_field :title,
+				class: 'form-control',
+				placeholder: '引越し、車購入、結婚など...',
+				required: true
+			%>
 		</div>
 
 		<div class="col-md-3 col-lg-3 col-xl-2">
 			<%= f.label :amount, '年額', class: 'form-label' %>
 			<div class="input-group">
-				<%= f.number_field :amount, class: 'form-control', step: 0.1, required: true %>
+				<%= f.number_field :amount,
+					class: 'form-control',
+					step: 0.1,
+					required: true
+				%>
 				<span class="input-group-text">万円</span>
 			</div>
 		</div>
@@ -43,10 +48,8 @@
 		<div class="col-md-3 col-lg-2 col-xl-2">
 			<%= f.label :payment_period, '支払期間', class: 'form-label' %>
 			<div class="input-group">
-				<%=
-					f.select :payment_period,
-  				LifeEvent::PAYMENT_PERIOD_OPTIONS.map { |n| ["#{n}", n] },
-  				{},
+				<%= f.select :payment_period,
+  				LifeEvent::PAYMENT_PERIOD_OPTIONS.map { |n| ["#{n}", n] }, {},
   				class: 'form-select'
 				%>
 				<span class="input-group-text">年間</span>

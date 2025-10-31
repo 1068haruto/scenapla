@@ -28,7 +28,7 @@
           <li><strong>退職金（手取り）:</strong> <%= income.retirement_pay %>万円</li>
         </ul>
         <div class="mt-2">
-          <%= link_to '編集', edit_income_path(income), class: 'btn btn-outline-secondary btn-sm me-1' %>
+          <%= edit_button(edit_income_path(income)) %>
           <%= link_to '削除', income_path(income), class: 'btn btn-outline-danger btn-sm px-1 py-1', data: { turbo_method: :delete } %>
         </div>
       </div>

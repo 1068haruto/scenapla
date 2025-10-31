@@ -36,7 +36,7 @@ group :development, :test do
 
   # rubocop
   gem "rubocop", "~> 1.75"
-  gem "rubocop-rails", "~> 2.32"
+  gem "rubocop-rails", "~> 2.33"
   gem "rubocop-performance", "~> 1.22"
   # RSpec
   gem "rspec-rails", "~> 7.1"

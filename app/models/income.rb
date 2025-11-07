@@ -3,6 +3,8 @@ class Income < ApplicationRecord
   belongs_to :simulation
 
   MONTHS_IN_A_YEAR = 12
+  JANUARY = 1
+  FIRST = 1
 
   enum person_type: { 本人: 0, 配偶者: 1 }
 
@@ -10,31 +12,33 @@ class Income < ApplicationRecord
   validates :person_type, :retirement_date, presence: true
   validates :monthly_income, :yearly_bonus, :retirement_pay, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
-  # カスタムセッター：入力された年をdate型に変換
-  def retirement_date=(value)
-    super(value.present? ? Date.new(value.to_i, 1, 1) : value)
-  end
-
+  # main
   def self.generate_income_data_for(user)
-    all_income_data = user.incomes.flat_map(&:calculate_income_until_retirement)
-    grouped_data = all_income_data.group_by { |data| data[:date] }
-    format_grouped_data(grouped_data)
+    allIncomeData = user.incomes.flat_map(&:calculate_until_retirement)
+    groupedData = grouped(allIncomeData)
   end
 
-  # 現在〜退職時の各年の収入計算
-  def calculate_income_until_retirement
-    income_data = []
+  # 現在〜退職までの各年の収入計算
+  def calculate_until_retirement
+    thisYear = Date.current.year
+    retirementYear = retirement_date.year
+    incomeData = []
+    yearlyTotalAmount = (monthly_income.to_i * MONTHS_IN_A_YEAR) + yearly_bonus
 
-    (Date.current.year..retirement_date.year).each do |year|
-      income_data << calculate_income_for_year(year)
+    (thisYear..retirementYear).each do |year|
+      if year == retirementYear
+        yearlyTotalAmount += retirement_pay.to_i
+      end
+      incomeData << { date: year, amount: yearlyTotalAmount }
     end
 
-    income_data
+    incomeData
   end
 
-  # 各年毎に収入を合計して整形
-  def self.format_grouped_data(grouped_data)
-    grouped_data.map do |year, records|
+  # 同じ年の複数の収入をまとめる
+  def self.grouped(allIncomeData)
+    groupedByDate = allIncomeData.group_by { |data| data[:date] }
+    groupedByDate.map do |year, records|
       {
         date: year,
         amount: records.sum { |record| record[:amount] }
@@ -42,20 +46,8 @@ class Income < ApplicationRecord
     end
   end
 
-  private
-
-  def calculate_income_for_year(year)
-    yearly_amount = (monthly_income.to_i * MONTHS_IN_A_YEAR) + yearly_bonus
-    yearly_total_amount = calculate_adjusted_income_for_year(year, yearly_amount)
-
-    { date: year, amount: yearly_total_amount }
-  end
-
-  def calculate_adjusted_income_for_year(year, yearly_amount)
-    if year == retirement_date.year
-      yearly_amount + retirement_pay.to_i
-    else
-      yearly_amount
-    end
+  # Dateにキャスト
+  def retirement_date=(value)
+    super(value.present? ? Date.new(value.to_i, JANUARY, FIRST) : value)
   end
 end

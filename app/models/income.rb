@@ -12,33 +12,25 @@ class Income < ApplicationRecord
   validates :person_type, :retirement_date, presence: true
   validates :monthly_income, :yearly_bonus, :retirement_pay, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
-  # main: income_dataの作成-> Array
-  def self.generate_income_data(user)
-    allIncomeData = user.incomes.flat_map(&:calculate_until_retirement)
-    grouped(allIncomeData)
-  end
+  # income_dataの作成-> Array
+  def self.generateIncomeData(user)
+    yearlyTotals = Hash.new(0)
+    currentYear = Date.current.year
 
-  # 現在〜退職までの各年の収入計算-> Array
-  def calculate_until_retirement
-    thisYear = Date.current.year
-    retirementYear = retirement_date.year
-    yearlyTotalAmount = (monthly_income.to_i * MONTHS_IN_A_YEAR) + yearly_bonus
+    user.incomes.each do |income|
+      retirementYear = income.retirement_date.year
+      yearlyAmount = (income.monthly_income * MONTHS_IN_A_YEAR) + income.yearly_bonus
 
-    (thisYear..retirementYear).map do |year|
-      yearlyTotalAmount += retirement_pay.to_i if year == retirementYear
-      { date: year, amount: yearlyTotalAmount }
+      (currentYear..retirementYear).each do |year|
+        totalAmount = yearlyAmount
+        if year == retirementYear
+          totalAmount += income.retirement_pay
+        end
+        yearlyTotals[year] += totalAmount
+      end
     end
-  end
 
-  # 同じ年の複数の収入をまとめる-> Array
-  def self.grouped(allIncomeData)
-    groupedByDate = allIncomeData.group_by { |data| data[:date] }
-    groupedByDate.map do |year, records|
-      {
-        date: year,
-        amount: records.sum { |record| record[:amount] }
-      }
-    end
+    FormatService.format(yearlyTotals)
   end
 
   # Dateにキャスト

@@ -12,55 +12,30 @@ class UserAsset < ApplicationRecord
   validates :person_type, :asset_type, presence: true
   validates :amount, :return_rate, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
-  def self.generate_user_asset_data_for(user)
+  # user_asset_dataを生成-> Array
+  def self.generateUserAssetData(user)
     assets = where(user: user)
+    currentYear = Date.today.year
     yearAtSeventy = user.get_year_at_seventy
-    yearlyTotals = initialize_yearly_totals(assets, yearAtSeventy)
-
-    format_yearly_totals(yearlyTotals)
-  end
-
-  private
-
-  def self.initialize_yearly_totals(assets, year_at_seventy)
-    current_year = Date.today.year
-    yearly_totals = Hash.new(0)
+    yearlyTotals = Hash.new(0)
 
     assets.each do |asset|
-      calculate_asset_projection(asset, yearly_totals, current_year, year_at_seventy)
+      # 1年目
+      amount = asset.amount
+      rate = asset.return_rate.to_f / 100.0  # 小数変換(例: 10% の場合は、0.1)
+      yearlyTotals[currentYear] += amount    # 1年目は利回り計算なし
+
+      # 2年目以降
+      (currentYear + 1..yearAtSeventy).each do |year|
+        profit = amount * rate
+        if asset.asset_type == ASSET_TYPE_IS_OTHER
+          profit -= profit * TAX_RATE
+        end
+        amount += profit
+        yearlyTotals[year] += amount
+      end
     end
-    yearly_totals
-  end
 
-  # 1年目の資産設定 & 2年目以降の計算メソッド呼び出し
-  def self.calculate_asset_projection(asset, yearly_totals, current_year, year_at_seventy)
-    amount = asset.amount
-    rate = asset.return_rate.to_f / 100.0  # 利回りの小数変換（例　10%の場合：0.1）
-
-    yearly_totals[current_year] += amount  # 1年目の資産(利回り計算なし)
-
-    calculate_future_years(asset.asset_type, amount, rate, yearly_totals, current_year, year_at_seventy)
-  end
-
-  # 2年目以降の資産計算
-  def self.calculate_future_years(asset_type, amount, rate, yearly_totals, current_year, year_at_seventy)
-    (current_year + 1..year_at_seventy).each do |year|
-      profit = calculate_profit(amount, rate, asset_type)
-      amount += profit
-      yearly_totals[year] += amount
-    end
-  end
-
-  # 利益計算
-  def self.calculate_profit(amount, rate, asset_type)
-    profit = amount * rate
-    profit -= profit * TAX_RATE if asset_type == ASSET_TYPE_IS_OTHER  # 資産種類が4の場合、利益の20.315%を課税
-    profit
-  end
-
-  # 各年の金額を小数第1位までにし、ハッシュ配列に整形
-  def self.format_yearly_totals(yearly_totals)
-    yearly_totals.transform_values! { |v| v.round(1) }
-    yearly_totals.map { |year, total| { date: year, amount: total } }
+    FormatService.format(yearlyTotals)
   end
 end

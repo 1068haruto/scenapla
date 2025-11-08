@@ -13,7 +13,7 @@ class SimulationsController < ApplicationController
   end
 
   def update_expense_data
-    expense_data = Expense.generate_expense_data_for(current_user)
+    expense_data = Expense.generate_expense_data(current_user)
 
     if @simulation.update(expense_data: expense_data)
       update_success(user_assets_path)

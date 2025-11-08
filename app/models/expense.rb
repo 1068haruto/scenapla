@@ -4,50 +4,40 @@ class Expense < ApplicationRecord
 
   AGE_LIMIT = 70
   MONTHS_IN_A_YEAR = 12
+  NO_REPAYMENT_YEAR = 0
+  JANUARY = 1
+  FIRST = 1
 
   validates :user_id, :simulation_id, presence: true
   validates :housing_expenses, :living_expenses, :monthly_premiums, :other_expenses,
              presence: true, numericality: { greater_than_or_equal_to: 0 }
 
-  # カスタムセッター：入力された年をdate型に変換
-  def repayment_date=(value)
-    super(value.present? ? Date.new(value.to_i, 1, 1) : value)
-  end
-
-  def self.generate_expense_data_for(user)
+  # main: expense_dataの作成-> Array
+  def self.generate_expense_data(user)
     latest_expense = user.expenses.last
-
-    current_year = Date.today.year
-    year_age_seventy = current_year + (AGE_LIMIT - user.calculate_user_age)
-
-    latest_expense.calculate_yearly_expenses(current_year, year_age_seventy)
+    latest_expense.calculate_until_limit(user)
   end
 
-  def calculate_yearly_expenses(current_year, year_age_seventy)
-    (current_year..year_age_seventy).map do |year|
-      yearly_expense = calculate_yearly_expense_for_year(year)
-      { date: year, amount: yearly_expense }
+  # 70歳までの各年の支出を計算-> Array
+  def calculate_until_limit(user)
+    currentYear = Date.today.year
+    yearAtSeventy = currentYear + (AGE_LIMIT - user.calculate_user_age)
+
+    (currentYear..yearAtSeventy).map do |year|
+      repaymentYear = repayment_date&.year.to_i  # nil の to_i は 0
+      # ローン有無判断
+      if repaymentYear == NO_REPAYMENT_YEAR || year <= repaymentYear
+        monthly = (housing_expenses + living_expenses + monthly_premiums + other_expenses)
+      else
+        monthly = (living_expenses + monthly_premiums + other_expenses)
+      end
+      yearlyExpense = -(monthly * MONTHS_IN_A_YEAR)
+      { date: year, amount: yearlyExpense }
     end
   end
 
-  # 年次支出額を計算
-  def calculate_yearly_expense_for_year(year)
-    repayment_year = repayment_date&.year.to_i
-
-    if repayment_year == 0 || year <= repayment_year
-      total_monthly_expense * MONTHS_IN_A_YEAR * -1
-    else
-      reduced_monthly_expense * MONTHS_IN_A_YEAR * -1
-    end
-  end
-
-  # 総月次支出を計算
-  def total_monthly_expense
-    housing_expenses + living_expenses + monthly_premiums + other_expenses
-  end
-
-  # ローン返済終了後の月次支出を計算
-  def reduced_monthly_expense
-    living_expenses + monthly_premiums + other_expenses
+  # 返済時期をDateにキャスト
+  def repayment_date=(value)
+    super(value.present? ? Date.new(value.to_i, JANUARY, FIRST) : value)
   end
 end

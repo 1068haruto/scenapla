@@ -117,11 +117,11 @@ RSpec.describe Income, type: :model do
     let(:simulation) { create(:simulation, user: user) }
     year = Date.current.year
 
-    describe '.generate_income_data_for' do
+    describe '.generate_income_data' do
       it '全収入データを1つのオブジェクト配列にする' do
         create(:income, user: user, simulation: simulation)
         create(:income, user: user, simulation: simulation)
-        result = Income.generate_income_data_for(user)
+        result = Income.generate_income_data(user)
 
         expect(result).to include(
           { amount: 26, date: year },

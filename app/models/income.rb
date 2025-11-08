@@ -13,7 +13,7 @@ class Income < ApplicationRecord
   validates :monthly_income, :yearly_bonus, :retirement_pay, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
   # main
-  def self.generate_income_data_for(user)
+  def self.generate_income_data(user)
     allIncomeData = user.incomes.flat_map(&:calculate_until_retirement)
     groupedData = grouped(allIncomeData)
   end

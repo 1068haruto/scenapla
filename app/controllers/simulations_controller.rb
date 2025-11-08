@@ -3,7 +3,7 @@ class SimulationsController < ApplicationController
   before_action :set_simulation
 
   def update_income_data
-    income_data = Income.generate_income_data_for(current_user)
+    income_data = Income.generate_income_data(current_user)
 
     if @simulation.update(income_data: income_data)
       update_success(expenses_path)

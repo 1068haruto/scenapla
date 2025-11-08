@@ -5,7 +5,7 @@ FactoryBot.define do
     password { "password1234" }
     password_confirmation { password }
     confirmed_at { Time.current }
-    date_of_birth { Date.new(Date.today.year - 40, 1, 1) }
+    date_of_birth { Date.new(Date.today.year - 60, 1, 1) }
 
     # user作成時のscenarioデータ作成を抑制する必要があるテストで使用。
     # 次のように使用する。let!(:user) { create(:user, :without_scenarios) }

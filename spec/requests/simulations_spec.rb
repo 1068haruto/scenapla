@@ -43,7 +43,7 @@ RSpec.describe "Simulations", type: :request do
 
     context '成功した場合' do
       before do
-        allow(Expense).to receive(:generate_expense_data_for).and_return(expense_data)
+        allow(Expense).to receive(:generate_expense_data).and_return(expense_data)
         allow_any_instance_of(Simulation).to receive(:update).and_return(true)
         post update_expense_data_simulation_path
       end
@@ -56,7 +56,7 @@ RSpec.describe "Simulations", type: :request do
 
     context '失敗した場合' do
       before do
-        allow(Expense).to receive(:generate_expense_data_for).and_return(expense_data)
+        allow(Expense).to receive(:generate_expense_data).and_return(expense_data)
         allow_any_instance_of(Simulation).to receive(:update).and_return(false)
         post update_expense_data_simulation_path
       end

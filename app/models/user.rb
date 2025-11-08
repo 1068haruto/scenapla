@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  include Constants
+
   # Others available are :lockable, :timeoutable, :trackable
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable,
          :confirmable, :omniauthable, omniauth_providers: [ :google_oauth2 ]
@@ -13,8 +15,6 @@ class User < ApplicationRecord
   has_many :asset_lifespans, dependent: :destroy
   has_many :ai_advices, dependent: :destroy
   has_many :sns_credentials, dependent: :destroy
-
-  AGE_LIMIT = 70
 
   # カスタムのみ（email形式は、devise.rbで定義）
   validates :name, presence: true

@@ -12,9 +12,13 @@ class LifeEventsController < ApplicationController
     @life_event.simulation = current_user.simulation
 
     if @life_event.save
-      redirect_to life_events_path, notice: t("common.actions.create", model: "ライフイベントデータ")
+      redirect_to life_events_path,
+      notice: t("common.actions.create", model: "ライフイベントデータ")
     else
-      render_error(@life_event.errors.full_messages.join, :unprocessable_entity)
+      render_error(
+        @life_event.errors.full_messages.join,
+        :unprocessable_entity
+      )
     end
   end
 
@@ -24,17 +28,25 @@ class LifeEventsController < ApplicationController
 
   def update
     if @life_event.update(life_event_params)
-      redirect_to life_events_path, notice: t("common.actions.update", model: "ライフイベントデータ")
+      redirect_to life_events_path,
+      notice: t("common.actions.update", model: "ライフイベントデータ")
     else
-      render_error(@life_event.errors.full_messages.join, :unprocessable_entity)
+      render_error(
+        @life_event.errors.full_messages.join,
+        :unprocessable_entity
+      )
     end
   end
 
   def destroy
     if @life_event.destroy
-      redirect_to life_events_path, notice: t("common.actions.destroy", model: "ライフイベントデータ")
+      redirect_to life_events_path,
+      notice: t("common.actions.destroy", model: "ライフイベントデータ")
     else
-      render_error(t("common.actions.destroy_failed", model: "ライフイベントデータ"), :unprocessable_entity)
+      render_error(
+        t("common.actions.destroy_failed",
+        model: "ライフイベントデータ"), :unprocessable_entity
+      )
     end
   end
 
@@ -45,16 +57,19 @@ class LifeEventsController < ApplicationController
   end
 
   def set_life_event_or_redirect
-    @life_event = current_user.life_events.find_by(id: params[:id])  # 存在しない場合、nilとする
-
+    @life_event = current_user.life_events.find_by(id: params[:id])
     unless @life_event
-      redirect_to life_events_path, alert: t("common.actions.not_found", model: "ライフイベントデータ")
+      redirect_to life_events_path,
+      alert: t("common.actions.not_found", model: "ライフイベントデータ")
     end
   end
 
   def life_event_params
-    params.require(:life_event).permit(:event_type, :event_date, :title, :amount, :payment_period)
-      .tap { |p| p[:event_type] = p[:event_type].to_i if p[:event_type].present? }
+    params.require(:life_event).permit(
+      :event_type, :event_date, :title, :amount, :payment_period
+    ).tap {
+      |p| p[:event_type] = p[:event_type].to_i if p[:event_type].present?
+    }
   end
 
   def render_error(message, status)

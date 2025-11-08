@@ -6,20 +6,6 @@ RSpec.describe Income, type: :model do
     it { is_expected.to belong_to(:simulation) }
   end
 
-  describe 'constant' do
-    it 'MONTHS_IN_A_YEARは「12」' do
-      expect(described_class::MONTHS_IN_A_YEAR).to eq(12)
-    end
-
-    it 'JANUARYは「1」' do
-      expect(described_class::JANUARY).to eq(1)
-    end
-
-    it 'FIRSTは「1」' do
-      expect(described_class::FIRST).to eq(1)
-    end
-  end
-
   describe 'enum' do
     it 'person_typesが正しい値を持つ' do
       expect(described_class.person_types).to eq({ "本人" => 0, "配偶者" => 1 })
@@ -112,16 +98,16 @@ RSpec.describe Income, type: :model do
     end
   end
 
-  describe 'メソッド' do
+  describe 'Method' do
     let(:user) { create(:user) }
     let(:simulation) { create(:simulation, user: user) }
     year = Date.current.year
 
-    describe '.generateIncomeData' do
+    describe '.generate_income_data' do
       it 'income_dataを生成する' do
         create(:income, user: user, simulation: simulation)
         create(:income, user: user, simulation: simulation)
-        result = Income.generateIncomeData(user)
+        result = Income.generate_income_data(user)
 
         expect(result).to include(
           { amount: 26, date: year },

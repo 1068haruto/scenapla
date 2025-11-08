@@ -1,9 +1,8 @@
 class UserAsset < ApplicationRecord
+  include Constants
+
   belongs_to :user
   belongs_to :simulation
-
-  TAX_RATE = 0.20315  # 20.315％（所得税等15.315％、住民税５％）
-  ASSET_TYPE_IS_OTHER = "投資_その他"
 
   enum person_type: { 本人: 0, 配偶者: 1 }
   enum asset_type: { 預金: 0, 貯蓄型保険: 1, 投資_NISA: 2, 投資_iDeCo: 3, 投資_その他: 4 }
@@ -13,7 +12,7 @@ class UserAsset < ApplicationRecord
   validates :amount, :return_rate, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
   # user_asset_dataを生成-> Array
-  def self.generateUserAssetData(user)
+  def self.generate_user_asset_data(user)
     assets = where(user: user)
     currentYear = Date.today.year
     yearAtSeventy = user.get_year_at_seventy

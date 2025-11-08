@@ -1,10 +1,8 @@
 class Income < ApplicationRecord
+  include Constants
+
   belongs_to :user
   belongs_to :simulation
-
-  MONTHS_IN_A_YEAR = 12
-  JANUARY = 1
-  FIRST = 1
 
   enum person_type: { 本人: 0, 配偶者: 1 }
 
@@ -13,7 +11,7 @@ class Income < ApplicationRecord
   validates :monthly_income, :yearly_bonus, :retirement_pay, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
   # income_dataの作成-> Array
-  def self.generateIncomeData(user)
+  def self.generate_income_data(user)
     yearlyTotals = Hash.new(0)
     currentYear = Date.current.year
 

@@ -15,49 +15,49 @@ RSpec.describe "LifeEvents", type: :request do
   end
 
   describe "GET /index" do
-    it "ページを表示し、200を返す" do
+    it "ページを表示(200)" do
       get life_events_path
-      expect(response).to have_http_status(:success)  # 200
+      expect(response).to have_http_status(:success)
     end
   end
 
   describe "POST /create" do
     context "有効なパラメータの場合" do
-      it "作成失敗し、302を返す" do
+      it "作成成功(302)" do
         post life_events_path, params: { life_event: valid_params }
-        expect(response).to have_http_status(:found)  # 302
+        expect(response).to have_http_status(:found)
       end
     end
 
     context "無効なパラメータの場合" do
-      it "作成失敗し、422を返す" do
+      it "作成失敗(422)" do
         post life_events_path, params: { life_event: invalid_params }
-        expect(response).to have_http_status(:unprocessable_entity)  # 422
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
   end
 
   describe "GET /edit" do
-    context "編集したいデータが存在する場合" do
-      it "編集フォームを表示し、200を返す" do
+    context "データが存在する場合" do
+      it "フォームを表示(200)" do
         get edit_life_event_path(life_event)
-        expect(response).to have_http_status(:success) # 200
+        expect(response).to have_http_status(:success)
       end
     end
 
-    context "編集したいデータがしない場合" do
-      it "編集フォームを表示せず、302を返す" do
-        get edit_life_event_path(-1)                     # 存在しないID
-        expect(response).to have_http_status(:found) # 302
+    context "データがしない場合" do
+      it "フォームを表示しない(302)" do
+        get edit_life_event_path(-1)  # 存在しないID
+        expect(response).to have_http_status(:found)
       end
     end
   end
 
   describe "PATCH /update" do
     context "有効なパラメータの場合" do
-      it "更新成功し、302を返す" do
+      it "更新成功(302)" do
         patch life_event_path(life_event), params: { life_event: valid_params_for_update }
-        expect(response).to have_http_status(:found) # 302
+        expect(response).to have_http_status(:found)
 
         life_event.reload
         expect(life_event.amount).to eq 20
@@ -65,25 +65,25 @@ RSpec.describe "LifeEvents", type: :request do
     end
 
     context "無効なパラメータの場合" do
-      it "更新失敗し、422を返す" do
+      it "更新失敗(422)" do
         patch life_event_path(life_event), params: { life_event: invalid_params }
-        expect(response).to have_http_status(:unprocessable_entity) # 422
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
   end
 
   describe "DELETE /destroy" do
-    context "削除したいデータが存在する場合" do
-      it "削除成功し、302を返す" do
+    context "データが存在する場合" do
+      it "削除成功(302)" do
         delete life_event_path(life_event)
-        expect(response).to have_http_status(:found)  # 302
+        expect(response).to have_http_status(:found)
       end
     end
 
     context "削除したいデータが存在しない場合" do
-      it "削除失敗し、302を返す" do
+      it "削除失敗(302)" do
         delete life_event_path(-1) # 存在しないID
-        expect(response).to have_http_status(:found)  # 302
+        expect(response).to have_http_status(:found)
       end
     end
   end

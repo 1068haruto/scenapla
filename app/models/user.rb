@@ -14,6 +14,8 @@ class User < ApplicationRecord
   has_many :ai_advices, dependent: :destroy
   has_many :sns_credentials, dependent: :destroy
 
+  AGE_LIMIT = 70
+
   # カスタムのみ（email形式は、devise.rbで定義）
   validates :name, presence: true
   validates :date_of_birth, presence: true, if: :date_of_birth_required?
@@ -28,6 +30,10 @@ class User < ApplicationRecord
     age = current_date.year - date_of_birth.year
     age -= 1 if current_date < date_of_birth + age.years  # 誕生日がまだ来ていない場合は1歳引く
     age
+  end
+
+  def get_year_at_seventy
+    date_of_birth.year + AGE_LIMIT
   end
 
   def self.find_or_create_for_oauth(auth)

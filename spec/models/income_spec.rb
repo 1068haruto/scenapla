@@ -117,11 +117,11 @@ RSpec.describe Income, type: :model do
     let(:simulation) { create(:simulation, user: user) }
     year = Date.current.year
 
-    describe '.generate_income_data' do
+    describe '.generateIncomeData' do
       it 'income_dataを生成する' do
         create(:income, user: user, simulation: simulation)
         create(:income, user: user, simulation: simulation)
-        result = Income.generate_income_data(user)
+        result = Income.generateIncomeData(user)
 
         expect(result).to include(
           { amount: 26, date: year },
@@ -134,39 +134,6 @@ RSpec.describe Income, type: :model do
         expect(result).to include({ date: year, amount: 26 })
         expect(result).to include({ date: year + 5, amount: 28 })
         expect(result.length).to eq(6)
-      end
-    end
-
-    describe '#calculate_until_retirement' do
-      it '現在〜退職までの年収を計算し、配列にする' do
-        income = build(:income)
-        result = income.calculate_until_retirement
-
-        expect(result).to include(
-          { amount: 13, date: year },
-          { amount: 13, date: year + 1 },
-          { amount: 13, date: year + 2 },
-          { amount: 13, date: year + 3 },
-          { amount: 13, date: year + 4 },
-          { amount: 14, date: year + 5 }
-        )
-        expect(result.length).to eq(6)
-      end
-    end
-
-    describe '.grouped' do
-      it '同じ年の複数の収入を合計した配列にする' do
-        allIncomeData = [
-          { date: year, amount: 5 },
-          { date: year + 5, amount: 1 },
-          { date: year + 5, amount: 2 }
-        ]
-        result = Income.send(:grouped, allIncomeData)
-
-        expect(result).to include(
-          { date: year, amount: 5 },
-          { date: year + 5, amount: 3 }
-        )
       end
     end
 

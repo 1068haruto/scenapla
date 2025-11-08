@@ -13,6 +13,12 @@ RSpec.describe User, type: :model do
     it { is_expected.to have_one(:simulation).dependent(:destroy) }
   end
 
+  describe 'Const' do
+    it 'AGE_LIMITは「70」' do
+      expect(described_class::AGE_LIMIT).to eq(70)
+    end
+  end
+
   describe 'バリデーションテスト' do
     let(:user) { build(:user) }
 

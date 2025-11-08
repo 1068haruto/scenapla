@@ -10,16 +10,12 @@ RSpec.describe UserAsset, type: :model do
     it { is_expected.to belong_to(:simulation) }
   end
 
-  describe '定数テスト' do
-    it 'AGE_LIMITは、「70」である' do
-      expect(described_class::AGE_LIMIT).to eq(70)
-    end
-
-    it 'TAX_RATEは、「0.20315」である' do
+  describe 'Const' do
+    it 'TAX_RATEは「0.20315」' do
       expect(described_class::TAX_RATE).to eq(0.20315)
     end
 
-    it 'ASSET_TYPE_IS_OTHERは、「12」である' do
+    it 'ASSET_TYPE_IS_OTHERは「12」' do
       expect(described_class::ASSET_TYPE_IS_OTHER).to eq("投資_その他")
     end
   end

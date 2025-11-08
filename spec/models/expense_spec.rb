@@ -11,10 +11,6 @@ RSpec.describe Expense, type: :model do
   end
 
   describe 'Const' do
-    it 'AGE_LIMITは「70」' do
-      expect(described_class::AGE_LIMIT).to eq(70)
-    end
-
     it 'MONTHS_IN_A_YEARは「12」' do
       expect(described_class::MONTHS_IN_A_YEAR).to eq(12)
     end

@@ -2,7 +2,6 @@ class UserAsset < ApplicationRecord
   belongs_to :user
   belongs_to :simulation
 
-  AGE_LIMIT = 70
   TAX_RATE = 0.20315  # 20.315％（所得税等15.315％、住民税５％）
   ASSET_TYPE_IS_OTHER = "投資_その他"
 
@@ -15,20 +14,13 @@ class UserAsset < ApplicationRecord
 
   def self.generate_user_asset_data_for(user)
     assets = where(user: user)
-    year_at_seventy = get_year_when_seventy(user)
-    yearly_totals = initialize_yearly_totals(assets, year_at_seventy)
+    yearAtSeventy = user.get_year_at_seventy
+    yearlyTotals = initialize_yearly_totals(assets, yearAtSeventy)
 
-    format_yearly_totals(yearly_totals)
+    format_yearly_totals(yearlyTotals)
   end
 
   private
-
-  # ユーザーが70歳になる年を計算
-  def self.get_year_when_seventy(user)
-    birth_date = user.date_of_birth
-    year_turns_seventy = birth_date + AGE_LIMIT.years
-    year_turns_seventy.year
-  end
 
   def self.initialize_yearly_totals(assets, year_at_seventy)
     current_year = Date.today.year

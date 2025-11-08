@@ -2,7 +2,6 @@ class Expense < ApplicationRecord
   belongs_to :user
   belongs_to :simulation
 
-  AGE_LIMIT = 70
   MONTHS_IN_A_YEAR = 12
   NO_REPAYMENT_YEAR = 0
   JANUARY = 1
@@ -21,7 +20,7 @@ class Expense < ApplicationRecord
   # 70歳までの各年の支出を計算-> Array
   def calculate_until_limit(user)
     currentYear = Date.today.year
-    yearAtSeventy = currentYear + (AGE_LIMIT - user.calculate_user_age)
+    yearAtSeventy = user.get_year_at_seventy
 
     (currentYear..yearAtSeventy).map do |year|
       repaymentYear = repayment_date&.year.to_i  # nil の to_i は 0

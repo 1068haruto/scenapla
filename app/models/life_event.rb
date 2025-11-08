@@ -10,46 +10,34 @@ class LifeEvent < ApplicationRecord
   validates :event_type, :event_date, :title, :payment_period, presence: true
   validates :amount, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
-  # カスタムセッター：入力された年をdate型に変換
-  def event_date=(value)
-    super(value.present? ? Date.new(value.to_i, 1, 1) : value)
+  # life_event_dataの生成-> Array
+  def self.generate_life_event_data(user)
+    lifeEvents = where(user: user)
+    realEvents = lifeEvents.where(event_type: 0)
+    idealEvents = lifeEvents.where(event_type: 1)
+
+    realEventData = calculate_yearly_totals(realEvents)
+    idealEventData = nil
+    if idealEvents.present?
+      idealEventData = calculate_yearly_totals(realEvents + idealEvents)
+    end
+    { real_event_data: realEventData, ideal_event_data: idealEventData }
   end
 
-  def self.generate_life_event_data_for(user)
-    life_events = where(user: user)
-    real_events = life_events.where(event_type: 0)
-    ideal_events = life_events.where(event_type: 1)
-
-    real_event_data = aggregate_event_data(real_events)
-    ideal_event_data = aggregate_event_data(real_events + ideal_events) if ideal_events.present?
-
-    { real_event_data: real_event_data, ideal_event_data: ideal_event_data }
-  end
-
-  private
-
-  def self.aggregate_event_data(events)
-    year_amounts = extract_yearly_amounts(events)
-    aggregate_by_year(year_amounts)
-  end
-
-  def self.extract_yearly_amounts(events)
-    events.flat_map do |event|
-      (0...event.payment_period).map do |i|
-        { date: event.event_date.year + i, amount: -event.amount }
+  def self.calculate_yearly_totals(events)
+    yearlyTotals = Hash.new(0)
+    events.each do |event|
+      (0...event.payment_period).each do |i|
+        year = event.event_date.year + i
+        yearlyTotals[year] += -event.amount
       end
     end
+
+    FormatService.format(yearlyTotals)
   end
 
-  def self.aggregate_by_year(year_amounts)
-    grouped_events_by_date = year_amounts.group_by { |event| event[:date] }
-
-    aggregated_amounts = grouped_events_by_date.transform_values do |events|
-      events.sum { |event| event[:amount] }
-    end
-
-    aggregated_amounts.map do |year, amount|
-      { date: year, amount: amount }
-    end
+  # Dateにキャスト
+  def event_date=(value)
+    super(value.present? ? Date.new(value.to_i, JANUARY, FIRST) : value)
   end
 end

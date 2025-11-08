@@ -118,7 +118,7 @@ RSpec.describe Income, type: :model do
     year = Date.current.year
 
     describe '.generate_income_data' do
-      it '全収入データを1つのオブジェクト配列にする' do
+      it 'income_dataを生成する' do
         create(:income, user: user, simulation: simulation)
         create(:income, user: user, simulation: simulation)
         result = Income.generate_income_data(user)
@@ -138,7 +138,7 @@ RSpec.describe Income, type: :model do
     end
 
     describe '#calculate_until_retirement' do
-      it '現在〜退職までの年収を計算し、オブジェクト配列とする' do
+      it '現在〜退職までの年収を計算し、配列にする' do
         income = build(:income)
         result = income.calculate_until_retirement
 
@@ -155,7 +155,7 @@ RSpec.describe Income, type: :model do
     end
 
     describe '.grouped' do
-      it '同じ年の複数の収入を合計する' do
+      it '同じ年の複数の収入を合計した配列にする' do
         allIncomeData = [
           { date: year, amount: 5 },
           { date: year + 5, amount: 1 },

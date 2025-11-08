@@ -13,7 +13,7 @@ RSpec.describe "Simulations", type: :request do
 
     context '成功した場合' do
       before do
-        allow(Income).to receive(:generateIncomeData).and_return(income_data)
+        allow(Income).to receive(:generate_income_data).and_return(income_data)
         allow_any_instance_of(Simulation).to receive(:update!).and_return(true)
         post update_income_data_simulation_path
       end
@@ -26,7 +26,7 @@ RSpec.describe "Simulations", type: :request do
 
     context '失敗した場合' do
       before do
-        allow(Income).to receive(:generateIncomeData).and_return(income_data)
+        allow(Income).to receive(:generate_income_data).and_return(income_data)
         allow_any_instance_of(Simulation).to receive(:update).and_return(false)
         post update_income_data_simulation_path
       end
@@ -73,20 +73,20 @@ RSpec.describe "Simulations", type: :request do
 
     context '成功した場合' do
       before do
-        allow(UserAsset).to receive(:generateUserAssetData).and_return(user_asset_data)
+        allow(UserAsset).to receive(:generate_user_asset_data).and_return(user_asset_data)
         allow_any_instance_of(Simulation).to receive(:update!).and_return(true)
         post update_user_asset_data_simulation_path
       end
 
       it 'life_events_pathへリダイレクトする' do
-        expect(response).to have_http_status(:found) # 302
+        expect(response).to have_http_status(:found)
         expect(response).to redirect_to(life_events_path)
       end
     end
 
     context '失敗した場合' do
       before do
-        allow(UserAsset).to receive(:generateUserAssetData).and_return(user_asset_data)
+        allow(UserAsset).to receive(:generate_user_asset_data).and_return(user_asset_data)
         allow_any_instance_of(Simulation).to receive(:update).and_return(false)
         post update_user_asset_data_simulation_path
       end
@@ -103,26 +103,26 @@ RSpec.describe "Simulations", type: :request do
 
     context '成功した場合' do
       before do
-        allow(LifeEvent).to receive(:generate_life_event_data_for).and_return(life_event_data)
+        allow(LifeEvent).to receive(:generate_life_event_data).and_return(life_event_data)
         allow_any_instance_of(Simulation).to receive(:update!).and_return(true)
         post update_life_event_data_simulation_path
       end
 
       it 'scenarios_pathへリダイレクトする' do
-        expect(response).to have_http_status(:found) # 302
+        expect(response).to have_http_status(:found)
         expect(response).to redirect_to(scenarios_path)
       end
     end
 
     context '失敗した場合' do
       before do
-        allow(LifeEvent).to receive(:generate_life_event_data_for).and_return(life_event_data)
+        allow(LifeEvent).to receive(:generate_life_event_data).and_return(life_event_data)
         allow_any_instance_of(Simulation).to receive(:update).and_return(false)
         post update_life_event_data_simulation_path
       end
 
       it 'life_events_pathへリダイレクトする' do
-        expect(response).to have_http_status(:found) # 302
+        expect(response).to have_http_status(:found)
         expect(response).to redirect_to(life_events_path)
       end
     end

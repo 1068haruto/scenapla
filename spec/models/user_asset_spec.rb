@@ -94,7 +94,7 @@ RSpec.describe UserAsset, type: :model do
         currentYear = Date.today.year
         yearAtSeventy = currentYear + 10
 
-        result = UserAsset.generateUserAssetData(user)
+        result = UserAsset.generate_user_asset_data(user)
 
         expect(result.first).to include({ date: currentYear, amount: 100 })
         expect(result.last).to include({ date: yearAtSeventy, amount: 215.3 })

@@ -11,7 +11,7 @@ class Income < ApplicationRecord
   validates :monthly_income, :yearly_bonus, :retirement_pay, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
   # income_dataの作成-> Array
-  def self.generateIncomeData(user)
+  def self.generate_income_data(user)
     yearlyTotals = Hash.new(0)
     currentYear = Date.current.year
 

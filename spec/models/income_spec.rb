@@ -98,16 +98,16 @@ RSpec.describe Income, type: :model do
     end
   end
 
-  describe 'メソッド' do
+  describe 'Method' do
     let(:user) { create(:user) }
     let(:simulation) { create(:simulation, user: user) }
     year = Date.current.year
 
-    describe '.generateIncomeData' do
+    describe '.generate_income_data' do
       it 'income_dataを生成する' do
         create(:income, user: user, simulation: simulation)
         create(:income, user: user, simulation: simulation)
-        result = Income.generateIncomeData(user)
+        result = Income.generate_income_data(user)
 
         expect(result).to include(
           { amount: 26, date: year },

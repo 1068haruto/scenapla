@@ -12,7 +12,7 @@ class UserAsset < ApplicationRecord
   validates :amount, :return_rate, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
   # user_asset_dataを生成-> Array
-  def self.generateUserAssetData(user)
+  def self.generate_user_asset_data(user)
     assets = where(user: user)
     currentYear = Date.today.year
     yearAtSeventy = user.get_year_at_seventy

@@ -3,7 +3,7 @@ class SimulationsController < ApplicationController
   before_action :set_simulation
 
   def update_income_data
-    income_data = Income.generateIncomeData(current_user)
+    income_data = Income.generate_income_data(current_user)
 
     if @simulation.update(income_data: income_data)
       update_success(expenses_path)
@@ -23,7 +23,7 @@ class SimulationsController < ApplicationController
   end
 
   def update_user_asset_data
-    user_asset_data = UserAsset.generateUserAssetData(current_user)
+    user_asset_data = UserAsset.generate_user_asset_data(current_user)
 
     if @simulation.update(user_asset_data: user_asset_data)
       update_success(life_events_path)
@@ -33,7 +33,7 @@ class SimulationsController < ApplicationController
   end
 
   def update_life_event_data
-    life_event_data = LifeEvent.generate_life_event_data_for(current_user)
+    life_event_data = LifeEvent.generate_life_event_data(current_user)
 
     if @simulation.update(
       real_event_data: life_event_data[:real_event_data].presence,

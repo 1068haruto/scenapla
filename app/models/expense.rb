@@ -1,11 +1,8 @@
 class Expense < ApplicationRecord
+  include Constants
+
   belongs_to :user
   belongs_to :simulation
-
-  MONTHS_IN_A_YEAR = 12
-  NO_REPAYMENT_YEAR = 0
-  JANUARY = 1
-  FIRST = 1
 
   validates :user_id, :simulation_id, presence: true
   validates :housing_expenses, :living_expenses, :monthly_premiums, :other_expenses,

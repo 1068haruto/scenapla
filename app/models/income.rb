@@ -1,10 +1,8 @@
 class Income < ApplicationRecord
+  include Constants
+
   belongs_to :user
   belongs_to :simulation
-
-  MONTHS_IN_A_YEAR = 12
-  JANUARY = 1
-  FIRST = 1
 
   enum person_type: { 本人: 0, 配偶者: 1 }
 

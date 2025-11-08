@@ -1,10 +1,10 @@
 class LifeEvent < ApplicationRecord
+  include Constants
+
   belongs_to :user
   belongs_to :simulation
 
   enum event_type: { 現実: 0, 理想: 1 }
-
-  PAYMENT_PERIOD_OPTIONS = (1..10).to_a.freeze
 
   validates :user_id, :simulation_id, presence: true
   validates :event_type, :event_date, :title, :payment_period, presence: true

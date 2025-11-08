@@ -6,20 +6,6 @@ RSpec.describe Income, type: :model do
     it { is_expected.to belong_to(:simulation) }
   end
 
-  describe 'constant' do
-    it 'MONTHS_IN_A_YEARは「12」' do
-      expect(described_class::MONTHS_IN_A_YEAR).to eq(12)
-    end
-
-    it 'JANUARYは「1」' do
-      expect(described_class::JANUARY).to eq(1)
-    end
-
-    it 'FIRSTは「1」' do
-      expect(described_class::FIRST).to eq(1)
-    end
-  end
-
   describe 'enum' do
     it 'person_typesが正しい値を持つ' do
       expect(described_class.person_types).to eq({ "本人" => 0, "配偶者" => 1 })

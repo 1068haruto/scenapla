@@ -10,24 +10,6 @@ RSpec.describe Expense, type: :model do
     it { is_expected.to belong_to(:simulation) }
   end
 
-  describe 'Const' do
-    it 'MONTHS_IN_A_YEARは「12」' do
-      expect(described_class::MONTHS_IN_A_YEAR).to eq(12)
-    end
-
-    it 'NO_REPAYMENT_YEARは「0」' do
-      expect(described_class::NO_REPAYMENT_YEAR).to eq(0)
-    end
-
-    it 'JANUARYは「1」' do
-      expect(described_class::JANUARY).to eq(1)
-    end
-
-    it 'FIRSTは「1」' do
-      expect(described_class::FIRST).to eq(1)
-    end
-  end
-
   describe 'Validation' do
     context '必須項目' do
       it 'user_idなしは、無効' do

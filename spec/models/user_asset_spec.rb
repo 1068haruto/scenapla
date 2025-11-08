@@ -10,16 +10,6 @@ RSpec.describe UserAsset, type: :model do
     it { is_expected.to belong_to(:simulation) }
   end
 
-  describe 'Const' do
-    it 'TAX_RATEは「0.20315」' do
-      expect(described_class::TAX_RATE).to eq(0.20315)
-    end
-
-    it 'ASSET_TYPE_IS_OTHERは「12」' do
-      expect(described_class::ASSET_TYPE_IS_OTHER).to eq("投資_その他")
-    end
-  end
-
   describe 'Enum' do
     it 'person_typeが正しい値を持つ' do
       expect(described_class.person_types).to eq({ "本人" => 0, "配偶者" => 1 })

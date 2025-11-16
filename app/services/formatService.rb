@@ -1,6 +1,6 @@
 class FormatService
 
-  # 同じ年が持つ複数のamountを丸め、合計する-> オブジェクト配列
+  # 年毎にamountを合計済の配列 を受け取り、丸めてフォーマット-> オブジェクト配列
   def self.format(yearlyTotals)
 
     roundedHash = yearlyTotals.transform_values do |totalAmount|

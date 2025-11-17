@@ -15,8 +15,8 @@ RSpec.describe Simulation, type: :model do
   end
 
   describe 'validation' do
-    context '必須項目の確認' do
-      it 'user_idは必須' do
+    context '必須項目' do
+      it 'user_idなしは、無効' do
         simulation.user_id = nil
         expect(simulation).not_to be_valid
       end

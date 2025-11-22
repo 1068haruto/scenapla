@@ -110,15 +110,13 @@ RSpec.describe Income, type: :model do
         result = Income.generate_income_data(user)
 
         expect(result).to include(
-          { amount: 26, date: year },
-          { amount: 26, date: year + 1 },
-          { amount: 26, date: year + 2 },
-          { amount: 26, date: year + 3 },
-          { amount: 26, date: year + 4 },
-          { amount: 28, date: year + 5 }
+          { "amount" => 26.0, "date" => year },
+          { "amount" => 26.0, "date" => year + 1 },
+          { "amount" => 26.0, "date" => year + 2 },
+          { "amount" => 26.0, "date" => year + 3 },
+          { "amount" => 26.0, "date" => year + 4 },
+          { "amount" => 28.0, "date" => year + 5 }
         )
-        expect(result).to include({ date: year, amount: 26 })
-        expect(result).to include({ date: year + 5, amount: 28 })
         expect(result.length).to eq(6)
       end
     end

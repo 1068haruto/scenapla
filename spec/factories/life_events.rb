@@ -14,7 +14,7 @@ FactoryBot.define do
     # 理想用イベント
     trait :ideal do
       event_type { 1 }
-      event_date { Date.current.year + 3}
+      event_date { Date.current.year + 3 }
       title { "理想イベント" }
       amount { 3 }
       payment_period { 3 }

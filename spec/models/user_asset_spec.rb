@@ -96,8 +96,8 @@ RSpec.describe UserAsset, type: :model do
 
         result = UserAsset.generate_user_asset_data(user)
 
-        expect(result.first).to include({ date: currentYear, amount: 100 })
-        expect(result.last).to include({ date: yearAtSeventy, amount: 215.3 })
+        expect(result.first).to include({ "date" => currentYear, "amount" => 100.0 })
+        expect(result.last).to include({ "date" => yearAtSeventy, "amount" => 215.3 })
         expect(result.length).to eq(11)
       end
     end

@@ -19,7 +19,7 @@ RSpec.describe "Simulations", type: :request do
       end
 
       it 'expenses_pathへリダイレクトする' do
-        expect(response).to have_http_status(:found) # 302
+        expect(response).to have_http_status(:found)
         expect(response).to redirect_to(expenses_path)
       end
     end
@@ -32,7 +32,7 @@ RSpec.describe "Simulations", type: :request do
       end
 
       it 'incomes_pathへリダイレクトする' do
-        expect(response).to have_http_status(:found) # 302
+        expect(response).to have_http_status(:found)
         expect(response).to redirect_to(incomes_path)
       end
     end
@@ -49,7 +49,7 @@ RSpec.describe "Simulations", type: :request do
       end
 
       it 'user_assets_pathへリダイレクトする' do
-        expect(response).to have_http_status(:found) # 302
+        expect(response).to have_http_status(:found)
         expect(response).to redirect_to(user_assets_path)
       end
     end
@@ -62,7 +62,7 @@ RSpec.describe "Simulations", type: :request do
       end
 
       it 'expenses_pathへリダイレクトする' do
-        expect(response).to have_http_status(:found) # 302
+        expect(response).to have_http_status(:found)
         expect(response).to redirect_to(expenses_path)
       end
     end
@@ -92,14 +92,17 @@ RSpec.describe "Simulations", type: :request do
       end
 
       it 'user_assets_pathへリダイレクトする' do
-        expect(response).to have_http_status(:found) # 302
+        expect(response).to have_http_status(:found)
         expect(response).to redirect_to(user_assets_path)
       end
     end
   end
 
   describe 'POST /simulation/update_life_event_data' do
-    let(:life_event_data) { { real_event_data: "test real event data", ideal_event_data: "test ideal event data" } }
+    let(:life_event_data) { {
+      real_event_data: "test real event data",
+      ideal_event_data: "test ideal event data"
+    } }
 
     context '成功した場合' do
       before do

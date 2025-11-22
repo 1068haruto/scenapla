@@ -8,9 +8,4 @@ class Simulation < ApplicationRecord
   has_many :asset_lifespans, dependent: :destroy
 
   validates :user_id, presence: true
-
-  # (移動予定)
-  def user_asset_chart_data
-    user_asset_data&.map { |entry| [ entry["date"], entry["amount"] ] }&.to_h || {}
-  end
 end

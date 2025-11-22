@@ -1,4 +1,6 @@
 class Scenario < ApplicationRecord
+  include Constants
+
   belongs_to :user
   belongs_to :simulation
 
@@ -6,59 +8,59 @@ class Scenario < ApplicationRecord
 
   validates :user_id, :simulation_id, presence: true
 
-  # scenario_dataの更新->
-  # (統合 & リファクタ予定)
-  def update_scenario_data!
-    life_event_data = (scenario_type == "現実") ? simulation.real_event_data : simulation.ideal_event_data
-    calculated_data = Scenario.generate_scenario_data(simulation, life_event_data)
-    update!(calculated_data)
+  # scenario(現実, 理想)の更新-> void
+  def self.update_scenarios(user)
+    scenarios = user.scenarios
+    simulation = user.simulation
 
-  rescue StandardError => e
-    Rails.logger.error("シナリオ更新エラー: #{e.message}")
-    false
+    scenarios.each do |scenario|
+      if scenario.scenario_type == "現実"
+        event_data = simulation.real_event_data
+      else
+        event_data = simulation.ideal_event_data
+      end
+      data = Scenario.generate_scenario(simulation, event_data)
+      scenario.update!(data)
+    end
   end
 
-  # scenario_dataの生成->
-  # (後に統合 & リファクタ予定)
-  def self.generate_scenario_data(simulation, life_event_data)
-    # 収支シナリオ
-    merged = self.merge_data(
-      simulation.income_data, simulation.expense_data, life_event_data
-    )
-    merged.each_cons(2) do |previous, current|  # 前年収支を次年に反映
-      current[:amount] = (current[:amount] + previous[:amount]).round(1)
-    end
-    balance_scenario = merged
+  # scenarioの生成-> Hash
+  def self.generate_scenario(simulation, event_data)
+    # 生涯収入
+    income = simulation.income_data
+    total_income = FormatService.sum_entries(income).round(1)
 
-    # 合計収入
-    total_income_data = simulation.income_data
-    total_income = total_income_data.sum { |entry| entry[:amount].to_f }.round(1)
+    # 生涯支出
+    merged_expense_event = self.merge_data(simulation.expense_data, event_data)
+    total_expense = FormatService.sum_entries(merged_expense_event).round(1)
 
-    # 合計支出
-    datasets = [ simulation.expense_data, life_event_data ]
-    merged_data = self.merge_data(*datasets)
-    total_expense = merged_data.sum { |entry| entry[:amount].to_f }.round(1)
-
-    # 合計収支
+    # 生涯収支
     total_balance = total_income + total_expense
+
+    # 収支シナリオ
+    merged_income_expense_event = self.merge_data(income, merged_expense_event)
+    merged_income_expense_event.each_cons(2) do |previous, current|
+      current["amount"] = (current["amount"].to_d + previous["amount"].to_d).round(1)
+    end
+    balance_scenario = merged_income_expense_event
 
     # 取崩し
     withdrawal = 0
     if total_balance > 0
-      monthly_expense_total = simulation.expenses.sum(
+      monthly_expense = simulation.expenses.sum(
         "housing_expenses + living_expenses + monthly_premiums + other_expenses"
       )
-      withdrawal = (total_balance / monthly_expense_total).round(1)
+      if monthly_expense.to_d > 0
+        withdrawal = (total_balance / monthly_expense.to_d).round(1)
+      end
     end
 
     # 不足額
     shortage = 0
-    remaining_years = 70 - simulation.user.calculate_user_age # 70歳までの残年数
+    remaining_years = AGE_LIMIT - simulation.user.calculate_user_age
     if total_balance < 0 && remaining_years > 0
-      shortage = (total_balance.abs / remaining_years.to_f).round(1)
+      shortage = (total_balance.abs / remaining_years.to_d).round(1)
     end
-
-    AssetLifespan.calculate_and_save_lifespan_data(simulation) # 移動予定
 
     {
       balance_scenario: balance_scenario,
@@ -70,20 +72,16 @@ class Scenario < ApplicationRecord
     }
   end
 
+  # 複数データのマージ-> Array
   def self.merge_data(*datasets)
     datasets = datasets.map { |dataset| dataset || [] }
-    merged = datasets.flatten.group_by { |entry| entry[:date] }
+    merged = datasets.flatten.group_by { |entry| entry["date"] }
 
     yearly_totals = merged.transform_values do |entries|
-      entries.sum { |entry| entry[:amount].to_f }
+      FormatService.sum_entries(entries)
     end
+
     formatted_array = FormatService.format(yearly_totals)
-
-    formatted_array.sort_by { |entry| entry[:date] }
-  end
-
-  # (移動予定)
-  def balance_chart_data
-    balance_scenario.map { |entry| [ entry["date"], entry["amount"] ] }&.to_h || {}
+    formatted_array.sort_by { |entry| entry["date"] }
   end
 end

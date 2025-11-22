@@ -87,7 +87,7 @@ RSpec.describe LifeEvent, type: :model do
 
           result = LifeEvent.generate_life_event_data(user)
 
-          expect(result[:real_event_data]).to include({ date: year, amount: -1.0 })
+          expect(result[:real_event_data]).to include({ "date" => year, "amount" => -1.0 })
           expect(result[:real_event_data].length).to eq(1)
           expect(result[:ideal_event_data]).to be_nil
         end
@@ -100,13 +100,13 @@ RSpec.describe LifeEvent, type: :model do
 
           result = LifeEvent.generate_life_event_data(user)
 
-          expect(result[:real_event_data]).to contain_exactly({ date: year, amount: -1.0 })
+          expect(result[:real_event_data]).to contain_exactly({ "date" => year, "amount" => -1.0 })
           expect(result[:real_event_data].length).to eq(1)
           expected_ideal_data = [
-            { date: year, amount: -1.0 },     # 現実イベント
-            { date: year + 3, amount: -3.0 }, # 理想イベント 1年目
-            { date: year + 4, amount: -3.0 }, # 理想イベント 2年目
-            { date: year + 5, amount: -3.0 }  # 理想イベント 3年目
+            { "date" => year, "amount" => -1.0 },     # 現実イベント
+            { "date" => year + 3, "amount" => -3.0 }, # 理想イベント 1年目
+            { "date" => year + 4, "amount" => -3.0 }, # 理想イベント 2年目
+            { "date" => year + 5, "amount" => -3.0 }  # 理想イベント 3年目
           ]
           expect(result[:ideal_event_data]).to contain_exactly(*expected_ideal_data)
           expect(result[:ideal_event_data].length).to eq(4)

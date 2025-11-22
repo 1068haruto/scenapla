@@ -43,7 +43,7 @@ Rails.application.routes.draw do
 
   resources :scenarios, only: [ :index ] do
     collection do
-      post :update_scenarios
+      post :update_scenarios_lifespan
     end
   end
 

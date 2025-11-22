@@ -1,5 +1,4 @@
 module Constants
-
   # time
   MONTHS_IN_A_YEAR = 12
   JANUARY = 1

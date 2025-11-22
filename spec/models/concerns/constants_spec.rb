@@ -37,7 +37,7 @@ RSpec.describe Constants do
 
     # LifeEvent
     it 'PAYMENT_PERIOD_OPTIONSは「正しい範囲の配列」' do
-      expect(Constants::PAYMENT_PERIOD_OPTIONS).to eq([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+      expect(Constants::PAYMENT_PERIOD_OPTIONS).to eq([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ])
     end
   end
 end

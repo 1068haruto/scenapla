@@ -94,9 +94,4 @@ class Scenario < ApplicationRecord
     formatted_array = FormatService.format(yearly_totals)
     formatted_array.sort_by { |entry| entry["date"] }
   end
-
-  # (移動予定)
-  def balance_chart_data
-    balance_scenario.map { |entry| [ entry["date"], entry["amount"] ] }&.to_h || {}
-  end
 end

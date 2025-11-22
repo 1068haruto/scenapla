@@ -18,22 +18,24 @@ class AssetLifespan < ApplicationRecord
     remaining_asset = total_assets
     current_month = Date.today.month
     current_year = Date.today.year
-    yearly_lifespan = {}
 
+    # 💡ハッシュの配列としてデータを格納に変更
+    lifespan_scenario_array = []
     # 1年目(残り月分)
-    remaining_months = 12 - current_month + 1 # 今月を含める
-    yearly_lifespan[current_year] = remaining_asset
+    remaining_months = 12 - current_month + 1
+    lifespan_scenario_array << { "date" => current_year, "amount" => remaining_asset.round(1) }
     remaining_asset -= monthly_expense * remaining_months
     # 2年目以降(12ヶ月単位)
     next_year = current_year + 1
     annual_expense = monthly_expense * 12
-    while remaining_asset > -annual_expense
-      yearly_lifespan[next_year] = remaining_asset
-      remaining_asset -= annual_expense
+    annual_expense_d = annual_expense.to_d
+    while remaining_asset > -annual_expense_d
+      lifespan_scenario_array << { "date" => next_year, "amount" => remaining_asset.round(1) }
+      remaining_asset -= annual_expense_d
       next_year += 1
     end
 
-    # 資産寿命を年と月に変換
+    # 資産寿命を年と月に変換 (変更なし)
     total_months = (total_assets / monthly_expense).floor
     lifespan_years = total_months / 12
     lifespan_months = total_months % 12
@@ -42,14 +44,9 @@ class AssetLifespan < ApplicationRecord
     lifespan = simulation.asset_lifespans.find_or_initialize_by(user_id: simulation.user_id)
     lifespan.update!(
       user_id: simulation.user_id,
-      asset_lifespan_scenario: yearly_lifespan,
+      asset_lifespan_scenario: lifespan_scenario_array,
       lifespan_years: lifespan_years,
       lifespan_months: lifespan_months
     )
-  end
-
-  # (移動予定)
-  def user_asset_chart_data
-    asset_lifespan_scenario&.map { |year, amount| [ year, amount.to_f ] }&.to_h || {}
   end
 end

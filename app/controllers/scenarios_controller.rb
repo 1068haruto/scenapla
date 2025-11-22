@@ -30,7 +30,7 @@ class ScenariosController < ApplicationController
   def setup_asset_lifespan
     @lifespan_years = @asset_lifespan&.lifespan_years
     @lifespan_months = @asset_lifespan&.lifespan_months
-    @lifespan_chart_data = @asset_lifespan&.user_asset_chart_data
+    @lifespan_chart_data = FormatService.to_chart_hash(@asset_lifespan.asset_lifespan_scenario)
 
     expense_totals = @simulation.expenses.pluck(:housing_expenses, :living_expenses, :monthly_premiums, :other_expenses)
     monthly_expenses = expense_totals.flatten.sum.to_f
@@ -52,7 +52,7 @@ class ScenariosController < ApplicationController
     end
 
     @real_updated_at = real_scenario&.updated_at
-    @real_balance_chart_data = real_scenario&.balance_chart_data || []
+    @real_balance_chart_data = FormatService.to_chart_hash(real_scenario.balance_scenario)
     @real_total_income = real_scenario&.total_income || 0
     @real_total_expense = real_scenario&.total_expense || 0
     @real_total_balance = real_scenario&.total_balance || 0
@@ -69,7 +69,7 @@ class ScenariosController < ApplicationController
     end
 
     @ideal_updated_at = ideal_scenario.updated_at
-    @ideal_balance_chart_data = ideal_scenario.balance_chart_data || []
+    @ideal_balance_chart_data = FormatService.to_chart_hash(ideal_scenario.balance_scenario)
     @ideal_total_income = ideal_scenario.total_income || 0
     @ideal_total_expense = ideal_scenario.total_expense || 0
     @ideal_total_balance = ideal_scenario.total_balance || 0
@@ -78,7 +78,7 @@ class ScenariosController < ApplicationController
   end
 
   def setup_asset_scenario
-    @asset_data = @simulation.user_asset_chart_data
+    @asset_data = FormatService.to_chart_hash(@simulation.user_asset_data)
     @user_asset_data_updated_at = @simulation.updated_at if @asset_data.present?
   end
 end

@@ -9,7 +9,7 @@ class FormatService
 
     yearlyArray = []
     roundedHash.each do |year, totalAmount|
-      yearlyArray << { date: year, amount: totalAmount }
+      yearlyArray << { "date" => year, "amount" => totalAmount }
     end
 
     yearlyArray

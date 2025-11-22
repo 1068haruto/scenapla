@@ -16,12 +16,12 @@ class ScenariosController < ApplicationController
   end
 
   def update_scenarios
-    success = current_user.scenarios.all?(&:update_scenario_data!)
-
-    if success
-      redirect_to scenarios_path, notice: t("common.actions.update", model: "シナリオ")
+    if Scenario.update_scenarios(current_user)
+      redirect_to scenarios_path,
+      notice: t("common.actions.update", model: "シナリオ")
     else
-      redirect_to scenarios_path, alert: t("common.actions.update_failed", model: "シナリオ")
+      redirect_to scenarios_path,
+      alert: t("common.actions.update_failed", model: "シナリオ")
     end
   end
 

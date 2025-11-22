@@ -24,7 +24,7 @@
               <div class="accordion" id="lifeEventsAccordion-<%= age_group %>">
                 <% @grouped_life_events[age_group].each_with_index do |life_event, index| %>
                   <%=
-                    render 'life_events/registered_life_event', 
+                    render 'life_events/registered_life_event',
                     life_event: life_event,
                     index: index,
                     accordion_id: "lifeEventsAccordion-#{age_group}",
@@ -45,11 +45,10 @@
   <% end %>
 
   <div class="d-flex justify-content-center">
-    # todo: helper
     <% if @grouped_life_events.empty? %>
-      <%= link_to '情報入力画面へ', incomes_path, class: 'btn btn-primary me-2', data: { turbo: true } %>
+      <%= next_button_get('情報入力画面へ', incomes_path) %>
     <% else %>
-      <%= link_to 'ライフイベント編集', life_events_path, class: 'btn btn-outline-secondary me-2', data: { turbo: true } %>
+      <%= back_button('ライフイベント編集', life_events_path) %>
     <% end %>
   </div>
 </div>

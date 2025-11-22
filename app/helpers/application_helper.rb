@@ -4,6 +4,7 @@ module ApplicationHelper
     ENV["FACEBOOK_APP_ID"] || Rails.application.credentials.dig(:facebook, :app_id)
   end
 
+  # button
   def next_button_post(text, path)
     button_to text, path, class: "btn btn-primary", method: :post, data: { turbo: true }
   end

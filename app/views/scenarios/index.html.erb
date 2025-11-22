@@ -22,10 +22,7 @@
 
     <div class="card-body">
       <% if show_asset_lifespan_scenario?(@asset_lifespan) %>
-        <p>
-          現在の生活水準の場合、資産寿命は
-          <strong><%= @lifespan_years %>年<%= @lifespan_months %>ヶ月</strong> です。
-        </p>
+        <p>資産寿命：<%= @lifespan_years %>年<%= @lifespan_months %>ヶ月</p>
         <%= lifespan_chart(@lifespan_chart_data) %>
       <% else %>
         <p>支出または資産情報が未登録ため、表示できません。</p>
@@ -74,7 +71,7 @@
 
     <div class="card-body">
       <% if show_asset_scenario?(@asset_data, @user_assets) %>
-        <p>現在の資産を運用した場合の今後の推移です。</p>
+        <p>現在資産を基にした推移</p>
         <%= asset_chart(@asset_data) %>
       <% else %>
         <p>資産情報が未登録のため、表示できません。</p>
@@ -95,8 +92,7 @@
       <%= back_button('条件を変えて再入力', incomes_path) %>
       <%= next_button_get('ライフプランへ', life_plans_path) %>
     <% else %>
-      # todo: hepler
-      <%= link_to '情報入力画面へ', incomes_path, class: 'btn btn-primary me-2', data: { turbo_method: :get } %>
+      <%= next_button_get('情報入力画面へ', incomes_path) %>
     <% end %>
   </div>
 </div>

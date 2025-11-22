@@ -19,21 +19,29 @@ RSpec.describe "Scenarios", type: :request do
     end
   end
 
-  describe "POST /update_scenarios" do
+  describe "POST /update_scenarios_lifespan" do
     it "更新成功（302）" do
-      allow(Scenario).to receive(:update_scenarios).and_return(true)
-      post update_scenarios_scenarios_path
+      # DualUpdaterServiceのモック
+      dual_updater_service = instance_double(DualUpdaterService, call: true)
+      allow(DualUpdaterService).to receive(:new).with(user).and_return(dual_updater_service)
 
-      expect(Scenario).to have_received(:update_scenarios).with(user)
+      post update_scenarios_lifespan_scenarios_path
+
+      expect(DualUpdaterService).to have_received(:new).with(user)
+      expect(dual_updater_service).to have_received(:call)
       expect(response).to have_http_status(:found)
       expect(response).to redirect_to(scenarios_path)
     end
 
     it "更新失敗（302）" do
-      allow(Scenario).to receive(:update_scenarios).and_return(false)
-      post update_scenarios_scenarios_path
+      # DualUpdaterServiceのモック
+      dual_updater_service = instance_double(DualUpdaterService, call: false)
+      allow(DualUpdaterService).to receive(:new).with(user).and_return(dual_updater_service)
 
-      expect(Scenario).to have_received(:update_scenarios).with(user)
+      post update_scenarios_lifespan_scenarios_path
+
+      expect(DualUpdaterService).to have_received(:new).with(user)
+      expect(dual_updater_service).to have_received(:call)
       expect(response).to have_http_status(:found)
       expect(response).to redirect_to(scenarios_path)
     end

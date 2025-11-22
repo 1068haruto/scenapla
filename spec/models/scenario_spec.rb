@@ -31,8 +31,6 @@ RSpec.describe Scenario, type: :model do
   end
 
   describe 'method' do
-    describe '.generate_scenario' do
-      pending "後ほど実装"
-    end
+    pending "ロジック確定後、実装"
   end
 end

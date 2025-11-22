@@ -64,37 +64,6 @@ RSpec.describe AssetLifespan, type: :model do
   end
 
   describe 'method' do
-    describe '.update_lifespan_data!' do
-      let(:yearly_lifespan) { { "2000" => 20, "2001" => -20 } }
-      let(:lifespan_years) { 2 }
-      let(:lifespan_months) { 1 }
-
-      context 'asset_lifespanデータがある場合' do
-        let!(:asset_lifespan) { create(:asset_lifespan, user: user, simulation: simulation) }
-
-        it '既存asset_lifespanデータを更新する' do
-          expect do
-            described_class.update_lifespan_data!(simulation, yearly_lifespan, lifespan_years, lifespan_months)
-            asset_lifespan.reload
-          end.to change { asset_lifespan.asset_lifespan_scenario }
-            .from({ "2000" => 10, "2001" => -10 }).to({ "2000" => 20, "2001" => -20 })
-            .and change { asset_lifespan.lifespan_years }.to(2)
-            .and change { asset_lifespan.lifespan_months }.to(1)
-        end
-      end
-
-      context 'asset_lifespanデータがない場合' do
-        it 'asset_lifespanデータを作成する' do
-          expect do
-            described_class.update_lifespan_data!(simulation, yearly_lifespan, lifespan_years, lifespan_months)
-          end.to change { described_class.count }.by(1)
-
-          new_lifespan = described_class.last
-          expect(new_lifespan.asset_lifespan_scenario).to eq({ "2000" => 20, "2001" => -20 })
-          expect(new_lifespan.lifespan_years).to eq(2)
-          expect(new_lifespan.lifespan_months).to eq(1)
-        end
-      end
-    end
+    pending "ロジック確定後、実装"
   end
 end

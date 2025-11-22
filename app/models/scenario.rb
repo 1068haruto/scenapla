@@ -8,30 +8,20 @@ class Scenario < ApplicationRecord
 
   validates :user_id, :simulation_id, presence: true
 
-  # todo: n1、transaction、エラハン
-
-  # 全scenario(現実, 理想)の更新-> boolean
+  # scenario(現実, 理想)の更新-> void
   def self.update_scenarios(user)
     scenarios = user.scenarios
     simulation = user.simulation
 
-    Scenario.transaction do
-      scenarios.each do |scenario|
-        if scenario.scenario_type == "現実"
-          event_data = simulation.real_event_data
-        else
-          event_data = simulation.ideal_event_data
-        end
-        data = Scenario.generate_scenario(simulation, event_data)
-        scenario.update!(data)
+    scenarios.each do |scenario|
+      if scenario.scenario_type == "現実"
+        event_data = simulation.real_event_data
+      else
+        event_data = simulation.ideal_event_data
       end
-
-      AssetLifespan.calculate_and_save_lifespan_data(simulation)
-      true
+      data = Scenario.generate_scenario(simulation, event_data)
+      scenario.update!(data)
     end
-  rescue => e
-    Rails.logger.error("更新失敗: #{e.message}")
-    false
   end
 
   # scenarioの生成-> Hash
@@ -73,12 +63,12 @@ class Scenario < ApplicationRecord
     end
 
     {
-      balance_scenario: balance_scenario, # 収支シナリオ
-      total_income: total_income,         # 生涯収入
-      total_expense: total_expense,       # 生涯支出
-      total_balance: total_balance,       # 生涯収支
-      withdrawal: withdrawal,             # 取崩し
-      shortage: shortage                  # 不足額
+      balance_scenario: balance_scenario,
+      total_income: total_income,
+      total_expense: total_expense,
+      total_balance: total_balance,
+      withdrawal: withdrawal,
+      shortage: shortage
     }
   end
 

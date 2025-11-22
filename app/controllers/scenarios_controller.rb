@@ -15,8 +15,8 @@ class ScenariosController < ApplicationController
     setup_asset_scenario  # 資産シナリオ
   end
 
-  def update_scenarios
-    if Scenario.update_scenarios(current_user)
+  def update_scenarios_lifespan
+    if DualUpdaterService.new(current_user).call
       redirect_to scenarios_path,
       notice: t("common.actions.update", model: "シナリオ")
     else

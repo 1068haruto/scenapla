@@ -16,4 +16,7 @@ module Constants
 
   # LifeEvent
   PAYMENT_PERIOD_OPTIONS = (1..10).to_a
+
+  # AssetLifespan
+  MONTH_OFFSET_FOR_INCLUSION = 1
 end

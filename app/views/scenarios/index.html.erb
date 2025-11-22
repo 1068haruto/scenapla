@@ -95,8 +95,7 @@
       <%= back_button('条件を変えて再入力', incomes_path) %>
       <%= next_button_get('ライフプランへ', life_plans_path) %>
     <% else %>
-      # todo: hepler
-      <%= link_to '情報入力画面へ', incomes_path, class: 'btn btn-primary me-2', data: { turbo_method: :get } %>
+      <%= next_button_get('情報入力画面へ', incomes_path) %>
     <% end %>
   </div>
 </div>

@@ -1,5 +1,3 @@
-require 'bigdecimal'
-
 class Scenario < ApplicationRecord
   include Constants
 
@@ -40,18 +38,18 @@ class Scenario < ApplicationRecord
   def self.generate_scenario(simulation, event_data)
     # 生涯収入
     income = simulation.income_data
-    total_income = income.sum(BigDecimal('0.0')) { |entry| entry["amount"].to_d }.round(1)
+    total_income = FormatService.sum_entries(income).round(1)
 
     # 生涯支出
     merged_expense_event = self.merge_data(simulation.expense_data, event_data)
-    total_expense = merged_expense_event.sum(BigDecimal('0.0')) { |entry| entry["amount"].to_d }.round(1)
+    total_expense = FormatService.sum_entries(merged_expense_event).round(1)
 
     # 生涯収支
     total_balance = total_income + total_expense
 
     # 収支シナリオ
     merged_income_expense_event = self.merge_data(income, merged_expense_event)
-    merged_income_expense_event.each_cons(2) do |previous, current|  # 前年収支を次年に反映
+    merged_income_expense_event.each_cons(2) do |previous, current|
       current["amount"] = (current["amount"].to_d + previous["amount"].to_d).round(1)
     end
     balance_scenario = merged_income_expense_event
@@ -62,27 +60,25 @@ class Scenario < ApplicationRecord
       monthly_expense = simulation.expenses.sum(
         "housing_expenses + living_expenses + monthly_premiums + other_expenses"
       )
-      if monthly_expense.to_d > 0 # ゼロ除算防止
+      if monthly_expense.to_d > 0
         withdrawal = (total_balance / monthly_expense.to_d).round(1)
-      else
-        withdrawal = nil # または 0 などの適切な値
       end
     end
 
     # 不足額
     shortage = 0
-    remaining_years = AGE_LIMIT - simulation.user.calculate_user_age # 70歳までの残年数
+    remaining_years = AGE_LIMIT - simulation.user.calculate_user_age
     if total_balance < 0 && remaining_years > 0
       shortage = (total_balance.abs / remaining_years.to_d).round(1)
     end
 
     {
-      balance_scenario: balance_scenario,
-      total_income: total_income,
-      total_expense: total_expense,
-      total_balance: total_balance,
-      withdrawal: withdrawal,
-      shortage: shortage
+      balance_scenario: balance_scenario, # 収支シナリオ
+      total_income: total_income,         # 生涯収入
+      total_expense: total_expense,       # 生涯支出
+      total_balance: total_balance,       # 生涯収支
+      withdrawal: withdrawal,             # 取崩し
+      shortage: shortage                  # 不足額
     }
   end
 
@@ -92,7 +88,7 @@ class Scenario < ApplicationRecord
     merged = datasets.flatten.group_by { |entry| entry["date"] }
 
     yearly_totals = merged.transform_values do |entries|
-      entries.sum(BigDecimal('0.0')) { |entry| entry["amount"].to_d }
+      FormatService.sum_entries(entries)
     end
 
     formatted_array = FormatService.format(yearly_totals)

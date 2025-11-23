@@ -16,10 +16,10 @@
     <%= render "layouts/head/icons" %>
   </head>
 
-  <body>
+  <body class="d-flex flex-column min-vh-100">
     <%= render 'layouts/header' %>
 
-    <main>
+    <main class="pb-4">
       <% if user_signed_in? && current_user.date_of_birth.present? %>
         <%= render 'layouts/main/nav_tabs' %>
       <% end %>

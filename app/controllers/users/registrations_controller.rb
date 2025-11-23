@@ -12,15 +12,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def update
     if resource.update(account_update_params)
-      redirect_to user_path(resource), notice: t("message.devise.registration.update.success")
+      redirect_to user_path(resource),
+      notice: t("message.devise.registration.update.success")
     else
       flash.now[:alert] = t("message.devise.registration.update.failure")
       render :edit, status: :unprocessable_entity
     end
-  end
-
-  def destroy
-    redirect_to root_path
   end
 
   def edit_date_of_birth; end
@@ -29,7 +26,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if user_signed_in?
       update_date_of_birth_for_user
     else
-      redirect_to new_user_session_path, alert: t("message.devise.registration.update.not_sign_in")
+      redirect_to new_user_session_path,
+      alert: t("message.devise.registration.update.not_sign_in")
     end
   end
 
@@ -45,7 +43,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def update_date_of_birth_for_user
     if current_user.update(date_of_birth_params)
-      redirect_to dashboard_index_path, notice: t("message.devise.registration.update_date_of_birth.success")
+      redirect_to dashboard_index_path,
+      notice: t("message.devise.registration.update_date_of_birth.success")
     else
       flash.now[:alert] = t("message.devise.registration.update_date_of_birth.failure")
       render :edit_date_of_birth, status: :unprocessable_entity

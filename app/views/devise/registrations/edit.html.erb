@@ -45,7 +45,7 @@
 
         <div class="actions text-center">
           <%= f.submit "保存", class: 'btn btn-outline-primary' %>
-          <%= link_to "キャンセル", user_path(@user), class: "btn btn-outline-secondary", data: { turbo: true } %>
+          <%= cancel_button(user_path(@user)) %>
         </div>
       <% end %>
     </div>

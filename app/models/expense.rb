@@ -8,31 +8,12 @@ class Expense < ApplicationRecord
   validates :housing_expenses, :living_expenses, :monthly_premiums, :other_expenses,
               presence: true, numericality: { greater_than_or_equal_to: 0 }
 
-  # main: expense_dataの作成-> Array
+  # Gateway
   def self.generate_expense_data(user)
-    latest_expense = user.expenses.last
-    latest_expense.calculate_until_limit(user)
+    DataGenerator::ExpenseDataGenerator.new(user).call
   end
 
-  # 70歳までの各年の支出を計算-> Array
-  def calculate_until_limit(user)
-    currentYear = Date.today.year
-    yearAtSeventy = user.get_year_at_seventy
-
-    (currentYear..yearAtSeventy).map do |year|
-      repaymentYear = repayment_date&.year.to_i  # nil の to_i は 0
-      # ローン有無判断
-      if repaymentYear == NO_REPAYMENT_YEAR || year <= repaymentYear
-        monthly = (housing_expenses + living_expenses + monthly_premiums + other_expenses)
-      else
-        monthly = (living_expenses + monthly_premiums + other_expenses)
-      end
-      yearlyExpense = -(monthly * MONTHS_IN_A_YEAR)
-      { date: year, amount: yearlyExpense }
-    end
-  end
-
-  # 返済時期をDateにキャスト
+  # Cast to Date
   def repayment_date=(value)
     super(value.present? ? Date.new(value.to_i, JANUARY, FIRST) : value)
   end

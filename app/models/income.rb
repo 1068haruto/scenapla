@@ -8,7 +8,8 @@ class Income < ApplicationRecord
 
   validates :user_id, :simulation_id, presence: true
   validates :person_type, :retirement_date, presence: true
-  validates :monthly_income, :yearly_bonus, :retirement_pay, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :monthly_income, :yearly_bonus, :retirement_pay,
+              presence: true, numericality: { greater_than_or_equal_to: 0 }
 
   # income_dataの作成-> Array
   def self.generate_income_data(user)

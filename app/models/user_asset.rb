@@ -9,7 +9,8 @@ class UserAsset < ApplicationRecord
 
   validates :user_id, :simulation_id, presence: true
   validates :person_type, :asset_type, presence: true
-  validates :amount, :return_rate, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :amount, :return_rate,
+              presence: true, numericality: { greater_than_or_equal_to: 0 }
 
   # user_asset_dataを生成-> Array
   def self.generate_user_asset_data(user)

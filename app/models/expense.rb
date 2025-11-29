@@ -6,7 +6,7 @@ class Expense < ApplicationRecord
 
   validates :user_id, :simulation_id, presence: true
   validates :housing_expenses, :living_expenses, :monthly_premiums, :other_expenses,
-             presence: true, numericality: { greater_than_or_equal_to: 0 }
+              presence: true, numericality: { greater_than_or_equal_to: 0 }
 
   # main: expense_dataの作成-> Array
   def self.generate_expense_data(user)

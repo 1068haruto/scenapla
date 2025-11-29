@@ -11,25 +11,9 @@ class Income < ApplicationRecord
   validates :monthly_income, :yearly_bonus, :retirement_pay,
               presence: true, numericality: { greater_than_or_equal_to: 0 }
 
-  # income_dataの作成-> Array
+  # income_data生成
   def self.generate_income_data(user)
-    yearlyTotals = Hash.new(0)
-    currentYear = Date.current.year
-
-    user.incomes.each do |income|
-      retirementYear = income.retirement_date.year
-      yearlyAmount = (income.monthly_income * MONTHS_IN_A_YEAR) + income.yearly_bonus
-
-      (currentYear..retirementYear).each do |year|
-        totalAmount = yearlyAmount
-        if year == retirementYear
-          totalAmount += income.retirement_pay
-        end
-        yearlyTotals[year] += totalAmount
-      end
-    end
-
-    FormatService.format(yearlyTotals)
+    DataGenerator::IncomeDataGenerator.new(user).call
   end
 
   # Dateにキャスト

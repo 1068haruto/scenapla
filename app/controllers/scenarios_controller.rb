@@ -16,13 +16,12 @@ class ScenariosController < ApplicationController
   end
 
   def update_scenarios_lifespan
-    if DualUpdaterService.new(current_user).call
-      redirect_to scenarios_path,
-      notice: t("common.actions.update", model: "シナリオ")
+    if DataUpdater::DualDataUpdater.new(current_user).call
+      flash[:notice] = t("common.actions.update", model: "シナリオ")
     else
-      redirect_to scenarios_path,
-      alert: t("common.actions.update_failed", model: "シナリオ")
+      flash[:alert] = t("common.actions.update_failed", model: "シナリオ")
     end
+    redirect_to scenarios_path
   end
 
   private

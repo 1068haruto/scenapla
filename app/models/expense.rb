@@ -8,11 +8,6 @@ class Expense < ApplicationRecord
   validates :housing_expenses, :living_expenses, :monthly_premiums, :other_expenses,
               presence: true, numericality: { greater_than_or_equal_to: 0 }
 
-  # Gateway
-  def self.generate_expense_data(user)
-    DataGenerator::ExpenseDataGenerator.new(user).call
-  end
-
   # Cast to Date
   def repayment_date=(value)
     super(value.present? ? Date.new(value.to_i, JANUARY, FIRST) : value)

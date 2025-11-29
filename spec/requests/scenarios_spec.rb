@@ -20,27 +20,29 @@ RSpec.describe "Scenarios", type: :request do
   end
 
   describe "POST /update_scenarios_lifespan" do
+    let(:service_class) { DataUpdater::DualDataUpdater }
+
     it "更新成功（302）" do
-      # DualUpdaterServiceのモック
-      dual_updater_service = instance_double(DualUpdaterService, call: true)
-      allow(DualUpdaterService).to receive(:new).with(user).and_return(dual_updater_service)
+      # DualDataUpdaterのモック
+      dual_updater_service = instance_double(service_class, call: true)
+      allow(service_class).to receive(:new).with(user).and_return(dual_updater_service)
 
       post update_scenarios_lifespan_scenarios_path
 
-      expect(DualUpdaterService).to have_received(:new).with(user)
+      expect(service_class).to have_received(:new).with(user)
       expect(dual_updater_service).to have_received(:call)
       expect(response).to have_http_status(:found)
       expect(response).to redirect_to(scenarios_path)
     end
 
     it "更新失敗（302）" do
-      # DualUpdaterServiceのモック
-      dual_updater_service = instance_double(DualUpdaterService, call: false)
-      allow(DualUpdaterService).to receive(:new).with(user).and_return(dual_updater_service)
+      # DualDataUpdaterのモック
+      dual_updater_service = instance_double(service_class, call: false)
+      allow(service_class).to receive(:new).with(user).and_return(dual_updater_service)
 
       post update_scenarios_lifespan_scenarios_path
 
-      expect(DualUpdaterService).to have_received(:new).with(user)
+      expect(service_class).to have_received(:new).with(user)
       expect(dual_updater_service).to have_received(:call)
       expect(response).to have_http_status(:found)
       expect(response).to redirect_to(scenarios_path)

@@ -2,12 +2,12 @@ class SimulationsController < ApplicationController
   before_action :authenticate_user!
 
   def updater
-    @updater ||= SimulationDataUpdaterService.new(current_user)
+    @updater ||= DataUpdater::SimulationDataUpdater.new(current_user)
   end
 
   def update_income_data
     update_data(
-      update_method: :update_income,
+      method: :update_income,
       success_path: expenses_path,
       failure_path: incomes_path
     )
@@ -15,7 +15,7 @@ class SimulationsController < ApplicationController
 
   def update_expense_data
     update_data(
-      update_method: :update_expense,
+      method: :update_expense,
       success_path: user_assets_path,
       failure_path: expenses_path
     )
@@ -23,7 +23,7 @@ class SimulationsController < ApplicationController
 
   def update_user_asset_data
     update_data(
-      update_method: :update_user_asset,
+      method: :update_user_asset,
       success_path: life_events_path,
       failure_path: user_assets_path
     )
@@ -31,7 +31,7 @@ class SimulationsController < ApplicationController
 
   def update_life_event_data
     update_data(
-      update_method: :update_life_event,
+      method: :update_life_event,
       success_path: scenarios_path,
       failure_path: life_events_path
     )
@@ -39,21 +39,13 @@ class SimulationsController < ApplicationController
 
   private
 
-  def update_data(update_method:, success_path:, failure_path:)
-    if updater.send(update_method)
-      update_success(success_path)
+  def update_data(method:, success_path:, failure_path:)
+    if updater.send(method)
+      redirect_to success_path,
+      notice: t("common.actions.save", model: "シミュレーションデータ")
     else
-      update_failure(failure_path)
+      redirect_to failure_path,
+      alert: t("common.actions.save_failed", model: "シミュレーションデータ")
     end
-  end
-
-  def update_success(path)
-    redirect_to path,
-    notice: t("common.actions.save", model: "シミュレーションデータ")
-  end
-
-  def update_failure(path)
-    redirect_to path,
-    alert: t("common.actions.save_failed", model: "シミュレーションデータ")
   end
 end

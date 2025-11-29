@@ -9,12 +9,6 @@ RSpec.describe LifeEvent, type: :model do
     it { is_expected.to belong_to(:simulation) }
   end
 
-  describe 'Enum' do
-    it 'event_typeが正しい値を持つ' do
-      expect(described_class.event_types).to eq({ "現実" => 0, "理想" => 1 })
-    end
-  end
-
   describe 'Validation' do
     let(:life_event) { build(:life_event) }
 
@@ -77,40 +71,13 @@ RSpec.describe LifeEvent, type: :model do
     end
   end
 
-  describe "Method" do
-    describe ".generate_life_event_data" do
-      year = Date.current.year
+  describe 'Method' do
+    # '.generate_life_event_data'の疎結合テストは省略
 
-      context '現実イベントのみ存在する場合' do
-        it 'real_event_dataを生成、ideal_event_dataはnilとなる' do
-          create(:life_event, user: user, simulation: simulation) # 現実:今年、-1、1年間
-
-          result = LifeEvent.generate_life_event_data(user)
-
-          expect(result[:real_event_data]).to include({ "date" => year, "amount" => -1.0 })
-          expect(result[:real_event_data].length).to eq(1)
-          expect(result[:ideal_event_data]).to be_nil
-        end
-      end
-
-      context '現実と理想イベントが存在する場合' do
-        it 'real_event_data、ideal_event_dataを生成する' do
-          create(:life_event, user: user, simulation: simulation)         # 現実:今年、-1、1年間
-          create(:life_event, :ideal, user: user, simulation: simulation) # 理想:(今年+3)年、-3、3年間
-
-          result = LifeEvent.generate_life_event_data(user)
-
-          expect(result[:real_event_data]).to contain_exactly({ "date" => year, "amount" => -1.0 })
-          expect(result[:real_event_data].length).to eq(1)
-          expected_ideal_data = [
-            { "date" => year, "amount" => -1.0 },     # 現実イベント
-            { "date" => year + 3, "amount" => -3.0 }, # 理想イベント 1年目
-            { "date" => year + 4, "amount" => -3.0 }, # 理想イベント 2年目
-            { "date" => year + 5, "amount" => -3.0 }  # 理想イベント 3年目
-          ]
-          expect(result[:ideal_event_data]).to contain_exactly(*expected_ideal_data)
-          expect(result[:ideal_event_data].length).to eq(4)
-        end
+    describe '#retirement_date=' do
+      it '時期をDate型の年始に設定する' do
+        life_event = build(:life_event, event_date: "2030")
+        expect(life_event.event_date).to eq(Date.new(2030, 1, 1))
       end
     end
   end

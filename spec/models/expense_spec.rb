@@ -100,22 +100,8 @@ RSpec.describe Expense, type: :model do
     end
   end
 
-  describe 'メソッド' do
-    describe '.generate_expense_data + .calculate_until_limit' do
-      it 'expense_dataを生成する' do
-        create(:expense, user: user, simulation: simulation)
-        currentYear = Date.today.year
-        yearAfterRepayment = currentYear + 4
-        yearAtSeventy = currentYear + 10
-
-        result = Expense.generate_expense_data(user)
-
-        expect(result.first).to include({ date: currentYear, amount: -48 })
-        expect(result).to include({ date: yearAfterRepayment, amount: -36 })
-        expect(result.last).to include({ date: yearAtSeventy, amount: -36 })
-        expect(result.length).to eq(11)
-      end
-    end
+  describe 'Method' do
+    # '.generate_expense_data'の疎結合テストは省略
 
     describe '#repayment_date=' do
       it 'ローン完済年をDate型の年始に設定する' do

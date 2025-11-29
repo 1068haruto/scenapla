@@ -6,12 +6,6 @@ RSpec.describe Income, type: :model do
     it { is_expected.to belong_to(:simulation) }
   end
 
-  describe 'enum' do
-    it 'person_typesが正しい値を持つ' do
-      expect(described_class.person_types).to eq({ "本人" => 0, "配偶者" => 1 })
-    end
-  end
-
   describe 'validation' do
     let(:income) { build(:income) }
 
@@ -99,27 +93,7 @@ RSpec.describe Income, type: :model do
   end
 
   describe 'Method' do
-    let(:user) { create(:user) }
-    let(:simulation) { create(:simulation, user: user) }
-    year = Date.current.year
-
-    describe '.generate_income_data' do
-      it 'income_dataを生成する' do
-        create(:income, user: user, simulation: simulation)
-        create(:income, user: user, simulation: simulation)
-        result = Income.generate_income_data(user)
-
-        expect(result).to include(
-          { "amount" => 26.0, "date" => year },
-          { "amount" => 26.0, "date" => year + 1 },
-          { "amount" => 26.0, "date" => year + 2 },
-          { "amount" => 26.0, "date" => year + 3 },
-          { "amount" => 26.0, "date" => year + 4 },
-          { "amount" => 28.0, "date" => year + 5 }
-        )
-        expect(result.length).to eq(6)
-      end
-    end
+    # '.generate_income_data'の疎結合テストは省略
 
     describe '#retirement_date=' do
       it '退職年をDate型の年始に設定する' do

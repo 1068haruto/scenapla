@@ -6,7 +6,8 @@ class AssetLifespan < ApplicationRecord
 
   validates :user_id, :simulation_id, presence: true
   validates :asset_lifespan_scenario, presence: true
-  validates :lifespan_years, :lifespan_months, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :lifespan_years, :lifespan_months,
+              presence: true, numericality: { greater_than_or_equal_to: 0 }
 
   # asset_lifespanの更新-> void
   def self.update_asset_lifespan(user)

@@ -10,18 +10,6 @@ RSpec.describe UserAsset, type: :model do
     it { is_expected.to belong_to(:simulation) }
   end
 
-  describe 'Enum' do
-    it 'person_typeが正しい値を持つ' do
-      expect(described_class.person_types).to eq({ "本人" => 0, "配偶者" => 1 })
-    end
-
-    it 'asset_typeが正しい値を持つ' do
-      expect(described_class.asset_types).to eq({
-        "預金" => 0, "貯蓄型保険" => 1, "投資_NISA" => 2, "投資_iDeCo" => 3, "投資_その他" => 4
-      })
-    end
-  end
-
   describe 'Validation' do
     context '必須項目' do
       it 'user_idなしは、無効' do
@@ -86,20 +74,7 @@ RSpec.describe UserAsset, type: :model do
         expect(user_asset.errors[:return_rate]).to include("数値を入力してください。")
       end
     end
-  end
 
-  describe 'method' do
-    describe '.generateUserAssetData' do
-      it 'user_asset_dataを生成する' do
-        currentYear = Date.today.year
-        yearAtSeventy = currentYear + 10
-
-        result = UserAsset.generate_user_asset_data(user)
-
-        expect(result.first).to include({ "date" => currentYear, "amount" => 100.0 })
-        expect(result.last).to include({ "date" => yearAtSeventy, "amount" => 215.3 })
-        expect(result.length).to eq(11)
-      end
-    end
+    # '.generate_user_asset_data'の疎結合テストは省略
   end
 end

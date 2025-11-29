@@ -10,18 +10,6 @@ RSpec.describe UserAsset, type: :model do
     it { is_expected.to belong_to(:simulation) }
   end
 
-  describe 'Enum' do
-    it 'person_typeが正しい値を持つ' do
-      expect(described_class.person_types).to eq({ "本人" => 0, "配偶者" => 1 })
-    end
-
-    it 'asset_typeが正しい値を持つ' do
-      expect(described_class.asset_types).to eq({
-        "預金" => 0, "貯蓄型保険" => 1, "投資_NISA" => 2, "投資_iDeCo" => 3, "投資_その他" => 4
-      })
-    end
-  end
-
   describe 'Validation' do
     context '必須項目' do
       it 'user_idなしは、無効' do

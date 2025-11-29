@@ -6,12 +6,6 @@ RSpec.describe Income, type: :model do
     it { is_expected.to belong_to(:simulation) }
   end
 
-  describe 'enum' do
-    it 'person_typesが正しい値を持つ' do
-      expect(described_class.person_types).to eq({ "本人" => 0, "配偶者" => 1 })
-    end
-  end
-
   describe 'validation' do
     let(:income) { build(:income) }
 

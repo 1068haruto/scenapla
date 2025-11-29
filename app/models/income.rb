@@ -4,7 +4,7 @@ class Income < ApplicationRecord
   belongs_to :user
   belongs_to :simulation
 
-  enum person_type: { 本人: 0, 配偶者: 1 }
+  enum person_type: ApplicationEnums::PERSON_TYPES
 
   validates :user_id, :simulation_id, presence: true
   validates :person_type, :retirement_date, presence: true

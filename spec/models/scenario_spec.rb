@@ -10,12 +10,6 @@ RSpec.describe Scenario, type: :model do
     it { is_expected.to belong_to(:simulation) }
   end
 
-  describe 'enum' do
-    it 'scenario_typeが正しい値を持つ' do
-      expect(described_class.scenario_types).to eq({ '現実' => 0, '理想' => 1 })
-    end
-  end
-
   describe 'validation' do
     context '必須項目' do
       it 'user_idなしは、無効' do

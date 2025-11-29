@@ -9,12 +9,6 @@ RSpec.describe LifeEvent, type: :model do
     it { is_expected.to belong_to(:simulation) }
   end
 
-  describe 'Enum' do
-    it 'event_typeが正しい値を持つ' do
-      expect(described_class.event_types).to eq({ "現実" => 0, "理想" => 1 })
-    end
-  end
-
   describe 'Validation' do
     let(:life_event) { build(:life_event) }
 

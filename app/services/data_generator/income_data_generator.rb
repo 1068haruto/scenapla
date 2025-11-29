@@ -1,11 +1,11 @@
 module DataGenerator
   class IncomeDataGenerator
-    # コンストラクタでuserを受け取り
+    # コンストラクタでuser受け取り
     def initialize(user)
       @user = user
     end
 
-    # income_dataの作成-> Array
+    # income_dataの生成-> Array
     def call
       yearly_totals = Hash.new(0)
       current_year = Date.current.year

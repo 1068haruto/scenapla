@@ -8,7 +8,7 @@ module DataUpdater
     def call
       ActiveRecord::Base.transaction do
         ScenarioDataUpdater.new(@user).call
-        AssetLifespan.update_asset_lifespan(@user)
+        AssetLifespanDataUpdater.new(@user).call
         true
       end
     rescue => e

@@ -11,11 +11,6 @@ class Income < ApplicationRecord
   validates :monthly_income, :yearly_bonus, :retirement_pay,
               presence: true, numericality: { greater_than_or_equal_to: 0 }
 
-  # Gateway
-  def self.generate_income_data(user)
-    DataGenerator::IncomeDataGenerator.new(user).call
-  end
-
   # Cast to Date
   def retirement_date=(value)
     super(value.present? ? Date.new(value.to_i, JANUARY, FIRST) : value)

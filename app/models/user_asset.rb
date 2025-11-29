@@ -11,9 +11,4 @@ class UserAsset < ApplicationRecord
   validates :person_type, :asset_type, presence: true
   validates :amount, :return_rate,
               presence: true, numericality: { greater_than_or_equal_to: 0 }
-
-  # Gateway
-  def self.generate_user_asset_data(user)
-    DataGenerator::UserAssetDataGenerator.new(user).call
-  end
 end

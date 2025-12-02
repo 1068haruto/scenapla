@@ -5,7 +5,7 @@ class NewsController <  ApplicationController
 
   def index
     @news = Api::GNewsService.new.call(
-      topic: G_NEWS_DEFAULT_TOPIC,
+      G_NEWS_DEFAULT_TOPIC,
       language: G_NEWS_DEFAULT_LANG,
       max: G_NEWS_DEFAULT_MAX
     )

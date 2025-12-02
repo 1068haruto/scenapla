@@ -39,5 +39,30 @@ RSpec.describe Constants do
     it 'PAYMENT_PERIOD_OPTIONSは「正しい範囲の配列」' do
       expect(Constants::PAYMENT_PERIOD_OPTIONS).to eq([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ])
     end
+
+    # g_news
+    it 'G_NEWS_BASE_URLは「"https://gnews.io/api/v4"」' do
+      expect(Constants::G_NEWS_BASE_URL).to eq("https://gnews.io/api/v4")
+    end
+
+    it 'G_NEWS_DEFAULT_TOPICは「経済」' do
+      expect(Constants::G_NEWS_DEFAULT_TOPIC).to eq("経済")
+    end
+
+    it 'G_NEWS_DEFAULT_LANGは「ja」' do
+      expect(Constants::G_NEWS_DEFAULT_LANG).to eq("ja")
+    end
+
+    it 'G_NEWS_DEFAULT_MAXは「10」' do
+      expect(Constants::G_NEWS_DEFAULT_MAX).to eq(10)
+    end
+
+    it 'G_NEWS_DEFAULT_ENDPOINTは「/search」' do
+      expect(Constants::G_NEWS_DEFAULT_ENDPOINT).to eq("/search")
+    end
+
+    it 'G_NEWS_CACHE_EXPIRATIONは「24.hours」' do
+      expect(Constants::G_NEWS_CACHE_EXPIRATION).to eq(24.hours)
+    end
   end
 end

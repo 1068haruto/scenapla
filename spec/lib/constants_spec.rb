@@ -40,7 +40,25 @@ RSpec.describe Constants do
       expect(Constants::PAYMENT_PERIOD_OPTIONS).to eq([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ])
     end
 
-    # g_news
+    # AssetLifespan
+    it 'MONTH_OFFSET_FOR_INCLUSIONは「1」' do
+      expect(Constants::MONTH_OFFSET_FOR_INCLUSION).to eq(1)
+    end
+
+    # OpenaiService（advice）
+    it 'ADVICE_LIMIT_PER_MONTHは「3」' do
+      expect(Constants::ADVICE_LIMIT_PER_MONTH).to eq(3)
+    end
+
+    it 'MAX_TOKENSは「300」' do
+      expect(Constants::MAX_TOKENS).to eq(300)
+    end
+
+    it 'TEMPERATUREは「0.7」' do
+      expect(Constants::TEMPERATURE).to be_within(0.0001).of(0.7)
+    end
+
+    # GNewsService（news）
     it 'G_NEWS_BASE_URLは「"https://gnews.io/api/v4"」' do
       expect(Constants::G_NEWS_BASE_URL).to eq("https://gnews.io/api/v4")
     end

@@ -20,11 +20,16 @@ module Constants
   # AssetLifespan
   MONTH_OFFSET_FOR_INCLUSION = 1
 
+  # OpenAI(advice)
+  ADVICE_LIMIT_PER_MONTH = 3
+  MAX_TOKENS = 300
+  TEMPERATURE = 0.7
+
   # News
   G_NEWS_BASE_URL = "https://gnews.io/api/v4"
-  G_NEWS_DEFAULT_TOPIC = "経済"                # 記事種類（経済）
+  G_NEWS_DEFAULT_TOPIC = "経済"
   G_NEWS_DEFAULT_LANG = "ja"                  # 表示言語（日本語）
   G_NEWS_DEFAULT_MAX = 10                     # 最大取得件数（10件）無料では10がmax
-  G_NEWS_DEFAULT_ENDPOINT = "/search"         # エンドポイント（/search）
+  G_NEWS_DEFAULT_ENDPOINT = "/search"
   G_NEWS_CACHE_EXPIRATION = 24.hours          # キャッシュの有効期限（24時間）
 end

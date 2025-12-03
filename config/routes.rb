@@ -30,7 +30,6 @@ Rails.application.routes.draw do
   resources :expenses,    only: [ :index, :create, :edit, :update, :destroy ]
   resources :user_assets, only: [ :index, :create, :edit, :update, :destroy ]
   resources :life_events, only: [ :index, :create, :edit, :update, :destroy ]
-  resources :life_plans,  only: [ :index ]
   resources :memos,       only: [ :create, :update ]
   resources :news,        only: [ :index ]
 
@@ -47,7 +46,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resource :openai_advice, only: [] do
+  resources :life_plans, only: [ :index ] do
     collection do
       post :generate_advice
     end

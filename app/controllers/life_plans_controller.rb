@@ -4,6 +4,23 @@ class LifePlansController < ApplicationController
 
   def index; end
 
+  def generate_advice
+    message = Api::OpenaiService.new(current_user).call
+
+    if message == "アドバイスを生成しました。"
+      redirect_to life_plans_path, notice: message
+    else
+      redirect_to life_plans_path, alert: message
+    end
+  end
+
+  def generate_advice
+    Api::OpenaiService.new(current_user).call
+    redirect_to life_plans_path, notice: "アドバイスを生成しました。"
+  rescue => e
+    redirect_to life_plans_path, alert: e.message
+  end
+
   private
 
   def set_life_plan_data

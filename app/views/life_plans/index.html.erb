@@ -7,7 +7,7 @@
     <p>今後の計画や目標などをメモに整理しましょう。</p>
   </div>
 
-  <%= render "openai_advices/show", advice: @advice %>
+  <%= render "ai_advice", advice: @advice %>
 
   <% @age_groups.each do |age_group| %>
     <div class="card mb-3">
@@ -37,7 +37,7 @@
 
           <div class="col mt-2 mt-md-0">
             <% first_memo = @memos[age_group]&.first %>
-            <%= render "memos/memo", age_group: age_group, first_memo: first_memo %>
+            <%= render "memo", age_group: age_group, first_memo: first_memo %>
           </div>
         </div>
       </div>

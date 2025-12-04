@@ -3,9 +3,11 @@ require 'rails_helper'
 RSpec.describe "Simulations", type: :request do
   let(:user) { create(:user) }
   let(:simulation) { create(:simulation, user: user) }
+  let(:data_updater) { instance_double(DataUpdater::SimulationDataUpdater) }
 
   before do
     sign_in user
+    allow_any_instance_of(SimulationsController).to receive(:updater).and_return(data_updater)
   end
 
   describe 'POST /simulation/update_income_data' do
@@ -13,8 +15,7 @@ RSpec.describe "Simulations", type: :request do
 
     context '成功した場合' do
       before do
-        allow(Income).to receive(:generate_income_data).and_return(income_data)
-        allow_any_instance_of(Simulation).to receive(:update!).and_return(true)
+        allow(data_updater).to receive(:update_income).and_return(true)
         post update_income_data_simulation_path
       end
 
@@ -26,8 +27,7 @@ RSpec.describe "Simulations", type: :request do
 
     context '失敗した場合' do
       before do
-        allow(Income).to receive(:generate_income_data).and_return(income_data)
-        allow_any_instance_of(Simulation).to receive(:update).and_return(false)
+        allow(data_updater).to receive(:update_income).and_return(false)
         post update_income_data_simulation_path
       end
 
@@ -43,8 +43,7 @@ RSpec.describe "Simulations", type: :request do
 
     context '成功した場合' do
       before do
-        allow(Expense).to receive(:generate_expense_data).and_return(expense_data)
-        allow_any_instance_of(Simulation).to receive(:update).and_return(true)
+        allow(data_updater).to receive(:update_expense).and_return(true)
         post update_expense_data_simulation_path
       end
 
@@ -56,8 +55,7 @@ RSpec.describe "Simulations", type: :request do
 
     context '失敗した場合' do
       before do
-        allow(Expense).to receive(:generate_expense_data).and_return(expense_data)
-        allow_any_instance_of(Simulation).to receive(:update).and_return(false)
+        allow(data_updater).to receive(:update_expense).and_return(false)
         post update_expense_data_simulation_path
       end
 
@@ -73,8 +71,7 @@ RSpec.describe "Simulations", type: :request do
 
     context '成功した場合' do
       before do
-        allow(UserAsset).to receive(:generate_user_asset_data).and_return(user_asset_data)
-        allow_any_instance_of(Simulation).to receive(:update!).and_return(true)
+        allow(data_updater).to receive(:update_user_asset).and_return(true)
         post update_user_asset_data_simulation_path
       end
 
@@ -86,8 +83,7 @@ RSpec.describe "Simulations", type: :request do
 
     context '失敗した場合' do
       before do
-        allow(UserAsset).to receive(:generate_user_asset_data).and_return(user_asset_data)
-        allow_any_instance_of(Simulation).to receive(:update).and_return(false)
+        allow(data_updater).to receive(:update_user_asset).and_return(false)
         post update_user_asset_data_simulation_path
       end
 
@@ -106,8 +102,7 @@ RSpec.describe "Simulations", type: :request do
 
     context '成功した場合' do
       before do
-        allow(LifeEvent).to receive(:generate_life_event_data).and_return(life_event_data)
-        allow_any_instance_of(Simulation).to receive(:update!).and_return(true)
+        allow(data_updater).to receive(:update_life_event).and_return(true)
         post update_life_event_data_simulation_path
       end
 
@@ -119,8 +114,7 @@ RSpec.describe "Simulations", type: :request do
 
     context '失敗した場合' do
       before do
-        allow(LifeEvent).to receive(:generate_life_event_data).and_return(life_event_data)
-        allow_any_instance_of(Simulation).to receive(:update).and_return(false)
+        allow(data_updater).to receive(:update_life_event).and_return(false)
         post update_life_event_data_simulation_path
       end
 

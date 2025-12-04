@@ -1,13 +1,17 @@
 require "rails_helper"
 
-RSpec.describe GNewsService do
+RSpec.describe Api::GNewsService do
   let(:http_client) { instance_double(HTTP::Client) }
   let(:service) { described_class.new(http_client: http_client) }
   let(:topic) { "経済" }
-  let(:language) { "ja" }
-  let(:max) { 10 }
-  let(:endpoint) { "/search" }
+  # Constants
+  let(:base_url) { Api::GNewsService::G_NEWS_BASE_URL }
+  let(:language) { Api::GNewsService::G_NEWS_DEFAULT_LANG }
+  let(:max) { Api::GNewsService::G_NEWS_DEFAULT_MAX }
+  let(:endpoint) { Api::GNewsService::G_NEWS_DEFAULT_ENDPOINT }
+  let(:expiration) { Api::GNewsService::G_NEWS_CACHE_EXPIRATION }
   let(:cache_key) { "gnews#{endpoint}/#{topic}/#{language}/#{max}" }
+
   let(:api_key) { "test_api_key" }
   let(:response_body) { { "articles" => [ { "title" => "テスト記事" } ] }.to_json }
 
@@ -17,17 +21,17 @@ RSpec.describe GNewsService do
     allow(Rails.cache).to receive(:fetch).and_call_original
   end
 
-  describe "#fetch_news" do
+  describe "#call" do
     context "APIリクエストが成功した場合" do
       let(:response) { instance_double(HTTP::Response, status: double(success?: true), body: response_body) }
 
       before do
         allow(http_client).to receive(:get).and_return(response)
-        allow(Rails.cache).to receive(:fetch).with(cache_key, expires_in: 24.hours).and_yield
+        allow(Rails.cache).to receive(:fetch).with(cache_key, expires_in: expiration).and_yield
       end
 
       it "APIリクエストを実行し、結果を返す" do
-        result = service.fetch_news(topic)
+        result = service.call(topic)
         expect(result).to eq([ { "title" => "テスト記事" } ])
         expect(http_client).to have_received(:get).with(
           "https://gnews.io/api/v4/search",
@@ -41,11 +45,11 @@ RSpec.describe GNewsService do
 
       before do
         allow(http_client).to receive(:get).and_return(response)
-        allow(Rails.cache).to receive(:fetch).with(cache_key, expires_in: 24.hours).and_yield
+        allow(Rails.cache).to receive(:fetch).with(cache_key, expires_in: expiration).and_yield
       end
 
       it "空の配列を返す" do
-        result = service.fetch_news(topic)
+        result = service.call(topic)
         expect(result).to eq([])
       end
     end
@@ -54,12 +58,12 @@ RSpec.describe GNewsService do
       let(:cached_result) { [ { "title" => "キャッシュされた記事" } ] }
 
       before do
-        allow(Rails.cache).to receive(:fetch).with(cache_key, expires_in: 24.hours).and_return(cached_result)
+        allow(Rails.cache).to receive(:fetch).with(cache_key, expires_in: expiration).and_return(cached_result)
         allow(http_client).to receive(:get)
       end
 
       it "キャッシュされたデータを返す" do
-        result = service.fetch_news(topic)
+        result = service.call(topic)
         expect(result).to eq(cached_result)
         expect(http_client).not_to have_received(:get)
       end
@@ -72,9 +76,9 @@ RSpec.describe GNewsService do
       end
 
       it "エラーハンドリングが行われ、空の配列を返す" do
-        result = service.fetch_news(topic)
+        result = service.call(topic)
         expect(result).to eq([])
-        expect(Rails.logger).to have_received(:error).with("GNews API Error: API接続エラー")
+        expect(Rails.logger).to have_received(:error).with("fetch news error: API接続エラー")
       end
     end
   end

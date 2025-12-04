@@ -1,15 +1,7 @@
 Rails.application.routes.draw do
-  if Rails.env.production?
-    constraints(host: /^www\./) do
-      match "(*path)", to: redirect { |params, request|
-        "https://scenapla.com#{request.fullpath}"
-      }, via: :all
-    end
-  end
-
-  root "home#index"
-  get "static_pages/terms"
-  get "static_pages/privacy"
+  root "static_pages#index"
+  get "terms", to: "static_pages#terms"
+  get "privacy", to: "static_pages#privacy"
 
   devise_for :users, controllers: {
     confirmations: "users/confirmations",

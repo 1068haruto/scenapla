@@ -4,6 +4,11 @@ class ApplicationController < ActionController::Base
 
   before_action :check_date_of_birth
 
+  def render_error(message, status)
+    flash.now[:alert] = message
+    render :index, status: status
+  end
+
   protected
 
   def after_sign_in_path_for(resource)

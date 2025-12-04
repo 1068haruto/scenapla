@@ -71,9 +71,4 @@ class UserAssetsController < ApplicationController
       :amount, :return_rate
     )
   end
-
-  def render_error(message, status)
-    flash.now[:alert] = message
-    render :index, status: status
-  end
 end

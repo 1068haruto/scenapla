@@ -13,7 +13,7 @@ class LifeEventsController < ApplicationController
 
     if @life_event.save
       redirect_to life_events_path,
-      notice: t("common.actions.create", model: "ライフイベントデータ")
+      notice: t("common.actions.create", data: "ライフイベントデータ")
     else
       render_error(
         @life_event.errors.full_messages.join,
@@ -29,7 +29,7 @@ class LifeEventsController < ApplicationController
   def update
     if @life_event.update(life_event_params)
       redirect_to life_events_path,
-      notice: t("common.actions.update", model: "ライフイベントデータ")
+      notice: t("common.actions.update", data: "ライフイベントデータ")
     else
       render_error(
         @life_event.errors.full_messages.join,
@@ -41,11 +41,11 @@ class LifeEventsController < ApplicationController
   def destroy
     if @life_event.destroy
       redirect_to life_events_path,
-      notice: t("common.actions.destroy", model: "ライフイベントデータ")
+      notice: t("common.actions.destroy", data: "ライフイベントデータ")
     else
       render_error(
-        t("common.actions.destroy_failed",
-        model: "ライフイベントデータ"), :unprocessable_entity
+        t("common.actions.destroy_failed", data: "ライフイベントデータ"),
+        :unprocessable_entity
       )
     end
   end
@@ -60,7 +60,7 @@ class LifeEventsController < ApplicationController
     @life_event = current_user.life_events.find_by(id: params[:id])
     unless @life_event
       redirect_to life_events_path,
-      alert: t("common.actions.not_found", model: "ライフイベントデータ")
+      alert: t("common.actions.not_found", data: "ライフイベントデータ")
     end
   end
 

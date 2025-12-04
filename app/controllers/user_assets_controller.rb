@@ -13,7 +13,7 @@ class UserAssetsController < ApplicationController
 
     if @user_asset.save
       redirect_to user_assets_path,
-      notice: t("common.actions.create", model: "資産データ")
+      notice: t("common.actions.create", data: "資産データ")
     else
       render_error(
         @user_asset.errors.full_messages.join,
@@ -29,7 +29,7 @@ class UserAssetsController < ApplicationController
   def update
     if @user_asset.update(user_asset_params)
       redirect_to user_assets_path,
-      notice: t("common.actions.update", model: "資産データ")
+      notice: t("common.actions.update", data: "資産データ")
     else
       render_error(
         @user_asset.errors.full_messages.join,
@@ -41,10 +41,10 @@ class UserAssetsController < ApplicationController
   def destroy
     if @user_asset.destroy
       redirect_to user_assets_path,
-      notice: t("common.actions.destroy", model: "資産データ")
+      notice: t("common.actions.destroy", data: "資産データ")
     else
       render_error(
-        t("common.actions.destroy_failed", model: "資産データ"),
+        t("common.actions.destroy_failed", data: "資産データ"),
         :unprocessable_entity
       )
     end
@@ -60,7 +60,7 @@ class UserAssetsController < ApplicationController
     @user_asset = current_user.user_assets.find_by(id: params[:id])
     unless @user_asset
       redirect_to user_assets_path,
-      alert: t("common.actions.not_found", model: "資産データ")
+      alert: t("common.actions.not_found", data: "資産データ")
     end
   end
 

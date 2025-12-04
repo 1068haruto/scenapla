@@ -23,7 +23,7 @@ module DataGenerator
         end
       end
 
-      FormatService.format(yearly_totals)
+      Formatter.format(yearly_totals)
     end
   end
 end

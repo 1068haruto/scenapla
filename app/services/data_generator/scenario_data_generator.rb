@@ -9,11 +9,11 @@ module DataGenerator
     def call(event_data)
       # 生涯収入
       income = @simulation.income_data
-      total_income = FormatService.sum_entries(income).round(1)
+      total_income = Formatter.sum_entries(income).round(1)
 
       # 生涯支出
       merged_expense_event = merge_data(@simulation.expense_data, event_data)
-      total_expense = FormatService.sum_entries(merged_expense_event).round(1)
+      total_expense = Formatter.sum_entries(merged_expense_event).round(1)
 
       # 生涯収支
       total_balance = (total_income + total_expense).round(1)
@@ -61,10 +61,10 @@ module DataGenerator
       merged = datasets.flatten.group_by { |entry| entry["date"] }
 
       yearly_totals = merged.transform_values do |entries|
-        FormatService.sum_entries(entries)
+        Formatter.sum_entries(entries)
       end
 
-      formatted_array = FormatService.format(yearly_totals)
+      formatted_array = Formatter.format(yearly_totals)
       formatted_array.sort_by { |entry| entry["date"] }
     end
   end

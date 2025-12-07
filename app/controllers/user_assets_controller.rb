@@ -1,5 +1,4 @@
-class UserAssetsController < ApplicationController
-  before_action :authenticate_user!
+class UserAssetsController < AfterBaseController
   before_action :set_user_assets, only: [ :index, :create, :edit, :update, :destroy ]
   before_action :set_user_asset_or_redirect, only: [ :edit, :update, :destroy ]
 

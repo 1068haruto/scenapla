@@ -1,5 +1,4 @@
-class LifePlansController < ApplicationController
-  before_action :authenticate_user!
+class LifePlansController < AfterBaseController
   before_action :set_life_plan_data, only: [ :index ]
 
   def index; end

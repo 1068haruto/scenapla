@@ -1,5 +1,4 @@
-class ExpensesController < ApplicationController
-  before_action :authenticate_user!
+class ExpensesController < AfterBaseController
   before_action :set_latest_expense, only: [ :index, :create, :edit, :update, :destroy ]
   before_action :set_expense_or_redirect, only: [ :edit, :update, :destroy ]
 

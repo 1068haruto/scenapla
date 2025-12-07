@@ -1,6 +1,4 @@
-class ScenariosController < ApplicationController
-  before_action :authenticate_user!
-
+class ScenariosController < AfterBaseController
   def index
     @simulation = current_user.simulation
     @scenarios = current_user.scenarios

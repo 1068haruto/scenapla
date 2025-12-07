@@ -1,5 +1,4 @@
-class LifeEventsController < ApplicationController
-  before_action :authenticate_user!
+class LifeEventsController < AfterBaseController
   before_action :set_life_events, only: [ :index, :create, :edit, :update, :destroy ]
   before_action :set_life_event_or_redirect, only: [ :edit, :update, :destroy ]
 

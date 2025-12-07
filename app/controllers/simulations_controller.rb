@@ -1,6 +1,4 @@
-class SimulationsController < ApplicationController
-  before_action :authenticate_user!
-
+class SimulationsController < AfterBaseController
   def updater
     @updater ||= DataUpdater::SimulationDataUpdater.new(current_user)
   end

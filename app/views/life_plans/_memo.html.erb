@@ -1,0 +1,18 @@
+<%# 既存メモあれば使用し、なければ新規作成用のインスタンスを初期化 %>
+<% memo_instance = first_memo || current_user.memos.new(age_group: age_group) %>
+
+<div class="card bg-light p-3 h-100">
+  <p class="text-muted small">メモ</p>
+
+  <%= form_with(model: memo_instance, url: save_memo_life_plans_path, local: true) do |f| %>
+    <%# 検索キーとして使うため渡す %>
+    <%= f.hidden_field :age_group, value: age_group %>
+
+    <div class="form-group mb-2">
+      <%# 既存値あれば表示、なければ空欄 %>
+      <%= f.text_area :content, rows: 4, class: 'form-control', placeholder: '計画や目標を入力...' %>
+    </div>
+
+    <%= f.submit '保存', class: 'btn btn-primary btn-sm' %>
+  <% end %>
+</div>

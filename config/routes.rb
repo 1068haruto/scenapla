@@ -22,7 +22,6 @@ Rails.application.routes.draw do
   resources :expenses,    only: [ :index, :create, :edit, :update, :destroy ]
   resources :user_assets, only: [ :index, :create, :edit, :update, :destroy ]
   resources :life_events, only: [ :index, :create, :edit, :update, :destroy ]
-  resources :memos,       only: [ :create, :update ]
   resources :news,        only: [ :index ]
 
   resource :simulation, only: [] do
@@ -41,6 +40,9 @@ Rails.application.routes.draw do
   resources :life_plans, only: [ :index ] do
     collection do
       post :generate_advice
+
+      # POST, PATCH 両方許可
+      match "save_memo", to: "life_plans#save_memo", via: [ :post, :patch ]
     end
   end
 

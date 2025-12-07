@@ -19,7 +19,7 @@ class LifePlansController < ApplicationController
       redirect_to life_plans_path,
       notice: "メモを保存しました。"
     else
-      redirect_to life_plans_path(edit_age_group: memo_params[:age_group]),
+      redirect_to life_plans_path,
       alert: "メモの保存に失敗しました: #{@memo.errors.full_messages.join(', ')}"
     end
   end

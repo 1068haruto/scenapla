@@ -1,14 +1,14 @@
 ja:
   common:
     actions:
-      create: "%{model}を追加しました。"
-      update: "%{model}を更新しました。"
-      update_failed: "%{model}を更新できませんでした。"
-      destroy: "%{model}を削除しました。"
-      destroy_failed: "%{model}を削除できませんでした。"
-      not_found: "%{model}がありません。"
-      save: "%{model}に保存しました。"
-      save_failed: "%{model}に保存できませんでした。"
+      create: "%{data}を追加しました。"
+      update: "%{data}を更新しました。"
+      update_failed: "%{data}を更新できませんでした。"
+      destroy: "%{data}を削除しました。"
+      destroy_failed: "%{data}を削除できませんでした。"
+      not_found: "%{data}がありません。"
+      save: "%{data}に保存しました。"
+      save_failed: "%{data}に保存できませんでした。"
 
   errors:
     format: "%{message}" # 属性名を含めない

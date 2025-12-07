@@ -1,7 +1,5 @@
-class NewsController <  ApplicationController
+class NewsController < AfterBaseController
   include Constants
-
-  before_action :authenticate_user!
 
   def index
     @news = Api::GNewsService.new.call(

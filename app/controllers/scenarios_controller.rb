@@ -1,6 +1,4 @@
-class ScenariosController < ApplicationController
-  before_action :authenticate_user!
-
+class ScenariosController < AfterBaseController
   def index
     @simulation = current_user.simulation
     @scenarios = current_user.scenarios
@@ -17,9 +15,9 @@ class ScenariosController < ApplicationController
 
   def update_scenarios_lifespan
     if DataUpdater::DualDataUpdater.new(current_user).call
-      flash[:notice] = t("common.actions.update", model: "シナリオ")
+      flash[:notice] = t("common.actions.update", data: "シナリオ")
     else
-      flash[:alert] = t("common.actions.update_failed", model: "シナリオ")
+      flash[:alert] = t("common.actions.update_failed", data: "シナリオ")
     end
     redirect_to scenarios_path
   end

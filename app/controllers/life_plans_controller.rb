@@ -1,5 +1,4 @@
-class LifePlansController < ApplicationController
-  before_action :authenticate_user!
+class LifePlansController < AfterBaseController
   before_action :set_life_plan_data, only: [ :index ]
 
   def index; end
@@ -11,6 +10,19 @@ class LifePlansController < ApplicationController
     redirect_to life_plans_path, alert: e.message
   end
 
+  def save_memo
+    @memo = current_user.memos.find_or_initialize_by(age_group: memo_params[:age_group])
+
+    @memo.content = memo_params[:content]
+    if @memo.save
+      redirect_to life_plans_path,
+      notice: "メモを保存しました。"
+    else
+      redirect_to life_plans_path,
+      alert: "メモの保存に失敗しました: #{@memo.errors.full_messages.join(', ')}"
+    end
+  end
+
   private
 
   def set_life_plan_data
@@ -20,6 +32,7 @@ class LifePlansController < ApplicationController
     @memos = group_memos
     @advice = get_advice
     @remaining_advice_count = get_advice_count
+    @edit_age_group = params[:edit_age_group].present? ? params[:edit_age_group].to_i : nil
   end
 
   def calculate_age_groups
@@ -47,5 +60,9 @@ class LifePlansController < ApplicationController
     monthly_advice_total = current_user.ai_advices.where("created_at >= ?", start_of_month).count
     result = monthly_advice_total - 3
     result < 0 ? result.abs : result
+  end
+
+  def memo_params
+    params.require(:memo).permit(:age_group, :content)
   end
 end

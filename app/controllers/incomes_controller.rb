@@ -1,5 +1,4 @@
-class IncomesController < ApplicationController
-  before_action :authenticate_user!
+class IncomesController < AfterBaseController
   before_action :set_incomes, only: [ :index, :create, :edit, :update, :destroy ]
   before_action :set_income_or_redirect, only: [ :edit, :update, :destroy ]
 
@@ -13,7 +12,7 @@ class IncomesController < ApplicationController
 
     if @income.save
       redirect_to incomes_path,
-      notice: t("common.actions.create", model: "収入データ")
+      notice: t("common.actions.create", data: "収入データ")
     else
       render_error(
         @income.errors.full_messages.join,
@@ -29,7 +28,7 @@ class IncomesController < ApplicationController
   def update
     if @income.update(income_params)
       redirect_to incomes_path,
-      notice: t("common.actions.update", model: "収入データ")
+      notice: t("common.actions.update", data: "収入データ")
     else
       render_error(
         @income.errors.full_messages.join,
@@ -41,10 +40,10 @@ class IncomesController < ApplicationController
   def destroy
     if @income.destroy
       redirect_to incomes_path,
-      notice: t("common.actions.destroy", model: "収入データ")
+      notice: t("common.actions.destroy", data: "収入データ")
     else
       render_error(
-        t("common.actions.destroy_failed", model: "収入データ"),
+        t("common.actions.destroy_failed", data: "収入データ"),
         :unprocessable_entity
       )
     end
@@ -58,10 +57,9 @@ class IncomesController < ApplicationController
 
   def set_income_or_redirect
     @income = current_user.incomes.find_by(id: params[:id])
-
     unless @income
       redirect_to incomes_path,
-      alert: t("common.actions.not_found", model: "収入データ")
+      alert: t("common.actions.not_found", data: "収入データ")
     end
   end
 
@@ -73,10 +71,5 @@ class IncomesController < ApplicationController
       :retirement_date,
       :retirement_pay
     )
-  end
-
-  def render_error(message, status)
-    flash.now[:alert] = message
-    render :index, status: status
   end
 end

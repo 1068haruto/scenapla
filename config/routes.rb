@@ -1,15 +1,7 @@
 Rails.application.routes.draw do
-  if Rails.env.production?
-    constraints(host: /^www\./) do
-      match "(*path)", to: redirect { |params, request|
-        "https://scenapla.com#{request.fullpath}"
-      }, via: :all
-    end
-  end
-
-  root "home#index"
-  get "static_pages/terms"
-  get "static_pages/privacy"
+  root "static_pages#index"
+  get "terms", to: "static_pages#terms"
+  get "privacy", to: "static_pages#privacy"
 
   devise_for :users, controllers: {
     confirmations: "users/confirmations",
@@ -30,7 +22,6 @@ Rails.application.routes.draw do
   resources :expenses,    only: [ :index, :create, :edit, :update, :destroy ]
   resources :user_assets, only: [ :index, :create, :edit, :update, :destroy ]
   resources :life_events, only: [ :index, :create, :edit, :update, :destroy ]
-  resources :memos,       only: [ :create, :update ]
   resources :news,        only: [ :index ]
 
   resource :simulation, only: [] do
@@ -49,6 +40,9 @@ Rails.application.routes.draw do
   resources :life_plans, only: [ :index ] do
     collection do
       post :generate_advice
+
+      # POST, PATCH 両方許可
+      match "save_memo", to: "life_plans#save_memo", via: [ :post, :patch ]
     end
   end
 

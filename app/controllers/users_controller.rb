@@ -1,6 +1,4 @@
-class UsersController < ApplicationController
-  before_action :authenticate_user!
-
+class UsersController < AfterBaseController
   def show
     @user = current_user
   end

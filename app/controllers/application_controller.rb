@@ -38,8 +38,8 @@ class ApplicationController < ActionController::Base
       destroy_user_session_path,   # ログアウト処理
       edit_date_of_birth_path,     # 生年月日編集ページ
       update_date_of_birth_path,   # 生年月日更新処理
-      static_pages_privacy_path,   # プライバシーポリシー
-      static_pages_terms_path      # 利用規約
+      privacy_path,                # プライバシーポリシー
+      terms_path                   # 利用規約
     ]
   end
 end

@@ -1,15 +1,22 @@
+<% advice = local_assigns[:advice] %>
+<% remaining_advice_count = local_assigns[:remaining_advice_count] %>
+
 <div class="card mb-3">
   <div class="card-header d-flex align-items-center">
     <h4 class="mt-2">AI からのアドバイス</h4>
-    <%= button_to '生成する', generate_advice_life_plans_path, method: :post, class: "btn btn-outline-primary btn-sm ms-3" %>
-    <p class="mt-3 ms-auto text-muted">今月の生成可能回数 残り <%= @remaining_advice_count %> 回</p>
+    <%= button_to '生成する',
+      generate_advice_life_plans_path,
+      method: :post, class: "btn btn-outline-primary btn-sm ms-3"
+    %>
+    <p class="mt-3 ms-auto text-muted">今月の生成可能回数 残り <%= remaining_advice_count %> 回</p>
   </div>
+
   <div class="card-body">
-    <% if @advice.nil? %>
+    <% if advice.nil? %>
       <p class="text-muted">情報入力の上、「生成する」ボタンを押してください。</p>
     <% else %>
       <p>
-        <%= @advice %>
+        <%= advice %>
         <br>
         <small class="text-muted">※現実的シナリオを基準とした経済面のアドバイスです。</small>
       </p>

@@ -16,6 +16,9 @@ module Scenapla
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks])
 
+    # view_models/のオートロード（開発 & テスト環境）
+    config.autoload_paths << Rails.root.join("app", "view_models")
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
@@ -24,10 +27,10 @@ module Scenapla
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
-    # Railsのバリデーションエラー時に自動的に付与されるfield_with_errorsクラスによって、フォームのHTML構造が変更されるのを防ぐ
+    # field_with_errorsクラス（Railsのバリデーションエラーで自動付与）による、フォーム構造の変更防止
     config.action_view.field_error_proc = Proc.new { |html_tag, _instance| html_tag.html_safe }
 
-    # アプリのデフォルト言語を日本語（:ja）に設定
+    # アプリのデフォルト言語を日本語に
     config.i18n.default_locale = :ja
   end
 end

@@ -43,8 +43,7 @@
       total_balance: @vm.total_balance,
       withdrawal: @vm.withdrawal,
       shortage: @vm.shortage,
-      # show?メソッドをカードテンプレートに渡しても良いが、今回は表示ロジックを維持
-      show: @vm.show? # balance_scenario_card で利用
+      show: @vm.show?
     %>
   </div>
 
@@ -60,7 +59,7 @@
       total_balance: @vm.total_balance,
       withdrawal: @vm.withdrawal,
       shortage: @vm.shortage,
-      show: @vm.show? # balance_scenario_card で利用
+      show: @vm.show?
     %>
   </div>
 

@@ -82,5 +82,14 @@ RSpec.describe Constants do
     it 'G_NEWS_CACHE_EXPIRATIONは「24.hours」' do
       expect(Constants::G_NEWS_CACHE_EXPIRATION).to eq(24.hours)
     end
+
+    # LifePlan(vm)
+    it 'DECADEは「10」' do
+      expect(Constants::DECADE).to eq(10)
+    end
+
+    it 'TEN_YEARS_OLDは「10」' do
+      expect(Constants::DECADE).to eq(10)
+    end
   end
 end

@@ -4,7 +4,7 @@ module Constants
   JANUARY = 1
   FIRST = 1
 
-  # User
+  # User / LifePlan(vm)
   AGE_LIMIT = 70
 
   # Expense
@@ -28,8 +28,12 @@ module Constants
   # News
   G_NEWS_BASE_URL = "https://gnews.io/api/v4"
   G_NEWS_DEFAULT_TOPIC = "経済"
-  G_NEWS_DEFAULT_LANG = "ja"                  # 表示言語（日本語）
-  G_NEWS_DEFAULT_MAX = 10                     # 最大取得件数（10件）無料では10がmax
+  G_NEWS_DEFAULT_LANG = "ja"           # 日本語
+  G_NEWS_DEFAULT_MAX = 10              # 最大取得件数（無料は10件がmax）
   G_NEWS_DEFAULT_ENDPOINT = "/search"
-  G_NEWS_CACHE_EXPIRATION = 24.hours          # キャッシュの有効期限（24時間）
+  G_NEWS_CACHE_EXPIRATION = 24.hours   # キャッシュの有効期限
+
+  # LifePlan(vm)
+  DECADE = 10
+  TEN_YEARS_OLD = 10
 end

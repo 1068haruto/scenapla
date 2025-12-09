@@ -1,4 +1,6 @@
 class LifePlansIndexViewModel
+  include Constants
+
   extend ActiveModel::Naming      # モデル名付与
   include ActiveModel::Conversion # Active Recordオブジェクトの振る舞い付与
 
@@ -24,7 +26,7 @@ class LifePlansIndexViewModel
   def grouped_life_events
     @grouped_life_events ||= life_events.group_by do |event|
       age = event.event_date.year - @user.date_of_birth.year
-      (age / 10) * 10
+      (age / 10) * DECADE
     end
   end
 
@@ -33,7 +35,7 @@ class LifePlansIndexViewModel
   end
 
   def age_groups
-    @age_groups ||= ((@user.calculate_user_age / 10) * 10..70).step(10).to_a
+    @age_groups ||= ((@user.calculate_user_age / 10) * TEN_YEARS_OLD..AGE_LIMIT).step(DECADE).to_a
   end
 
   def has_life_events?(age_group)
@@ -57,7 +59,7 @@ class LifePlansIndexViewModel
   def remaining_advice_count
     start_of_month = Time.zone.now.beginning_of_month
     monthly_advice_total = ai_advices.where("created_at >= ?", start_of_month).count
-    remaining = 3 - monthly_advice_total
+    remaining = ADVICE_LIMIT_PER_MONTH - monthly_advice_total
     remaining > 0 ? remaining : 0
   end
 

@@ -3,7 +3,6 @@ class BalanceScenarioViewModel
     @scenario = scenario
     @incomes = incomes
     @expenses = expenses
-    setup_data
   end
 
   def show?
@@ -15,7 +14,11 @@ class BalanceScenarioViewModel
   end
 
   def balance_chart_data
-    @balance_chart_data
+    @balance_chart_data ||= if @scenario.nil?
+      []
+    else
+      Formatter.to_chart_hash(@scenario&.balance_scenario)
+    end
   end
 
   def total_income
@@ -36,15 +39,5 @@ class BalanceScenarioViewModel
 
   def shortage
     @scenario&.shortage || 0
-  end
-
-  private
-
-  def setup_data
-    if @scenario.nil?
-      @balance_chart_data = []
-    else
-      @balance_chart_data = Formatter.to_chart_hash(@scenario&.balance_scenario)
-    end
   end
 end

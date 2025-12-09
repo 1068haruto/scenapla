@@ -1,11 +1,11 @@
 <div class="card-header d-flex align-items-center">
   <h4 class="mt-2"><%= title %></h4>
-  <% if show_balance_scenario?(balance_chart_data) %>
+  <% if local_assigns[:show] %>
     <span class="ms-auto"><%= formatted_date(updated_at) %>時点</span>
   <% end %>
 </div>
 <div class="card-body">
-  <% if show_balance_scenario?(balance_chart_data) %>
+  <% if local_assigns[:show] %>
     <%= render 'balance_summary',
       total_income: total_income,
       total_expense: total_expense,
@@ -17,6 +17,6 @@
     %>
     <%= balance_chart(balance_chart_data, title) %>
   <% else %>
-    <p>ライフイベント情報が未登録のため、表示できません。</p>
+    <p>ライフイベント未登録のため、表示できません。</p>
   <% end %>
 </div>

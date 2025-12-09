@@ -40,10 +40,10 @@ class SimulationsController < AfterBaseController
   def update_data(method:, success_path:, failure_path:)
     if updater.send(method)
       redirect_to success_path,
-      notice: t("common.actions.save", data: "シミュレーションデータ")
+      notice: t("common.actions.update", data: SIMULATION_DATA)
     else
       redirect_to failure_path,
-      alert: t("common.actions.save_failed", data: "シミュレーションデータ")
+      alert: t("common.actions.update_failed", data: SIMULATION_DATA)
     end
   end
 end

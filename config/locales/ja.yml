@@ -3,12 +3,14 @@ ja:
     actions:
       create: "%{data}を追加しました。"
       update: "%{data}を更新しました。"
-      update_failed: "%{data}を更新できませんでした。"
+      update_failed: "%{data}の更新に失敗しました。"
       destroy: "%{data}を削除しました。"
-      destroy_failed: "%{data}を削除できませんでした。"
-      not_found: "%{data}がありません。"
-      save: "%{data}に保存しました。"
-      save_failed: "%{data}に保存できませんでした。"
+      destroy_failed: "%{data}の削除に失敗しました。"
+      not_found: "%{data}が見つかりません。"
+      save: "%{data}を保存しました。"
+      save_failed: "%{data}の保存に失敗しました。"
+      get: "%{data}を取得しました。"
+      get_failed: "%{data}の取得に失敗しました。"
 
   errors:
     format: "%{message}" # 属性名を含めない
@@ -18,7 +20,7 @@ ja:
       not_a_number: "数値を入力してください。"
       greater_than_or_equal_to: "%{attribute}はプラス値で入力してください。"
       blank: "%{attribute}を入力してください。"
-  
+
   activerecord:
     attributes:
       income:

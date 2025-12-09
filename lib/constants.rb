@@ -1,5 +1,5 @@
 module Constants
-  # Time（common）
+  # TIME
   MONTHS_IN_A_YEAR = 12
   JANUARY = 1
   FIRST = 1
@@ -36,4 +36,15 @@ module Constants
   # LifePlan(vm)
   DECADE = 10
   TEN_YEARS_OLD = 10
+
+  # NAME
+  INCOME_INFO = "収入情報"
+  EXPENSE_INFO = "支出情報"
+  ASSET_INFO = "資産情報"
+  LIFE_EVENT_INFO = "ライフイベント情報"
+  SIMULATION_DATA = "シミュレーションデータ"
+  SCENARIO = "シナリオ"
+  AI_ADVICE = "AIアドバイス"
+  MEMO = "メモ"
+  NEWS = "ニュース"
 end

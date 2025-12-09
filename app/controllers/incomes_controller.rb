@@ -12,7 +12,7 @@ class IncomesController < AfterBaseController
 
     if @income.save
       redirect_to incomes_path,
-      notice: t("common.actions.create", data: "収入データ")
+      notice: t("common.actions.create", data: INCOME_INFO)
     else
       render_error(
         @income.errors.full_messages.join,
@@ -28,7 +28,7 @@ class IncomesController < AfterBaseController
   def update
     if @income.update(income_params)
       redirect_to incomes_path,
-      notice: t("common.actions.update", data: "収入データ")
+      notice: t("common.actions.update", data: INCOME_INFO)
     else
       render_error(
         @income.errors.full_messages.join,
@@ -40,10 +40,10 @@ class IncomesController < AfterBaseController
   def destroy
     if @income.destroy
       redirect_to incomes_path,
-      notice: t("common.actions.destroy", data: "収入データ")
+      notice: t("common.actions.destroy", data: INCOME_INFO)
     else
       render_error(
-        t("common.actions.destroy_failed", data: "収入データ"),
+        t("common.actions.destroy_failed", data: INCOME_INFO),
         :unprocessable_entity
       )
     end
@@ -59,7 +59,7 @@ class IncomesController < AfterBaseController
     @income = current_user.incomes.find_by(id: params[:id])
     unless @income
       redirect_to incomes_path,
-      alert: t("common.actions.not_found", data: "収入データ")
+      alert: t("common.actions.not_found", data: INCOME_INFO)
     end
   end
 

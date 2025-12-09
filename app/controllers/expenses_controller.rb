@@ -15,7 +15,7 @@ class ExpensesController < AfterBaseController
       oldExpense.destroy if oldExpense.present? && oldExpense.id != @expense.id
 
       redirect_to expenses_path,
-      notice: t("common.actions.create", data: "支出データ")
+      notice: t("common.actions.create", data: EXPENSE_INFO)
     else
       render_error(
         @expense.errors.full_messages.join,
@@ -31,7 +31,7 @@ class ExpensesController < AfterBaseController
   def update
     if @expense.update(expense_params)
       redirect_to expenses_path,
-      notice: t("common.actions.update", data: "支出データ")
+      notice: t("common.actions.update", data: EXPENSE_INFO)
     else
       render_error(
         @expense.errors.full_messages.join,
@@ -43,10 +43,10 @@ class ExpensesController < AfterBaseController
   def destroy
     if @expense.destroy
       redirect_to expenses_path,
-      notice: t("common.actions.destroy", data: "支出データ")
+      notice: t("common.actions.destroy", data: EXPENSE_INFO)
     else
       render_error(
-        t("common.actions.destroy_failed", data: "支出データ"),
+        t("common.actions.destroy_failed", data: EXPENSE_INFO),
         :unprocessable_entity
       )
     end
@@ -62,7 +62,7 @@ class ExpensesController < AfterBaseController
     @expense = current_user.expenses.find_by(id: params[:id])
     unless @expense
       redirect_to expenses_path,
-      alert: t("common.actions.not_found", data: "支出データ")
+      alert: t("common.actions.not_found", data: EXPENSE_INFO)
     end
   end
 

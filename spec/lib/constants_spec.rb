@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Constants do
   describe 'Constants' do
-    # time
+    # TIME
     it 'MONTHS_IN_A_YEARは「12」' do
       expect(Constants::MONTHS_IN_A_YEAR).to eq(12)
     end
@@ -89,7 +89,44 @@ RSpec.describe Constants do
     end
 
     it 'TEN_YEARS_OLDは「10」' do
-      expect(Constants::DECADE).to eq(10)
+      expect(Constants::TEN_YEARS_OLD).to eq(10)
+    end
+
+    # NAME
+    it 'INCOME_INFOは「収入情報」' do
+      expect(Constants::INCOME_INFO).to eq("収入情報")
+    end
+
+    it 'EXPENSE_INFOは「支出情報」' do
+      expect(Constants::EXPENSE_INFO).to eq("支出情報")
+    end
+
+    it 'ASSET_INFOは「資産情報」' do
+      expect(Constants::ASSET_INFO).to eq("資産情報")
+    end
+
+    it 'LIFE_EVENT_INFOは「ライフイベント情報」' do
+      expect(Constants::LIFE_EVENT_INFO).to eq("ライフイベント情報")
+    end
+
+    it 'SIMULATION_DATAは「シミュレーションデータ」' do
+      expect(Constants::SIMULATION_DATA).to eq("シミュレーションデータ")
+    end
+
+    it 'SCENARIOは「シナリオ」' do
+      expect(Constants::SCENARIO).to eq("シナリオ")
+    end
+
+    it 'AI_ADVICEは「AIアドバイス」' do
+      expect(Constants::AI_ADVICE).to eq("AIアドバイス")
+    end
+
+    it 'MEMOは「メモ」' do
+      expect(Constants::MEMO).to eq("メモ")
+    end
+
+    it 'NEWSは「ニュース」' do
+      expect(Constants::NEWS).to eq("ニュース")
     end
   end
 end

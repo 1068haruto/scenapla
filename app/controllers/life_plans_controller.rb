@@ -5,9 +5,11 @@ class LifePlansController < AfterBaseController
 
   def generate_advice
     Api::OpenaiService.new(current_user).call
-    redirect_to life_plans_path, notice: "アドバイスを生成しました。"
+    redirect_to life_plans_path,
+    notice: t("common.actions.get", data: AI_ADVICE)
   rescue => e
-    redirect_to life_plans_path, alert: e.message
+    redirect_to life_plans_path,
+    alert: e.message
   end
 
   def save_memo
@@ -16,10 +18,12 @@ class LifePlansController < AfterBaseController
     @memo.content = memo_params[:content]
     if @memo.save
       redirect_to life_plans_path,
-      notice: "メモを保存しました。"
+      notice: t("common.actions.save", data: MEMO)
     else
-      redirect_to life_plans_path,
-      alert: "メモの保存に失敗しました: #{@memo.errors.full_messages.join(', ')}"
+      render_error(
+        @memo.errors.full_messages.join,
+        :unprocessable_entity
+      )
     end
   end
 

@@ -35,7 +35,7 @@ class LifePlansIndexViewModel
   end
 
   def age_groups
-    @age_groups ||= ((@user.calculate_user_age / 10) * TEN_YEARS_OLD..AGE_LIMIT).step(DECADE).to_a
+    @age_groups ||= ((@user.get_user_age / 10) * TEN_YEARS_OLD..AGE_LIMIT).step(DECADE).to_a
   end
 
   def has_life_events?(age_group)

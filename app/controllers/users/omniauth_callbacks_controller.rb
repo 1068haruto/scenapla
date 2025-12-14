@@ -6,14 +6,17 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   #   super
   # end
 
-  # Google用のメソッド
+  # Google用
   def google_oauth2
     callback_for(:google)
   end
 
   def failure
-    provider = request.env["omniauth.error.strategy"].name # プロバイダー名の取得
-    redirect_to new_user_registration_path, alert: "#{provider.to_s.capitalize}#{t("message.devise.omniauth.failure")}"
+    # プロバイダー名取得
+    provider = request.env["omniauth.error.strategy"].name
+
+    redirect_to new_user_registration_path,
+    alert: "#{provider.to_s.capitalize}#{t("message.devise.omniauth.failure")}"
   end
 
   private
@@ -23,17 +26,26 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     @user = User.find_or_create_for_oauth(auth)
 
     if @user.persisted?
-      @user.skip_confirmation! if auth.provider.present?  # googleログイン時はメール確認をスキップ
-      sign_in @user, event: :authentication
-      redirect_after_auth(provider)
-    else
-      redirect_to new_user_registration_path, alert: "#{provider.to_s.capitalize}#{t("message.devise.omniauth.callback.failure")}"
-    end
-  end
+      # メール確認スキップ
+      @user.skip_confirmation! if auth.provider.present?
 
-  def redirect_after_auth(provider)
-    path = @user.date_of_birth.nil? ? edit_date_of_birth_path : dashboard_index_path
-    redirect_to path, notice: "#{provider.to_s.capitalize}#{t('message.devise.omniauth.callback.success')}"
+      if @user.date_of_birth.present? && sign_in(@user, event: :authentication)
+        # 認証成功（生年月日設定済）
+        redirect_to dashboard_index_path,
+        notice: "#{provider.to_s.capitalize}#{t('message.devise.omniauth.callback.success')}"
+      elsif @user.date_of_birth.nil?
+        # 認証失敗（生年月日未登録）
+        session[:sns_user_id_for_dob_registration] = @user.id # 次ページで利用のため
+        redirect_to edit_date_of_birth_path # Deviseのリダイレクト回避
+      else
+        # 他の理由で失敗
+        redirect_to new_user_session_path,
+        alert: "認証に失敗しました。再度お試しください。"
+      end
+    else
+      redirect_to new_user_registration_path,
+      alert: "#{provider.to_s.capitalize}#{t("message.devise.omniauth.callback.failure")}"
+    end
   end
 
   # protected

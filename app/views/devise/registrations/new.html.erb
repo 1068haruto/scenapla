@@ -47,7 +47,11 @@
   <div class="row justify-content-center mt-3">
     <div class="col-10 col-md-8 col-lg-4 border border-dark p-3 rounded bg-light d-flex justify-content-center align-items-center flex-nowrap">
       <p class="mb-0 me-2"><strong>アカウントをお持ちの方</strong></p>
-      <%= link_to 'ログイン', new_user_session_path, class: 'btn btn-outline-primary', data: { turbo: true } %>
+      <%= link_to 'ログイン',
+        new_user_session_path,
+        class: 'btn btn-outline-primary',
+        data: { turbo: true }
+      %>
     </div>
   </div>
 </div>

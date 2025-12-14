@@ -46,6 +46,11 @@ ja:
         amount: "年額"
         payment_period: "支払期間"
 
+  devise:
+    omniauth:
+      failure: "%{provider}でのログインに失敗しました。"
+      success: "%{provider}でログインしました。"
+
 # ----------以下、devise・ユーザー関連----------
     errors:
       models:
@@ -73,11 +78,5 @@ ja:
         update:
           success: "アカウント情報を更新しました。"
           failure: "アカウント情報を更新できませんでした。"
-          date_of_birth: "生年月日を登録しました。"
-          date_of_birt_failed: "生年月日を登録できませんでした。"
+          date_of_birth: "生年月日を登録し、ログインしました。"
           not_sign_in: "ログインしてください。"
-      omniauth:
-        failure: "でのログインに失敗しました。"
-        callback:
-          success: "でログインしました。"
-          failure: "でのログインに失敗しました。"

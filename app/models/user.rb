@@ -43,6 +43,14 @@ class User < ApplicationRecord
     super && date_of_birth.present?
   end
 
+  def initialize_simulation_and_scenarios
+    simulation = create_simulation!
+    simulation.scenarios.create!([
+      { user: self, scenario_type: "現実" },
+      { user: self, scenario_type: "理想" }
+    ])
+  end
+
   def get_user_age
     current_date = Date.today
     age = current_date.year - date_of_birth.year
@@ -53,13 +61,5 @@ class User < ApplicationRecord
 
   def get_year_at_seventy
     date_of_birth.year + AGE_LIMIT
-  end
-
-  def initialize_simulation_and_scenarios
-    simulation = create_simulation!
-    simulation.scenarios.create!([
-      { user: self, scenario_type: "現実" },
-      { user: self, scenario_type: "理想" }
-    ])
   end
 end

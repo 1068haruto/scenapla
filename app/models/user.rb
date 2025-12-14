@@ -25,55 +25,34 @@ class User < ApplicationRecord
 
   after_create :initialize_simulation_and_scenarios
 
-  def calculate_user_age
-    current_date = Date.today
-    age = current_date.year - date_of_birth.year
-    age -= 1 if current_date < date_of_birth + age.years # 誕生日がまだ来ていない場合
-    age
-  end
-
-  def get_year_at_seventy
-    date_of_birth.year + AGE_LIMIT
-  end
-
-  # snsユーザー：登録も更新も無効
-  # 一般ユーザー：登録は有効、更新は入力があれば有効、なければ無効
-  def password_required?
-    return false if sns_credentials.exists?
-    new_record? || password.present? || password_confirmation.present?
-  end
-
-  # snsユーザー：登録は無効、更新は有効
+  # SNSユーザー：登録は無効、更新は有効
   # 一般ユーザー：登録も更新も有効
   def date_of_birth_required?
     sns_credentials.empty? || !new_record?
   end
 
-  # ------------------------------認証関連------------------------------
-  def self.find_or_create_for_oauth(auth)
-    sns = SnsCredential.find_or_create_by(uid: auth.uid, provider: auth.provider)
-    user = sns.user || User.find_by(email: auth.info.email) || self.create_user_from_auth(auth)
-    self.associate_sns_with_user(sns, user)
+  # SNSユーザー：登録も更新も無効
+  # 一般ユーザー：登録は有効、更新は入力あれば有効/なければ無効
+  def password_required?
+    return false if sns_credentials.exists?
+    new_record? || password.present? || password_confirmation.present?
   end
 
-  def self.associate_sns_with_user(sns, user)
-    sns.user = user
-    sns.save!
-    user
+  def active_for_authentication?
+    # 生年月日が設定済なら認証を許可
+    super && date_of_birth.present?
   end
 
-  def self.create_user_from_auth(auth)
-    user = User.new(
-      email: auth.info.email,
-      name: auth.info.name,
-      password: Devise.friendly_token(10) + "a1",
-      date_of_birth: nil,  # 生年月日は後ほど登録
-      confirmed_at: Time.current
-    )
+  def get_user_age
+    current_date = Date.today
+    age = current_date.year - date_of_birth.year
+    # 誕生日がまだなら1歳引く
+    age -= 1 if current_date < date_of_birth + age.years
+    age
+  end
 
-    # バリデーションはスキップし、保存
-    user.save(validate: false)
-    user
+  def get_year_at_seventy
+    date_of_birth.year + AGE_LIMIT
   end
 
   def initialize_simulation_and_scenarios
@@ -82,10 +61,5 @@ class User < ApplicationRecord
       { user: self, scenario_type: "現実" },
       { user: self, scenario_type: "理想" }
     ])
-  end
-
-  def active_for_authentication?
-    # 生年月日が設定済なら認証を許可
-    super && date_of_birth.present?
   end
 end

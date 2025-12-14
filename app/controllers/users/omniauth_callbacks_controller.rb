@@ -23,7 +23,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def callback_for(provider)
     auth = request.env["omniauth.auth"]
-    @user = User.find_or_create_for_oauth(auth)
+    @user = OauthAuthenticator.new(auth).find_or_create_user
 
     if @user.persisted?
       # メール確認スキップ

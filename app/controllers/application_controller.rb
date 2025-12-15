@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
 
   def after_sign_up_path_for(resource)
     if resource.date_of_birth.blank?
-      edit_date_of_birth_path
+      edit_dob_path
     else
       dashboard_index_path
     end

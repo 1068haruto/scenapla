@@ -1,35 +1,11 @@
 class Users::RegistrationsController < Devise::RegistrationsController
-  before_action :set_user_for_dob_registration, only: [ :edit_date_of_birth, :update_date_of_birth ]
+  before_action :set_user_for_dob_registration, only: [ :edit_dob, :update_dob ]
   before_action :configure_permitted_parameters
 
-  # current_user取得（生年月日登録用）
-  def set_user_for_dob_registration
-    return if user_signed_in?
-
-    if session[:sns_user_id_for_dob_registration].present?
-      @user_for_dob = User.find_by(id: session[:sns_user_id_for_dob_registration])
-      # ユーザー存在せず、生年月日設定済の場合
-      unless @user_for_dob && @user_for_dob.date_of_birth.nil?
-        session.delete(:sns_user_id_for_dob_registration)
-        redirect_to new_user_session_path,
-        alert: "認証セッションが無効です。"
-      end
-    else
-      # セッション情報がない場合
-      redirect_to new_user_session_path,
-      alert: t("message.devise.registration.update.not_sign_in")
-    end
-  end
-
-  def current_user
-    # 認証済はcurrent_user、未認証は @user_for_dob
-    super || @user_for_dob
-  end
-
   def create
-    # 一般ユーザー用
     super do |resource|
       if resource.persisted? && resource.sns_credentials.empty?
+        # 一般ユーザー用
         sign_out resource unless resource.confirmed?
       end
     end
@@ -45,15 +21,41 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
-  def edit_date_of_birth; end
+  # 生年月日登録ページ
+  def edit_dob; end
 
-  def update_date_of_birth
+  # 生年月日登録
+  def update_dob
     if user_signed_in?
-      update_date_of_birth_for_user
+      update_dob_for_user
     else
       redirect_to new_user_session_path,
       alert: t("message.devise.registration.update.not_sign_in")
     end
+  end
+
+  # user取得（生年月日登録用）
+  def set_user_for_dob_registration
+    return if user_signed_in?
+
+    if session[:sns_user_id].present?
+      @user_for_dob = User.find_by(id: session[:sns_user_id])
+
+      unless @user_for_dob && @user_for_dob.date_of_birth.nil?
+        # セッションにユーザーが存在せず、生年月日設定済の場合
+        session.delete(:sns_user_id)
+        redirect_to new_user_session_path,
+        alert: "認証セッションが無効です。"
+      end
+    else
+      redirect_to new_user_session_path,
+      alert: t("message.devise.registration.update.not_sign_in")
+    end
+  end
+
+  def current_user
+    # 認証済は current_user、未認証は @user_for_dob を使用
+    super || @user_for_dob
   end
 
   protected
@@ -66,7 +68,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   private
 
-  def update_date_of_birth_for_user
+  def update_dob_for_user
     user_to_update = current_user
     if user_to_update.update(birth_params)
       # セッションをクリア & 正式ログイン

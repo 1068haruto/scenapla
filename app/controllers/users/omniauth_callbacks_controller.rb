@@ -5,7 +5,6 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def failure
-    # プロバイダー名取得
     @provider_name = request.env["omniauth.error.strategy"].name.to_s.capitalize
 
     redirect_to new_user_registration_path,
@@ -31,8 +30,8 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     # 生年月日未登録の場合、登録ページへ
     if @user.date_of_birth.nil?
-      session[:sns_user_id_for_dob_registration] = @user.id
-      redirect_to edit_date_of_birth_path
+      session[:sns_user_id] = @user.id
+      redirect_to edit_dob_path
       return
     end
 

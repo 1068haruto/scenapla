@@ -36,30 +36,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
-  # user取得（生年月日登録用）
-  def set_user_for_dob_registration
-    return if user_signed_in?
-
-    if session[:sns_user_id].present?
-      @user_for_dob = User.find_by(id: session[:sns_user_id])
-
-      unless @user_for_dob && @user_for_dob.date_of_birth.nil?
-        # セッションにユーザーが存在せず、生年月日設定済の場合
-        session.delete(:sns_user_id)
-        redirect_to new_user_session_path,
-        alert: t("auth.invalid_auth_session")
-      end
-    else
-      redirect_to new_user_session_path,
-      alert: t("anth.not_sign_in")
-    end
-  end
-
-  def current_user
-    # 認証済は current_user、未認証は @user_for_dob を使用
-    super || @user_for_dob
-  end
-
   protected
 
   # 追加パラメータの許可
@@ -70,6 +46,32 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   private
 
+  # user取得（生年月日登録用）
+  def set_user_for_dob_registration
+    return if user_signed_in?
+
+    if session[:sns_user_id].present?
+      @user_for_dob = User.find_by(id: session[:sns_user_id])
+
+      # セッションにユーザーが存在せず、生年月日設定済の場合
+      unless @user_for_dob && @user_for_dob.date_of_birth.nil?
+        session.delete(:sns_user_id)
+        redirect_to new_user_session_path,
+        alert: t("auth.invalid_auth_session")
+      end
+    else
+      redirect_to new_user_session_path,
+      alert: t("anth.not_sign_in")
+    end
+  end
+
+  # current_user のオーバーライド
+  # 認証済は current_user、未認証は @user_for_dob を使用
+  def current_user
+    super || @user_for_dob
+  end
+
+  # 生年月日更新処理
   def update_dob_for_user
     user_to_update = current_user
     if user_to_update.update(birth_params)

@@ -1,4 +1,6 @@
 class Users::RegistrationsController < Devise::RegistrationsController
+  include Constants
+
   before_action :set_user_for_dob_registration, only: [ :edit_dob, :update_dob ]
   before_action :configure_permitted_parameters
 
@@ -14,9 +16,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def update
     if resource.update(account_update_params)
       redirect_to user_path(resource),
-      notice: t("message.devise.registration.update.success")
+      notice: t("common.actions.update", data: ACCOUNT_INFO)
     else
-      flash.now[:alert] = t("message.devise.registration.update.failure")
+      flash.now[:alert] = t("common.actions.update_failed", data: ACCOUNT_INFO)
       render :edit, status: :unprocessable_entity
     end
   end
@@ -30,7 +32,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       update_dob_for_user
     else
       redirect_to new_user_session_path,
-      alert: t("message.devise.registration.update.not_sign_in")
+      alert: t("auth.not_sign_in")
     end
   end
 
@@ -45,11 +47,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
         # セッションにユーザーが存在せず、生年月日設定済の場合
         session.delete(:sns_user_id)
         redirect_to new_user_session_path,
-        alert: "認証セッションが無効です。"
+        alert: t("auth.invalid_auth_session")
       end
     else
       redirect_to new_user_session_path,
-      alert: t("message.devise.registration.update.not_sign_in")
+      alert: t("anth.not_sign_in")
     end
   end
 
@@ -75,9 +77,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
       session.delete(:sns_user_id_for_dob_registration)
       sign_in(user_to_update, event: :authentication)
       redirect_to dashboard_index_path,
-      notice: t("message.devise.registration.update.date_of_birth")
+      notice: t("dob.update_and_login", data: DATE_OF_BIRTH)
     else
-      flash.now[:alert] = t("message.devise.registration.update.date_of_birth_failed")
+      flash.now[:alert] = t("dob.update_faild", data: DATE_OF_BIRTH)
       render :edit_date_of_birth, status: :unprocessable_entity
     end
   end

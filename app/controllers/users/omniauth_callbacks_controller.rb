@@ -1,45 +1,47 @@
-# frozen_string_literal: true
-
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
-  # GET|POST /resource/auth/twitter
-  # def passthru
-  #   super
-  # end
-
-  # Google用のメソッド
+  # Google用
   def google_oauth2
     callback_for(:google)
   end
 
   def failure
-    provider = request.env["omniauth.error.strategy"].name # プロバイダー名の取得
-    redirect_to new_user_registration_path, alert: "#{provider.to_s.capitalize}#{t("message.devise.omniauth.failure")}"
+    @provider_name = request.env["omniauth.error.strategy"].name.to_s.capitalize
+
+    redirect_to new_user_registration_path,
+    alert: t("devise.omniauth.failure", provider: @provider_name)
   end
 
   private
 
   def callback_for(provider)
     auth = request.env["omniauth.auth"]
-    @user = User.find_or_create_for_oauth(auth)
+    @user = OauthAuthenticator.new(auth).find_or_create_user
+    @provider_name = provider.to_s.capitalize
 
-    if @user.persisted?
-      @user.skip_confirmation! if auth.provider.present?  # googleログイン時はメール確認をスキップ
-      sign_in @user, event: :authentication
-      redirect_after_auth(provider)
+    # ユーザーがいない場合、登録ページへ
+    unless @user.persisted?
+      redirect_to new_user_registration_path,
+      alert: t("devise.omniauth.failure", provider: @provider_name)
+      return
+    end
+
+    # メール確認スキップ
+    @user.skip_confirmation! if auth.provider.present?
+
+    # 生年月日未登録の場合、登録ページへ
+    if @user.date_of_birth.nil?
+      session[:sns_user_id] = @user.id
+      redirect_to edit_dob_path
+      return
+    end
+
+    # ログイン
+    if sign_in(@user, event: :authentication)
+      redirect_to dashboard_index_path,
+      notice: t("devise.omniauth.success", provider: @provider_name)
     else
-      redirect_to new_user_registration_path, alert: "#{provider.to_s.capitalize}#{t("message.devise.omniauth.callback.failure")}"
+      redirect_to new_user_session_path,
+      alert: t("devise.omniauth.failure", provider: @provider_name)
     end
   end
-
-  def redirect_after_auth(provider)
-    path = @user.date_of_birth.nil? ? edit_date_of_birth_path : dashboard_index_path
-    redirect_to path, notice: "#{provider.to_s.capitalize}#{t('message.devise.omniauth.callback.success')}"
-  end
-
-  # protected
-
-  # The path used when OmniAuth fails
-  # def after_omniauth_failure_path_for(scope)
-  #   super(scope)
-  # end
 end

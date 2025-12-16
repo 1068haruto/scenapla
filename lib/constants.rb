@@ -47,4 +47,6 @@ module Constants
   AI_ADVICE = "AIアドバイス"
   MEMO = "メモ"
   NEWS = "ニュース"
+  ACCOUNT_INFO = "アカウント情報"
+  DATE_OF_BIRTH = "生年月日"
 end

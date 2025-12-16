@@ -12,8 +12,8 @@ Rails.application.routes.draw do
   }
 
   devise_scope :user do
-    get "users/date_of_birth/edit", to: "users/registrations#edit_date_of_birth", as: "edit_date_of_birth"
-    patch "users/date_of_birth", to: "users/registrations#update_date_of_birth", as: "update_date_of_birth"
+    get "users/dob/edit", to: "users/registrations#edit_dob", as: "edit_dob"
+    patch "users/dob", to: "users/registrations#update_dob", as: "update_dob"
   end
 
   resources :dashboard,   only: [ :index ]

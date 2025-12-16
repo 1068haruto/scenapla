@@ -5,7 +5,7 @@
     <div class="col-10 col-md-8 col-lg-5 border border-dark p-3 rounded">
       <h5 class="card-title mb-4 text-center">始めるには生年月日を登録して下さい。</h5>
 
-      <%= form_with model: current_user, url: update_date_of_birth_path, method: :patch, local: true do |f| %>
+      <%= form_with model: current_user, url: update_dob_path, method: :patch, local: true do |f| %>
         <%= render "devise/shared/error_messages", resource: @resource %>
 
         <div class="form-floating mb-3">

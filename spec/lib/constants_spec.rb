@@ -128,5 +128,13 @@ RSpec.describe Constants do
     it 'NEWSは「ニュース」' do
       expect(Constants::NEWS).to eq("ニュース")
     end
+
+    it 'ACCOUNT_INFOは「アカウント情報」' do
+      expect(Constants::ACCOUNT_INFO).to eq("アカウント情報")
+    end
+
+    it 'DATE_OF_BIRTHは「生年月日」' do
+      expect(Constants::DATE_OF_BIRTH).to eq("生年月日")
+    end
   end
 end

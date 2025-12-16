@@ -15,7 +15,7 @@ module DataGenerator
         以下のユーザー情報とアドバイス要件に基づき、今後のライフプランについてアドバイスを提供してください。
         # ユーザー情報:
         - 私の名前: #{@user.name}
-        - 私の現在年齢: #{@user.calculate_user_age}歳
+        - 私の現在年齢: #{@user.get_user_age}歳
         - 私の今後の収支状況の見込み: #{forecast_str}
         # アドバイスの要件:
         - 300字以内の日本語で回答してください。
@@ -29,7 +29,7 @@ module DataGenerator
 
     # 見込み収支データの生成-> Hash{age_group => total_amount}
     def generate_financial_data
-      current_age = @user.calculate_user_age
+      current_age = @user.get_user_age
       current_year = Date.today.year
       financial_data = Hash.new(0)
 

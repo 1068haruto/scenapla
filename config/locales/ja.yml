@@ -11,6 +11,12 @@ ja:
       save_failed: "%{data}の保存に失敗しました。"
       get: "%{data}を取得しました。"
       get_failed: "%{data}の取得に失敗しました。"
+  auth:
+    not_sign_in: "ログインしてください。"
+    invalid_auth_session: "認証セッションが無効です。"
+  dob:
+    update_and_login: "%{data}を登録し、ログインしました。"
+    update_failed: "%{data}の登録に失敗しました。"
 
   errors:
     format: "%{message}" # 属性名を含めない
@@ -46,6 +52,12 @@ ja:
         amount: "年額"
         payment_period: "支払期間"
 
+  devise:
+    omniauth:
+      success: "%{provider}でログインしました。"
+      failure: "%{provider}でのログインに失敗しました。"
+    registration:
+
 # ----------以下、devise・ユーザー関連----------
     errors:
       models:
@@ -67,18 +79,3 @@ ja:
             password_confirmation:
               blank: "確認用パスワードを入力してください。"
               confirmation: "パスワードが一致していません。"
-  message:
-    devise:
-      registration:
-        update:
-          success: "アカウント情報を更新しました。"
-          failure: "アカウント情報を更新できませんでした。"
-        update_date_of_birth:
-          success: "生年月日を登録しました。"
-          failure: "生年月日を登録できませんでした。"
-          not_sign_in: "ログインしてください。"
-      omniauth:
-        failure: "でのログインに失敗しました。"
-        callback:
-          success: "でログインしました。"
-          failure: "でのログインに失敗しました。"

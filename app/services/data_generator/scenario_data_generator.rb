@@ -38,7 +38,7 @@ module DataGenerator
 
       # 不足額
       shortage = 0
-      remaining_years = Constants::AGE_LIMIT - @user.calculate_user_age
+      remaining_years = Constants::AGE_LIMIT - @user.get_user_age
       if total_balance < 0 && remaining_years > 0
         shortage = (total_balance.abs / remaining_years.to_d).round(1)
       end

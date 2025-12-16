@@ -29,7 +29,7 @@ RSpec.describe "Users::Registrations", type: :request do
       before { sign_in user }
 
       it "ページを表示し200を返す" do
-        get edit_date_of_birth_path
+        get edit_dob_path
         expect(response).to have_http_status(:success)  # 200
       end
     end
@@ -38,7 +38,7 @@ RSpec.describe "Users::Registrations", type: :request do
       before { sign_out user }
 
       it "ログインページにリダイレクトし302を返す" do
-        get edit_date_of_birth_path
+        get edit_dob_path
         expect(response).to have_http_status(:redirect)  # 302
       end
     end
@@ -49,12 +49,12 @@ RSpec.describe "Users::Registrations", type: :request do
       before { sign_in user }
 
       it "更新に成功し302を返す" do
-        patch update_date_of_birth_path, params: { user: { date_of_birth: "2000-01-01" } }
+        patch update_dob_path, params: { user: { date_of_birth: "2000-01-01" } }
         expect(response).to have_http_status(:redirect)
       end
 
       it "不正な値入力では更新失敗し、422を返す" do
-        patch update_date_of_birth_path, params: { user: { date_of_birth: nil } }
+        patch update_dob_path, params: { user: { date_of_birth: nil } }
         expect(response).to have_http_status(:unprocessable_entity)  # 422
       end
     end
@@ -63,7 +63,7 @@ RSpec.describe "Users::Registrations", type: :request do
       before { sign_out user }
 
       it "ログインページにリダイレクトし、302を返す" do
-        patch update_date_of_birth_path, params: { user: { date_of_birth: "2000-01-01" } }
+        patch update_dob_path, params: { user: { date_of_birth: "2000-01-01" } }
         expect(response).to have_http_status(:redirect)
       end
     end

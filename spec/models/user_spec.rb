@@ -203,11 +203,11 @@ RSpec.describe User, type: :model do
   end
 
   describe 'インスタンスメソッドのテスト' do
-    describe '#calculate_user_age' do
+    describe '#get_user_age' do
       let(:user) { create(:user, date_of_birth: 40.years.ago) }
 
       it '年齢が正しく計算されること' do
-        expect(user.calculate_user_age).to eq(40)
+        expect(user.get_user_age).to eq(40)
       end
     end
   end

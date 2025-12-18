@@ -16,11 +16,22 @@
       <% if @user_assets.any? %>
         <div class="accordion" id="userAssetsAccordion">
           <% @user_assets.each_with_index do |user_asset, index| %>
-            <%= render 'registered_user_asset',
-              user_asset: user_asset,
+            <%= render 'shared/accordion_item',
+              model: user_asset,
+              accordion_id: "userAssetsAccordion",
               index: index,
-              accordion_id: "userAssetsAccordion"
+              badge_text: user_asset.person_type,
+              badge_class: (user_asset.person_type == '配偶者' ? 'text-success' : 'text-primary'),
+              extra_title: user_asset.asset_type, # 「預金」「投資信託」などを表示
+              edit_path: edit_user_asset_path(user_asset),
+              delete_path: user_asset_path(user_asset) do
             %>
+              <li><strong>総額:</strong><%= user_asset.amount %>万円</li>
+              <li>
+                <strong>利回り:</strong>
+                <%= user_asset.return_rate.present? ? "#{user_asset.return_rate}%" : 'なし' %>
+              </li>
+            <% end %>
           <% end %>
         </div>
       <% else %>

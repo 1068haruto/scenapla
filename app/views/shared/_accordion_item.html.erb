@@ -1,3 +1,12 @@
+<%
+  # 必要な変数:
+  # model, accordion_id, index(任意), title,
+  # badge_text, badge_class, edit_path, delete_path
+%>
+
+<% index ||= 0 %>
+<% show_buttons = local_assigns.fetch(:show_buttons, true) %>
+
 <div class="accordion-item">
   <h2 class="accordion-header" id="heading-<%= accordion_id %>-<%= index %>">
     <button
@@ -8,11 +17,12 @@
       aria-expanded="false"
       aria-controls="collapse-<%= accordion_id %>-<%= index %>"
     >
-      <span class="badge rounded-pill <%= life_event.event_type == '理想' ? 'text-success' : 'text-primary' %>">
-        <%= life_event.event_type %>
+      <span class="badge rounded-pill <%= badge_class %>">
+        <%= badge_text %>
       </span>
-      <span class="me-2"></span>
-      <%= life_event.event_date.year %>年 <%= life_event.title %>
+      <% if local_assigns[:extra_title] %>
+        <span class="ms-2"><%= extra_title %></span>
+      <% end %>
     </button>
   </h2>
 
@@ -24,13 +34,14 @@
   >
     <div class="accordion-body">
       <ul class="list-unstyled">
-        <li><strong>年額:</strong> <%= life_event.amount %>万円</li>
-        <li><strong>支払期間:</strong> <%= life_event.payment_period %>年間</li>
+        <%# ここに各モデル固有の <li> が入る %>
+        <%= yield %>
       </ul>
-      <% if show_delete_button %>
+
+      <% if show_buttons && model.persisted? %>
         <div class="mt-2">
-          <%= edit_button_sm(edit_life_event_path(life_event)) %>
-          <%= delete_button(life_event_path(life_event)) %>
+          <%= edit_button_sm(edit_path) %>
+          <%= delete_button(delete_path) %>
         </div>
       <% end %>
     </div>

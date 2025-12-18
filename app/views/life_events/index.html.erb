@@ -17,12 +17,20 @@
       <% if @life_events.any? %>
         <div class="accordion" id="newLifeEventsAccordion">
           <% @life_events.each_with_index do |life_event, index| %>
-            <%= render 'registered_life_event',
-              life_event: life_event,
-              index: index,
+            <%= render 'shared/accordion_item',
+              model: life_event,
               accordion_id: "newLifeEventsAccordion",
-              show_delete_button: true
+              index: index,
+              badge_text: life_event.event_type,
+              badge_class: (life_event.event_type == '理想' ? 'text-success' : 'text-primary'),
+              extra_title: "#{life_event.event_date.year}年 #{life_event.title}",
+              edit_path: edit_life_event_path(life_event),
+              delete_path: life_event_path(life_event),
+              show_buttons: true do
             %>
+              <li><strong>年額:</strong> <%= life_event.amount %>万円</li>
+              <li><strong>支払期間:</strong> <%= life_event.payment_period %>年間</li>
+            <% end %>
           <% end %>
         </div>
       <% else %>

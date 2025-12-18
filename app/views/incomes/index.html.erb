@@ -16,11 +16,20 @@
       <% if @incomes.any? %>
         <div class="accordion" id="incomesAccordion">
           <% @incomes.each_with_index do |income, index| %>
-            <%= render 'registered_income',
-              income: income,
+            <%= render 'shared/accordion_item',
+              model: income,
+              accordion_id: "incomesAccordion",
               index: index,
-              accordion_id: "incomesAccordion"
+              badge_text: income.person_type,
+              badge_class: (income.person_type == '配偶者' ? 'bg-success' : 'bg-primary'),
+              edit_path: edit_income_path(income),
+              delete_path: income_path(income) do
             %>
+              <li><strong>月収（手取り）:</strong> <%= income.monthly_income %>万円</li>
+              <li><strong>賞与年額（手取り）:</strong> <%= income.yearly_bonus %>万円</li>
+              <li><strong>退職時期:</strong> <%= income.retirement_date.year %>年</li>
+              <li><strong>退職金（手取り）:</strong> <%= income.retirement_pay %>万円</li>
+            <% end %>
           <% end %>
         </div>
       <% else %>

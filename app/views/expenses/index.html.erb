@@ -16,10 +16,10 @@
       <h6>※再追加でデータが上書きされます</h6>
 
       <% if @latest_expense.present? %>
-        <div class="accordion" id="expensesAccordion">
-          <%= render 'shared/accordion_item',
+        <div class="acc" id="expensesAcc">
+          <%= render 'shared/acc_item',
             model: @latest_expense,
-            accordion_id: "expensesAccordion",
+            acc_id: "expensesAcc",
             index: 0,
             badge_text: "現在の支出",
             badge_class: "text-primary",

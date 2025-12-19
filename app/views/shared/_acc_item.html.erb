@@ -1,21 +1,21 @@
 <%
   # 必要な変数:
-  # model, accordion_id, index(任意), title,
+  # model, acc_id, index(任意), title,
   # badge_text, badge_class, edit_path, delete_path
 %>
 
 <% index ||= 0 %>
 <% show_buttons = local_assigns.fetch(:show_buttons, true) %>
 
-<div class="accordion-item">
-  <h2 class="accordion-header" id="heading-<%= accordion_id %>-<%= index %>">
+<div class="acc-item">
+  <h2 class="acc-header" id="heading-<%= acc_id %>-<%= index %>">
     <button
-      class="accordion-button collapsed"
+      class="acc-button collapsed"
       type="button"
       data-bs-toggle="collapse"
-      data-bs-target="#collapse-<%= accordion_id %>-<%= index %>"
+      data-bs-target="#collapse-<%= acc_id %>-<%= index %>"
       aria-expanded="false"
-      aria-controls="collapse-<%= accordion_id %>-<%= index %>"
+      aria-controls="collapse-<%= acc_id %>-<%= index %>"
     >
       <span class="badge rounded-pill <%= badge_class %>">
         <%= badge_text %>
@@ -27,12 +27,12 @@
   </h2>
 
   <div
-    id="collapse-<%= accordion_id %>-<%= index %>"
-    class="accordion-collapse collapse"
-    aria-labelledby="heading-<%= accordion_id %>-<%= index %>"
-    data-bs-parent="#<%= accordion_id %>"
+    id="collapse-<%= acc_id %>-<%= index %>"
+    class="acc-collapse collapse"
+    aria-labelledby="heading-<%= acc_id %>-<%= index %>"
+    data-bs-parent="#<%= acc_id %>"
   >
-    <div class="accordion-body">
+    <div class="acc-body">
       <ul class="list-unstyled">
         <%# ここに各モデル固有の <li> が入る %>
         <%= yield %>

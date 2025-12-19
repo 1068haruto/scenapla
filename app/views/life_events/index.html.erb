@@ -15,11 +15,11 @@
     <div class="col-11 mb-4">
       <h5>追加したライフイベントデータ</h5>
       <% if @life_events.any? %>
-        <div class="accordion" id="newLifeEventsAccordion">
+        <div class="acc" id="newLifeEventsAcc">
           <% @life_events.each_with_index do |life_event, index| %>
-            <%= render 'shared/accordion_item',
+            <%= render 'shared/acc_item',
               model: life_event,
-              accordion_id: "newLifeEventsAccordion",
+              acc_id: "newLifeEventsAcc",
               index: index,
               badge_text: life_event.event_type,
               badge_class: (life_event.event_type == '理想' ? 'text-success' : 'text-primary'),

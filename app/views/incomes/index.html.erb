@@ -14,11 +14,11 @@
     <div class="col-11 mb-4">
       <h5>追加した収入データ</h5>
       <% if @incomes.any? %>
-        <div class="accordion" id="incomesAccordion">
+        <div class="acc" id="incomesAcc">
           <% @incomes.each_with_index do |income, index| %>
-            <%= render 'shared/accordion_item',
+            <%= render 'shared/acc_item',
               model: income,
-              accordion_id: "incomesAccordion",
+              acc_id: "incomesAcc",
               index: index,
               badge_text: income.person_type,
               badge_class: (income.person_type == '配偶者' ? 'bg-success' : 'bg-primary'),

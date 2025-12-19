@@ -1,13 +1,13 @@
 <% if article %>
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="heading-<%= accordion_id %>-<%= index %>">
+  <div class="acc-item">
+    <h2 class="acc-header" id="heading-<%= acc_id %>-<%= index %>">
       <button
-        class="accordion-button collapsed d-flex align-items-start"
+        class="acc-button collapsed d-flex align-items-start"
         type="button"
         data-bs-toggle="collapse"
-        data-bs-target="#collapse-<%= accordion_id %>-<%= index %>"
+        data-bs-target="#collapse-<%= acc_id %>-<%= index %>"
         aria-expanded="false"
-        aria-controls="collapse-<%= accordion_id %>-<%= index %>"
+        aria-controls="collapse-<%= acc_id %>-<%= index %>"
       >
         <% if article['image'] %>
           <img
@@ -36,12 +36,12 @@
       </button>
     </h2>
     <div
-      id="collapse-<%= accordion_id %>-<%= index %>"
-      class="accordion-collapse collapse"
-      aria-labelledby="heading-<%= accordion_id %>-<%= index %>"
-      data-bs-parent="#<%= accordion_id %>"
+      id="collapse-<%= acc_id %>-<%= index %>"
+      class="acc-collapse collapse"
+      aria-labelledby="heading-<%= acc_id %>-<%= index %>"
+      data-bs-parent="#<%= acc_id %>"
     >
-      <div class="accordion-body">
+      <div class="acc-body">
         <p><%= article['description'] %></p>
         <ahref="<%= article['url'] %>" target="_blank" class="text-primary ">
           記事全文を確認する

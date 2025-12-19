@@ -14,11 +14,11 @@
     <div class="col-11 mb-4">
       <h5>追加した資産データ</h5>
       <% if @user_assets.any? %>
-        <div class="accordion" id="userAssetsAccordion">
+        <div class="acc" id="userAssetsAcc">
           <% @user_assets.each_with_index do |user_asset, index| %>
-            <%= render 'shared/accordion_item',
+            <%= render 'shared/acc_item',
               model: user_asset,
-              accordion_id: "userAssetsAccordion",
+              acc_id: "userAssetsAcc",
               index: index,
               badge_text: user_asset.person_type,
               badge_class: (user_asset.person_type == '配偶者' ? 'text-success' : 'text-primary'),

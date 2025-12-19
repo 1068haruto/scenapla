@@ -39,7 +39,7 @@
   </div>
 
   <div class="d-flex justify-content-center">
-    <%= back_button('戻る', dashboard_index_path) %>
+    <%= back_button('戻る', dashboard_path) %>
     <% if @incomes.any? %>
       <%= next_button_post('保存して次へ', update_income_data_simulation_path) %>
     <% end %>

@@ -37,7 +37,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     # ログイン
     if sign_in(@user, event: :authentication)
-      redirect_to dashboard_index_path,
+      redirect_to dashboard_path,
       notice: t("devise.omniauth.success", provider: @provider_name)
     else
       redirect_to new_user_session_path,

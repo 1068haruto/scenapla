@@ -34,7 +34,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       session.delete(:sns_user_id)
       sign_in(user_to_update, event: :authentication)
 
-      redirect_to dashboard_index_path,
+      redirect_to dashboard_path,
       notice: t("dob.update_and_login", data: DATE_OF_BIRTH)
     else
       flash.now[:alert] = t("dob.update_faild", data: DATE_OF_BIRTH)

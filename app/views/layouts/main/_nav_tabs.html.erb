@@ -1,8 +1,8 @@
 <ul class="nav nav-tabs justify-content-center bg-light sticky-top">
   <li class="nav-item">
     <%=
-      link_to dashboard_index_path,
-      class: "nav-link text-muted #{'active fw-bold' if current_page?(dashboard_index_path)}",
+      link_to dashboard_path,
+      class: "nav-link text-muted #{'active fw-bold' if current_page?(dashboard_path)}",
       data: { turbo: true } do
     %>
       <i class="fa-solid fa-house"></i>

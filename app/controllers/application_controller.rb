@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
     if resource.date_of_birth.blank?
       edit_dob_path
     else
-      dashboard_index_path
+      dashboard_path
     end
   end
 end

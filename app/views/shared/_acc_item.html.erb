@@ -7,10 +7,10 @@
 <% index ||= 0 %>
 <% show_buttons = local_assigns.fetch(:show_buttons, true) %>
 
-<div class="acc-item">
-  <h2 class="acc-header" id="heading-<%= acc_id %>-<%= index %>">
+<div class="accordion-item">
+  <h2 class="accordion-header" id="heading-<%= acc_id %>-<%= index %>">
     <button
-      class="acc-button collapsed"
+      class="accordion-button collapsed"
       type="button"
       data-bs-toggle="collapse"
       data-bs-target="#collapse-<%= acc_id %>-<%= index %>"
@@ -28,11 +28,11 @@
 
   <div
     id="collapse-<%= acc_id %>-<%= index %>"
-    class="acc-collapse collapse"
+    class="accordion-collapse collapse"
     aria-labelledby="heading-<%= acc_id %>-<%= index %>"
     data-bs-parent="#<%= acc_id %>"
   >
-    <div class="acc-body">
+    <div class="accordion-body">
       <ul class="list-unstyled">
         <%# ここに各モデル固有の <li> が入る %>
         <%= yield %>

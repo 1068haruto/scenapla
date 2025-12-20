@@ -1,14 +1,12 @@
 <% content_for :title do %>Scenarios<% end %>
 
 <div class="container">
-  <div class="mt-3 mb-5 text-center">
-    <h1 class="display-4">Scenarios</h1>
-    <h4 class="mb-3">シミュレーション結果</h4>
-    # todo: helper, turbo
+  <%= render 'shared/page_hd', title: 'Scenarios', subtitle: 'シミュレーション結果' do %>
     <%= button_to '表示 / 更新',
       update_scenarios_lifespan_scenarios_path,
       method: :post, class: 'btn btn-outline-primary mb-3'
     %>
+  <% end %>
   </div>
 
   <!-- 資産寿命シナリオ -->

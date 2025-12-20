@@ -1,0 +1,11 @@
+<div class="mt-2 mb-4 text-center">
+  <p class="display-6 text-capitalize"><%= title %></p>
+  <% if local_assigns[:subtitle].present? %>
+    <h5><%= subtitle %></h5>
+  <% end %>
+  <% if local_assigns[:description].present? %>
+    <p><%= description %></p>
+  <% end %>
+
+  <%= yield %> <%# ボタンなど特殊な要素がある場合 %>
+</div>

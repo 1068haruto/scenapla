@@ -7,7 +7,6 @@
       method: :post, class: 'btn btn-outline-primary mb-3'
     %>
   <% end %>
-  </div>
 
   <!-- 資産寿命シナリオ -->
   <% @vm = @view_model.asset_lifespan_vm %>
@@ -83,6 +82,7 @@
     </div>
   </div>
 
+  <!-- 注釈 -->
   <% if @view_model.show_next_button? %>
     <p class="mb-5 text-muted">
       ※ 各シナリオは、特定の前提条件に基づいて算出した概算値であり、

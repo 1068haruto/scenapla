@@ -1,6 +1,7 @@
 <%= render layout: 'shared/input_index_layout', locals: {
   title: 'Assets',
   subtitle: '現在の資産について教えて下さい',
+  description: '',
   form_content: render('user_asset_form', user_asset: @user_asset),
   list_title: '追加した資産情報',
   collection: @user_assets,
@@ -14,9 +15,21 @@
     index: index,
     badge_text: user_asset.person_type,
     badge_class: (user_asset.person_type == '配偶者' ? 'bg-success' : 'bg-primary'),
+    extra_title: "#{user_asset.asset_type}",
     edit_path: edit_user_asset_path(user_asset),
-    delete_path: user_asset_path(user_asset) do %>
-      <li><strong>総額:</strong><%= user_asset.amount %>万円</li>
-      <li><strong>利回り:</strong><%= user_asset.return_rate.present? ? "#{user_asset.return_rate}%" : 'なし' %></li>
+    delete_path: user_asset_path(user_asset) do
+  %>
+    <table class="table table-sm table-borderless mb-0">
+      <tbody>
+        <tr>
+          <th class="fw-bold text-secondary">総額</th>
+          <td><%= user_asset.amount %>万円</td>
+        </tr>
+        <tr>
+          <th class="fw-bold text-secondary">利回り</th>
+          <td><%= user_asset.return_rate.present? ? "#{user_asset.return_rate}%" : 'なし' %></td>
+        </tr>
+      </tbody>
+    </table>
   <% end %>
 <% end %>

@@ -1,6 +1,7 @@
 <%= render layout: 'shared/input_index_layout', locals: {
   title: 'Incomes',
   subtitle: '現在の収入と退職ついて教えてください',
+  description: '',
   form_content: render('income_form', income: @income),
   list_title: '追加した収入情報',
   collection: @incomes,
@@ -15,10 +16,27 @@
     badge_text: income.person_type,
     badge_class: (income.person_type == '配偶者' ? 'bg-success' : 'bg-primary'),
     edit_path: edit_income_path(income),
-    delete_path: income_path(income) do %>
-      <li><strong>月収（手取り）:</strong> <%= income.monthly_income %>万円</li>
-      <li><strong>賞与年額（手取り）:</strong> <%= income.yearly_bonus %>万円</li>
-      <li><strong>退職時期:</strong> <%= income.retirement_date.year %>年</li>
-      <li><strong>退職金（手取り）:</strong> <%= income.retirement_pay %>万円</li>
+    delete_path: income_path(income) do
+  %>
+    <table class="table table-sm table-borderless mb-0">
+      <tbody>
+        <tr>
+          <th class="fw-bold text-secondary">月収（手取り）</th>
+          <td><%= income.monthly_income %>万円</td>
+        </tr>
+        <tr>
+          <th class="fw-bold text-secondary">賞与年額（手取り）</th>
+          <td><%= income.yearly_bonus %>万円</td>
+        </tr>
+        <tr>
+          <th class="fw-bold text-secondary">退職時期</th>
+          <td><%= income.retirement_date.year %>年</td>
+        </tr>
+        <tr>
+          <th class="fw-bold text-secondary">退職金（手取り）</th>
+          <td><%= income.retirement_pay %>万円</td>
+        </tr>
+      </tbody>
+    </table>
   <% end %>
 <% end %>

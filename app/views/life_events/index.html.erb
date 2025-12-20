@@ -1,7 +1,7 @@
 <%= render layout: 'shared/input_index_layout', locals: {
   title: 'LifeEvents',
   subtitle: '今後のライフイベントについて教えて下さい',
-  description: '必ず実現したいイベントは「現実」、できれば実現したいイベントは「理想」を選択',
+  description: '必ず行う予定は"現実"、できれば行いたい予定は"理想"を選択',
   form_content: render('life_event_form', life_event: @life_event),
   list_title: '追加したライフイベント情報',
   collection: @life_events,
@@ -17,8 +17,19 @@
     badge_class: (life_event.event_type == '理想' ? 'bg-success' : 'bg-primary'),
     extra_title: "#{life_event.event_date.year}年 #{life_event.title}",
     edit_path: edit_life_event_path(life_event),
-    delete_path: life_event_path(life_event) do %>
-      <li><strong>年額:</strong> <%= life_event.amount %>万円</li>
-      <li><strong>支払期間:</strong> <%= life_event.payment_period %>年間</li>
+    delete_path: life_event_path(life_event) do
+  %>
+    <table class="table table-sm table-borderless mb-0">
+      <tbody>
+        <tr>
+          <th class="fw-bold text-secondary">年額</th>
+          <td><%= life_event.amount %>万円</td>
+        </tr>
+        <tr>
+          <th class="fw-bold text-secondary">支払期間</th>
+          <td><%= life_event.payment_period %>年間</td>
+        </tr>
+      </tbody>
+    </table>
   <% end %>
 <% end %>

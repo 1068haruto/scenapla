@@ -1,0 +1,39 @@
+<div class="row mb-3">
+  <div class="col-12 col-md">
+    <div class="card border-danger mb-2">
+      <div class="card-body text-center">
+        <p class="card-text">生涯収入：<%= vm.total_income %>万円</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-md">
+    <div class="card border-info mb-2">
+      <div class="card-body text-center">
+        <p class="card-text">生涯支出：<%= vm.total_expense %>万円</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-md">
+    <div class="card border-success mb-2">
+      <div class="card-body text-center">
+        <p class="card-text">生涯収支：<%= vm.total_balance %>万円</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p>
+  <% if vm.withdrawal == 0 %>
+    プラス収支の取り崩し期間：なし
+  <% else %>
+    プラス収支の取り崩し期間：<%= vm.withdrawal %>ヶ月目まで
+  <% end %>
+  <br>
+  <% if vm.shortage == 0 %>
+    現在の不足額：なし
+  <% else %>
+    現在の不足額：<%= vm.shortage %>万円（年間）
+  <% end %>
+</p>
+
+<%= balance_chart(vm.balance_chart_data, local_assigns[:title]) %>

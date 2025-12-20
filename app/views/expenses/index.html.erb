@@ -1,6 +1,7 @@
 <%= render layout: 'shared/input_index_layout', locals: {
   title: 'Expenses',
   subtitle: '現在の月支出について教えて下さい',
+  description: '',
   form_content: render('expense_form', expense: @expense),
   list_title: '追加した支出データ',
   list_subtitle: '※再追加でデータが上書きされます',
@@ -14,16 +15,31 @@
     acc_id: "expensesAcc",
     index: index,
     badge_text: "現在の支出",
-    badge_class: "bg-primary",
-    edit_path: edit_expense_path(expense),
-    delete_path: expense_path(expense) do %>
-      <li><strong>住居費（家賃orローン）:</strong> <%= @expense.housing_expenses %>万円</li>
-      <li>
-        <strong>住宅ローン完済時期:</strong>
-        <%= @latest_expense.repayment_date&.year ? "#{expense.repayment_date.year}年" : '支払いなし' %>
-      </li>
-      <li><strong>生活費:</strong> <%= expense.living_expenses %>万円</li>
-      <li><strong>保険費（貯蓄型は除く）:</strong> <%= expense.monthly_premiums %>万円</li>
-      <li><strong>その他費用:</strong> <%= expense.other_expenses %>万円</li>
+    badge_class: "bg-primary" do
+  %>
+    <table class="table table-sm table-borderless mb-0">
+      <tbody>
+        <tr>
+          <th class="fw-bold text-secondary">住居費</th>
+          <td><%= expense.housing_expenses %>万円</td>
+        </tr>
+        <tr>
+          <th class="fw-bold text-secondary">ローン完済時期</th>
+          <td><%= expense.repayment_date&.year ? "#{expense.repayment_date.year}年" : '支払いなし' %></td>
+        </tr>
+        <tr>
+          <th class="fw-bold text-secondary">生活費</th>
+          <td><%= expense.living_expenses %>万円</td>
+        </tr>
+        <tr>
+          <th class="fw-bold text-secondary">保険費（貯蓄型除く）</th>
+          <td><%= expense.monthly_premiums %>万円</td>
+        </tr>
+        <tr>
+          <th class="fw-bold text-secondary">その他費用</th>
+          <td><%= expense.other_expenses %>万円</td>
+        </tr>
+      </tbody>
+    </table>
   <% end %>
 <% end %>

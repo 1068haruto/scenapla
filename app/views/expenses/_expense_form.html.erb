@@ -1,68 +1,25 @@
 <%= form_with model: expense, local: true do |f| %>
-  <%# 横並び、高さ中央 %>
-  <div class="row align-items-center justify-content-center">
+  <%= render layout: 'shared/form_wrapper', locals: { f: f, model: expense, back_path: expenses_path } do %>
 
-    <%# 入力フォーム群 %>
-    <div class="col-md-9 border border-gray rounded p-4">
-      <div class="mb-3 row">
-        <%= f.label :housing_expenses, '住居費(家賃やローン)', class: 'col-sm-4 col-form-label' %>
-        <div class="col-sm-8">
-          <div class="input-group">
-            <%= f.number_field :housing_expenses, class: 'form-control', step: 0.1, required: true, autofocus: true %>
-            <span class="input-group-text">万円</span>
-          </div>
-        </div>
-      </div>
+    <%= render layout: 'shared/form_row', locals: { f: f, field: :housing_expenses, label_text: '住居費（家賃やローン）', unit: '万円' } do %>
+      <%= f.number_field :housing_expenses, class: 'form-control', step: 0.1, required: true, autofocus: true %>
+    <% end %>
 
-      <div class="mb-3 row">
-        <%= f.label :repayment_date, '住宅ローン完済時期', class: 'col-sm-4 col-form-label' %>
-        <div class="col-sm-8">
-          <div class="input-group">
-            <%= f.select :repayment_date, options_for_select([['支払なし', nil]] + (Date.today.year..(Date.today.year + 50)).map { |year| [year, year] }, expense.repayment_date&.year), {}, class: 'form-select' %>
-            <span class="input-group-text">年</span>
-          </div>
-        </div>
-      </div>
+    <%= render layout: 'shared/form_row', locals: { f: f, field: :repayment_date, label_text: '住宅ローン完済時期', unit: '年' } do %>
+      <%= f.select :repayment_date, options_for_select([['支払なし', nil]] + (Date.today.year..(Date.today.year + 50)).map { |year| [year, year] }, expense.repayment_date&.year),{}, class: 'form-select' %>
+    <% end %>
 
-      <div class="mb-3 row">
-        <%= f.label :living_expenses, '生活費', class: 'col-sm-4 col-form-label' %>
-        <div class="col-sm-8">
-          <div class="input-group">
-            <%= f.number_field :living_expenses, class: 'form-control', step: 0.1, required: true %>
-            <span class="input-group-text">万円</span>
-          </div>
-        </div>
-      </div>
+    <%= render layout: 'shared/form_row', locals: { f: f, field: :living_expenses, label_text: '生活費', unit: '万円' } do %>
+      <%= f.number_field :living_expenses, class: 'form-control', step: 0.1, required: true %>
+    <% end %>
 
-      <div class="mb-3 row">
-        <%= f.label :monthly_premiums, '保険費(貯蓄型除く)', class: 'col-sm-4 col-form-label' %>
-        <div class="col-sm-8">
-          <div class="input-group">
-            <%= f.number_field :monthly_premiums, class: 'form-control', step: 0.1, required: true %>
-            <span class="input-group-text">万円</span>
-          </div>
-        </div>
-      </div>
+    <%= render layout: 'shared/form_row', locals: { f: f, field: :monthly_premiums, label_text: '保険費（貯蓄型除く）', unit: '万円' } do %>
+      <%= f.number_field :monthly_premiums, class: 'form-control', step: 0.1, required: true %>
+    <% end %>
 
-      <div class="row">
-        <%= f.label :other_expenses, 'その他費用', class: 'col-sm-4 col-form-label' %>
-        <div class="col-sm-8">
-          <div class="input-group">
-            <%= f.number_field :other_expenses, class: 'form-control', step: 0.1, required: true %>
-            <span class="input-group-text">万円</span>
-          </div>
-        </div>
-      </div>
-    </div>
+    <%= render layout: 'shared/form_row', locals: { f: f, field: :other_expenses, label_text: 'その他費用', unit: '万円', last: true } do %>
+      <%= f.number_field :other_expenses, class: 'form-control', step: 0.1, required: true %>
+    <% end %>
 
-    <%# ボタン表示エリア %>
-    <div class="col-md-3 text-center">
-      <div class="d-grid gap-2 ps-2">
-        <%= submit_or_add_button(f, expense) %>
-        <% if expense.persisted? %>
-          <%= cancel_button(expenses_path) %>
-        <% end %>
-      </div>
-    </div>
-  </div>
+  <% end %>
 <% end %>

@@ -1,0 +1,16 @@
+<div class="row align-items-center justify-content-center">
+  <%# 入力フィールド群 %>
+  <div class="col-md-9 border border-gray rounded p-4">
+    <%= yield %>
+  </div>
+
+  <%# ボタンエリア %>
+  <div class="col-md-3 text-center">
+    <div class="d-grid gap-2 ps-2">
+      <%= submit_or_add_button(f, model) %>
+      <% if model.persisted? %>
+        <%= cancel_button(back_path) %>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+<div class="<%= local_assigns[:last] ? 'row' : 'mb-3 row' %>">
+  <%= f.label field, label_text, class: 'col-sm-5 col-form-label' %>
+  <div class="col-sm-7">
+    <% if local_assigns[:unit] %>
+      <div class="input-group">
+        <%= yield %>
+        <span class="input-group-text"><%= unit %></span>
+      </div>
+    <% else %>
+      <%= yield %>
+    <% end %>
+  </div>
+</div>

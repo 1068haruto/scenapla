@@ -1,0 +1,16 @@
+<div class="card mb-4">
+  <div class="card-header d-flex align-items-center">
+    <h4 class="mt-2"><%= title %></h4>
+    <% if vm.show? %>
+      <span class="ms-auto"><%= formatted_date(vm.updated_at) %>時点</span>
+    <% end %>
+  </div>
+
+  <div class="card-body">
+    <% if vm.show? %>
+      <%= yield %>
+    <% else %>
+      <p class="text-secondary">必要な情報登録が不足しています。</p>
+    <% end %>
+  </div>
+</div>

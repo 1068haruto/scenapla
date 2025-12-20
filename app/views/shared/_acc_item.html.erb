@@ -32,14 +32,14 @@
   >
     <div class="accordion-body">
       <ul class="list-unstyled">
-        <%# ここに各モデル固有の <li> が入る %>
+        <%# 各モデル固有の <li> が入る %>
         <%= yield %>
       </ul>
 
       <% if show_buttons && model.persisted? %>
         <div class="mt-2">
-          <%= edit_button_sm(edit_path) %>
-          <%= delete_button(delete_path) %>
+          <%= edit_button_sm(url_for([:edit, model])) %>
+          <%= delete_button(url_for(model)) %>
         </div>
       <% end %>
     </div>

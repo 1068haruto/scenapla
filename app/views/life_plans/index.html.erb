@@ -20,6 +20,7 @@
 
       <div class="card-body">
         <div class="row">
+
           <div class="col-md-5">
             <% if @vm.has_life_events?(age_group) %>
               <div class="accordion" id="lifeEventsAcc-<%= age_group %>">
@@ -30,9 +31,8 @@
                     index: index,
                     badge_text: life_event.event_type,
                     badge_class: (life_event.event_type == '理想' ? 'bg-success' : 'bg-primary'),
-                    extra_title: "#{life_event.event_date.year}年 #{life_event.title}",
-                    edit_path: edit_life_event_path(life_event),
-                    delete_path: life_event_path(life_event) do %>
+                    extra_title: "#{life_event.event_date.year}年 #{life_event.title}" do
+                  %>
                     <li><strong>年額:</strong> <%= life_event.amount %>万円</li>
                     <li><strong>支払期間:</strong> <%= life_event.payment_period %>年間</li>
                   <% end %>
@@ -46,6 +46,7 @@
           <div class="col mt-2 mt-md-0">
             <%= render "memo", memo_instance: @vm.memo_instance_for_age_group(age_group) %>
           </div>
+
         </div>
       </div>
     </div>

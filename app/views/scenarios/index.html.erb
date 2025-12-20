@@ -2,85 +2,30 @@
 
 <div class="container">
   <%= render 'shared/page_hd', title: 'Scenarios', subtitle: 'シミュレーション結果' do %>
-    <%= button_to '表示 / 更新',
-      update_scenarios_lifespan_scenarios_path,
-      method: :post, class: 'btn btn-outline-primary mb-3'
-    %>
+    <%= button_to '表示 / 更新', update_scenarios_lifespan_scenarios_path, method: :post, class: 'btn btn-outline-primary mb-3' %>
   <% end %>
 
-  <!-- 資産寿命シナリオ -->
-  <% @vm = @view_model.asset_lifespan_vm %>
-  <div class="card mb-4">
-    <div class="card-header d-flex align-items-center">
-      <h4 class="mt-2">資産寿命シナリオ</h4>
-      <% if @vm.show? %>
-        <span class="ms-auto"><%= formatted_date(@vm.updated_at) %>時点</span>
-      <% end %>
-    </div>
+  <% vm = @view_model.asset_lifespan_vm %>
+  <%= render layout: 'scenario_card', locals: { title: "資産寿命シナリオ", vm: vm } do %>
+    <p>資産寿命：<strong><%= vm.lifespan_years %>年<%= vm.lifespan_months %>ヶ月</strong></p>
+    <%= lifespan_chart(vm.lifespan_chart_data) %>
+  <% end %>
 
-    <div class="card-body">
-      <% if @vm.show? %>
-        <p>資産寿命：<%= @vm.lifespan_years %>年<%= @vm.lifespan_months %>ヶ月</p>
-        <%= lifespan_chart(@vm.lifespan_chart_data) %>
-      <% else %>
-        <p>支出または資産情報が未登録ため、表示できません。</p>
-      <% end %>
-    </div>
-  </div>
+  <% vm = @view_model.real_scenario_vm %>
+  <%= render layout: 'scenario_card', locals: { title: "現実的シナリオ", vm: vm } do %>
+    <%= render 'balance_content', vm: vm %>
+  <% end %>
 
-  <!-- 現実シナリオ -->
-  <% @vm = @view_model.real_scenario_vm %>
-  <div class="card mb-4">
-    <%= render 'balance_scenario_card',
-      title: "現実的シナリオ",
-      updated_at: @vm.updated_at,
-      balance_chart_data: @vm.balance_chart_data,
-      total_income: @vm.total_income,
-      total_expense: @vm.total_expense,
-      total_balance: @vm.total_balance,
-      withdrawal: @vm.withdrawal,
-      shortage: @vm.shortage,
-      show: @vm.show?
-    %>
-  </div>
+  <% vm = @view_model.ideal_scenario_vm %>
+  <%= render layout: 'scenario_card', locals: { title: "理想的シナリオ", vm: vm } do %>
+    <%= render 'balance_content', vm: vm %>
+  <% end %>
 
-  <!-- 理想シナリオ -->
-  <% @vm = @view_model.ideal_scenario_vm %>
-  <div class="card mb-4">
-    <%= render 'balance_scenario_card',
-      title: "理想的シナリオ",
-      updated_at: @vm.updated_at,
-      balance_chart_data: @vm.balance_chart_data,
-      total_income: @vm.total_income,
-      total_expense: @vm.total_expense,
-      total_balance: @vm.total_balance,
-      withdrawal: @vm.withdrawal,
-      shortage: @vm.shortage,
-      show: @vm.show?
-    %>
-  </div>
-
-  <!-- 資産運用シナリオ -->
-  <% @vm = @view_model.asset_scenario_vm %>
-  <div class="card mb-4">
-    <div class="card-header d-flex align-items-center">
-      <h4 class="mt-2">資産運用シナリオ</h4>
-      <% if @vm.show? %>
-        <span class="ms-auto">
-          <%= formatted_date(@vm.updated_at) %>時点
-        </span>
-      <% end %>
-    </div>
-
-    <div class="card-body">
-      <% if @vm.show? %>
-        <p>現在資産を基にした推移</p>
-        <%= asset_chart(@vm.asset_data) %>
-      <% else %>
-        <p>資産情報が未登録のため、表示できません。</p>
-      <% end %>
-    </div>
-  </div>
+  <% vm = @view_model.asset_scenario_vm %>
+  <%= render layout: 'scenario_card', locals: { title: "資産運用シナリオ", vm: vm } do %>
+    <p class="text-muted">現在資産を基にした推移</p>
+    <%= asset_chart(vm.asset_data) %>
+  <% end %>
 
   <!-- 注釈 -->
   <% if @view_model.show_next_button? %>

@@ -5,7 +5,7 @@
     <title><%= content_for(:title) || "Scenapla" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="description" content="このアプリは、経済とライフイベントの計画をサポートするツールです。">
+    <meta name="description" content="経済状態と今後のプランを可視化するツール">
 
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -24,7 +24,7 @@
         <%= render 'layouts/main/nav_tabs' %>
       <% end %>
 
-      <!-- メッセージ表示 -->
+      <!-- message -->
       <%= render 'layouts/main/alert', message: notice, type: 'success' %>
       <%= render 'layouts/main/alert', message: alert, type: 'danger' %>
       <%= render 'layouts/main/alert', message: flash.now[:error], type: 'danger' %>

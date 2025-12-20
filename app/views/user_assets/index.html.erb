@@ -15,9 +15,7 @@
     index: index,
     badge_text: user_asset.person_type,
     badge_class: (user_asset.person_type == '配偶者' ? 'bg-success' : 'bg-primary'),
-    extra_title: "#{user_asset.asset_type}",
-    edit_path: edit_user_asset_path(user_asset),
-    delete_path: user_asset_path(user_asset) do
+    extra_title: "#{user_asset.asset_type}" do
   %>
     <table class="table table-sm table-borderless mb-0">
       <tbody>

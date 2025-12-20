@@ -1,63 +1,25 @@
 <%= form_with model: life_event, local: true do |f| %>
-  <%# 横並び、高さ中央 %>
-  <div class="row align-items-center justify-content-center">
+  <%= render layout: 'shared/form_wrapper', locals: { f: f, model: life_event, back_path: life_events_path } do %>
 
-    <%# 入力フォーム群 %>
-    <div class="col-md-9 border border-gray rounded p-4">
-      <div class="mb-3 row">
-				<%= f.label :event_type, 'イベントタイプ', class: 'col-sm-4 col-form-label' %>
-				<div class="col-sm-8">
-					<%= f.select :event_type, [['現実', 0], ['理想', 1]], { selected: life_event.event_type_before_type_cast }, class: 'form-select', autofocus: true %>
-				</div>
-			</div>
+    <%= render layout: 'shared/form_row', locals: { f: f, field: :event_type, label_text: 'イベントタイプ' } do %>
+      <%= f.select :event_type, [['現実', 0], ['理想', 1]], { selected: life_event.event_type_before_type_cast }, class: 'form-select', autofocus: true %>
+    <% end %>
 
-			<div class="mb-3 row">
-				<%= f.label :event_date, '時期', class: 'col-sm-4 col-form-label' %>
-				<div class="col-sm-8">
-					<div class="input-group">
-						<%= f.select :event_date, options_for_select((Date.today.year..(Date.today.year + 50)).map { |year| [year, year] }, life_event.event_date&.year), {}, class: 'form-select' %>
-						<span class="input-group-text">年</span>
-					</div>
-				</div>
-			</div>
+    <%= render layout: 'shared/form_row', locals: { f: f, field: :event_date, label_text: '時期', unit: '年' } do %>
+      <%= f.select :event_date, options_for_select((Date.today.year..(Date.today.year + 50)).map { |year| [year, year] }, life_event.event_date&.year), {}, class: 'form-select' %>
+    <% end %>
 
-			<div class="mb-3 row">
-				<%= f.label :title, 'タイトル', class: 'col-sm-4 col-form-label' %>
-				<div class="col-sm-8">
-					<%= f.text_field :title, class: 'form-control', placeholder: '引越し、車購入、結婚など...', required: true %>
-				</div>
-			</div>
+    <%= render layout: 'shared/form_row', locals: { f: f, field: :title, label_text: 'タイトル' } do %>
+      <%= f.text_field :title, class: 'form-control', placeholder: '引越し、車購入、結婚など...', required: true %>
+    <% end %>
 
-			<div class="mb-3 row">
-				<%= f.label :amount, '年額', class: 'col-sm-4 col-form-label' %>
-				<div class="col-sm-8">
-					<div class="input-group">
-						<%= f.number_field :amount, class: 'form-control', step: 0.1, required: true %>
-						<span class="input-group-text">万円</span>
-					</div>
-				</div>
-			</div>
+    <%= render layout: 'shared/form_row', locals: { f: f, field: :amount, label_text: '年額', unit: '万円' } do %>
+      <%= f.number_field :amount, class: 'form-control', step: 0.1, required: true %>
+    <% end %>
 
-			<div class="row">
-				<%= f.label :payment_period, '支払期間', class: 'col-sm-4 col-form-label' %>
-				<div class="col-sm-8">
-					<div class="input-group">
-						<%= f.select :payment_period, LifeEvent::PAYMENT_PERIOD_OPTIONS.map { |n| ["#{n}", n] }, {}, class: 'form-select' %>
-						<span class="input-group-text">年間</span>
-					</div>
-				</div>
-			</div>
-		</div>
+    <%= render layout: 'shared/form_row', locals: { f: f, field: :payment_period, label_text: '支払期間', unit: '年間', last: true } do %>
+      <%= f.select :payment_period, LifeEvent::PAYMENT_PERIOD_OPTIONS.map { |n| ["#{n}", n] }, {}, class: 'form-select' %>
+    <% end %>
 
-    <%# ボタン表示エリア %>
-    <div class="col-md-3 text-center">
-      <div class="d-grid gap-2 ps-2">
-        <%= submit_or_add_button(f, life_event) %>
-        <% if life_event.persisted? %>
-          <%= cancel_button(life_events_path) %>
-        <% end %>
-      </div>
-    </div>
-
-  </div>
+  <% end %>
 <% end %>

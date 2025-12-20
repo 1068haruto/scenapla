@@ -1,48 +1,24 @@
-<% content_for :title do %>LifeEvents<% end %>
-
-<div class="container">
-  <div class="mt-3 mb-5 text-center">
-    <h1 class="display-4">LifeEvents</h1>
-    <h4 class="mb-3">今後のライフイベントについて教えて下さい</h4>
-  </div>
-
-  <div class="row d-flex justify-content-center">
-    <p class="text-center">必ず実現したいイベントは「現実」、できれば実現したいイベントは「理想」を選択</p>
-    <div class="col-11 border border-dark rounded p-3 mb-4">
-      <%= render 'life_event_form', life_event: @life_event %>
-    </div>
-
-    <div class="col-11 mb-4">
-      <h5>追加したライフイベントデータ</h5>
-      <% if @life_events.any? %>
-        <div class="acc" id="newLifeEventsAcc">
-          <% @life_events.each_with_index do |life_event, index| %>
-            <%= render 'shared/acc_item',
-              model: life_event,
-              acc_id: "newLifeEventsAcc",
-              index: index,
-              badge_text: life_event.event_type,
-              badge_class: (life_event.event_type == '理想' ? 'text-success' : 'text-primary'),
-              extra_title: "#{life_event.event_date.year}年 #{life_event.title}",
-              edit_path: edit_life_event_path(life_event),
-              delete_path: life_event_path(life_event),
-              show_buttons: true do
-            %>
-              <li><strong>年額:</strong> <%= life_event.amount %>万円</li>
-              <li><strong>支払期間:</strong> <%= life_event.payment_period %>年間</li>
-            <% end %>
-          <% end %>
-        </div>
-      <% else %>
-        <p class="text-secondary">&nbsp;&nbsp;データがありません。</p>
-      <% end %>
-    </div>
-  </div>
-
-  <div class="d-flex justify-content-center">
-    <%= back_button('戻る', user_assets_path) %>
-    <% if @life_events.any? %>
-      <%= next_button_post('保存して次へ', update_life_event_data_simulation_path) %>
-    <% end %>
-  </div>
-</div>
+<%= render layout: 'shared/input_index_layout', locals: {
+  title: 'LifeEvents',
+  subtitle: '今後のライフイベントについて教えて下さい',
+  description: '必ず実現したいイベントは「現実」、できれば実現したいイベントは「理想」を選択',
+  form_content: render('life_event_form', life_event: @life_event),
+  list_title: '追加したライフイベント情報',
+  collection: @life_events,
+  acc_id: 'LifeEventsAcc',
+  back_path: user_assets_path,
+  next_path: update_life_event_data_simulation_path
+} do |life_event, index| %>
+  <%= render 'shared/acc_item',
+    model: life_event,
+    acc_id: "lifeEventsAcc",
+    index: index,
+    badge_text: life_event.event_type,
+    badge_class: (life_event.event_type == '理想' ? 'bg-success' : 'bg-primary'),
+    extra_title: "#{life_event.event_date.year}年 #{life_event.title}",
+    edit_path: edit_life_event_path(life_event),
+    delete_path: life_event_path(life_event) do %>
+      <li><strong>年額:</strong> <%= life_event.amount %>万円</li>
+      <li><strong>支払期間:</strong> <%= life_event.payment_period %>年間</li>
+  <% end %>
+<% end %>

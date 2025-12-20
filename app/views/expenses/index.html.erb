@@ -1,51 +1,24 @@
-<% content_for :title do %>Expenses<% end %>
-
-<div class="container">
-  <div class="mt-3 mb-5 text-center">
-    <h1 class="display-4">Expenses</h1>
-    <h4 class="mb-3">現在の月支出について教えて下さい</h4>
-  </div>
-
-  <div class="row d-flex justify-content-center">
-    <div class="col-11 border border-dark rounded p-3 mb-4">
-      <%= render 'expense_form', expense: @expense %>
-    </div>
-
-    <div class="col-11 mb-4">
-      <h5>追加した支出データ</h5>
-      <h6>※再追加でデータが上書きされます</h6>
-
-      <% if @latest_expense.present? %>
-        <div class="acc" id="expensesAcc">
-          <%= render 'shared/acc_item',
-            model: @latest_expense,
-            acc_id: "expensesAcc",
-            index: 0,
-            badge_text: "現在の支出",
-            badge_class: "text-primary",
-            edit_path: edit_expense_path(@latest_expense),
-            delete_path: expense_path(@latest_expense) do
-          %>
-            <li><strong>住居費（家賃orローン）:</strong> <%= @latest_expense.housing_expenses %>万円</li>
-            <li>
-              <strong>住宅ローン完済時期:</strong>
-              <%= @latest_expense.repayment_date&.year ? "#{@latest_expense.repayment_date.year}年" : '支払いなし' %>
-            </li>
-            <li><strong>生活費:</strong> <%= @latest_expense.living_expenses %>万円</li>
-            <li><strong>保険費（貯蓄型は除く）:</strong> <%= @latest_expense.monthly_premiums %>万円</li>
-            <li><strong>その他費用:</strong> <%= @latest_expense.other_expenses %>万円</li>
-          <% end %>
-        </div>
-      <% else %>
-        <p class="text-secondary">&nbsp;&nbsp;データがありません。</p>
-      <% end %>
-    </div>
-  </div>
-
-  <div class="d-flex justify-content-center">
-    <%= back_button('戻る', incomes_path) %>
-    <% if @latest_expense.present? %>
-      <%= next_button_post('保存して次へ', update_expense_data_simulation_path) %>
-    <% end %>
-  </div>
-</div>
+<%= render layout: 'shared/input_index_layout', locals: {
+  title: 'Expenses',
+  subtitle: '現在の月支出について教えて下さい',
+  form_content: render('expense_form', expense: @expense),
+  list_title: '追加した支出データ',
+  list_subtitle: '※再追加でデータが上書きされます',
+  collection: @latest_expense,
+  acc_id: 'expensesAcc',
+  back_path: incomes_path,
+  next_path: update_expense_data_simulation_path
+} do |expense, index| %>
+  <%= render 'shared/acc_item',
+    model: expense,
+    acc_id: "expensesAcc",
+    index: index,
+    badge_text: "現在の支出",
+    badge_class: "text-primary",
+    edit_path: edit_expense_path(expense),
+    delete_path: expense_path(expense) do %>
+      <li><strong>住居費:</strong> <%= expense.housing_expenses %>万円</li>
+      <li><strong>住宅ローン完済時期:</strong> <%= expense.repayment_date&.year || '支払いなし' %>年</li>
+      <li><strong>生活費:</strong> <%= expense.living_expenses %>万円</li>
+  <% end %>
+<% end %>

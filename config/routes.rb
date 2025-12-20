@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   root "static_pages#index"
   get "terms", to: "static_pages#terms"
   get "privacy", to: "static_pages#privacy"
+  get "dashboard", to: "static_pages#dashboard"
 
   devise_for :users, controllers: {
     confirmations: "users/confirmations",
@@ -16,7 +17,6 @@ Rails.application.routes.draw do
     patch "users/dob", to: "users/registrations#update_dob", as: "update_dob"
   end
 
-  resources :dashboard,   only: [ :index ]
   resources :users,       only: [ :show ]
   resources :incomes,     only: [ :index, :create, :edit, :update, :destroy ]
   resources :expenses,    only: [ :index, :create, :edit, :update, :destroy ]

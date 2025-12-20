@@ -1,38 +1,24 @@
-<% content_for :title do %>Incomes<% end %>
-
-<div class="container">
-  <div class="mt-3 mb-5 text-center">
-    <h1 class="display-4">Incomes</h1>
-    <h4 class="mb-3">現在の収入と退職ついて教えてください</h4>
-  </div>
-
-  <div class="row d-flex justify-content-center">
-    <div class="col-11 border border-dark rounded p-3 mb-4">
-      <%= render 'income_form', income: @income %>
-    </div>
-
-    <div class="col-11 mb-4">
-      <h5>追加した収入データ</h5>
-      <% if @incomes.any? %>
-        <div class="accordion" id="incomesAccordion">
-          <% @incomes.each_with_index do |income, index| %>
-            <%= render 'registered_income',
-              income: income,
-              index: index,
-              accordion_id: "incomesAccordion"
-            %>
-          <% end %>
-        </div>
-      <% else %>
-        <p class="text-secondary">&nbsp;&nbsp;データがありません。</p>
-      <% end %>
-    </div>
-  </div>
-
-  <div class="d-flex justify-content-center">
-    <%= back_button('戻る', dashboard_index_path) %>
-    <% if @incomes.any? %>
-      <%= next_button_post('保存して次へ', update_income_data_simulation_path) %>
-    <% end %>
-  </div>
-</div>
+<%= render layout: 'shared/input_index_layout', locals: {
+  title: 'Incomes',
+  subtitle: '現在の収入と退職ついて教えてください',
+  form_content: render('income_form', income: @income),
+  list_title: '追加した収入情報',
+  collection: @incomes,
+  acc_id: 'incomesAcc',
+  back_path: dashboard_path,
+  next_path: update_income_data_simulation_path
+} do |income, index| %>
+  <%= render 'shared/acc_item',
+    model: income,
+    acc_id: "incomesAcc",
+    index: index,
+    badge_text: income.person_type,
+    badge_class: (income.person_type == '配偶者' ? 'bg-success' : 'bg-primary'),
+    edit_path: edit_income_path(income),
+    delete_path: income_path(income) do %>
+      <li><strong>月収（手取り）:</strong> <%= income.monthly_income %>万円</li>
+      <li><strong>賞与年額（手取り）:</strong> <%= income.yearly_bonus %>万円</li>
+      <li><strong>退職時期:</strong> <%= income.retirement_date.year %>年</li>
+      <li><strong>退職金（手取り）:</strong> <%= income.retirement_pay %>万円</li>
+  <% end %>
+<% end %>

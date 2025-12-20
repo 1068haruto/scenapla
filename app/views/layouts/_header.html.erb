@@ -1,40 +1,20 @@
 <header style="height: 70px;">
   <nav class="navbar navbar-dark">
     <div class="container-fluid">
-      <%=
-        link_to 'Scenapla',
-        user_signed_in? ? dashboard_index_path : root_path,
-        class: 'navbar-brand',
-        data: { turbo: false }
-      %>
+      <%= link_to 'Scenapla', user_signed_in? ? dashboard_path : root_path, class: 'navbar-brand', data: { turbo: false } %>
       <% if user_signed_in? %>
         <div>
-          <span class="sp-btn-username d-none d-md-inline">
-            <%= "#{current_user.name}さん" %>
-          </span>
+          <span class="sp-btn-username d-none d-md-inline"><%= "#{current_user.name}さん" %></span>
 
           <!-- ハンバーガー（オフキャンバストリガー） -->
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#offcanvasNavbar"
-            aria-controls="offcanvasNavbar"
-          >
-            <span
-              class="navbar-toggler-icon"
-              style="background-image: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='white' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E&quot;);">
-            </span>
+          <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+            <span class="navbar-toggler-icon" style="background-image: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='white' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E&quot;);"></span>
           </button>
         </div>
+
         <%= render 'layouts/offcanvas' %>
       <% else %>
-        <%=
-          link_to 'ログイン',
-          new_user_session_path,
-          class: 'btn btn-outline-light btn-login',
-          data: { turbo: true }
-        %>
+        <%= link_to 'ログイン', new_user_session_path, class: 'btn btn-outline-light btn-login', data: { turbo: true } %>
       <% end %>
     </div>
   </nav>

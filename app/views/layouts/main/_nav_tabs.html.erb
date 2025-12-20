@@ -1,37 +1,20 @@
 <ul class="nav nav-tabs justify-content-center bg-light sticky-top">
   <li class="nav-item">
-    <%=
-      link_to dashboard_index_path,
-      class: "nav-link text-muted #{'active fw-bold' if current_page?(dashboard_index_path)}",
-      data: { turbo: true } do
-    %>
+    <%= link_to dashboard_path, class: "nav-link text-muted #{'active fw-bold' if current_page?(dashboard_path)}", data: { turbo: true } do %>
       <i class="fa-solid fa-house"></i>
       <span class="d-none d-sm-inline">ダッシュボード</span>
     <% end %>
   </li>
 
   <li class="nav-item">
-    <%=
-      link_to news_index_path,
-      class: "nav-link text-muted #{'active fw-bold' if current_page?(news_index_path)}",
-      data: { turbo: true } do
-    %>
+    <%= link_to news_index_path, class: "nav-link text-muted #{'active fw-bold' if current_page?(news_index_path)}", data: { turbo: true } do %>
       <i class="fa-regular fa-newspaper"></i>
       <span class="d-none d-sm-inline">ニュース</span>
     <% end %>
   </li>
 
   <li class="nav-item dropdown">
-    <%=
-      link_to '#',
-      class: "nav-link dropdown-toggle text-muted #{'active fw-bold' if [incomes_path,
-                                                                         expenses_path,
-                                                                         user_assets_path,
-                                                                         life_events_path].include?(request.fullpath)}",
-      id: 'navbarDropdown',
-      data: { bs_toggle: 'dropdown', turbo: true },
-      aria: { expanded: 'false' } do
-    %>
+    <%= link_to '#', class: "nav-link dropdown-toggle text-muted #{'active fw-bold' if [incomes_path, expenses_path, user_assets_path, life_events_path].include?(request.fullpath)}", id: 'navbarDropdown', data: { bs_toggle: 'dropdown', turbo: true }, aria: { expanded: 'false' } do %>
       <i class="fa-regular fa-keyboard"></i>
       <span class="d-none d-sm-inline">シミュレーション</span>
     <% end %>
@@ -45,22 +28,14 @@
   </li>
 
   <li class="nav-item">
-    <%=
-      link_to scenarios_path,
-      class: "nav-link text-muted #{'active fw-bold' if current_page?(scenarios_path)}",
-      data: { turbo: true } do
-    %>
+    <%= link_to scenarios_path, class: "nav-link text-muted #{'active fw-bold' if current_page?(scenarios_path)}", data: { turbo: true } do %>
       <i class="fa-solid fa-chart-line"></i>
       <span class="d-none d-sm-inline">シナリオ</span>
     <% end %>
   </li>
 
   <li class="nav-item">
-    <%=
-      link_to life_plans_path,
-      class: "nav-link text-muted #{'active fw-bold' if current_page?(life_plans_path)}",
-      data: { turbo: true } do
-    %>
+    <%= link_to life_plans_path, class: "nav-link text-muted #{'active fw-bold' if current_page?(life_plans_path)}", data: { turbo: true } do %>
       <i class="fa-regular fa-map"></i>
       <span class="d-none d-sm-inline">ライフプラン</span>
     <% end %>

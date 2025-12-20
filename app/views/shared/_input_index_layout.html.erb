@@ -1,0 +1,40 @@
+<% content_for :title do %><%= title %><% end %>
+
+<div class="container">
+  <%= render 'shared/page_hd', title: title, subtitle: subtitle %>
+
+  <div class="row d-flex justify-content-center mb-4">
+    <% if local_assigns[:description] %>
+      <p class="text-center"><%= description %></p>
+    <% end %>
+
+    <div class="col-7">
+      <%= form_content %>
+    </div>
+
+    <div class="col-5">
+      <h6><%= list_title %></h6>
+      <% if local_assigns[:list_subtitle] %>
+        <h6><%= list_subtitle %></h6>
+      <% end %>
+
+      <% if collection.present? %>
+        <div class="accordion" id="<%= acc_id %>">
+          <%# 単一オブジェクト と コレクション の両方に対応 %>
+          <% Array(collection).each_with_index do |item, index| %>
+            <%= yield item, index %>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-secondary">&nbsp;&nbsp;追加した情報はここに表示されます</p>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-center">
+    <%= back_button('戻る', back_path) %>
+    <% if collection.present? %>
+      <%= next_button_post('保存して次へ', next_path) %>
+    <% end %>
+  </div>
+</div>

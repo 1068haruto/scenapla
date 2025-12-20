@@ -13,7 +13,7 @@ RSpec.describe "Users::Confirmations", type: :request do
     it "確認後、正しくリダイレクトする" do
       get user_confirmation_path(confirmation_token: @token)
       expect(response).to have_http_status(:found)  # 302
-      expect(response).to redirect_to(dashboard_index_path)
+      expect(response).to redirect_to(dashboard_path)
     end
 
     it "状態が確認済に正しく変わる" do

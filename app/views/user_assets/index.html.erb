@@ -1,38 +1,22 @@
-<% content_for :title do %>Assets<% end %>
-
-<div class="container">
-  <div class="mt-3 mb-5 text-center">
-    <h1 class="display-4">Assets</h1>
-    <h4 class="mb-3">現在の資産について教えて下さい</h4>
-  </div>
-
-  <div class="row d-flex justify-content-center">
-    <div class="col-11 border border-dark rounded p-3 mb-4">
-      <%= render 'user_asset_form', user_asset: @user_asset %>
-    </div>
-
-    <div class="col-11 mb-4">
-      <h5>追加した資産データ</h5>
-      <% if @user_assets.any? %>
-        <div class="accordion" id="userAssetsAccordion">
-          <% @user_assets.each_with_index do |user_asset, index| %>
-            <%= render 'registered_user_asset',
-              user_asset: user_asset,
-              index: index,
-              accordion_id: "userAssetsAccordion"
-            %>
-          <% end %>
-        </div>
-      <% else %>
-        <p class="text-secondary">&nbsp;&nbsp;データがありません。</p>
-      <% end %>
-    </div>
-  </div>
-
-  <div class="d-flex justify-content-center">
-    <%= back_button('戻る', expenses_path) %>
-    <% if @user_assets.any? %>
-      <%= next_button_post('保存して次へ', update_user_asset_data_simulation_path) %>
-    <% end %>
-  </div>
-</div>
+<%= render layout: 'shared/input_index_layout', locals: {
+  title: 'Assets',
+  subtitle: '現在の資産について教えて下さい',
+  form_content: render('user_asset_form', user_asset: @user_asset),
+  list_title: '追加した資産情報',
+  collection: @user_assets,
+  acc_id: 'userAssetsAcc',
+  back_path: expenses_path,
+  next_path: update_user_asset_data_simulation_path
+} do |user_asset, index| %>
+  <%= render 'shared/acc_item',
+    model: user_asset,
+    acc_id: "userAssetsAcc",
+    index: index,
+    badge_text: user_asset.person_type,
+    badge_class: (user_asset.person_type == '配偶者' ? 'bg-success' : 'bg-primary'),
+    edit_path: edit_user_asset_path(user_asset),
+    delete_path: user_asset_path(user_asset) do %>
+      <li><strong>総額:</strong><%= user_asset.amount %>万円</li>
+      <li><strong>利回り:</strong><%= user_asset.return_rate.present? ? "#{user_asset.return_rate}%" : 'なし' %></li>
+  <% end %>
+<% end %>

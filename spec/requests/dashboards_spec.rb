@@ -7,7 +7,7 @@ RSpec.describe "Dashboards", type: :request do
     context "ログイン済の場合" do
       before do
         sign_in user
-        get dashboard_index_path
+        get dashboard_path
       end
 
       it "ページを表示し200を返す" do
@@ -17,7 +17,7 @@ RSpec.describe "Dashboards", type: :request do
 
     context "未ログインの場合" do
       it "loginページにリダイレクトし302を返す" do
-        get dashboard_index_path
+        get dashboard_path
         expect(response).to have_http_status(:found)  # 302
         expect(response).to redirect_to(new_user_session_path)
       end

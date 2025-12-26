@@ -87,4 +87,35 @@ RSpec.describe "UserAssets", type: :request do
       end
     end
   end
+
+  describe 'POST /update_sim_data' do
+    let(:data_updater) { instance_double(DataUpdater::SimulationDataUpdater) }
+    let(:user_asset_data) { { user_asset_data: "test user_asset_data" } }
+
+    before do
+      allow(DataUpdater::SimulationDataUpdater).to receive(:new).with(user).and_return(data_updater)
+    end
+
+    context '成功した場合' do
+      before do
+        allow(data_updater).to receive(:update_user_asset).and_return(true)
+        post update_sim_user_assets_path
+      end
+
+      it 'life_event_pathへリダイレクトする' do
+        expect(response).to redirect_to(life_events_path)
+      end
+    end
+
+    context '失敗した場合' do
+      before do
+        allow(data_updater).to receive(:update_user_asset).and_return(false)
+        post update_sim_user_assets_path
+      end
+
+      it 'user_assets_pathへリダイレクトする' do
+        expect(response).to redirect_to(user_assets_path)
+      end
+    end
+  end
 end

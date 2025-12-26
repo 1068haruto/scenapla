@@ -87,4 +87,35 @@ RSpec.describe "Incomes", type: :request do
       end
     end
   end
+
+  describe 'POST /update_sim_data' do
+    let(:data_updater) { instance_double(DataUpdater::SimulationDataUpdater) }
+    let(:income_data) { { income_data: "test income data" } }
+
+    before do
+      allow(DataUpdater::SimulationDataUpdater).to receive(:new).with(user).and_return(data_updater)
+    end
+
+    context '成功した場合' do
+      before do
+        allow(data_updater).to receive(:update_income).and_return(true)
+        post update_sim_incomes_path
+      end
+
+      it 'expenses_pathへリダイレクトする' do
+        expect(response).to redirect_to(expenses_path)
+      end
+    end
+
+    context '失敗した場合' do
+      before do
+        allow(data_updater).to receive(:update_income).and_return(false)
+        post update_sim_incomes_path
+      end
+
+      it 'incomes_pathへリダイレクトする' do
+        expect(response).to redirect_to(incomes_path)
+      end
+    end
+  end
 end

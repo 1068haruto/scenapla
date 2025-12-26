@@ -24,4 +24,26 @@ RSpec.describe "StaticPages", type: :request do
       expect(response).to have_http_status(:success)
     end
   end
+
+  describe "GET /static_pages/dashboard" do
+    let!(:user) { create(:user) }
+
+    context "ログイン済の場合" do
+      before do
+        sign_in user
+        get dashboard_path
+      end
+
+      it "ページを表示し200を返す" do
+        expect(response).to have_http_status(:success)
+      end
+    end
+
+    context "未ログインの場合" do
+      it "loginページにリダイレクトし302を返す" do
+        get dashboard_path
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
+  end
 end

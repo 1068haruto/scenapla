@@ -87,4 +87,38 @@ RSpec.describe "LifeEvents", type: :request do
       end
     end
   end
+
+  describe 'POST /update_sim_data' do
+    let(:data_updater) { instance_double(DataUpdater::SimulationDataUpdater) }
+    let(:life_event_data) { {
+      real_event_data: "test real_event_data",
+      ideal_event_data: "test ideal_event_data"
+    } }
+
+    before do
+      allow(DataUpdater::SimulationDataUpdater).to receive(:new).with(user).and_return(data_updater)
+    end
+
+    context '成功した場合' do
+      before do
+        allow(data_updater).to receive(:update_life_event).and_return(true)
+        post update_sim_life_events_path
+      end
+
+      it 'scenarios_pathへリダイレクトする' do
+        expect(response).to redirect_to(scenarios_path)
+      end
+    end
+
+    context '失敗した場合' do
+      before do
+        allow(data_updater).to receive(:update_life_event).and_return(false)
+        post update_sim_life_events_path
+      end
+
+      it 'life_events_pathへリダイレクトする' do
+        expect(response).to redirect_to(life_events_path)
+      end
+    end
+  end
 end

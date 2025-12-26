@@ -49,6 +49,14 @@ class LifeEventsController < AfterBaseController
     end
   end
 
+  def update_sim
+    execute_sim_update(
+      method: :update_life_event,
+      success_path: scenarios_path,
+      failure_path: life_events_path
+    )
+  end
+
   private
 
   def set_life_events

@@ -52,6 +52,14 @@ class ExpensesController < AfterBaseController
     end
   end
 
+  def update_sim
+    execute_sim_update(
+      method: :update_expense,
+      success_path: user_assets_path,
+      failure_path: expenses_path
+    )
+  end
+
   private
 
   def set_latest_expense

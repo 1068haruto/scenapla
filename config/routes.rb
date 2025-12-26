@@ -17,19 +17,20 @@ Rails.application.routes.draw do
     patch "users/dob", to: "users/registrations#update_dob", as: "update_dob"
   end
 
-  resources :users,       only: [ :show ]
-  resources :incomes,     only: [ :index, :create, :edit, :update, :destroy ]
-  resources :expenses,    only: [ :index, :create, :edit, :update, :destroy ]
-  resources :user_assets, only: [ :index, :create, :edit, :update, :destroy ]
-  resources :life_events, only: [ :index, :create, :edit, :update, :destroy ]
-  resources :news,        only: [ :index ]
-
-  resource :simulation, only: [] do
-    post :update_income_data
-    post :update_expense_data
-    post :update_user_asset_data
-    post :update_life_event_data
+  resources :incomes, only: [ :index, :create, :edit, :update, :destroy ] do
+    collection { post :update_sim }
   end
+  resources :expenses, only: [ :index, :create, :edit, :update, :destroy ] do
+    collection { post :update_sim }
+  end
+  resources :user_assets, only: [ :index, :create, :edit, :update, :destroy ] do
+    collection { post :update_sim }
+  end
+  resources :life_events, only: [ :index, :create, :edit, :update, :destroy ] do
+    collection { post :update_sim }
+  end
+  resources :users, only: [ :show ]
+  resources :news, only: [ :index ]
 
   resources :scenarios, only: [ :index ] do
     collection do

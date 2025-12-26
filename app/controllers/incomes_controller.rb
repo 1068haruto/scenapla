@@ -49,6 +49,14 @@ class IncomesController < AfterBaseController
     end
   end
 
+  def update_sim
+    execute_sim_update(
+      method: :update_income,
+      success_path: expenses_path,
+      failure_path: incomes_path
+    )
+  end
+
   private
 
   def set_incomes

@@ -49,6 +49,14 @@ class UserAssetsController < AfterBaseController
     end
   end
 
+  def update_sim
+    execute_sim_update(
+      method: :update_user_asset,
+      success_path: life_events_path,
+      failure_path: user_assets_path
+    )
+  end
+
   private
 
   def set_user_assets

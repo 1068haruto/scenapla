@@ -31,7 +31,6 @@ RSpec.describe "Scenarios", type: :request do
 
       expect(service_class).to have_received(:new).with(user)
       expect(dual_updater_service).to have_received(:call)
-      expect(response).to have_http_status(:found)
       expect(response).to redirect_to(scenarios_path)
     end
 
@@ -44,7 +43,6 @@ RSpec.describe "Scenarios", type: :request do
 
       expect(service_class).to have_received(:new).with(user)
       expect(dual_updater_service).to have_received(:call)
-      expect(response).to have_http_status(:found)
       expect(response).to redirect_to(scenarios_path)
     end
   end

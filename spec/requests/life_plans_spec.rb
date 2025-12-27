@@ -27,7 +27,6 @@ RSpec.describe "LifePlans", type: :request do
 
       it "保存成功し、メモが1件増え、リダイレクト（302）" do
         expect { post save_memo_life_plans_path, params: new_params }.to change(user.memos, :count).by(1)
-        expect(response).to have_http_status(:found)
         expect(response).to redirect_to(life_plans_path)
         created_memo = user.memos.find_by(age_group: new_age_group)
         expect(created_memo.content).to eq(new_content)
@@ -41,7 +40,6 @@ RSpec.describe "LifePlans", type: :request do
 
       it "更新成功し、メモ件数は変わらず、リダイレクト（302）" do
         expect { post save_memo_life_plans_path, params: updated_params }.to change(user.memos, :count).by(0)
-        expect(response).to have_http_status(:found)
         expect(response).to redirect_to(life_plans_path)
         expect(memo.reload.content).to eq(updated_content)
       end

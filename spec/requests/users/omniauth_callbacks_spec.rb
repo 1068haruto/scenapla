@@ -30,7 +30,6 @@ RSpec.describe "Users::OmniauthCallbacks", type: :request do
       it "新規登録ページにリダイレクトする" do
         get user_google_oauth2_omniauth_callback_path
         expect(response).to redirect_to(new_user_registration_path)
-        expect(response).to have_http_status(:found)  # 302
       end
     end
   end

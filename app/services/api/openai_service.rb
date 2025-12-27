@@ -34,19 +34,19 @@ module Api
       start_of_month = Time.zone.now.beginning_of_month
       count = @user.ai_advices.where("created_at >= ?", start_of_month).count
       if count >= ADVICE_LIMIT_PER_MONTH
-        raise AdviceGenerationError, "アドバイス生成可能回数を超えています。翌月にリセットされます。"
+        raise AdviceGenerationError, "生成可能回数を超えています（翌月月初にリセット）"
       end
 
       # 収支シナリオの存在
       balance_scenario = @scenario&.balance_scenario
       if !balance_scenario.present?
-        raise AdviceGenerationError, "データ入力がないため、アドバイスを生成できません。"
+        raise AdviceGenerationError, "データ入力がないため、生成できません。"
       end
 
       # シナリオの更新有無
       last_scenario_updated = @user.ai_advices.last&.real_scenario_updated_at
       scenario_table_updated = @scenario.updated_at
-      if last_scenario_updated == scenario_table_updated
+      if last_scenario_updated&.to_i == scenario_table_updated&.to_i
         raise AdviceGenerationError, "シミュレーション結果の更新がありません。"
       end
     end

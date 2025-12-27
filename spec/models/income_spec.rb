@@ -93,8 +93,6 @@ RSpec.describe Income, type: :model do
   end
 
   describe 'Method' do
-    # '.generate_income_data'の疎結合テストは省略
-
     describe '#retirement_date=' do
       it '退職年をDate型の年始に設定する' do
         income = build(:income, retirement_date: "2030")

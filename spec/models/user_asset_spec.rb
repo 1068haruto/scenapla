@@ -74,7 +74,5 @@ RSpec.describe UserAsset, type: :model do
         expect(user_asset.errors[:return_rate]).to include("数値を入力してください。")
       end
     end
-
-    # '.generate_user_asset_data'の疎結合テストは省略
   end
 end

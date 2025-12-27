@@ -62,8 +62,4 @@ RSpec.describe AssetLifespan, type: :model do
       end
     end
   end
-
-  describe 'method' do
-    pending "ロジック確定後、実装"
-  end
 end

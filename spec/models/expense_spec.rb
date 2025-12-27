@@ -101,8 +101,6 @@ RSpec.describe Expense, type: :model do
   end
 
   describe 'Method' do
-    # '.generate_expense_data'の疎結合テストは省略
-
     describe '#repayment_date=' do
       it 'ローン完済年をDate型の年始に設定する' do
         expense.repayment_date = '2030'

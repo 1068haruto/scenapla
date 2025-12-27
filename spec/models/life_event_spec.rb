@@ -72,8 +72,6 @@ RSpec.describe LifeEvent, type: :model do
   end
 
   describe 'Method' do
-    # '.generate_life_event_data'の疎結合テストは省略
-
     describe '#retirement_date=' do
       it '時期をDate型の年始に設定する' do
         life_event = build(:life_event, event_date: "2030")

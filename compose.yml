@@ -5,7 +5,7 @@ services:
     restart: always
     environment:
       TZ: Asia/Tokyo
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgresql_data:/var/lib/postgresql/data
     ports:

@@ -10,11 +10,15 @@ RUN apt-get update -qq \
 && curl -fsSL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor -o /etc/apt/keyrings/yarn.gpg \
 && echo "deb [signed-by=/etc/apt/keyrings/yarn.gpg] https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 RUN apt-get update -qq && apt-get install -y nodejs yarn
-RUN mkdir /scenapla
+RUN groupadd --gid 1000 vscode && \
+    useradd --uid 1000 --gid 1000 --create-home --shell /bin/bash vscode && \
+    mkdir -p /usr/local/bundle /scenapla && \
+    chown -R vscode:vscode /usr/local/bundle /scenapla
+USER vscode
 WORKDIR /scenapla
 RUN gem install bundler -v 2.4.19
-COPY Gemfile Gemfile.lock ./
+COPY --chown=vscode:vscode Gemfile Gemfile.lock ./
 RUN bundle install
-COPY package.json yarn.lock ./
+COPY --chown=vscode:vscode package.json yarn.lock ./
 RUN yarn install
-COPY . /scenapla
+COPY --chown=vscode:vscode . /scenapla

@@ -1,0 +1,16 @@
+{
+  "name": "scenapla",
+  "dockerComposeFile": ["../compose.yml", "docker-compose.devcontainer.yml"],
+  "service": "web",
+  "workspaceFolder": "/scenapla",
+  "postCreateCommand": "npm install -g @anthropic-ai/claude-code",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "Shopify.ruby-lsp",
+        "misogi.ruby-rubocop"
+      ]
+    }
+  },
+  "remoteUser": "root"
+}

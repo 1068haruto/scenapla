@@ -1,0 +1,6 @@
+services:
+  db:
+    platform: linux/arm64
+  web:
+    platform: linux/arm64
+    command: sleep infinity

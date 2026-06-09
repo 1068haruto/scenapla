@@ -2,7 +2,7 @@ FROM ruby:3.2.3-slim
 ENV LANG C.UTF-8
 ENV TZ Asia/Tokyo
 RUN apt-get update -qq \
-&& apt-get install -y ca-certificates curl gnupg wget build-essential libpq-dev vim \
+&& apt-get install -y ca-certificates curl gnupg wget build-essential libpq-dev vim git \
 && mkdir -p /etc/apt/keyrings \
 && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
 && NODE_MAJOR=20 \
@@ -13,7 +13,10 @@ RUN apt-get update -qq && apt-get install -y nodejs yarn
 RUN groupadd --gid 1000 vscode && \
     useradd --uid 1000 --gid 1000 --create-home --shell /bin/bash vscode && \
     mkdir -p /usr/local/bundle /scenapla && \
-    chown -R vscode:vscode /usr/local/bundle /scenapla
+    chown -R vscode:vscode /usr/local/bundle /scenapla && \
+    apt-get install -y --no-install-recommends sudo && \
+    echo "vscode ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+RUN npm install -g @anthropic-ai/claude-code@2.1.168
 USER vscode
 WORKDIR /scenapla
 RUN gem install bundler -v 2.4.19

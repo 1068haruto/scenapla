@@ -1,0 +1,21 @@
+{
+  "name": "scenapla",
+  "dockerComposeFile": ["../compose.yml", "docker-compose.devcontainer.yml"],
+  "service": "web",
+  "workspaceFolder": "/scenapla",
+  "forwardPorts": [3000],
+  "postCreateCommand": "bundle install",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "Shopify.ruby-lsp",
+        "misogi.ruby-rubocop",
+        "eamodio.gitlens",
+        "EditorConfig.EditorConfig",
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint"
+      ]
+    }
+  },
+  "remoteUser": "vscode"
+}

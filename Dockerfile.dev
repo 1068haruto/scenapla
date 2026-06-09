@@ -1,18 +1,27 @@
-FROM ruby:3.2.3
+FROM ruby:3.2.3-slim
 ENV LANG C.UTF-8
 ENV TZ Asia/Tokyo
 RUN apt-get update -qq \
-&& apt-get install -y ca-certificates curl gnupg \
+&& apt-get install -y ca-certificates curl gnupg wget build-essential libpq-dev vim git \
 && mkdir -p /etc/apt/keyrings \
 && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
 && NODE_MAJOR=20 \
 && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list \
-&& wget --quiet -O - /tmp/pubkey.gpg https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
-&& echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-RUN apt-get update -qq && apt-get install -y build-essential libpq-dev nodejs yarn vim
-RUN mkdir /scenapla
+&& curl -fsSL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor -o /etc/apt/keyrings/yarn.gpg \
+&& echo "deb [signed-by=/etc/apt/keyrings/yarn.gpg] https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+RUN apt-get update -qq && apt-get install -y nodejs yarn
+RUN groupadd --gid 1000 vscode && \
+    useradd --uid 1000 --gid 1000 --create-home --shell /bin/bash vscode && \
+    mkdir -p /usr/local/bundle /scenapla && \
+    chown -R vscode:vscode /usr/local/bundle /scenapla && \
+    apt-get install -y --no-install-recommends sudo && \
+    echo "vscode ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+RUN npm install -g @anthropic-ai/claude-code@2.1.168
+USER vscode
 WORKDIR /scenapla
-RUN gem install bundler
-COPY package.json yarn.lock ./
+RUN gem install bundler -v 2.4.19
+COPY --chown=vscode:vscode Gemfile Gemfile.lock ./
+RUN bundle install
+COPY --chown=vscode:vscode package.json yarn.lock ./
 RUN yarn install
-COPY . /scenapla
+COPY --chown=vscode:vscode . /scenapla
